@@ -1271,6 +1271,13 @@
         }
     }
 
+    // Function to shuffle options for a single question and update its answer index
+    function shuffleOptionsAndAnswer(question) {
+        const correctOptionText = question.options[question.answer];
+        shuffleArray(question.options); // Shuffle the options array
+        question.answer = question.options.indexOf(correctOptionText); // Update the answer index
+    }
+
     function calculateCorrectAnswers() {
         let count = 0;
         for (let i = 0; i < questions.length; i++) {
@@ -1440,7 +1447,10 @@
     }
 
     // Initial setup: Shuffle questions, calculate total time, start global timer, and then load the first one
-    shuffleArray(questions); // Shuffle the questions array
+    shuffleArray(questions); // Shuffle the order of questions
+    // For each question, shuffle its options and update the correct answer index
+    questions.forEach(q => shuffleOptionsAndAnswer(q));
+
     totalSecondsLeft = questions.length * timePerQuestion; // Calculate total time
 
     // Start the global timer
@@ -1464,3 +1474,4 @@
   </script>
 </body>
 </html>
+
