@@ -42,24 +42,51 @@
       margin-bottom: 10px;
       color: #d9534f;
     }
-    #nextBtn, #submitBtn {
-      margin-top: 20px;
+    #quizControls {
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        margin-top: 20px;
+    }
+    #quizControls button {
       padding: 10px 15px;
       background-color: #007bff;
       color: white;
       border: none;
       border-radius: 5px;
       cursor: pointer;
-      margin-right: 10px;
+      margin-right: 10px; /* Space between buttons */
+      margin-bottom: 10px; /* For wrapping on small screens */
       font-size: 1em;
       transition: background-color 0.3s ease, transform 0.2s ease;
+      flex-grow: 1; /* Allow buttons to grow */
+      min-width: 120px; /* Minimum width for buttons */
     }
-    #nextBtn:hover, #submitBtn:hover {
+    #quizControls button:hover {
         background-color: #0056b3;
         transform: translateY(-2px);
     }
-    #nextBtn:active, #submitBtn:active {
+    #quizControls button:active {
         transform: translateY(0);
+    }
+    #prevBtn {
+        background-color: #6c757d; /* Grey for Previous */
+    }
+    #prevBtn:hover {
+        background-color: #5a6268;
+    }
+    #answerLaterBtn {
+        background-color: #ffc107; /* Yellow for Answer Later */
+        color: #333;
+    }
+    #answerLaterBtn:hover {
+        background-color: #e0a800;
+    }
+    #submitBtn {
+        background-color: #dc3545; /* Red for Submit */
+    }
+    #submitBtn:hover {
+        background-color: #c82333;
     }
     #result {
       margin-top: 20px;
@@ -114,15 +141,58 @@
         color: red;
         font-weight: bold;
     }
+    .question-navigation {
+        margin-top: 20px;
+        padding: 15px;
+        background: #f8f9fa;
+        border-radius: 10px;
+        box-shadow: 0 0 5px rgba(0,0,0,0.05);
+    }
+    .question-numbers {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+    .question-number {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 35px;
+        height: 35px;
+        border-radius: 50%;
+        background-color: #e9ecef;
+        color: #495057;
+        font-weight: bold;
+        cursor: pointer;
+        transition: background-color 0.2s ease, transform 0.2s ease;
+    }
+    .question-number:hover {
+        transform: translateY(-2px);
+    }
+    .question-number.answered {
+        background-color: #28a745;
+        color: white;
+    }
+    .question-number.unanswered {
+        background-color: #dc3545;
+        color: white;
+    }
+    .question-number.current {
+        border: 2px solid #007bff;
+        box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.5);
+    }
   </style>
 </head>
 <body>
   <div class="container">
     <div id="quiz"></div>
     <div id="quizControls">
-        <button id="nextBtn" onclick="saveAndNext()">Save & Next</button>
+        <button id="prevBtn" onclick="goToPreviousQuestion()">Previous</button>
+        <button id="nextBtn" onclick="saveAndMoveToNext()">Next</button>
+        <button id="answerLaterBtn" onclick="answerLater()">Answer Later</button>
         <button id="submitBtn" onclick="submitQuiz()">Submit Exam</button>
     </div>
+    <div id="questionList" class="question-navigation"></div>
     <div id="result"></div>
   </div>
 
@@ -1187,7 +1257,7 @@
     ];
 
     let currentQuestionIndex = 0;
-    let userAnswers = new Array(questions.length).fill(null);
+    let userAnswers = new Array(questions.length).fill(null); // Stores the index of the selected option, or null if unanswered
     let timer;
     let secondsLeft;
     const passPercentage = 70; // Define the passing percentage
@@ -1210,6 +1280,19 @@
         return count;
     }
 
+    function saveCurrentAnswer() {
+        const selected = document.querySelector("input[name='option']:checked");
+        if (selected) {
+            userAnswers[currentQuestionIndex] = parseInt(selected.value);
+        } else {
+            // If no option is selected, it means the user hasn't answered or chose "Answer Later"
+            // We keep it null if it was already null, or set it to null if they unselected
+            if (userAnswers[currentQuestionIndex] !== null) {
+                userAnswers[currentQuestionIndex] = null; // Clear previous selection if any
+            }
+        }
+    }
+
     function loadQuestion(index) {
         clearInterval(timer); // Clear any existing timer
         document.getElementById("result").innerHTML = ""; // Clear results area
@@ -1219,20 +1302,22 @@
             return;
         }
 
-        const q = questions[index];
+        currentQuestionIndex = index; // Ensure currentQuestionIndex is updated for direct jumps
+
+        const q = questions[currentQuestionIndex];
         secondsLeft = q.time;
 
         const currentCorrectCount = calculateCorrectAnswers();
-        const progressHTML = `<div id="progress">Question ${index + 1} of ${questions.length} | Correct so far: ${currentCorrectCount}</div>`;
+        const progressHTML = `<div id="progress">Question ${currentQuestionIndex + 1} of ${questions.length} | Correct so far: ${currentCorrectCount}</div>`;
 
         document.getElementById("quiz").innerHTML = `
             ${progressHTML}
             <div class="timer">Time Left: <span id="timer">${secondsLeft}</span>s</div>
-            <div class="question">Q${index + 1}. ${q.q}</div>
+            <div class="question">Q${currentQuestionIndex + 1}. ${q.q}</div>
             <div class="options">
                 ${q.options.map((opt, i) => `
                     <label>
-                        <input type="radio" name="option" value="${i}" ${userAnswers[index] === i ? 'checked' : ''}> ${opt}
+                        <input type="radio" name="option" value="${i}" ${userAnswers[currentQuestionIndex] === i ? 'checked' : ''}> ${opt}
                     </label>
                 `).join('')}
             </div>
@@ -1242,53 +1327,51 @@
             secondsLeft--;
             document.getElementById("timer").textContent = secondsLeft;
             if (secondsLeft <= 0) {
-                saveAnswerAndMove(true); // true indicates time's up
+                saveAndMoveToNext(true); // true indicates time's up
             }
         }, 1000);
 
-        if (currentQuestionIndex === questions.length - 1) {
-            document.getElementById("nextBtn").style.display = "none";
-        } else {
-            document.getElementById("nextBtn").style.display = "inline-block";
-        }
+        // Update button visibility
+        document.getElementById("prevBtn").disabled = currentQuestionIndex === 0;
+        document.getElementById("nextBtn").style.display = currentQuestionIndex === questions.length - 1 ? "none" : "inline-block";
         document.getElementById("submitBtn").style.display = "inline-block";
-        document.getElementById("quizControls").style.display = "block";
-
+        document.getElementById("answerLaterBtn").style.display = currentQuestionIndex === questions.length - 1 ? "none" : "inline-block";
+        
+        updateQuestionList(); // Update the navigation list
         console.log(`Loaded question ${currentQuestionIndex + 1}. Time left: ${secondsLeft}s`);
     }
 
-    function saveAndNext() {
-        saveAnswerAndMove(false);
-    }
-
-    function saveAnswerAndMove(isTimeUp = false) {
+    function saveAndMoveToNext(isTimeUp = false) {
         clearInterval(timer);
-
-        const selected = document.querySelector("input[name='option']:checked");
-        if (selected) {
-            userAnswers[currentQuestionIndex] = parseInt(selected.value);
-        } else {
-            userAnswers[currentQuestionIndex] = null;
-        }
-
-        console.log(`Saved answer for Q${currentQuestionIndex + 1}: ${userAnswers[currentQuestionIndex]}`);
+        saveCurrentAnswer(); // Save the answer for the current question
 
         if (currentQuestionIndex < questions.length - 1) {
             currentQuestionIndex++;
             loadQuestion(currentQuestionIndex);
         } else {
-            submitQuiz();
+            submitQuiz(); // If it's the last question, submit
         }
+    }
+
+    function goToPreviousQuestion() {
+        clearInterval(timer);
+        saveCurrentAnswer(); // Save the answer for the current question
+
+        if (currentQuestionIndex > 0) {
+            currentQuestionIndex--;
+            loadQuestion(currentQuestionIndex);
+        }
+    }
+
+    function answerLater() {
+        clearInterval(timer);
+        userAnswers[currentQuestionIndex] = null; // Explicitly mark as unanswered
+        saveAndMoveToNext(false); // Move to the next question
     }
 
     function submitQuiz() {
         clearInterval(timer);
-        const selected = document.querySelector("input[name='option']:checked");
-        if (selected && currentQuestionIndex < questions.length) {
-            userAnswers[currentQuestionIndex] = parseInt(selected.value);
-        } else if (currentQuestionIndex < questions.length && userAnswers[currentQuestionIndex] === null) {
-            userAnswers[currentQuestionIndex] = null;
-        }
+        saveCurrentAnswer(); // Save the answer for the current question before final submission
 
         console.log("Submitting quiz. Final answers:", userAnswers);
         showResult();
@@ -1330,7 +1413,37 @@
 
         document.getElementById("quiz").style.display = "none";
         document.getElementById("quizControls").style.display = "none";
+        document.getElementById("questionList").style.display = "none"; // Hide question list on result
         document.getElementById("result").innerHTML = resultHTML;
+    }
+
+    function updateQuestionList() {
+        const questionListDiv = document.getElementById("questionList");
+        let listHTML = "<h4>Question Navigation:</h4><div class='question-numbers'>";
+        questions.forEach((q, i) => {
+            let statusClass = '';
+            if (userAnswers[i] !== null) {
+                statusClass = 'answered';
+            } else if (i < currentQuestionIndex) {
+                 // If they skipped or went back, and it's still null, it's unanswered
+                statusClass = 'unanswered';
+            } else if (i === currentQuestionIndex) {
+                statusClass = 'current'; // Current question, not yet answered
+            } else {
+                statusClass = ''; // Future questions, default color
+            }
+            
+            const currentClass = i === currentQuestionIndex ? 'current' : '';
+            listHTML += `<span class='question-number ${statusClass} ${currentClass}' onclick='jumpToQuestion(${i})'>${i + 1}</span>`;
+        });
+        listHTML += "</div>";
+        questionListDiv.innerHTML = listHTML;
+    }
+
+    function jumpToQuestion(index) {
+        clearInterval(timer); // Clear current question timer
+        saveCurrentAnswer(); // Save the answer for the question they are leaving
+        loadQuestion(index); // Load the new question
     }
 
     // Initial setup: Shuffle questions and then load the first one
