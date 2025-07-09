@@ -127,7 +127,7 @@
   </div>
 
   <script>
-    const questions = [
+    let questions = [ // Changed to 'let' as it will be reassigned after shuffling
       {
         q: "What is Git primarily?",
         options: [
@@ -1192,6 +1192,14 @@
     let secondsLeft;
     const passPercentage = 70; // Define the passing percentage
 
+    // Function to shuffle an array (Fisher-Yates algorithm)
+    function shuffleArray(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]]; // Swap elements
+        }
+    }
+
     function calculateCorrectAnswers() {
         let count = 0;
         for (let i = 0; i < questions.length; i++) {
@@ -1325,7 +1333,8 @@
         document.getElementById("result").innerHTML = resultHTML;
     }
 
-    // Initial load
+    // Initial setup: Shuffle questions and then load the first one
+    shuffleArray(questions); // Shuffle the questions array
     loadQuestion(currentQuestionIndex);
   </script>
 </body>
