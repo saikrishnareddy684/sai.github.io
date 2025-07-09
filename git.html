@@ -1319,8 +1319,8 @@
         const seconds = totalSecondsLeft % 60;
         const formattedTime = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
 
-        const currentCorrectCount = calculateCorrectAnswers();
-        const progressHTML = `<div id="progress">Question ${currentQuestionIndex + 1} of ${questions.length} | Correct so far: ${currentCorrectCount}</div>`;
+        // Removed the currentCorrectCount from progressHTML
+        const progressHTML = `<div id="progress">Question ${currentQuestionIndex + 1} of ${questions.length}</div>`;
 
         document.getElementById("quiz").innerHTML = `
             ${progressHTML}
