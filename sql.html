@@ -1,4 +1,203 @@
-<script>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SQL MCQ Quiz</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f4f4;
+      padding: 20px;
+      color: #333;
+    }
+    .container {
+      max-width: 700px;
+      margin: auto;
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    .question {
+      font-size: 1.2em;
+      margin-bottom: 15px;
+    }
+    .options label {
+      display: block;
+      margin: 8px 0;
+      cursor: pointer;
+      padding: 8px;
+      border-radius: 5px;
+      transition: background-color 0.2s ease;
+    }
+    .options label:hover {
+        background-color: #e2f0ff;
+    }
+    .options input[type="radio"] {
+        margin-right: 10px;
+    }
+    .timer {
+      font-weight: bold;
+      margin-bottom: 10px;
+      color: #d9534f;
+    }
+    #quizControls {
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        margin-top: 20px;
+    }
+    #quizControls button {
+      padding: 10px 15px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-right: 10px; /* Space between buttons */
+      margin-bottom: 10px; /* For wrapping on small screens */
+      font-size: 1em;
+      transition: background-color 0.3s ease, transform 0.2s ease;
+      flex-grow: 1; /* Allow buttons to grow */
+      min-width: 120px; /* Minimum width for buttons */
+    }
+    #quizControls button:hover {
+        background-color: #0056b3;
+        transform: translateY(-2px);
+    }
+    #quizControls button:active {
+        transform: translateY(0);
+    }
+    #prevBtn {
+        background-color: #6c757d; /* Grey for Previous */
+    }
+    #prevBtn:hover {
+        background-color: #5a6268;
+    }
+    #answerLaterBtn {
+        background-color: #ffc107; /* Yellow for Answer Later */
+        color: #333;
+    }
+    #answerLaterBtn:hover {
+        background-color: #e0a800;
+    }
+    #submitBtn {
+        background-color: #dc3545; /* Red for Submit */
+    }
+    #submitBtn:hover {
+        background-color: #c82333;
+    }
+    #result {
+      margin-top: 20px;
+      background: #e9ffe9;
+      padding: 15px;
+      border-radius: 10px;
+      border: 1px solid #c3e6cb;
+    }
+    #progress {
+      font-size: 0.9em;
+      color: #666;
+      margin-bottom: 10px;
+    }
+    #restartBtn {
+        margin-top: 20px;
+        padding: 10px 15px;
+        background-color: #28a745; /* Green */
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 1em;
+        transition: background-color 0.3s ease, transform 0.2s ease;
+    }
+    #restartBtn:hover {
+        background-color: #218838;
+        transform: translateY(-2px);
+    }
+    #restartBtn:active {
+        transform: translateY(0);
+    }
+    h3, h4 {
+        color: #0056b3;
+    }
+    ul {
+        list-style-type: none;
+        padding: 0;
+    }
+    li {
+        margin-bottom: 10px;
+        padding-bottom: 5px;
+        border-bottom: 1px dashed #eee;
+    }
+    li:last-child {
+        border-bottom: none;
+    }
+    .pass {
+        color: green;
+        font-weight: bold;
+    }
+    .fail {
+        color: red;
+        font-weight: bold;
+    }
+    .question-navigation {
+        margin-top: 20px;
+        padding: 15px;
+        background: #f8f9fa;
+        border-radius: 10px;
+        box-shadow: 0 0 5px rgba(0,0,0,0.05);
+    }
+    .question-numbers {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+    .question-number {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 35px;
+        height: 35px;
+        border-radius: 50%;
+        background-color: #e9ecef;
+        color: #495057;
+        font-weight: bold;
+        cursor: pointer;
+        transition: background-color 0.2s ease, transform 0.2s ease;
+    }
+    .question-number:hover {
+        transform: translateY(-2px);
+    }
+    .question-number.answered {
+        background-color: #28a745;
+        color: white;
+    }
+    .question-number.unanswered {
+        background-color: #dc3545;
+        color: white;
+    }
+    .question-number.current {
+        border: 2px solid #007bff;
+        box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.5);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div id="quiz"></div>
+    <div id="quizControls">
+        <button id="prevBtn" onclick="goToPreviousQuestion()">Previous</button>
+        <button id="nextBtn" onclick="saveAndMoveToNext()">Next</button>
+        <button id="answerLaterBtn" onclick="answerLater()">Answer Later</button>
+        <button id="submitBtn" onclick="submitQuiz()">Submit Exam</button>
+    </div>
+    <div id="questionList" class="question-navigation"></div>
+    <div id="result"></div>
+  </div>
+
+  <script>
+  
     // --- 171 SQL Questions Array Generated from the file ---
     // NOTE: The array below is only a partial snippet (first 22 questions) 
     // for demonstration. You must ensure your actual file has the full 
