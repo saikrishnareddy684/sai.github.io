@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>SQL MCQ Quiz</title>
+  <title>Git & GitHub MCQ Quiz</title>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -197,2567 +197,1280 @@
   </div>
 
   <script>
-    // --- 171 SQL Questions Array Generated from the file ---
-    // NOTE: The array below is only a partial snippet (first 22 questions) 
-    // for demonstration. You must ensure your actual file has the full 
-    // array with all 171 questions here!
-    let questions = [
-      {
-            "q": "Can we add a column with identity in existing table",
-            "options": [
-                  "Yes, by using the `ALTER COLUMN` command directly.",
-                  "No, the operation is restricted or requires an alternative approach.",
-                  "No, because it would violate the referential integrity.",
-                  "You must drop and recreate the database."
-            ],
-            "answer": 1,
-            "time": 20
-      },
-      {
-            "q": "Can we add a column with not null in existing table",
-            "options": [
-                  "No, because it would violate the referential integrity.",
-                  "Yes, by using the `ALTER COLUMN` command directly.",
-                  "Yes, but a `DEFAULT` value must be provided for the existing rows.",
-                  "You must drop and recreate the database."
-            ],
-            "answer": 2,
-            "time": 20
-      },
-      {
-            "q": "How to Creating an Incrementing Sequence Object in SQL Server:",
-            "options": [
-                  "You must use an `IDENTITY` column to generate sequential numbers.",
-                  "The command to restart is `RESET SEQUENCE`.",
-                  "Sequence values are only generated during table creation.",
-                  "A SEQUENCE in SQL Server is a database object that generates a sequence of numeric values in order."
-            ],
-            "answer": 3,
-            "time": 20
-      },
-      {
-            "q": "How to Alter the object to reset the sequence value:",
-            "options": [
-                  "You must drop and recreate the database.",
-                  "You must use an `IDENTITY` column to generate sequential numbers.",
-                  "ALTER SEQUENCE dbo.SequenceObject RESTART WITH 1 is the correct command.",
-                  "The command to restart is `RESET SEQUENCE`."
-            ],
-            "answer": 2,
-            "time": 20
-      },
-      {
-            "q": "questions on sequence",
-            "options": [
-                  "The command to restart is `RESET SEQUENCE`.",
-                  "The command is unsupported and results in an error.",
-                  "The DROP SEQUENCE command.",
-                  "The solution is to use the `ROLLBACK` command."
-            ],
-            "answer": 2,
-            "time": 20
-      },
-      {
-            "q": "What is Clustered Index, a clustered index is a special type of index that physically stores and sorts the data rows in a table or view based on their key values. Because the data rows themselves are stored in sorted order, there can be only **one clustered index per table**.",
-            "options": [
-                  "A clustered index allows up to 5 indexes per table.",
-                  "It dictates the physical, sorted storage order of the data rows.",
-                  "The index is stored in memory (RAM) only.",
-                  "The index structure is a Hash Table (Hash map)."
-            ],
-            "answer": 1,
-            "time": 20
-      },
-      {
-            "q": "What is max number of Clustered Index on a table",
-            "options": [
-                  "The value is stored in the master database.",
-                  "The maximum limit is 16 per table.",
-                  "Only one clustered index is allowed per table.",
-                  "A clustered index allows up to 5 indexes per table."
-            ],
-            "answer": 2,
-            "time": 20
-      },
-      {
-            "q": "What is Page Split",
-            "options": [
-                  "The operation of moving half the rows from a full page to a new page to make room for insertions.",
-                  "Page splits only occur during SELECT operations.",
-                  "A page split is an error that corrupts the database.",
-                  "The solution is to use the `ROLLBACK` command."
-            ],
-            "answer": 0,
-            "time": 20
-      },
-      {
-            "q": "What is Physical Structure of Clustered Index,",
-            "options": [
-                  "The index structure is a Hash Table (Hash map).",
-                  "It is called a B-tree Hash map.",
-                  "A B-Tree is the correct structure.",
-                  "The functionality is reserved for Enterprise Edition only."
-            ],
-            "answer": 2,
-            "time": 20
-      },
-      {
-            "q": "What is Non-Clustered Index,",
-            "options": [
-                  "It dictates the physical, sorted storage order of the data rows.",
-                  "It contains key values and row pointers, separate from the data.",
-                  "A non-clustered index is stored in the same location as the data.",
-                  "The command is unsupported and results in an error."
-            ],
-            "answer": 1,
-            "time": 20
-      },
-      {
-            "q": "How many Non-clustered Index can we have per table?",
-            "options": [
-                  "A non-clustered index is stored in the same location as the data.",
-                  "Only one clustered index is allowed per table.",
-                  "You must drop and recreate the database.",
-                  "A table can have a maximum of 999 non-clustered indexes."
-            ],
-            "answer": 3,
-            "time": 20
-      },
-      {
-            "q": "What is Index fragmentation,",
-            "options": [
-                  "It is a feature related to distributed transactions only.",
-                  "The index is stored in memory (RAM) only.",
-                  "A condition where index data pages are scattered and not logically ordered, degrading performance.",
-                  "It is the process of physically deleting the database file."
-            ],
-            "answer": 2,
-            "time": 20
-      },
-      {
-            "q": "What is difference between Index Rebuild and Index Reorganize.",
-            "options": [
-                  "Rebuild is online and faster, Reorganize is offline and slower.",
-                  "Rebuild creates a new index and drops the old one; Reorganize physically reorders the leaf-level pages in place.",
-                  "The solution is to use the `ROLLBACK` command.",
-                  "Reorganize creates a new index and drops the old one; Rebuild physically reorders the leaf-level pages in place."
-            ],
-            "answer": 1,
-            "time": 20
-      },
-      {
-            "q": "What is Fill Factor in SQL Server index,",
-            "options": [
-                  "Fill factor only applies to the root node of the index.",
-                  "It is a value from 0 to 100 that specifies the percentage of space to leave empty on each leaf-level page.",
-                  "The functionality is reserved for Enterprise Edition only.",
-                  "It specifies the maximum number of columns an index can contain."
-            ],
-            "answer": 1,
-            "time": 20
-      },
-      {
-            "q": "What is Covered Index in SQL Server?",
-            "options": [
-                  "An index that includes all the columns requested in the query, allowing the query to complete without looking up the data row.",
-                  "It is a feature related to distributed transactions only.",
-                  "The index is stored in memory (RAM) only.",
-                  "The index structure is a Hash Table (Hash map)."
-            ],
-            "answer": 0,
-            "time": 20
-      },
-      {
-            "q": "What is the key difference between Truncate and Delete command in SQL Server?",
-            "options": [
-                  "DELETE is DDL and TRUNCATE is DML.",
-                  "TRUNCATE is a DML command; DELETE is a DDL command.",
-                  "DELETE is faster and doesn't use the transaction log; TRUNCATE is slower and uses the log.",
-                  "TRUNCATE is DDL, logs minimal info, resets identity, and is faster; DELETE is DML, logs every row deletion, and is slower."
-            ],
-            "answer": 3,
-            "time": 20
-      },
-      {
-            "q": "What is difference between where and having in SQL Server?",
-            "options": [
-                  "`WHERE` is used for row filtering before aggregation; `HAVING` is used for group filtering after aggregation.",
-                  "`HAVING` is faster than `WHERE` and is used only on indexed columns.",
-                  "It is not possible in SQL Server.",
-                  "`WHERE` is used for filtering data after aggregation; `HAVING` is used for filtering before aggregation."
-            ],
-            "answer": 0,
-            "time": 20
-      },
-      {
-            "q": "What is stored procedure in SQL Server?",
-            "options": [
-                  "A temporary object that holds data only for the current session.",
-                  "A precompiled set of one or more SQL statements stored in the database.",
-                  "The functionality is reserved for Enterprise Edition only.",
-                  "An index that includes all the columns requested in the query."
-            ],
-            "answer": 1,
-            "time": 20
-      },
-      {
-            "q": "What is the key difference between stored procedure and function in SQL Server?",
-            "options": [
-                  "Functions can modify data and cannot be used in `SELECT` statements; Procedures can only return a single value.",
-                  "Stored procedures can modify data and return 0 or more values; Functions cannot modify data (usually) and return a single value/table.",
-                  "The command is unsupported and results in an error.",
-                  "Functions can modify data; Procedures are read-only."
-            ],
-            "answer": 1,
-            "time": 20
-      },
-      {
-            "q": "What is difference between local temporary table and global temporary table?",
-            "options": [
-                  "Local temporary tables are visible to all sessions; Global temporary tables are visible only to the session that created them.",
-                  "Local tables are prefixed with `##` and are session-specific; Global tables are prefixed with `#` and are visible to all sessions.",
-                  "Local tables are prefixed with `#` and are session-specific; Global tables are prefixed with `##` and are visible to all sessions.",
-                  "It is only available in older SQL Server versions."
-            ],
-            "answer": 2,
-            "time": 20
-      },
-      {
-            "q": "How to create a global temporary table:",
-            "options": [
-                  "CREATE GLOBAL TABLE #TableName",
-                  "CREATE TABLE ##TableName",
-                  "It is not possible in SQL Server.",
-                  "CREATE TABLE ##TableName (Col1 INT)"
-            ],
-            "answer": 3,
-            "time": 20
-      },
-      {
-            "q": "What is the key difference between Table Variable and Temporary Table?",
-            "options": [
-                  "Table variables are stored in the `tempdb` database; Temporary tables are stored in memory.",
-                  "Table variables are session-specific; Temporary tables are visible to all sessions.",
-                  "Table variables do not support indexes and are used within a single batch/SP; Temporary tables support indexes and can be retained longer.",
-                  "The functionality is reserved for Enterprise Edition only."
-            ],
-            "answer": 2,
-            "time": 20
-      },
-      {
-            "q": "What is difference between UNION and UNION ALL?",
-            "options": [
-                  "UNION removes duplicate rows and performs sorting, making it slower; UNION ALL includes all rows, including duplicates, and is faster.",
-                  "UNION can only combine two columns, while UNION ALL can combine any number.",
-                  "The functionality is reserved for Enterprise Edition only.",
-                  "UNION is DDL, logs minimal info; UNION ALL is DML, logs every row."
-            ],
-            "answer": 0,
-            "time": 20
-      },
-{
-            "q": "Can we add a column with identity in existing table",
-            "options": [
-                  "Yes, by using the `ALTER COLUMN` command directly.",
-                  "No, the operation is restricted or requires an alternative approach.",
-                  "No, because it would violate the referential integrity.",
-                  "You must drop and recreate the database."
-            ],
-            "answer": 1,
-            "time": 20
-      },
-      {
-            "q": "Can we add a column with not null in existing table",
-            "options": [
-                  "No, because it would violate the referential integrity.",
-                  "Yes, by using the `ALTER COLUMN` command directly.",
-                  "Yes, but a `DEFAULT` value must be provided for the existing rows.",
-                  "You must drop and recreate the database."
-            ],
-            "answer": 2,
-            "time": 20
-      },
-      {
-            "q": "How to Creating an Incrementing Sequence Object in SQL Server:",
-            "options": [
-                  "You must use an `IDENTITY` column to generate sequential numbers.",
-                  "The command to restart is `RESET SEQUENCE`.",
-                  "Sequence values are only generated during table creation.",
-                  "A SEQUENCE in SQL Server is a database object that generates a sequence of numeric values in order."
-            ],
-            "answer": 3,
-            "time": 20
-      },
-      {
-            "q": "How to Alter the object to reset the sequence value:",
-            "options": [
-                  "You must drop and recreate the database.",
-                  "You must use an `IDENTITY` column to generate sequential numbers.",
-                  "ALTER SEQUENCE dbo.SequenceObject RESTART WITH 1 is the correct command.",
-                  "The command to restart is `RESET SEQUENCE`."
-            ],
-            "answer": 2,
-            "time": 20
-      },
-      {
-            "q": "questions on sequence",
-            "options": [
-                  "The command to restart is `RESET SEQUENCE`.",
-                  "The command is unsupported and results in an error.",
-                  "The DROP SEQUENCE command.",
-                  "The solution is to use the `ROLLBACK` command."
-            ],
-            "answer": 2,
-            "time": 20
-      },
-      {
-            "q": "What is Clustered Index, a clustered index is a special type of index that physically stores and sorts the data rows in a table or view based on their key values. Because the data rows themselves are stored in sorted order, there can be only **one clustered index per table**.",
-            "options": [
-                  "A clustered index allows up to 5 indexes per table.",
-                  "It dictates the physical, sorted storage order of the data rows.",
-                  "The index is stored in memory (RAM) only.",
-                  "The index structure is a Hash Table (Hash map)."
-            ],
-            "answer": 1,
-            "time": 20
-      },
-      {
-            "q": "What is max number of Clustered Index on a table",
-            "options": [
-                  "The value is stored in the master database.",
-                  "The maximum limit is 16 per table.",
-                  "Only one clustered index is allowed per table.",
-                  "A clustered index allows up to 5 indexes per table."
-            ],
-            "answer": 2,
-            "time": 20
-      },
-      {
-            "q": "What is Page Split",
-            "options": [
-                  "The operation of moving half the rows from a full page to a new page to make room for insertions.",
-                  "Page splits only occur during SELECT operations.",
-                  "A page split is an error that corrupts the database.",
-                  "The solution is to use the `ROLLBACK` command."
-            ],
-            "answer": 0,
-            "time": 20
-      },
-      {
-            "q": "What is Physical Structure of Clustered Index,",
-            "options": [
-                  "The index structure is a Hash Table (Hash map).",
-                  "It is called a B-tree Hash map.",
-                  "A B-Tree is the correct structure.",
-                  "The functionality is reserved for Enterprise Edition only."
-            ],
-            "answer": 2,
-            "time": 20
-      },
-      {
-            "q": "What is Non-Clustered Index,",
-            "options": [
-                  "It dictates the physical, sorted storage order of the data rows.",
-                  "It contains key values and row pointers, separate from the data.",
-                  "A non-clustered index is stored in the same location as the data.",
-                  "The command is unsupported and results in an error."
-            ],
-            "answer": 1,
-            "time": 20
-      },
-      {
-            "q": "How many Non-clustered Index can we have per table?",
-            "options": [
-                  "A non-clustered index is stored in the same location as the data.",
-                  "Only one clustered index is allowed per table.",
-                  "You must drop and recreate the database.",
-                  "A table can have a maximum of 999 non-clustered indexes."
-            ],
-            "answer": 3,
-            "time": 20
-      },
-      {
-            "q": "What is Index fragmentation,",
-            "options": [
-                  "It is a feature related to distributed transactions only.",
-                  "The index is stored in memory (RAM) only.",
-                  "A condition where index data pages are scattered and not logically ordered, degrading performance.",
-                  "It is the process of physically deleting the database file."
-            ],
-            "answer": 2,
-            "time": 20
-      },
-      {
-            "q": "What is difference between Index Rebuild and Index Reorganize.",
-            "options": [
-                  "Rebuild is online and faster, Reorganize is offline and slower.",
-                  "Rebuild creates a new index and drops the old one; Reorganize physically reorders the leaf-level pages in place.",
-                  "The solution is to use the `ROLLBACK` command.",
-                  "Reorganize creates a new index and drops the old one; Rebuild physically reorders the leaf-level pages in place."
-            ],
-            "answer": 1,
-            "time": 20
-      },
-      {
-            "q": "What is Fill Factor in SQL Server index,",
-            "options": [
-                  "Fill factor only applies to the root node of the index.",
-                  "It is a value from 0 to 100 that specifies the percentage of space to leave empty on each leaf-level page.",
-                  "The functionality is reserved for Enterprise Edition only.",
-                  "It specifies the maximum number of columns an index can contain."
-            ],
-            "answer": 1,
-            "time": 20
-      },
-      {
-            "q": "What is Covered Index in SQL Server?",
-            "options": [
-                  "An index that includes all the columns requested in the query, allowing the query to complete without looking up the data row.",
-                  "It is a feature related to distributed transactions only.",
-                  "The index is stored in memory (RAM) only.",
-                  "The index structure is a Hash Table (Hash map)."
-            ],
-            "answer": 0,
-            "time": 20
-      },
-      {
-            "q": "What is the key difference between Truncate and Delete command in SQL Server?",
-            "options": [
-                  "DELETE is DDL and TRUNCATE is DML.",
-                  "TRUNCATE is a DML command; DELETE is a DDL command.",
-                  "DELETE is faster and doesn't use the transaction log; TRUNCATE is slower and uses the log.",
-                  "TRUNCATE is DDL, logs minimal info, resets identity, and is faster; DELETE is DML, logs every row deletion, and is slower."
-            ],
-            "answer": 3,
-            "time": 20
-      },
-      {
-            "q": "What is difference between where and having in SQL Server?",
-            "options": [
-                  "`WHERE` is used for row filtering before aggregation; `HAVING` is used for group filtering after aggregation.",
-                  "`HAVING` is faster than `WHERE` and is used only on indexed columns.",
-                  "It is not possible in SQL Server.",
-                  "`WHERE` is used for filtering data after aggregation; `HAVING` is used for filtering before aggregation."
-            ],
-            "answer": 0,
-            "time": 20
-      },
-      {
-            "q": "What is stored procedure in SQL Server?",
-            "options": [
-                  "A temporary object that holds data only for the current session.",
-                  "A precompiled set of one or more SQL statements stored in the database.",
-                  "The functionality is reserved for Enterprise Edition only.",
-                  "An index that includes all the columns requested in the query."
-            ],
-            "answer": 1,
-            "time": 20
-      },
-      {
-            "q": "What is the key difference between stored procedure and function in SQL Server?",
-            "options": [
-                  "Functions can modify data and cannot be used in `SELECT` statements; Procedures can only return a single value.",
-                  "Stored procedures can modify data and return 0 or more values; Functions cannot modify data (usually) and return a single value/table.",
-                  "The command is unsupported and results in an error.",
-                  "Functions can modify data; Procedures are read-only."
-            ],
-            "answer": 1,
-            "time": 20
-      },
-      {
-            "q": "What is difference between local temporary table and global temporary table?",
-            "options": [
-                  "Local temporary tables are visible to all sessions; Global temporary tables are visible only to the session that created them.",
-                  "Local tables are prefixed with `##` and are session-specific; Global tables are prefixed with `#` and are visible to all sessions.",
-                  "Local tables are prefixed with `#` and are session-specific; Global tables are prefixed with `##` and are visible to all sessions.",
-                  "It is only available in older SQL Server versions."
-            ],
-            "answer": 2,
-            "time": 20
-      },
-      {
-            "q": "How to create a global temporary table:",
-            "options": [
-                  "CREATE GLOBAL TABLE #TableName",
-                  "CREATE TABLE ##TableName",
-                  "It is not possible in SQL Server.",
-                  "CREATE TABLE ##TableName (Col1 INT)"
-            ],
-            "answer": 3,
-            "time": 20
-      },
-      {
-            "q": "What is the key difference between Table Variable and Temporary Table?",
-            "options": [
-                  "Table variables are stored in the `tempdb` database; Temporary tables are stored in memory.",
-                  "Table variables are session-specific; Temporary tables are visible to all sessions.",
-                  "Table variables do not support indexes and are used within a single batch/SP; Temporary tables support indexes and can be retained longer.",
-                  "The functionality is reserved for Enterprise Edition only."
-            ],
-            "answer": 2,
-            "time": 20
-      },
-      {
-            "q": "What is difference between UNION and UNION ALL?",
-            "options": [
-                  "`UNION` removes duplicate rows and is faster; `UNION ALL` retains duplicate rows and is slower.",
-                  "`UNION ALL` removes duplicate rows and is slower; `UNION` retains duplicate rows and is faster.",
-                  "`UNION` retains duplicate rows and is faster; `UNION ALL` removes duplicate rows and is slower.",
-                  "`UNION` removes duplicate rows and is slower; `UNION ALL` retains duplicate rows and is faster."
-            ],
-            "answer": 3,
-            "time": 20
-      },
-      {
-            "q": "What is Self join in SQL Server?",
-            "options": [
-                  "A join that connects two different tables with a common primary key.",
-                  "A join used to combine rows from one table with itself.",
-                  "The maximum limit is 16 per table.",
-                  "A join that excludes all rows that do not have a match."
-            ],
-            "answer": 1,
-            "time": 20
-      },
-      {
-            "q": "What is subquery in SQL Server?",
-            "options": [
-                  "A precompiled set of one or more SQL statements stored in the database.",
-                  "A query embedded inside another SQL query (SELECT, INSERT, UPDATE, or DELETE).",
-                  "It is a feature related to distributed transactions only.",
-                  "The solution is to use the `ROLLBACK` command."
-            ],
-            "answer": 1,
-            "time": 20
-      },
-      {
-            "q": "What is difference between scalar and inline table valued function?",
-            "options": [
-                  "Scalar functions return a single value; Inline table-valued functions return a table variable.",
-                  "Scalar functions return a table variable; Inline table-valued functions return a single value.",
-                  "The functionality is reserved for Enterprise Edition only.",
-                  "Inline table-valued functions cannot be used in the `FROM` clause."
-            ],
-            "answer": 0,
-            "time": 20
-      },
-      {
-            "q": "What is a trigger in SQL Server?",
-            "options": [
-                  "A temporary object that holds data only for the current session.",
-                  "A special kind of stored procedure that automatically executes when a specified event occurs (INSERT, UPDATE, DELETE).",
-                  "Triggers are only used for creating indexes.",
-                  "The command is unsupported and results in an error."
-            ],
-            "answer": 1,
-            "time": 20
-      },
-      {
-            "q": "What is difference between instead of and after trigger?",
-            "options": [
-                  "`AFTER` triggers fire before the action and can bypass it; `INSTEAD OF` triggers fire after the action.",
-                  "`INSTEAD OF` triggers fire instead of the action, allowing you to bypass or replace it; `AFTER` triggers fire after the action is complete.",
-                  "It is only available in older SQL Server versions.",
-                  "The functionality is reserved for Enterprise Edition only."
-            ],
-            "answer": 1,
-            "time": 20
-      },
-      {
-            "q": "What is difference between user and schema in SQL Server?",
-            "options": [
-                  "A user is a container for database objects; a schema is a login used to connect to the database.",
-                  "A user is a security principal (login) that can connect and access the database; a schema is a container for database objects.",
-                  "The command is unsupported and results in an error.",
-                  "The maximum limit is 16 per table."
-            ],
-            "answer": 1,
-            "time": 20
-      },
-      {
-            "q": "What is the key difference between Primary key and Unique key in SQL Server?",
-            "options": [
-                  "A table can have multiple Primary Keys but only one Unique Key.",
-                  "Primary Key enforces non-NULL values and allows only one per table; Unique Key allows one NULL value and multiple per table.",
-                  "Primary Key allows one NULL value; Unique Key does not allow any NULL values.",
-                  "Both are the same, but Primary Key is faster."
-            ],
-            "answer": 1,
-            "time": 20
-      },
-      {
-            "q": "What is difference between View and Indexed View?",
-            "options": [
-                  "A view is a stored query; an indexed view (materialized view) stores the results physically, making it faster to query.",
-                  "Indexed views are only allowed on temporary tables.",
-                  "Views allow data modification; Indexed views do not.",
-                  "The functionality is reserved for Enterprise Edition only."
-            ],
-            "answer": 0,
-            "time": 20
-      },
-      {
-            "q": "What is difference between dynamic and static SQL?",
-            "options": [
-                  "Static SQL is generated at runtime and is prone to SQL injection; Dynamic SQL is precompiled and safe.",
-                  "Dynamic SQL is generated at runtime and is prone to SQL injection; Static SQL is precompiled and safe.",
-                  "The solution is to use the `ROLLBACK` command.",
-                  "Dynamic SQL is faster because it uses a compiled plan."
-            ],
-            "answer": 1,
-            "time": 20
-      },
-      {
-            "q": "How to execute dynamic SQL in SQL Server?",
-            "options": [
-                  "The correct command is `EXECUTE PROCEDURE`.",
-                  "You must drop and recreate the database.",
-                  "Using the `EXEC` or `sp_executesql` command.",
-                  "It is not possible in SQL Server."
-            ],
-            "answer": 2,
-            "time": 20
-      },
-      {
-            "q": "What is difference between Execute and sp_executesql?",
-            "options": [
-                  "EXEC is safer and uses parameterization; `sp_executesql` is faster but is more prone to SQL injection.",
-                  "The command is unsupported and results in an error.",
-                  "`sp_executesql` supports parameterized queries, which improves security (prevents SQL injection) and execution plan reuse.",
-                  "EXEC is faster and supports parameterized queries."
-            ],
-            "answer": 2,
-            "time": 20
-      },
-      {
-            "q": "What is transaction in SQL Server?",
-            "options": [
-                  "A single database operation that modifies exactly one row.",
-                  "A sequence of one or more SQL statements that are treated as a single, indivisible unit of work.",
-                  "It is only available in older SQL Server versions.",
-                  "The functionality is reserved for Enterprise Edition only."
-            ],
-            "answer": 1,
-            "time": 20
-      },
-      {
-            "q": "What is ACID properties in SQL Server?",
-            "options": [
-                  "A set of properties (Atomicity, Consistency, Isolation, Durability) that guarantee database transactions are processed reliably.",
-                  "A method for indexing large columns only.",
-                  "The maximum limit is 16 per table.",
-                  "It is a feature related to distributed transactions only."
-            ],
-            "answer": 0,
-            "time": 20
-      },
-      {
-            "q": "What is difference between Commit and Rollback in SQL Server?",
-            "options": [
-                  "`COMMIT` makes all changes permanent; `ROLLBACK` undoes all changes since the last `BEGIN TRANSACTION` or `COMMIT`.",
-                  "`ROLLBACK` makes all changes permanent; `COMMIT` undoes all changes.",
-                  "The command is unsupported and results in an error.",
-                  "The functionality is reserved for Enterprise Edition only."
-            ],
-            "answer": 0,
-            "time": 20
-      },
-      {
-            "q": "What is difference between ISNULL and COALESCE in SQL Server?",
-            "options": [
-                  "`ISNULL` supports only one check value and uses the check value's data type; `COALESCE` supports multiple check values and uses the highest precedence data type.",
-                  "`COALESCE` is an older function and is less compatible; `ISNULL` is the modern replacement.",
-                  "It is not possible in SQL Server.",
-                  "`COALESCE` only works on non-string data types."
-            ],
-            "answer": 0,
-            "time": 20
-      },
-      {
-            "q": "What is Cursor in SQL Server?",
-            "options": [
-                  "A database object that is used to generate sequential numbers.",
-                  "A database control structure used to traverse and process records from a result set one row at a time.",
-                  "The maximum limit is 16 per table.",
-                  "The functionality is reserved for Enterprise Edition only."
-            ],
-            "answer": 1,
-            "time": 20
-      },
-      {
-            "q": "What is difference between NOLOCK and READ UNCOMMITTED?",
-            "options": [
-                  "`NOLOCK` is a keyword; `READ UNCOMMITTED` is a transaction isolation level that achieves the same result (reading uncommitted changes).",
-                  "`READ UNCOMMITTED` is faster and does not introduce dirty reads; `NOLOCK` is slower and causes dirty reads.",
-                  "The command is unsupported and results in an error.",
-                  "They are completely different and unrelated concepts."
-            ],
-            "answer": 0,
-            "time": 20
-      },
-      {
-            "q": "What is difference between CHAR and VARCHAR in SQL Server?",
-            "options": [
-                  "`CHAR` is variable length; `VARCHAR` is fixed length.",
-                  "`VARCHAR` is variable length and stores only necessary bytes; `CHAR` is fixed length and always uses the declared size.",
-                  "The solution is to use the `ROLLBACK` command.",
-                  "The functionality is reserved for Enterprise Edition only."
-            ],
-            "answer": 1,
-            "time": 20
-      },
-      {
-            "q": "What is difference between Normalization and Denormalization?",
-            "options": [
-                  "Normalization improves redundancy and makes queries faster; Denormalization reduces redundancy and makes updates slower.",
-                  "Normalization reduces data redundancy, improving integrity but potentially slowing reads; Denormalization adds redundancy to improve query speed (reads).",
-                  "It is not possible in SQL Server.",
-                  "The maximum limit is 16 per table."
-            ],
-            "answer": 1,
-            "time": 20
-      },
-      {
-            "q": "What is difference between DDL and DML in SQL Server?",
-            "options": [
-                  "DDL (Data Definition Language) manages data and rows; DML (Data Manipulation Language) manages structure and objects.",
-                  "DDL manages structure/objects (CREATE, ALTER, DROP); DML manages data/rows (INSERT, UPDATE, DELETE).",
-                  "The command is unsupported and results in an error.",
-                  "DDL only works on temporary tables; DML works on permanent tables."
-            ],
-            "answer": 1,
-            "time": 20
-      },
-      {
-            "q": "What is difference between primary and foreign key?",
-            "options": [
-                  "A primary key establishes a unique row identifier; a foreign key links two tables by referencing the primary key of another table.",
-                  "Both are the same, but the foreign key is faster.",
-                  "A primary key allows one NULL value; a foreign key does not allow any NULL values.",
-                  "The solution is to use the `ROLLBACK` command."
-            ],
-            "answer": 0,
-            "time": 20
-      },
-      {
-            "q": "What is difference between primary and candidate key?",
-            "options": [
-                  "A candidate key is a column or set of columns that can uniquely identify a record; the primary key is the one chosen candidate key.",
-                  "Primary key can be composite; Candidate key must be a single column.",
-                  "It is not possible in SQL Server.",
-                  "The maximum limit is 16 per table."
-            ],
-            "answer": 0,
-            "time": 20
-      },
-      {
-            "q": "What is difference between user and login in SQL Server?",
-            "options": [
-                  "A login is a database identity that grants permissions; a user is a server identity used for connection.",
-                  "A login is a server-level identity used to connect to the SQL Server instance; a user is a database-level identity used to grant permissions.",
-                  "The functionality is reserved for Enterprise Edition only.",
-                  "They are completely different and unrelated concepts."
-            ],
-            "answer": 1,
-            "time": 20
-      },
-      {
-            "q": "What is CTE in SQL Server?",
-            "options": [
-                  "A temporary object that holds data only for the current session.",
-                  "Common Table Expression (CTE) is a named temporary result set defined within the execution scope of a single SELECT, INSERT, UPDATE, or DELETE statement.",
-                  "It is only available in older SQL Server versions.",
-                  "The command is unsupported and results in an error."
-            ],
-            "answer": 1,
-            "time": 20
-      },
-      {
-            "q": "What is recursive CTE in SQL Server?",
-            "options": [
-                  "A CTE that references itself, used to query hierarchical or tree-structured data.",
-                  "A CTE that is only used to update data.",
-                  "The maximum limit is 16 per table.",
-                  "It is a feature related to distributed transactions only."
-            ],
-            "answer": 0,
-            "time": 20
-      },
-      {
-            "q": "What is STUFF function in SQL Server?",
-            "options": [
-                  "The STUFF function removes a specified length of characters from a string and inserts another string in its place.",
-                  "The STUFF function converts a table into a single column string.",
-                  "The solution is to use the `ROLLBACK` command.",
-                  "The correct command is `EXECUTE PROCEDURE`."
-            ],
-            "answer": 0,
-            "time": 20
-      },
-      {
-            "q": "What is PIVOT and UNPIVOT in SQL Server?",
-            "options": [
-                  "PIVOT converts columns into rows; UNPIVOT converts rows into columns.",
-                  "PIVOT converts rows into columns; UNPIVOT converts columns into rows.",
-                  "It is not possible in SQL Server.",
-                  "The functionality is reserved for Enterprise Edition only."
-            ],
-            "answer": 1,
-            "time": 20
-      },
-      {
-            "q": "What is XML PATH in SQL Server?",
-            "options": [
-                  "A feature used for storing XML data in a database column.",
-                  "A clause used to concatenate row values into a single string.",
-                  "The command is unsupported and results in an error.",
-                  "The maximum limit is 16 per table."
-            ],
-            "answer": 1,
-            "time": 20
-      },
-      {
-            "q": "What is difference between ROW_NUMBER(), RANK() and DENSE_RANK() in SQL Server?",
-            "options": [
-                  "`ROW_NUMBER()` assigns sequential rank with gaps for ties; `RANK()` assigns sequential rank without gaps for ties; `DENSE_RANK()` assigns unique rank for each row.",
-                  "`ROW_NUMBER()` assigns unique, sequential number; `RANK()` assigns rank with gaps for ties; `DENSE_RANK()` assigns rank without gaps for ties.",
-                  "The functionality is reserved for Enterprise Edition only.",
-                  "They are completely different and unrelated concepts."
-            ],
-            "answer": 1,
-            "time": 20
-      },
-      {
-            "q": "What is Identity column in SQL Server?",
-            "options": [
-                  "A column that must be manually updated with a unique value.",
-                  "A property on a column that automatically generates sequential, numeric values.",
-                  "It is only available in older SQL Server versions.",
-                  "The solution is to use the `ROLLBACK` command."
-            ],
-            "answer": 1,
-            "time": 20
-      },
-      {
-            "q": "What is Primary Key and Foreign Key",
-            "options": [
-                  "A primary key links two tables; a foreign key enforces non-NULL values.",
-                  "A primary key uniquely identifies a row in its table; a foreign key links it to the primary key of another table.",
-                  "The maximum limit is 16 per table.",
-                  "They are completely different and unrelated concepts."
-            ],
-            "answer": 1,
-            "time": 20
-      },
-      {
-            "q": "What is the key difference between Clustered Index and Non-Clustered Index?",
-            "options": [
-                  "A Non-Clustered Index contains the data pages; a Clustered Index only contains pointers.",
-                  "A Clustered Index determines the physical order of data (data at leaf level); a Non-Clustered Index is separate from data and uses pointers.",
-                  "The command is unsupported and results in an error.",
-                  "A table can have multiple Clustered Indexes but only one Non-Clustered Index."
-            ],
-            "answer": 1,
-            "time": 20
-      },
-      {
-            "q": "What is difference between Left Join and Full Join?",
-            "options": [
-                  "Left Join returns only matching rows; Full Join returns all rows.",
-                  "Left Join returns all rows from the left table and matched rows from the right; Full Join returns all rows when there is a match in either table.",
-                  "It is not possible in SQL Server.",
-                  "Full Join is deprecated in favor of UNION."
-            ],
-            "answer": 1,
-            "time": 20
-      },
-      {
-            "q": "What is cross join in SQL Server?",
-            "options": [
-                  "A join that connects two different tables with a common primary key.",
-                  "A join that returns the Cartesian product of the rows from the tables in the join.",
-                  "The functionality is reserved for Enterprise Edition only.",
-                  "A join used to combine rows from one table with itself."
-            ],
-            "answer": 1,
-            "time": 20
-      },
-      {
-            "q": "What is difference between Inner and Outer join?",
-            "options": [
-                  "Inner Join returns only the rows that match in both tables; Outer Join returns matching rows plus non-matching rows from one or both sides (Left, Right, Full).",
-                  "Outer Join returns only the rows that match in both tables; Inner Join returns non-matching rows.",
-                  "The solution is to use the `ROLLBACK` command.",
-                  "Inner Join is slower than Outer Join."
-            ],
-            "answer": 0,
-            "time": 20
-      },
-      {
-            "q": "What is a schema in SQL Server?",
-            "options": [
-                  "A security principal used to connect to the database.",
-                  "A container for database objects like tables, views, and stored procedures.",
-                  "The maximum limit is 16 per table.",
-                  "It is only available in older SQL Server versions."
-            ],
-            "answer": 1,
-            "time": 20
-      },
-      {
-            "q": "What is an alias in SQL Server?",
-            "options": [
-                  "A temporary object that holds data only for the current session.",
-                  "A temporary name given to a table or a column.",
-                  "The command is unsupported and results in an error.",
-                  "The correct command is `EXECUTE PROCEDURE`."
-            ],
-            "answer": 1,
-            "time": 20
-      },
-      {
-            "q": "What is a view in SQL Server?",
-            "options": [
-                  "A temporary name given to a table or a column.",
-                  "A virtual table based on the result-set of a SQL query.",
-                  "The functionality is reserved for Enterprise Edition only.",
-                  "A join used to combine rows from one table with itself."
-            ],
-            "answer": 1,
-            "time": 20
-      },
-      {
-            "q": "What is an Index in SQL Server?",
-            "options": [
-                  "It is only available in older SQL Server versions.",
-                  "A data structure that improves the speed of data retrieval operations on database tables.",
-                  "The solution is to use the `ROLLBACK` command.",
-                  "The maximum limit is 16 per table."
-            ],
-            "answer": 1,
-            "time": 20
-      },
-      {
-            "q": "What is difference between CHECK and DEFAULT constraint?",
-            "options": [
-                  "CHECK specifies a default value for a column; DEFAULT limits the range of values that can be placed in a column.",
-                  "CHECK limits the range of values that can be placed in a column; DEFAULT specifies a default value for a column.",
-                  "The command is unsupported and results in an error.",
-                  "The functionality is reserved for Enterprise Edition only."
-            ],
-            "answer": 1,
-            "time": 20
-      },
-      {
-            "q": "What is data types in SQL Server?",
-            "options": [
-                  "A specification that identifies the type of data a column can hold (e.g., INT, VARCHAR, DATE).",
-                  "It is only available in older SQL Server versions.",
-                  "A temporary object that holds data only for the current session.",
-                  "The maximum limit is 16 per table."
-            ],
-            "answer": 0,
-            "time": 20
-      },
-      {
-            "q": "What is CAST and CONVERT in SQL Server?",
-            "options": [
-                  "The solution is to use the `ROLLBACK` command.",
-                  "Both are used to convert an expression from one data type to another, but CONVERT allows for an optional style parameter.",
-                  "It is not possible in SQL Server.",
-                  "The command is unsupported and results in an error."
-            ],
-            "answer": 1,
-            "time": 20
-      },
-      {
-            "q": "What is difference between RANK() and DENSE_RANK()?",
-            "options": [
-                  "`RANK()` assigns rank with gaps for ties; `DENSE_RANK()` assigns rank without gaps for ties.",
-                  "The functionality is reserved for Enterprise Edition only.",
-                  "`DENSE_RANK()` assigns rank with gaps for ties; `RANK()` assigns rank without gaps for ties.",
-                  "The command is unsupported and results in an error."
-            ],
-            "answer": 0,
-            "time": 20
-      },
-      {
-            "q": "What is difference between GETDATE() and SYSDATETIME() in SQL Server?",
-            "options": [
-                  "`GETDATE()` returns the current date/time with a precision of $1$ millisecond; `SYSDATETIME()` returns the current date/time with a higher precision of $100$ nanoseconds.",
-                  "The maximum limit is 16 per table.",
-                  "The solution is to use the `ROLLBACK` command.",
-                  "`GETDATE()` is deprecated and should not be used."
-            ],
-            "answer": 0,
-            "time": 20
-      },
-      {
-            "q": "What is difference between DateTime and DateTime2 in SQL Server?",
-            "options": [
-                  "`DATETIME2` has a larger date range and a configurable precision (default $7$ decimal places); `DATETIME` has a smaller range and a fixed precision (3 decimal places).",
-                  "The functionality is reserved for Enterprise Edition only.",
-                  "The maximum limit is 16 per table.",
-                  "They are completely different and unrelated concepts."
-            ],
-            "answer": 0,
-            "time": 20
-      },
-      {
-            "q": "What is difference between nchar and nvarchar in SQL Server?",
-            "options": [
-                  "`NCHAR` is fixed length Unicode; `NVARCHAR` is variable length Unicode.",
-                  "It is only available in older SQL Server versions.",
-                  "`NCHAR` is variable length Unicode; `NVARCHAR` is fixed length Unicode.",
-                  "The command is unsupported and results in an error."
-            ],
-            "answer": 0,
-            "time": 20
-      },
-      {
-            "q": "What is STRING_AGG function in SQL Server?",
-            "options": [
-                  "A function that returns a single string by concatenating the values of string expressions and placing separator values between them.",
-                  "The maximum limit is 16 per table.",
-                  "The solution is to use the `ROLLBACK` command.",
-                  "The command is unsupported and results in an error."
-            ],
-            "answer": 0,
-            "time": 20
-      },
-      {
-            "q": "What is difference between Subquery and CTE?",
-            "options": [
-                  "A CTE is a named temporary result set that can be referenced multiple times; a Subquery is only defined and used within a single statement.",
-                  "The maximum limit is 16 per table.",
-                  "A Subquery is faster than a CTE.",
-                  "The solution is to use the `ROLLBACK` command."
-            ],
-            "answer": 0,
-            "time": 20
-      },
-      {
-            "q": "What is difference between Table Variable and Temp Table",
-            "options": [
-                  "Table variables are non-transactional and scope limited (stored in memory); Temp tables are transactional and retain data until the session ends (stored in tempdb).",
-                  "Temp tables are stored in memory; Table variables are stored in the tempdb database.",
-                  "They are completely different and unrelated concepts.",
-                  "The maximum limit is 16 per table."
-            ],
-            "answer": 0,
-            "time": 20
-      },
-      {
-            "q": "What is an Execution Plan in SQL Server?",
-            "options": [
-                  "A database object that is used to generate sequential numbers.",
-                  "A series of steps SQL Server will take to execute an SQL statement efficiently.",
-                  "The solution is to use the `ROLLBACK` command.",
-                  "The functionality is reserved for Enterprise Edition only."
-            ],
-            "answer": 1,
-            "time": 20
-      },
-      {
-            "q": "What are the types of Execution Plan?",
-            "options": [
-                  "Estimated Plan (before execution) and Actual Plan (after execution).",
-                  "The maximum limit is 16 per table.",
-                  "They are completely different and unrelated concepts.",
-                  "The functionality is reserved for Enterprise Edition only."
-            ],
-            "answer": 0,
-            "time": 20
-      },
-      {
-            "q": "How to generate Execution Plan?",
-            "options": [
-                  "By using `SET SHOWPLAN_ALL ON` or using the graphical display tools in SQL Server Management Studio (SSMS).",
-                  "It is not possible in SQL Server.",
-                  "The solution is to use the `ROLLBACK` command.",
-                  "The command is unsupported and results in an error."
-            ],
-            "answer": 0,
-            "time": 20
-      },
-      {
-            "q": "What is difference between Real and Estimated Execution Plan?",
-            "options": [
-                  "Real Plan is generated before execution; Estimated Plan is generated during execution.",
-                  "Real Plan includes runtime statistics (actual rows, time); Estimated Plan does not (based on statistics only).",
-                  "They are completely different and unrelated concepts.",
-                  "The functionality is reserved for Enterprise Edition only."
-            ],
-            "answer": 1,
-            "time": 20
-      },
-      {
-            "q": "What is database engine in SQL Server?",
-            "options": [
-                  "The central component of SQL Server that processes queries and manages the database files, indexes, and transactions.",
-                  "A temporary object that holds data only for the current session.",
-                  "It is a feature related to distributed transactions only.",
-                  "The command is unsupported and results in an error."
-            ],
-            "answer": 0,
-            "time": 20
-      },
-      {
-            "q": "What is difference between user and system database?",
-            "options": [
-                  "User databases are created by the user to store data; System databases are essential for SQL Server operation and management.",
-                  "The maximum limit is 16 per table.",
-                  "The solution is to use the `ROLLBACK` command.",
-                  "The functionality is reserved for Enterprise Edition only."
-            ],
-            "answer": 0,
-            "time": 20
-      },
-      {
-            "q": "What is Master database in SQL Server?",
-            "options": [
-                  "It stores all user data.",
-                  "The most critical system database; it stores all system-level information, including logins, configuration settings, and pointers to other databases.",
-                  "The functionality is reserved for Enterprise Edition only.",
-                  "It is only available in older SQL Server versions."
-            ],
-            "answer": 1,
-            "time": 20
-      },
-      {
-            "q": "What is Model database in SQL Server?",
-            "options": [
-                  "The template database; any new user database is created as a copy of the Model database.",
-                  "It stores all user data.",
-                  "The solution is to use the `ROLLBACK` command.",
-                  "The maximum limit is 16 per table."
-            ],
-            "answer": 0,
-            "time": 20
-      },
-      {
-            "q": "What is MSDB database in SQL Server?",
-            "options": [
-                  "It is the template database.",
-                  "It stores information related to SQL Server Agent jobs, alerts, and operators.",
-                  "The functionality is reserved for Enterprise Edition only.",
-                  "The command is unsupported and results in an error."
-            ],
-            "answer": 1,
-            "time": 20
-      },
-      {
-            "q": "What is TempDB database in SQL Server?",
-            "options": [
-                  "A temporary storage area for temporary tables, table variables, intermediate results, and internal objects.",
-                  "It stores all user data.",
-                  "The solution is to use the `ROLLBACK` command.",
-                  "The functionality is reserved for Enterprise Edition only."
-            ],
-            "answer": 0,
-            "time": 20
-      },
-      {
-            "q": "What is Resource database in SQL Server?",
-            "options": [
-                  "It stores all system objects that are physically persisted.",
-                  "The maximum limit is 16 per table.",
-                  "It is only available in older SQL Server versions.",
-                  "The solution is to use the `ROLLBACK` command."
-            ],
-            "answer": 0,
-            "time": 20
-      },
-      {
-            "q": "What is Replication in SQL Server?",
-            "options": [
-                  "A set of technologies for copying and distributing data and database objects from one database to another and then synchronizing between databases.",
-                  "A temporary object that holds data only for the current session.",
-                  "The command is unsupported and results in an error.",
-                  "The functionality is reserved for Enterprise Edition only."
-            ],
-            "answer": 0,
-            "time": 20
-      },
-      {
-            "q": "What is database Mirroring in SQL Server?",
-            "options": [
-                  "A solution for increasing database availability (high availability) by maintaining two copies of a single database simultaneously.",
-                  "It is only available in older SQL Server versions.",
-                  "The maximum limit is 16 per table.",
-                  "The solution is to use the `ROLLBACK` command."
-            ],
-            "answer": 0,
-            "time": 20
-      },
-      {
-            "q": "What is Log Shipping in SQL Server?",
-            "options": [
-                  "A solution for disaster recovery that automatically sends transaction log backups from a primary server to one or more secondary servers.",
-                  "The command is unsupported and results in an error.",
-                  "The functionality is reserved for Enterprise Edition only.",
-                  "It is a feature related to distributed transactions only."
-            ],
-            "answer": 0,
-            "time": 20
-      },
-      {
-            "q": "What is AlwaysOn Availability Groups in SQL Server?",
-            "options": [
-                  "A high-availability and disaster-recovery solution that provides a centralized platform for managing a set of user databases as a single unit.",
-                  "The maximum limit is 16 per table.",
-                  "The solution is to use the `ROLLBACK` command.",
-                  "The command is unsupported and results in an error."
-            ],
-            "answer": 0,
-            "time": 20
-      },
-      {
-            "q": "What is difference between Database Mirroring and AlwaysOn Availability Groups?",
-            "options": [
-                  "Database Mirroring supports multiple secondary databases; AlwaysOn only supports one secondary database.",
-                  "AlwaysOn Availability Groups is a superior, modern solution that supports multiple secondary replicas and automatic failover at the database level.",
-                  "It is not possible in SQL Server.",
-                  "The maximum limit is 16 per table."
-            ],
-            "answer": 1,
-            "time": 20
-      },
-      {
-            "q": "What is difference between Database Mirroring and Log Shipping?",
-            "options": [
-                  "Mirroring is a high-availability solution with near real-time synchronization; Log Shipping is a disaster recovery solution with delayed synchronization.",
-                  "Log Shipping is faster and uses less bandwidth.",
-                  "The solution is to use the `ROLLBACK` command.",
-                  "The functionality is reserved for Enterprise Edition only."
-            ],
-            "answer": 0,
-            "time": 20
-      },
-      {
-            "q": "What is Data Guard in SQL Server?",
-            "options": [
-                  "The correct command is `EXECUTE PROCEDURE`.",
-                  "A feature related to distributed transactions only.",
-                  "This is an Oracle technology; the equivalent in SQL Server is AlwaysOn Availability Groups.",
-                  "It is a feature for encrypting data."
-            ],
-            "answer": 2,
-            "time": 20
-      },
-      {
-            "q": "What is difference between Hotfix and Cumulative update in SQL Server?",
-            "options": [
-                  "A Hotfix is a small, specific fix for a known issue; a Cumulative Update (CU) includes all previous hotfixes and CUs.",
-                  "Hotfixes require a full server restart; CUs do not.",
-                  "The command is unsupported and results in an error.",
-                  "The maximum limit is 16 per table."
-            ],
-            "answer": 0,
-            "time": 20
-      },
-      {
-            "q": "What is difference between Local and Global temporary table?",
-            "options": [
-                  "Local table is prefixed with `#` and is session-specific; Global table is prefixed with `##` and is visible to all sessions.",
-                  "Local table is prefixed with `##` and is visible to all sessions; Global table is prefixed with `#` and is session-specific.",
-                  "They are completely different and unrelated concepts.",
-                  "The solution is to use the `ROLLBACK` command."
-            ],
-            "answer": 0,
-            "time": 20
-      },
-      {
-            "q": "What is database collation in SQL Server?",
-            "options": [
-                  "The maximum limit is 16 per table.",
-                  "A set of rules that determines how data is sorted and compared (e.g., case sensitivity, accent sensitivity).",
-                  "The functionality is reserved for Enterprise Edition only.",
-                  "The solution is to use the `ROLLBACK` command."
-            ],
-            "answer": 1,
-            "time": 20
-      },
-      {
-            "q": "What is Extended Event in SQL Server?",
-            "options": [
-                  "The command is unsupported and results in an error.",
-                  "A lightweight system for monitoring and collecting data about SQL Server activity.",
-                  "It is only available in older SQL Server versions.",
-                  "The correct command is `EXECUTE PROCEDURE`."
-            ],
-            "answer": 1,
-            "time": 20
-      },
-      {
-            "q": "What is database snapshot in SQL Server?",
-            "options": [
-                  "A temporary, static, read-only view of a SQL Server database as it existed at the moment the snapshot was created.",
-                  "It is a feature related to distributed transactions only.",
-                  "The maximum limit is 16 per table.",
-                  "The solution is to use the `ROLLBACK` command."
-            ],
-            "answer": 0,
-            "time": 20
-      },
-      {
-            "q": "What is difference between user and database principal?",
-            "options": [
-                  "User is a database principal; a database principal is any entity that can access the database (user, role, application role).",
-                  "They are completely different and unrelated concepts.",
-                  "The functionality is reserved for Enterprise Edition only.",
-                  "The solution is to use the `ROLLBACK` command."
-            ],
-            "answer": 0,
-            "time": 20
-      },
-      {
-            "q": "What is difference between Windows and SQL Server authentication?",
-            "options": [
-                  "Windows authentication uses the operating system for validation; SQL Server authentication uses SQL Server logins (stored within SQL Server).",
-                  "The maximum limit is 16 per table.",
-                  "The command is unsupported and results in an error.",
-                  "Windows authentication is only for read-only access."
-            ],
-            "answer": 0,
-            "time": 20
-      },
-      {
-            "q": "What is difference between permission and access control?",
-            "options": [
-                  "Permission is the right to perform an action on a securable; Access Control is the overall mechanism of regulating who can do what (based on permissions).",
-                  "They are completely different and unrelated concepts.",
-                  "The functionality is reserved for Enterprise Edition only.",
-                  "The solution is to use the `ROLLBACK` command."
-            ],
-            "answer": 0,
-            "time": 20
-      },
-      {
-            "q": "What is difference between Fixed and Flexible database roles?",
-            "options": [
-                  "The command is unsupported and results in an error.",
-                  "Fixed roles (e.g., `db_owner`) have predefined, unchangeable permissions; Flexible roles (user-defined roles) allow you to customize permissions.",
-                  "The maximum limit is 16 per table.",
-                  "It is only available in older SQL Server versions."
-            ],
-            "answer": 1,
-            "time": 20
-      },
-      {
-            "q": "What is difference between Database and Server roles?",
-            "options": [
-                  "Database roles control permissions within a specific database; Server roles control permissions at the SQL Server instance level.",
-                  "The functionality is reserved for Enterprise Edition only.",
-                  "The solution is to use the `ROLLBACK` command.",
-                  "The command is unsupported and results in an error."
-            ],
-            "answer": 0,
-            "time": 20
-      },
-      {
-            "q": "How to create a database role in SQL Server?",
-            "options": [
-                  "The correct command is `EXECUTE PROCEDURE`.",
-                  "Using the `CREATE ROLE` command.",
-                  "The solution is to use the `ROLLBACK` command.",
-                  "It is not possible in SQL Server."
-            ],
-            "answer": 1,
-            "time": 20
-      },
-      {
-            "q": "How to create a database user from a login in SQL Server?",
-            "options": [
-                  "The correct command is `EXECUTE PROCEDURE`.",
-                  "Using the `CREATE USER` command, mapping it to the existing login.",
-                  "It is not possible in SQL Server.",
-                  "The solution is to use the `ROLLBACK` command."
-            ],
-            "answer": 1,
-            "time": 20
-      },
-      {
-            "q": "How to add a user to a database role in SQL Server?",
-            "options": [
-                  "The correct command is `EXECUTE PROCEDURE`.",
-                  "Using the `sp_addrolemember` stored procedure or the `ALTER ROLE ADD MEMBER` command.",
-                  "It is not possible in SQL Server.",
-                  "The maximum limit is 16 per table."
-            ],
-            "answer": 1,
-            "time": 20
-      },
-      {
-            "q": "What is database consistency in SQL Server?",
-            "options": [
-                  "The solution is to use the `ROLLBACK` command.",
-                  "The database must move from one valid state to another, ensuring that all defined rules and constraints are enforced.",
-                  "The maximum limit is 16 per table.",
-                  "The command is unsupported and results in an error."
-            ],
-            "answer": 1,
-            "time": 20
-      },
-      {
-            "q": "What is difference between SQL and TSQL?",
-            "options": [
-                  "SQL is the standard query language; T-SQL (Transact-SQL) is Microsoft's proprietary extension to SQL, adding procedural programming features.",
-                  "The functionality is reserved for Enterprise Edition only.",
-                  "T-SQL is older and less efficient than standard SQL.",
-                  "The solution is to use the `ROLLBACK` command."
-            ],
-            "answer": 0,
-            "time": 20
-      },
-      {
-            "q": "What is database server instance in SQL Server?",
-            "options": [
-                  "A single database that stores all system-level information.",
-                  "A complete, isolated environment that hosts databases and provides services, running on a host server.",
-                  "The solution is to use the `ROLLBACK` command.",
-                  "The maximum limit is 16 per table."
-            ],
-            "answer": 1,
-            "time": 20
-      },
-      {
-            "q": "What is difference between SQL Server and SQL Database?",
-            "options": [
-                  "SQL Server is the on-premises product (software application); SQL Database is a managed, cloud-based Platform as a Service (PaaS) offering by Azure.",
-                  "The command is unsupported and results in an error.",
-                  "SQL Database is the on-premises product; SQL Server is the cloud-based PaaS offering.",
-                  "The functionality is reserved for Enterprise Edition only."
-            ],
-            "answer": 0,
-            "time": 20
-      },
-      {
-            "q": "What is difference between IaaS, PaaS, and SaaS?",
-            "options": [
-                  "IaaS is managed software; PaaS is managed application; SaaS is managed infrastructure.",
-                  "IaaS is managed infrastructure; PaaS is managed application platform; SaaS is managed software application.",
-                  "The maximum limit is 16 per table.",
-                  "They are completely different and unrelated concepts."
-            ],
-            "answer": 1,
-            "time": 20
-      },
-      {
-            "q": "What is difference between Azure SQL DB and Azure SQL Managed Instance?",
-            "options": [
-                  "DB is PaaS, offering high-level management with some feature limitations; Managed Instance is a PaaS/IaaS hybrid, offering near-100% SQL Server compatibility.",
-                  "DB is a fully managed instance with full SQL Server feature set; Managed Instance is a simpler, feature-limited database.",
-                  "The solution is to use the `ROLLBACK` command.",
-                  "The maximum limit is 16 per table."
-            ],
-            "answer": 0,
-            "time": 20
-      },
-      {
-            "q": "What is database integrity in SQL Server?",
-            "options": [
-                  "The quality of the data in the database, ensuring it is accurate, consistent, and valid (enforced by constraints).",
-                  "A temporary object that holds data only for the current session.",
-                  "It is only available in older SQL Server versions.",
-                  "The command is unsupported and results in an error."
-            ],
-            "answer": 0,
-            "time": 20
-      },
-      {
-            "q": "What is difference between data and information?",
-            "options": [
-                  "Data is unorganized, raw facts; Information is processed, organized data that is meaningful and useful.",
-                  "Data is always meaningful; Information is always raw.",
-                  "The solution is to use the `ROLLBACK` command.",
-                  "The maximum limit is 16 per table."
-            ],
-            "answer": 0,
-            "time": 20
-      },
-      {
-            "q": "What is database schema in SQL Server?",
-            "options": [
-                  "The logical structure or blueprint of the entire database.",
-                  "The physical storage location of the database files.",
-                  "The functionality is reserved for Enterprise Edition only.",
-                  "The command is unsupported and results in an error."
-            ],
-            "answer": 0,
-            "time": 20
-      },
-      {
-            "q": "What is difference between clustered and non clustered index?",
-            "options": [
-                  "A Non-Clustered Index contains the data pages; a Clustered Index only contains pointers.",
-                  "A Clustered Index determines the physical order of data (data at leaf level); a Non-Clustered Index is separate from data and uses pointers.",
-                  "The maximum limit is 16 per table.",
-                  "The solution is to use the `ROLLBACK` command."
-            ],
-            "answer": 1,
-            "time": 20
-      },
-      {
-            "q": "What is deadlock in SQL Server?",
-            "options": [
-                  "The command is unsupported and results in an error.",
-                  "A situation where two or more processes are waiting for each other to release a lock, resulting in a permanent blockage.",
-                  "The functionality is reserved for Enterprise Edition only.",
-                  "The maximum limit is 16 per table."
-            ],
-            "answer": 1,
-            "time": 20
-      },
-      {
-            "q": "What is difference between table and temporary table?",
-            "options": [
-                  "Permanent tables exist until explicitly dropped; Temporary tables are automatically dropped when the session ends or the server restarts.",
-                  "Temporary tables are stored in the `tempdb` database; permanent tables are stored in memory.",
-                  "The solution is to use the `ROLLBACK` command.",
-                  "It is a feature related to distributed transactions only."
-            ],
-            "answer": 0,
-            "time": 20
-      },
-      {
-            "q": "What is the difference between TRUNCATE and DELETE statements?",
-            "options": [
-                  "TRUNCATE is faster and logs every row deletion; DELETE is slower and logs minimal info.",
-                  "TRUNCATE is DDL, logs minimal info, resets identity, and is faster; DELETE is DML, logs every row deletion, and is slower.",
-                  "It is not possible in SQL Server.",
-                  "The maximum limit is 16 per table."
-            ],
-            "answer": 1,
-            "time": 20
-      },
-      {
-            "q": "What is difference between WHERE and HAVING clause?",
-            "options": [
-                  "WHERE is for group filtering; HAVING is for row filtering.",
-                  "WHERE filters individual rows before aggregation; HAVING filters groups of rows after aggregation.",
-                  "The functionality is reserved for Enterprise Edition only.",
-                  "They are completely different and unrelated concepts."
-            ],
-            "answer": 1,
-            "time": 20
-      },
-      {
-            "q": "What is the key difference between UNION and UNION ALL?",
-            "options": [
-                  "UNION removes duplicate rows and is slower; UNION ALL includes all rows and is faster.",
-                  "UNION includes all rows; UNION ALL removes duplicate rows.",
-                  "The maximum limit is 16 per table.",
-                  "The solution is to use the `ROLLBACK` command."
-            ],
-            "answer": 0,
-            "time": 20
-      },
-      {
-            "q": "What is the key difference between Primary key and Foreign Key?",
-            "options": [
-                  "A Primary Key uniquely identifies a record in a table; a Foreign Key links it to the Primary Key of another table, ensuring referential integrity.",
-                  "The maximum limit is 16 per table.",
-                  "The solution is to use the `ROLLBACK` command.",
-                  "The functionality is reserved for Enterprise Edition only."
-            ],
-            "answer": 0,
-            "time": 20
-      },
-      {
-            "q": "What is the key difference between Primary Key and Unique Key?",
-            "options": [
-                  "Primary Key allows one NULL value; Unique Key does not allow any NULL values.",
-                  "Primary Key enforces non-NULL values and allows only one per table; Unique Key allows one NULL value and multiple per table.",
-                  "The solution is to use the `ROLLBACK` command.",
-                  "The command is unsupported and results in an error."
-            ],
-            "answer": 1,
-            "time": 20
-      },
-      {
-            "q": "What is the key difference between Clustered Index and Heap Table?",
-            "options": [
-                  "A Heap table has no index or physical order; a Clustered Index stores data rows physically sorted by the index key.",
-                  "A Clustered Index is always faster than a Heap table.",
-                  "The maximum limit is 16 per table.",
-                  "They are completely different and unrelated concepts."
-            ],
-            "answer": 0,
-            "time": 20
-      },
-      {
-            "q": "What is the key difference between IDENTITY and SEQUENCE?",
-            "options": [
-                  "`IDENTITY` is column-specific; `SEQUENCE` is a schema-bound object independent of any table.",
-                  "SEQUENCE is always faster than IDENTITY.",
-                  "The solution is to use the `ROLLBACK` command.",
-                  "The functionality is reserved for Enterprise Edition only."
-            ],
-            "answer": 0,
-            "time": 20
-      },
-      {
-            "q": "What is the key difference between ISNULL and COALESCE?",
-            "options": [
-                  "`COALESCE` supports multiple expressions and returns the data type with the highest precedence; `ISNULL` supports only two expressions and uses the first expression's data type.",
-                  "The maximum limit is 16 per table.",
-                  "`ISNULL` supports multiple expressions; `COALESCE` supports only two.",
-                  "The command is unsupported and results in an error."
-            ],
-            "answer": 0,
-            "time": 20
-      },
-      {
-            "q": "What is the key difference between GETDATE() and SYSDATETIME()?",
-            "options": [
-                  "The maximum limit is 16 per table.",
-                  "The solution is to use the `ROLLBACK` command.",
-                  "`SYSDATETIME()` returns higher precision ($100$ nanoseconds) than `GETDATE()` ($1$ millisecond) and uses the `DATETIME2` data type.",
-                  "They are completely different and unrelated concepts."
-            ],
-            "answer": 2,
-            "time": 20
-      },
-      {
-            "q": "What is the key difference between NVARCHAR and VARCHAR?",
-            "options": [
-                  "`NVARCHAR` stores Unicode data (double the storage per character); `VARCHAR` stores non-Unicode (ASCII) data.",
-                  "The functionality is reserved for Enterprise Edition only.",
-                  "The solution is to use the `ROLLBACK` command.",
-                  "They are completely different and unrelated concepts."
-            ],
-            "answer": 0,
-            "time": 20
-      },
-      {
-            "q": "What is the key difference between CHAR and VARCHAR?",
-            "options": [
-                  "`CHAR` is fixed length and always uses the declared space; `VARCHAR` is variable length and uses only the space needed.",
-                  "The maximum limit is 16 per table.",
-                  "The solution is to use the `ROLLBACK` command.",
-                  "It is only available in older SQL Server versions."
-            ],
-            "answer": 0,
-            "time": 20
-      },
-      {
-            "q": "What is the key difference between User and Login?",
-            "options": [
-                  "A Login is a server-level identity used for connection; a User is a database-level identity used for permissions.",
-                  "The command is unsupported and results in an error.",
-                  "A User is a server-level identity; a Login is a database-level identity.",
-                  "The functionality is reserved for Enterprise Edition only."
-            ],
-            "answer": 0,
-            "time": 20
-      },
-      {
-            "q": "What is the key difference between SQL and TSQL?",
-            "options": [
-                  "T-SQL is older and less efficient than standard SQL.",
-                  "The maximum limit is 16 per table.",
-                  "SQL is the standard query language; T-SQL is Microsoft's proprietary extension with procedural programming features.",
-                  "The solution is to use the `ROLLBACK` command."
-            ],
-            "answer": 2,
-            "time": 20
-      },
-      {
-            "q": "What is the key difference between View and Indexed View?",
-            "options": [
-                  "A View is a stored query; an Indexed View (materialized view) physically stores its result set and uses a unique clustered index.",
-                  "Indexed views are only allowed on temporary tables.",
-                  "The functionality is reserved for Enterprise Edition only.",
-                  "Views allow data modification; Indexed views do not."
-            ],
-            "answer": 0,
-            "time": 20
-      },
-      {
-            "q": "What is the key difference between Stored Procedure and Function?",
-            "options": [
-                  "Functions can modify data; Procedures are read-only.",
-                  "Stored Procedures can modify data and return 0 or more result sets; Functions cannot modify data (usually) and return a single value or table.",
-                  "The command is unsupported and results in an error.",
-                  "The maximum limit is 16 per table."
-            ],
-            "answer": 1,
-            "time": 20
-      },
-      {
-            "q": "What is the key difference between Local and Global Temp Table?",
-            "options": [
-                  "Local table (`#`) is session-specific; Global table (`##`) is visible to all sessions.",
-                  "The solution is to use the `ROLLBACK` command.",
-                  "Local table (`##`) is visible to all sessions; Global table (`#`) is session-specific.",
-                  "The maximum limit is 16 per table."
-            ],
-            "answer": 0,
-            "time": 20
-      },
-      {
-            "q": "What is the key difference between Table Variable and Temp Table?",
-            "options": [
-                  "Table variables are stored in the `tempdb` database; Temporary tables are stored in memory.",
-                  "Table variables do not support indexes, locks, or statistics; Temp tables do support them and are stored in the `tempdb` database.",
-                  "The functionality is reserved for Enterprise Edition only.",
-                  "They are completely different and unrelated concepts."
-            ],
-            "answer": 1,
-            "time": 20
-      },
-      {
-            "q": "What is the key difference between Subquery and CTE?",
-            "options": [
-                  "A CTE is a named temporary result set that can be referenced multiple times; a Subquery is only defined and used within a single statement.",
-                  "The solution is to use the `ROLLBACK` command.",
-                  "A Subquery is faster than a CTE.",
-                  "The maximum limit is 16 per table."
-            ],
-            "answer": 0,
-            "time": 20
-      },
-      {
-            "q": "What is the key difference between UNION and UNION ALL?",
-            "options": [
-                  "UNION includes all rows; UNION ALL removes duplicate rows.",
-                  "The maximum limit is 16 per table.",
-                  "UNION removes duplicate rows (slower); UNION ALL retains all rows (faster).",
-                  "The solution is to use the `ROLLBACK` command."
-            ],
-            "answer": 2,
-            "time": 20
-      },
-      {
-            "q": "What is the key difference between INNER JOIN and OUTER JOIN?",
-            "options": [
-                  "Outer Join returns only the rows that match in both tables; Inner Join returns non-matching rows.",
-                  "Inner Join returns only matching rows; Outer Join returns matching rows plus non-matching rows from one or both sides.",
-                  "The functionality is reserved for Enterprise Edition only.",
-                  "The command is unsupported and results in an error."
-            ],
-            "answer": 1,
-            "time": 20
-      },
-      {
-            "q": "What is the key difference between TRUNCATE and DELETE statements?",
-            "options": [
-                  "TRUNCATE is faster and logs every row deletion; DELETE is slower and logs minimal info.",
-                  "TRUNCATE is DDL, logs minimal info, resets identity, and is faster; DELETE is DML, logs every row deletion, and is slower.",
-                  "It is not possible in SQL Server.",
-                  "The maximum limit is 16 per table."
-            ],
-            "answer": 1,
-            "time": 20
-      },
-      {
-            "q": "What is the key difference between SQL and NoSQL?",
-            "options": [
-                  "SQL databases are vertically scalable, schema-rigid, and ideal for complex transactions; NoSQL databases are horizontally scalable, schema-flexible, and ideal for large volumes of unstructured data.",
-                  "NoSQL databases are vertically scalable; SQL databases are horizontally scalable.",
-                  "The solution is to use the `ROLLBACK` command.",
-                  "They are completely different and unrelated concepts."
-            ],
-            "answer": 0,
-            "time": 20
-      },
-      {
-            "q": "What is a transaction in SQL Server?",
-            "options": [
-                  "A temporary object that holds data only for the current session.",
-                  "A sequence of one or more SQL statements treated as a single, indivisible unit of work (all succeed or all fail).",
-                  "The functionality is reserved for Enterprise Edition only.",
-                  "The maximum limit is 16 per table."
-            ],
-            "answer": 1,
-            "time": 20
-      },
-      {
-            "q": "What is ACID in SQL Server?",
-            "options": [
-                  "A set of properties (Atomicity, Consistency, Isolation, Durability) that guarantee database transactions are processed reliably.",
-                  "It is only available in older SQL Server versions.",
-                  "The solution is to use the `ROLLBACK` command.",
-                  "The command is unsupported and results in an error."
-            ],
-            "answer": 0,
-            "time": 20
-      },
-      {
-            "q": "What is a stored procedure in SQL Server?",
-            "options": [
-                  "A named, precompiled set of one or more SQL statements stored in the database.",
-                  "The solution is to use the `ROLLBACK` command.",
-                  "The maximum limit is 16 per table.",
-                  "A temporary name given to a table or a column."
-            ],
-            "answer": 0,
-            "time": 20
-      },
-      {
-            "q": "What is the key difference between Stored Procedure and Function?",
-            "options": [
-                  "Stored Procedures can modify data and return 0 or more result sets; Functions cannot modify data (usually) and return a single value or table.",
-                  "The functionality is reserved for Enterprise Edition only.",
-                  "Functions can modify data; Procedures are read-only.",
-                  "The command is unsupported and results in an error."
-            ],
-            "answer": 0,
-            "time": 20
-      },
-      {
-            "q": "What is a view in SQL Server?",
-            "options": [
-                  "A temporary name given to a table or a column.",
-                  "A virtual table based on the result-set of a SQL query.",
-                  "The maximum limit is 16 per table.",
-                  "A join used to combine rows from one table with itself."
-            ],
-            "answer": 1,
-            "time": 20
-      },
-      {
-            "q": "What is an Index in SQL Server?",
-            "options": [
-                  "A temporary object that holds data only for the current session.",
-                  "A data structure that improves the speed of data retrieval operations on database tables.",
-                  "The solution is to use the `ROLLBACK` command.",
-                  "It is only available in older SQL Server versions."
-            ],
-            "answer": 1,
-            "time": 20
-      },
-      {
-            "q": "What is the key difference between Clustered Index and Non-Clustered Index?",
-            "options": [
-                  "A Clustered Index determines the physical order of data (data at leaf level); a Non-Clustered Index is separate from data and uses pointers.",
-                  "The maximum limit is 16 per table.",
-                  "A Non-Clustered Index contains the data pages; a Clustered Index only contains pointers.",
-                  "The functionality is reserved for Enterprise Edition only."
-            ],
-            "answer": 0,
-            "time": 20
-      },
-      {
-            "q": "What is Index Fragmentation?",
-            "options": [
-                  "The functionality is reserved for Enterprise Edition only.",
-                  "A condition where index data pages are scattered and not logically ordered, degrading performance.",
-                  "The index is stored in memory (RAM) only.",
-                  "The maximum limit is 16 per table."
-            ],
-            "answer": 1,
-            "time": 20
-      },
-      {
-            "q": "What is the key difference between Index Rebuild and Index Reorganize?",
-            "options": [
-                  "Rebuild creates a new index and drops the old one; Reorganize physically reorders the leaf-level pages in place.",
-                  "The solution is to use the `ROLLBACK` command.",
-                  "Rebuild is online and faster, Reorganize is offline and slower.",
-                  "The command is unsupported and results in an error."
-            ],
-            "answer": 0,
-            "time": 20
-      },
-      {
-            "q": "What is Fill Factor in SQL Server Index?",
-            "options": [
-                  "The functionality is reserved for Enterprise Edition only.",
-                  "It is a value from 0 to 100 that specifies the percentage of space to leave empty on each leaf-level page.",
-                  "The solution is to use the `ROLLBACK` command.",
-                  "The maximum number of columns an index can contain."
-            ],
-            "answer": 1,
-            "time": 20
-      },
-      {
-            "q": "What is Covered Index in SQL Server?",
-            "options": [
-                  "An index that includes all the columns requested in the query, allowing the query to complete without looking up the data row.",
-                  "The functionality is reserved for Enterprise Edition only.",
-                  "The maximum limit is 16 per table.",
-                  "The solution is to use the `ROLLBACK` command."
-            ],
-            "answer": 0,
-            "time": 20
-      },
-      {
-            "q": "What is Dynamic SQL in SQL Server?",
-            "options": [
-                  "Dynamic SQL is generated at runtime and is prone to SQL injection; Static SQL is precompiled and safe.",
-                  "A temporary object that holds data only for the current session.",
-                  "The maximum limit is 16 per table.",
-                  "The solution is to use the `ROLLBACK` command."
-            ],
-            "answer": 0,
-            "time": 20
-      },
-      {
-            "q": "How to execute Dynamic SQL in SQL Server?",
-            "options": [
-                  "The functionality is reserved for Enterprise Edition only.",
-                  "Using the `EXEC` or `sp_executesql` command.",
-                  "The command is unsupported and results in an error.",
-                  "It is not possible in SQL Server."
-            ],
-            "answer": 1,
-            "time": 20
-      },
-      {
-            "q": "What is the key difference between EXECUTE and sp_executesql?",
-            "options": [
-                  "`sp_executesql` supports parameterized queries, which improves security (prevents SQL injection) and execution plan reuse.",
-                  "EXEC is faster and supports parameterized queries.",
-                  "The solution is to use the `ROLLBACK` command.",
-                  "The command is unsupported and results in an error."
-            ],
-            "answer": 0,
-            "time": 20
-      },
-      {
-            "q": "What is ACID properties in SQL Server?",
-            "options": [
-                  "A set of properties (Atomicity, Consistency, Isolation, Durability) that guarantee database transactions are processed reliably.",
-                  "The maximum limit is 16 per table.",
-                  "The solution is to use the `ROLLBACK` command.",
-                  "The command is unsupported and results in an error."
-            ],
-            "answer": 0,
-            "time": 20
-      },
-      {
-            "q": "What is Isolation Level in SQL Server?",
-            "options": [
-                  "The functionality is reserved for Enterprise Edition only.",
-                  "The set of rules that governs how transactions interact with each other, affecting concurrency and data integrity.",
-                  "The solution is to use the `ROLLBACK` command.",
-                  "The maximum limit is 16 per table."
-            ],
-            "answer": 1,
-            "time": 20
-      },
-      {
-            "q": "What are the Isolation Levels in SQL Server?",
-            "options": [
-                  "The maximum limit is 16 per table.",
-                  "Read Uncommitted, Read Committed, Repeatable Read, Serializable, and Snapshot.",
-                  "The solution is to use the `ROLLBACK` command.",
-                  "The command is unsupported and results in an error."
-            ],
-            "answer": 1,
-            "time": 20
-      },
-      {
-            "q": "What is Cursor in SQL Server?",
-            "options": [
-                  "A database control structure used to traverse and process records from a result set one row at a time.",
-                  "The maximum limit is 16 per table.",
-                  "The solution is to use the `ROLLBACK` command.",
-                  "The command is unsupported and results in an error."
-            ],
-            "answer": 0,
-            "time": 20
-      },
-      {
-            "q": "What is the key difference between NOLOCK and READ UNCOMMITTED?",
-            "options": [
-                  "`NOLOCK` is a keyword; `READ UNCOMMITTED` is a transaction isolation level that achieves the same result (reading uncommitted changes).",
-                  "The solution is to use the `ROLLBACK` command.",
-                  "The command is unsupported and results in an error.",
-                  "They are completely different and unrelated concepts."
-            ],
-            "answer": 0,
-            "time": 20
-      },
-      {
-            "q": "What is difference between CHAR and VARCHAR?",
-            "options": [
-                  "`VARCHAR` is variable length and stores only necessary bytes; `CHAR` is fixed length and always uses the declared size.",
-                  "The functionality is reserved for Enterprise Edition only.",
-                  "The maximum limit is 16 per table.",
-                  "The solution is to use the `ROLLBACK` command."
-            ],
-            "answer": 0,
-            "time": 20
-      },
-      {
-            "q": "What is difference between NVARCHAR and VARCHAR?",
-            "options": [
-                  "`NVARCHAR` stores Unicode data (double the storage per character); `VARCHAR` stores non-Unicode (ASCII) data.",
-                  "The maximum limit is 16 per table.",
-                  "The solution is to use the `ROLLBACK` command.",
-                  "They are completely different and unrelated concepts."
-            ],
-            "answer": 0,
-            "time": 20
-      },
-      {
-            "q": "What is difference between Normalization and Denormalization?",
-            "options": [
-                  "Normalization reduces data redundancy, improving integrity but potentially slowing reads; Denormalization adds redundancy to improve query speed (reads).",
-                  "The solution is to use the `ROLLBACK` command.",
-                  "The maximum limit is 16 per table.",
-                  "The command is unsupported and results in an error."
-            ],
-            "answer": 0,
-            "time": 20
-      },
-      {
-            "q": "What is difference between DDL and DML?",
-            "options": [
-                  "DDL (Data Definition Language) manages structure/objects (CREATE, ALTER, DROP); DML (Data Manipulation Language) manages data/rows (INSERT, UPDATE, DELETE).",
-                  "The functionality is reserved for Enterprise Edition only.",
-                  "DDL only works on temporary tables; DML works on permanent tables.",
-                  "The solution is to use the `ROLLBACK` command."
-            ],
-            "answer": 0,
-            "time": 20
-      },
-      {
-            "q": "What is difference between Primary Key and Foreign Key?",
-            "options": [
-                  "A Primary Key establishes a unique row identifier; a Foreign Key links two tables by referencing the Primary Key of another table.",
-                  "The maximum limit is 16 per table.",
-                  "The solution is to use the `ROLLBACK` command.",
-                  "The command is unsupported and results in an error."
-            ],
-            "answer": 0,
-            "time": 20
-      },
-      {
-            "q": "What is difference between Primary Key and Unique Key?",
-            "options": [
-                  "Primary Key enforces non-NULL values and allows only one per table; Unique Key allows one NULL value and multiple per table.",
-                  "The solution is to use the `ROLLBACK` command.",
-                  "Primary Key allows one NULL value; Unique Key does not allow any NULL values.",
-                  "The maximum limit is 16 per table."
-            ],
-            "answer": 0,
-            "time": 20
-      },
-      {
-            "q": "What is difference between User and Login?",
-            "options": [
-                  "A Login is a server-level identity used for connection; a User is a database-level identity used for permissions.",
-                  "The maximum limit is 16 per table.",
-                  "The solution is to use the `ROLLBACK` command.",
-                  "The command is unsupported and results in an error."
-            ],
-            "answer": 0,
-            "time": 20
-      },
-      {
-            "q": "What is a CTE in SQL Server?",
-            "options": [
-                  "The functionality is reserved for Enterprise Edition only.",
-                  "Common Table Expression (CTE) is a named temporary result set defined within the execution scope of a single statement.",
-                  "The solution is to use the `ROLLBACK` command.",
-                  "The maximum limit is 16 per table."
-            ],
-            "answer": 1,
-            "time": 20
-      },
-      {
-            "q": "What is a recursive CTE in SQL Server?",
-            "options": [
-                  "A CTE that references itself, used to query hierarchical or tree-structured data.",
-                  "The maximum limit is 16 per table.",
-                  "The solution is to use the `ROLLBACK` command.",
-                  "The command is unsupported and results in an error."
-            ],
-            "answer": 0,
-            "time": 20
-      },
-      {
-            "q": "What is the STUFF function in SQL Server?",
-            "options": [
-                  "The STUFF function removes a specified length of characters from a string and inserts another string in its place.",
-                  "The maximum limit is 16 per table.",
-                  "The solution is to use the `ROLLBACK` command.",
-                  "The command is unsupported and results in an error."
-            ],
-            "answer": 0,
-            "time": 20
-      },
-      {
-            "q": "What is PIVOT and UNPIVOT in SQL Server?",
-            "options": [
-                  "The functionality is reserved for Enterprise Edition only.",
-                  "PIVOT converts rows into columns (aggregation); UNPIVOT converts columns into rows (un-aggregation).",
-                  "The maximum limit is 16 per table.",
-                  "The solution is to use the `ROLLBACK` command."
-            ],
-            "answer": 1,
-            "time": 20
-      },
-      {
-            "q": "What is XML PATH in SQL Server?",
-            "options": [
-                  "A clause used to concatenate row values into a single string.",
-                  "The maximum limit is 16 per table.",
-                  "The solution is to use the `ROLLBACK` command.",
-                  "The command is unsupported and results in an error."
-            ],
-            "answer": 0,
-            "time": 20
-      },
-      {
-            "q": "What is the key difference between ROW_NUMBER(), RANK() and DENSE_RANK()?",
-            "options": [
-                  "`ROW_NUMBER()` assigns unique, sequential number; `RANK()` assigns rank with gaps for ties; `DENSE_RANK()` assigns rank without gaps for ties.",
-                  "The maximum limit is 16 per table.",
-                  "The solution is to use the `ROLLBACK` command.",
-                  "The command is unsupported and results in an error."
-            ],
-            "answer": 0,
-            "time": 20
-      },
-      {
-            "q": "What is an Identity Column in SQL Server?",
-            "options": [
-                  "A property on a column that automatically generates sequential, numeric values.",
-                  "The maximum limit is 16 per table.",
-                  "The solution is to use the `ROLLBACK` command.",
-                  "The command is unsupported and results in an error."
-            ],
-            "answer": 0,
-            "time": 20
-      },
-      {
-            "q": "What is the key difference between Clustered Index and Non-Clustered Index?",
-            "options": [
-                  "The maximum limit is 16 per table.",
-                  "A Clustered Index determines the physical order of data (data at leaf level); a Non-Clustered Index is separate from data and uses pointers.",
-                  "The solution is to use the `ROLLBACK` command.",
-                  "The command is unsupported and results in an error."
-            ],
-            "answer": 1,
-            "time": 20
-      },
-      {
-            "q": "What is the key difference between Left Join and Full Join?",
-            "options": [
-                  "Left Join returns all rows from the left table and matched rows from the right; Full Join returns all rows when there is a match in either table.",
-                  "The solution is to use the `ROLLBACK` command.",
-                  "The maximum limit is 16 per table.",
-                  "The command is unsupported and results in an error."
-            ],
-            "answer": 0,
-            "time": 20
-      },
-      {
-            "q": "What is Cross Join in SQL Server?",
-            "options": [
-                  "A join that returns the Cartesian product of the rows from the tables in the join.",
-                  "The maximum limit is 16 per table.",
-                  "The solution is to use the `ROLLBACK` command.",
-                  "The command is unsupported and results in an error."
-            ],
-            "answer": 0,
-            "time": 20
-      },
-      {
-            "q": "What is a Schema in SQL Server?",
-            "options": [
-                  "A container for database objects like tables, views, and stored procedures.",
-                  "The maximum limit is 16 per table.",
-                  "The solution is to use the `ROLLBACK` command.",
-                  "The command is unsupported and results in an error."
-            ],
-            "answer": 0,
-            "time": 20
-      },
-      {
-            "q": "What is an Alias in SQL Server?",
-            "options": [
-                  "A temporary name given to a table or a column.",
-                  "The maximum limit is 16 per table.",
-                  "The solution is to use the `ROLLBACK` command.",
-                  "The command is unsupported and results in an error."
-            ],
-            "answer": 0,
-            "time": 20
-      },
-      {
-            "q": "What is the key difference between CHECK and DEFAULT constraints?",
-            "options": [
-                  "CHECK limits the range of values that can be placed in a column; DEFAULT specifies a default value for a column.",
-                  "The maximum limit is 16 per table.",
-                  "The solution is to use the `ROLLBACK` command.",
-                  "The command is unsupported and results in an error."
-            ],
-            "answer": 0,
-            "time": 20
-      },
-      {
-            "q": "What are Data Types in SQL Server?",
-            "options": [
-                  "A specification that identifies the type of data a column can hold (e.g., INT, VARCHAR, DATE).",
-                  "The maximum limit is 16 per table.",
-                  "The solution is to use the `ROLLBACK` command.",
-                  "The command is unsupported and results in an error."
-            ],
-            "answer": 0,
-            "time": 20
-      },
-      {
-            "q": "What is the key difference between CAST and CONVERT?",
-            "options": [
-                  "Both are used to convert an expression from one data type to another, but CONVERT allows for an optional style parameter.",
-                  "The maximum limit is 16 per table.",
-                  "The solution is to use the `ROLLBACK` command.",
-                  "The command is unsupported and results in an error."
-            ],
-            "answer": 0,
-            "time": 20
-      },
-      {
-            "q": "What is the key difference between RANK() and DENSE_RANK()?",
-            "options": [
-                  "`RANK()` assigns rank with gaps for ties; `DENSE_RANK()` assigns rank without gaps for ties.",
-                  "The maximum limit is 16 per table.",
-                  "The solution is to use the `ROLLBACK` command.",
-                  "The command is unsupported and results in an error."
-            ],
-            "answer": 0,
-            "time": 20
-      },
-      {
-            "q": "What is the key difference between GETDATE() and SYSDATETIME()?",
-            "options": [
-                  "`GETDATE()` returns the current date/time with a precision of $1$ millisecond; `SYSDATETIME()` returns the current date/time with a higher precision of $100$ nanoseconds.",
-                  "The maximum limit is 16 per table.",
-                  "The solution is to use the `ROLLBACK` command.",
-                  "The command is unsupported and results in an error."
-            ],
-            "answer": 0,
-            "time": 20
-      },
-      {
-            "q": "What is the key difference between DateTime and DateTime2?",
-            "options": [
-                  "`DATETIME2` has a larger date range and a configurable precision (default $7$ decimal places); `DATETIME` has a smaller range and a fixed precision (3 decimal places).",
-                  "The maximum limit is 16 per table.",
-                  "The solution is to use the `ROLLBACK` command.",
-                  "The command is unsupported and results in an error."
-            ],
-            "answer": 0,
-            "time": 20
-      },
-      {
-            "q": "What is the key difference between NCHAR and NVARCHAR?",
-            "options": [
-                  "`NCHAR` is fixed length Unicode; `NVARCHAR` is variable length Unicode.",
-                  "The maximum limit is 16 per table.",
-                  "The solution is to use the `ROLLBACK` command.",
-                  "The command is unsupported and results in an error."
-            ],
-            "answer": 0,
-            "time": 20
-      },
-      {
-            "q": "What is the STRING_AGG function in SQL Server?",
-            "options": [
-                  "A function that returns a single string by concatenating the values of string expressions and placing separator values between them.",
-                  "The maximum limit is 16 per table.",
-                  "The solution is to use the `ROLLBACK` command.",
-                  "The command is unsupported and results in an error."
-            ],
-            "answer": 0,
-            "time": 20
-      },
-      {
-            "q": "What is the key difference between Subquery and CTE?",
-            "options": [
-                  "A CTE is a named temporary result set that can be referenced multiple times; a Subquery is only defined and used within a single statement.",
-                  "The maximum limit is 16 per table.",
-                  "The solution is to use the `ROLLBACK` command.",
-                  "The command is unsupported and results in an error."
-            ],
-            "answer": 0,
-            "time": 20
-      },
-      {
-            "q": "What is the key difference between Table Variable and Temp Table?",
-            "options": [
-                  "Table variables are non-transactional and scope limited (stored in memory); Temp tables are transactional and retain data until the session ends (stored in tempdb).",
-                  "The maximum limit is 16 per table.",
-                  "The solution is to use the `ROLLBACK` command.",
-                  "The command is unsupported and results in an error."
-            ],
-            "answer": 0,
-            "time": 20
-      },
-      {
-            "q": "What is an Execution Plan in SQL Server?",
-            "options": [
-                  "A series of steps SQL Server will take to execute an SQL statement efficiently.",
-                  "The maximum limit is 16 per table.",
-                  "The solution is to use the `ROLLBACK` command.",
-                  "The command is unsupported and results in an error."
-            ],
-            "answer": 0,
-            "time": 20
-      },
-      {
-            "q": "What are the types of Execution Plan?",
-            "options": [
-                  "Estimated Plan (before execution) and Actual Plan (after execution).",
-                  "The maximum limit is 16 per table.",
-                  "The solution is to use the `ROLLBACK` command.",
-                  "The command is unsupported and results in an error."
-            ],
-            "answer": 0,
-            "time": 20
-      },
-      {
-            "q": "How to generate an Execution Plan?",
-            "options": [
-                  "By using `SET SHOWPLAN_ALL ON` or using the graphical display tools in SQL Server Management Studio (SSMS).",
-                  "The maximum limit is 16 per table.",
-                  "The solution is to use the `ROLLBACK` command.",
-                  "The command is unsupported and results in an error."
-            ],
+    let questions = [ // Changed to 'let' as it will be reassigned after shuffling
+      {
+        q: "What is Git primarily?",
+        options: [
+          "A document editing software",
+          "A distributed version control system that tracks changes to files over time",
+          "A project management tool",
+          "An operating system"
+        ],
+        answer: 1,
+        time: 20 // Time per question for global calculation
+      },
+      {
+        q: "What is a Git Repository (Repo)?",
+        options: [
+          "A folder for temporary files",
+          "A directory containing all your project files, as well as the entire history of changes to those files",
+          "A type of database",
+          "A network drive"
+        ],
+        answer: 1,
+        time: 20
+      },
+      {
+        q: "Where is Git used?",
+        options: [
+          "Only for large enterprise systems",
+          "For version control in software development and other collaborative projects",
+          "Exclusively for managing databases",
+          "As a graphic design tool"
+        ],
+        answer: 1,
+        time: 20
+      },
+      {
+        q: "What is GitHub best for?",
+        options: [
+          "Creating spreadsheets",
+          "Open-source projects, personal portfolios, and easy collaboration",
+          "Video editing",
+          "Managing financial transactions"
+        ],
+        answer: 1,
+        time: 20
+      },
+      {
+        q: "What is GitLab best for?",
+        options: [
+          "Simple document sharing",
+          "End-to-end DevOps with powerful built-in CI/CD and self-hosting",
+          "Image manipulation",
+          "Online gaming"
+        ],
+        answer: 1,
+        time: 20
+      },
+      {
+        q: "What is Bitbucket best for?",
+        options: [
+          "Social media management",
+          "Teams using Jira or other Atlassian tools for project management",
+          "Email communication",
+          "Cloud storage for large files"
+        ],
+        answer: 1,
+        time: 20
+      },
+      {
+        q: "Which platform has the largest developer community?",
+        options: [
+          "GitLab",
+          "GitHub",
+          "Bitbucket",
+          "SourceForge"
+        ],
+        answer: 1,
+        time: 20
+      },
+      {
+        q: "Which platform has the strongest built-in CI/CD?",
+        options: [
+          "GitHub",
+          "GitLab",
+          "Bitbucket",
+          "Apache Subversion"
+        ],
+        answer: 1,
+        time: 20
+      },
+      {
+        q: "Which one integrates best with Jira?",
+        options: [
+          "GitLab",
+          "Bitbucket",
+          "GitHub",
+          "Mercurial"
+        ],
+        answer: 1,
+        time: 20
+      },
+      {
+        q: "Which one is ideal for self-hosting?",
+        options: [
+          "GitHub (cloud only)",
+          "GitLab (free community edition)",
+          "Bitbucket (cloud only)",
+          "Azure DevOps"
+        ],
+        answer: 1,
+        time: 20
+      },
+      {
+        q: "Which one uses GitHub Actions for automation?",
+        options: [
+          "GitLab",
+          "GitHub",
+          "Bitbucket",
+          "Jenkins"
+        ],
+        answer: 1,
+        time: 20
+      },
+      {
+        q: "Which one uses Pipelines for CI/CD?",
+        options: [
+          "GitHub",
+          "Bitbucket",
+          "GitLab",
+          "Travis CI"
+        ],
+        answer: 1,
+        time: 20
+      },
+      {
+        q: "Which one is simplest for beginners?",
+        options: [
+          "GitLab",
+          "GitHub",
+          "Bitbucket",
+          "Command Line Git"
+        ],
+        answer: 1,
+        time: 20
+      },
+      {
+        q: "What is the subtle difference between 'Folder' and 'Directory'?",
+        options: [
+          "They are exactly the same in all contexts",
+          "Directory is a technical term used in operating systems, programming, and command-line interfaces, while Folder is a graphical representation of a directory used in GUIs",
+          "Folder is for files, Directory is for programs",
+          "There is no difference; the terms are interchangeable in all contexts"
+        ],
+        answer: 1,
+        time: 20
+      },
+      {
+        q: "What Changes When You Switch Platforms?",
+        options: [
+          "All Git commands change significantly",
+          "Most Git commands remain the same, but certain steps—such as connecting to a remote repository, setting up authentication, or creating pull/merge requests—can vary slightly depending on the platform you're using",
+          "Your entire project history is lost",
+          "You must reinstall Git"
+        ],
+        answer: 1,
+        time: 20
+      },
+      {
+        q: "What is the first step to initialize a Git repository in a folder?",
+        options: [
+          "git push",
+          "Run `git init` in the folder",
+          "git pull",
+          "git commit"
+        ],
+        answer: 1,
+        time: 20
+      },
+      {
+        q: "What command is used to select which modified files you want to include in the next commit?",
+        options: [
+          "git commit",
+          "git add",
+          "git status",
+          "git log"
+        ],
+        answer: 1,
+        time: 20
+      },
+      {
+        q: "What command creates a commit with a message describing your changes?",
+        options: [
+          "git add",
+          "git commit -m \"Your message\"",
+          "git status",
+          "git log"
+        ],
+        answer: 1,
+        time: 20
+      },
+      {
+        q: "How can you get a compact one-line summary per commit when viewing Git history?",
+        options: [
+          "git log --full",
+          "git log --oneline",
+          "git log --summary",
+          "git log --brief"
+        ],
+        answer: 1,
+        time: 20
+      },
+      {
+        q: "Where do most Git actions (like staging, committing, and viewing history) occur?",
+        options: [
+          "On a remote server like GitHub",
+          "On your own computer",
+          "In the cloud only",
+          "On a dedicated Git server"
+        ],
+        answer: 1,
+        time: 20
+      },
+      {
+        q: "What command can you use to unstage a specific file (e.g., `index.html`) while keeping its changes in the working directory?",
+        options: [
+          "git commit --amend",
+          "git reset HEAD index.html",
+          "git clean -f",
+          "git revert index.html"
+        ],
+        answer: 1,
+        time: 20
+      },
+      {
+        q: "Is staging in Git a separate folder?",
+        options: [
+          "Yes, it's a temporary folder for changes",
+          "No, it's an internal concept (index) where Git tracks changes before committing",
+          "Only for large projects",
+          "It depends on the operating system"
+        ],
+        answer: 1,
+        time: 20
+      },
+      {
+        q: "What is the purpose of `git pull`?",
+        options: [
+          "To download a full copy of a remote repository for the first time",
+          "To fetch and merge the latest changes from the remote repository into your current local branch",
+          "To send your local commits to a remote repository",
+          "To create a new branch"
+        ],
+        answer: 1,
+        time: 20
+      },
+      {
+        q: "What is GitHub Desktop?",
+        options: [
+          "A command-line interface for Git",
+          "A free, open-source application that provides a graphical user interface (GUI) for interacting with GitHub and other Git hosting services",
+          "A web-based code editor",
+          "A mobile application for project management"
+        ],
+        answer: 1,
+        time: 20
+      },
+      {
+        q: "What is a Version Control System (VCS)?",
+        options: [
+          "A system for managing computer hardware",
+          "A system that tracks the history of changes as people and teams collaborate on projects together",
+          "A type of operating system",
+          "Software for creating presentations"
+        ],
+        answer: 1,
+        time: 20
+      },
+      {
+        q: "What is a Git repository?",
+        options: [
+          "A temporary storage for files",
+          "The entire collection of files and folders associated with a project, along with each file's revision history",
+          "A shared network drive",
+          "A backup of your entire computer"
+        ],
+        answer: 1,
+        time: 20
+      },
+      {
+        q: "How does GitHub work?",
+        options: [
+          "It's a standalone application for coding offline",
+          "GitHub hosts Git repositories and provides developers with tools to ship better code through command line features, issues, pull requests, code review, and integrations",
+          "It's a platform for hosting websites only",
+          "It's a social media platform for developers"
+        ],
+        answer: 1,
+        time: 20
+      },
+      {
+        q: "Which Git command initializes a new Git repository in a directory?",
+        options: [
+          "git clone",
+          "git init",
+          "git add",
+          "git commit"
+        ],
+        answer: 1,
+        time: 20
+      },
+      {
+        q: "Is `git clone` used to copy a repository from local to GitHub?",
+        options: [
+          "Yes, always",
+          "No, `git clone` copies a repository from GitHub (or another remote) to your local machine. To upload a local project to GitHub, you'd use `git push` instead",
+          "Only for specific file types",
+          "It depends on your Git configuration"
+        ],
+        answer: 1,
+        time: 20
+      },
+      {
+        q: "What is `git push origin`?",
+        options: [
+          "A command to download changes from the remote",
+          "A command used to upload your local commits to a remote repository, typically on platforms like GitHub, GitLab or Bitbucket",
+          "A command to create a new remote repository",
+          "A command to delete a remote branch"
+        ],
+        answer: 1,
+        time: 20
+      },
+      {
+        q: "How can you view change history in GitHub (Web)?",
+        options: [
+          "By running `git log` in your browser",
+          "Open the repo, click 'Commits' (near the branch dropdown) to see all changes. To see changes for a specific file, open the file → click 'History'",
+          "By downloading the entire repository history",
+          "It's not possible to view history on GitHub's website"
+        ],
+        answer: 1,
+        time: 20
+      },
+      {
+        q: "What happens when you run `git init` inside the folder `bit`?",
+        options: [
+          "It deletes all existing files in the `bit` folder",
+          "Git creates a hidden folder called `.git` inside the `bit` folder, which becomes the local repository",
+          "It automatically connects the `bit` folder to a remote GitHub repository",
+          "It renames the `bit` folder to `.git`"
+        ],
+        answer: 1,
+        time: 20
+      },
+      {
+        q: "What is the repository in your case (after `git init` in `bit` folder)?",
+        options: [
+          "The entire `bit` folder",
+          "The `.git` folder inside your `bit` folder",
+          "The remote GitHub repository",
+          "A temporary cache of files"
+        ],
+        answer: 1,
+        time: 20
+      },
+      {
+        q: "Where is the file `name.txt` after the commit?",
+        options: [
+          "Only in the working directory",
+          "Both in your working directory (as a regular file) and saved in Git’s history (in `.git`)",
+          "Only in the remote repository",
+          "It is deleted after commit"
+        ],
+        answer: 1,
+        time: 20
+      },
+      {
+        q: "What is the repository name for a local Git repository?",
+        options: [
+          "It's always 'master'",
+          "Technically, local Git repositories do not have a name by default, but people usually refer to it as 'The [folder name] repository'",
+          "It's automatically named after your username",
+          "You must explicitly name it using `git rename`"
+        ],
+        answer: 1,
+        time: 20
+      },
+      {
+        q: "How do you list hidden files and folders in PowerShell?",
+        options: [
+          "ls -a",
+          "Get-ChildItem -Attributes Hidden",
+          "dir /ah",
+          "show hidden"
+        ],
+        answer: 1,
+        time: 20
+      },
+      {
+        q: "How do you list all tracked files in the Git repository?",
+        options: [
+          "git status",
+          "git ls-files",
+          "git log",
+          "git show"
+        ],
+        answer: 1,
+        time: 20
+      },
+      {
+        q: "How do you see what's modified or untracked in your Git working directory?",
+        options: [
+          "git commit",
+          "git status",
+          "git add",
+          "git branch"
+        ],
+        answer: 1,
+        time: 20
+      },
+      {
+        q: "How do you list only modified files (not staged) in Git?",
+        options: [
+          "git status -s",
+          "git ls-files -m",
+          "git diff --cached",
+          "git log --name-only"
+        ],
+        answer: 1,
+        time: 20
+      },
+      {
+        q: "How do you list only untracked files in Git?",
+        options: [
+          "git status",
+          "git ls-files --others --exclude-standard",
+          "git log --untracked",
+          "git diff --untracked"
+        ],
+        answer: 1,
+        time: 20
+      },
+      {
+        q: "How do you list files that have been staged with `git add`, ready to be committed?",
+        options: [
+          "git status -s",
+          "git diff --cached --name-only",
+          "git ls-files --staged",
+          "git log --staged"
+        ],
+        answer: 1,
+        time: 20
+      },
+      {
+        q: "How do you list files that were deleted from the working directory and are being tracked by Git?",
+        options: [
+          "git status",
+          "git ls-files --deleted",
+          "git rm --cached",
+          "git log --deleted"
+        ],
+        answer: 1,
+        time: 20
+      },
+      {
+        q: "How do you discard changes made to a tracked file (revert to the last committed version) in Git (Git 2.23+)?",
+        options: [
+          "git commit -m \"undo\"",
+          "git restore filename.txt",
+          "git reset --hard",
+          "rm filename.txt"
+        ],
+        answer: 1,
+        time: 20
+      },
+      {
+        q: "What does the message 'no changes added to commit (use \"git add\" and/or \"git commit -a\")' mean?",
+        options: [
+          "Your repository is corrupted",
+          "Git has detected changes, but you haven’t told Git to track them yet by staging them",
+          "You have committed all changes successfully",
+          "There are no changes in your working directory"
+        ],
+        answer: 1,
+        time: 20
+      },
+      {
+        q: "What are the four main areas shown in the Git workflow?",
+        options: [
+          "Source Code, Compiler, Debugger, Executable",
+          "/localWorkingDir, Staging Area, Local Repository, Remote Repository",
+          "Design, Development, Testing, Deployment",
+          "Planning, Coding, Reviewing, Releasing"
+        ],
+        answer: 1,
+        time: 20
+      },
+      {
+        q: "What command moves changes from Staging Area to Local Repository?",
+        options: [
+          "git add",
+          "git commit",
+          "git push",
+          "git checkout"
+        ],
+        answer: 1,
+        time: 20
+      },
+      {
+        q: "What command updates your working directory from the local repo?",
+        options: [
+          "git commit",
+          "git checkout",
+          "git add",
+          "git pull"
+        ],
+        answer: 1,
+        time: 20
+      },
+      {
+        q: "What command sends commits from the Local Repository to the Remote Repository?",
+        options: [
+          "git pull",
+          "git push",
+          "git commit",
+          "git fetch"
+        ],
+        answer: 1,
+        time: 20
+      },
+      {
+        q: "What command retrieves changes from the Remote Repository to the Local Repository?",
+        options: [
+          "git push",
+          "git pull",
+          "git fetch",
+          "git merge"
+        ],
+        answer: 1,
+        time: 20
+      },
+      {
+        q: "What command is used to copy a remote repo into your system for the first time?",
+        options: [
+          "git pull",
+          "git clone",
+          "git fetch",
+          "git init"
+        ],
+        answer: 1,
+        time: 20
+      },
+      {
+        q: "Where does branching and merging in Git primarily happen?",
+        options: [
+          "Only on the remote server (e.g., GitHub)",
+          "Primarily in your local repository",
+          "In a separate cloud service",
+          "Only when you create a pull request"
+        ],
+        answer: 1,
+        time: 20
+      },
+      {
+        q: "What does `git remote add origin https://github.com/username/repo-name.git` do?",
+        options: [
+          "It clones the repository to your local machine",
+          "It links your local Git repository to the GitHub repository at the given URL, giving it the nickname `origin`",
+          "It pushes your local changes to the remote repository",
+          "It deletes the remote repository"
+        ],
+        answer: 1,
+        time: 20
+      },
+      {
+        q: "When should you use `git clone` versus `git remote add origin`?",
+        options: [
+          "`git clone` is for local-to-remote, `git remote add origin` is for remote-to-local",
+          "`git clone` is used to download an existing GitHub repository to your computer; `git remote add origin` is used when you already have a local Git repository and want to connect it to a remote repository",
+          "They are interchangeable",
+          "`git clone` is for new projects, `git remote add origin` is for old projects"
+        ],
+        answer: 1,
+        time: 20
+      },
+      {
+        q: "What does `git remote add origin` do in terms of copying files?",
+        options: [
+          "It copies all files from the remote to your local repository",
+          "No files are copied or downloaded; it only links your local Git repository to the GitHub repository",
+          "It copies only the `.git` folder",
+          "It deletes files from your local repository"
+        ],
+        answer: 1,
+        time: 20
+      },
+      {
+        q: "If you initialized a Git repository, added a remote, but pushing to main gives an error because the branch doesn’t exist locally, what is a common fix?",
+        options: [
+          "Delete the remote repository",
+          "Make sure you have a commit, then push using the correct local branch name (e.g., `master`) or rename your local branch to `main`",
+          "Reinstall Git",
+          "Format your hard drive"
+        ],
+        answer: 1,
+        time: 20
+      },
+      {
+        q: "What is the difference between `git push origin master` and `git push origin main`?",
+        options: [
+          "They are identical commands",
+          "They push to different branch names on the remote: `master` is the default in older Git, `main` is the default for new GitHub repos",
+          "One pushes to GitHub, the other to GitLab",
+          "One is for local branches, the other for remote branches"
+        ],
+        answer: 1,
+        time: 20
+      },
+      {
+        q: "What happens when you add a new file, stage it, commit it, and then run `git push -u origin master`?",
+        options: [
+          "The file is deleted from your local repository",
+          "Your committed changes are uploaded to the `master` branch on GitHub, and if the `master` branch doesn't exist, GitHub creates it",
+          "The file is only added to your local history, not the remote",
+          "It creates a new repository on GitHub"
+        ],
+        answer: 1,
+        time: 20
+      },
+      {
+        q: "What does the error `! [rejected] main -> main (fetch first)` mean when pushing?",
+        options: [
+          "Your internet connection is down",
+          "The remote `main` branch on GitHub already has commits that your local `main` branch doesn't have, and Git is rejecting your push to prevent overwriting",
+          "You don't have permission to push",
+          "The branch name is incorrect"
+        ],
+        answer: 1,
+        time: 20
+      },
+      {
+        q: "What is a Mainframe?",
+        options: [
+          "A type of personal computer",
+          "Powerful, high-performance computers primarily used by large organizations for critical applications that require high volumes of data processing, reliability, and security",
+          "A network router",
+          "A small, portable device for data storage"
+        ],
+        answer: 1,
+        time: 20
+      },
+      {
+        q: "How do you read a `README.md` file in your Windows Command Prompt (CMD)?",
+        options: [
+          "open README.md",
+          "type README.md",
+          "read README.md",
+          "view README.md"
+        ],
+        answer: 1,
+        time: 20
+      },
+      {
+        q: "How do you list all Git repositories on your local machine from your command prompt?",
+        options: [
+          "There is a single `git` command to find all repositories",
+          "You typically need to know where your repositories are located and search for `.git` folders, as Git doesn't maintain a global registry",
+          "By using `git list-repos`",
+          "By checking your system's registry"
+        ],
+        answer: 1,
+        time: 20
+      },
+      {
+        q: "What does `U test.txt` mean in Git status, and what does the error 'Committing is not possible because you have unmerged files' indicate?",
+        options: [
+          "The file `test.txt` is untracked",
+          "`U` means 'Unmerged', indicating a merge conflict in `test.txt` that needs to be resolved manually before committing",
+          "The file `test.txt` is up to date",
+          "The file `test.txt` is ignored by Git"
+        ],
+        answer: 1,
+        time: 20
+      },
+      {
+        q: "How do you list all local branches in Git?",
+        options: [
+          "git branch -a",
+          "git branch",
+          "git branch -r",
+          "git log --branches"
+        ],
+        answer: 1,
+        time: 20
+      },
+      {
+        q: "If `git revert <commit>` gives an error about local changes, how can you fix it without losing your work?",
+        options: [
+          "Force push the revert",
+          "Stash your local changes, run the revert, then reapply the changes with `git stash pop`",
+          "Delete all local changes",
+          "Reinitialize the repository"
+        ],
+        answer: 1,
+        time: 20
+      },
+      {
+        q: "What is the difference between 'Working Directory' and 'Main Branch'?",
+        options: [
+          "They are the same thing",
+          "Working Directory is your local files on disk that you're currently editing; Main Branch is a named pointer to a specific commit history in Git – the 'main line' of your codebase",
+          "Working Directory is on the remote, Main Branch is local",
+          "Working Directory only contains committed files"
+        ],
+        answer: 1,
+        time: 20
+      },
+      {
+        q: "What does the message 'Your branch is ahead of 'origin/main' by 1 commit. (use \"git push\" to publish your local commits)' mean?",
+        options: [
+          "Your local branch has fallen behind the remote",
+          "You made 1 new commit locally on `main` that has not yet been pushed to the remote repository",
+          "There is a merge conflict",
+          "Your repository is corrupted"
+        ],
+        answer: 1,
+        time: 20
+      },
+      {
+        q: "How can you preview changes that haven't been pushed to the remote (`origin/main`)?",
+        options: [
+          "git push --dry-run",
+          "Use `git log origin/main..HEAD` to see unpushed commits and `git diff origin/main` to see the actual code changes",
+          "Check the remote repository directly",
+          "There is no way to preview changes before pushing"
+        ],
+        answer: 1,
+        time: 20
+      },
+      {
+        q: "How do you safely revert the last commit (e.g., `e9183d7af4345263f7074e7842f92102bf440a10`) if it has already been pushed to GitHub?",
+        options: [
+          "git reset --hard HEAD~1",
+          "git revert e9183d7af4345263f7074e7842f92102bf440a10",
+          "git clean -f",
+          "Delete the commit manually"
+        ],
+        answer: 1,
+        time: 20
+      },
+      {
+        q: "What is `HEAD` in Git?",
+        options: [
+          "A command to delete a branch",
+          "A pointer to your current location in the Git history, usually pointing to the latest commit on your current branch",
+          "The first commit in a repository",
+          "A special type of remote repository"
+        ],
+        answer: 1,
+        time: 20
+      },
+      {
+        q: "What is `git cherry-pick` used for?",
+        options: [
+          "To merge an entire branch into another",
+          "To copy a specific commit from one branch and apply it to another branch without merging the full branch",
+          "To delete commits from history",
+          "To compare two branches"
+        ],
+        answer: 1,
+        time: 20
+      },
+      {
+        q: "What happens to a feature branch after merging it into the `main` branch?",
+        options: [
+          "It is automatically deleted by Git",
+          "The feature branch is still there; it is NOT deleted automatically, and you must delete it manually if no longer needed",
+          "It is renamed to `main`",
+          "It becomes read-only"
+        ],
+        answer: 1,
+        time: 20
+      },
+      {
+        q: "What does `git stash pop` do?",
+        options: [
+          "It saves your current changes to the stash",
+          "It reapplies your most recently stashed changes and removes them from the stash list",
+          "It deletes all stashed changes",
+          "It lists all stashes"
+        ],
+        answer: 1,
+        time: 20
+      },
+      {
+        q: "How can you pop a specific stash from multiple stashes?",
+        options: [
+          "git stash pop --all",
+          "Use `git stash list` to view stashes, then `git stash pop stash@{index}`",
+          "git stash pop --last",
+          "It's not possible to pop specific stashes"
+        ],
+        answer: 1,
+        time: 20
+      },
+      {
+        q: "What does `git remote -v` do?",
+        options: [
+          "It verifies your Git version",
+          "It lists the remote repositories associated with your local Git repository, along with their fetch and push URLs",
+          "It creates a new remote repository",
+          "It deletes remote tracking branches"
+        ],
+        answer: 1,
+        time: 20
+      },
+      {
+        q: "What does the error `error: pathspec 'copy2' did not match any file(s) known to git` mean when running `git checkout copy2`?",
+        options: [
+          "Your Git installation is corrupted",
+          "Git couldn’t find a branch, tag, or file named `copy2` to check out",
+          "You have uncommitted changes",
+          "The remote repository is offline"
+        ],
+        answer: 1,
+        time: 20
+      },
+      {
+        q: "What does `M sai.txt` mean when you run `git checkout` by itself?",
+        options: [
+          "The file `sai.txt` is merged",
+          "The file `sai.txt` has uncommitted (Modified) changes in your working directory",
+          "The file `sai.txt` is ignored",
+          "The file `sai.txt` is deleted"
+        ],
+        answer: 1,
+        time: 20
+      },
+      {
+        q: "What does `git push -u origin copy1` do?",
+        options: [
+          "It only creates a local branch named `copy1`",
+          "It pushes your local branch `copy1` to the remote repository `origin` and sets up upstream tracking",
+          "It pulls changes from `origin/copy1`",
+          "It renames the `origin` remote"
+        ],
+        answer: 1,
+        time: 20
+      },
+      {
+        q: "If `git push --set-upstream origin copy1` results in 'branch 'copy1' set up to track 'origin/copy1'. Everything up-to-date', what does it mean?",
+        options: [
+          "The push failed",
+          "Your local branch `copy1` is now tracking the remote branch `origin/copy1`, and there's nothing new to push",
+          "The remote branch was deleted",
+          "You need to run `git pull` next"
+        ],
+        answer: 1,
+        time: 20
+      },
+      {
+        q: "What does the error `error: src refspec copy2 does not match any` mean when running `git push -u origin copy2`?",
+        options: [
+          "The remote repository is full",
+          "Git cannot find a local branch named `copy2`, so it has nothing to push",
+          "You don't have push permissions",
+          "The remote branch `copy2` already exists"
+        ],
+        answer: 1,
+        time: 20
+      },
+      {
+        q: "How do you create a new Git branch from another branch (e.g., `copy2` from `main`)?",
+        options: [
+          "git branch copy2",
+          "git checkout main; git checkout -b copy2",
+          "git new-branch copy2 from main",
+          "git clone --branch copy2"
+        ],
+        answer: 1,
+        time: 20
+      },
+      {
+        q: "If you use `git commit -m \"commit\"`, will it commit only one branch or all branches to the local repository?",
+        options: [
+          "It commits all branches",
+          "It commits only the currently checked-out branch, not all branches",
+          "It commits to the remote repository directly",
+          "It creates a new repository"
+        ],
+        answer: 1,
+        time: 20
+      },
+      {
+        q: "How do you check the remote tracking setup for your current Git branch?",
+        options: [
+          "git log",
+          "git status",
+          "git remote -v",
+          "git config --list"
+        ],
+        answer: 1,
+        time: 20
+      },
+      {
+        q: "When should you use `git merge` versus `git rebase`?",
+        options: [
+          "`git merge` is for local changes, `git rebase` is for remote changes",
+          "`git merge` combines changes while preserving history (non-linear), suitable for shared branches; `git rebase` creates a cleaner, linear history, often used for local cleanup before PRs",
+          "They are interchangeable and do the exact same thing",
+          "`git merge` is for small changes, `git rebase` for large features"
+        ],
+        answer: 1,
+        time: 20
+      },
+      {
+        q: "How do you list all files inside the `main` branch without switching to it?",
+        options: [
+          "ls -R",
+          "git ls-tree -r main --name-only",
+          "git show main",
+          "git branch --show-files main"
+        ],
+        answer: 1,
+        time: 20
+      },
+      {
+        q: "How do you exit from a `git reflog` view (or any paged Git output)?",
+        options: [
+          "exit",
+          "Press 'q'",
+          "Ctrl + Z",
+          "close window"
+        ],
+        answer: 1,
+        time: 20
+      },
+      {
+        q: "How can you recover a branch if it is deleted (e.g., `main`)?",
+        options: [
+          "It's impossible to recover a deleted branch",
+          "Check `git reflog` for the last known commit of the branch, then recreate it using `git checkout -b <branch-name> <commit-hash>`",
+          "Reinstall Git and restore from a backup",
+          "Use a system restore point"
+        ],
+        answer: 1,
+        time: 20
+      },
+      {
+        q: "What does the error 'error: cannot delete branch 'copy2' used by worktree at 'C:/Users/Saikr/Git/bin'' mean?",
+        options: [
+          "The branch is corrupted",
+          "You're currently on the branch `copy2`, or it's being used in a worktree, and Git won't let you delete a branch that’s checked out or in use",
+          "You don't have delete permissions",
+          "The branch `copy2` does not exist"
+        ],
+        answer: 1,
+        time: 20
+      },
+      {
+        q: "How do you merge multiple branches (e.g., `copy1`, `copy2`, and `hotfix`) into one (`main`)?",
+        options: [
+          "Run `git merge copy1 copy2 hotfix` all at once",
+          "Checkout the target branch (`main`), then merge each branch one by one: `git merge copy1`, `git merge copy2`, `git merge hotfix`",
+          "Use `git rebase` for all of them simultaneously",
+          "It's not possible to merge multiple branches into one"
+        ],
+        answer: 1,
+        time: 20
+      },
+      {
+        q: "What does `CONFLICT (content): Merge conflict in sai.txt` mean after `git pull origin main`?",
+        options: [
+          "The file `sai.txt` was deleted on the remote",
+          "Git tried to merge changes from the remote `main` branch into your current branch, but `sai.txt` has conflicting changes that Git couldn’t resolve automatically",
+          "The file `sai.txt` is too large to merge",
+          "You need to rename `sai.txt`"
+        ],
+        answer: 1,
+        time: 20
+      },
+      {
+        q: "How do you undo a fast-forward merge?",
+        options: [
+          "git revert <merge-commit-hash>",
+          "git reset --hard HEAD@{1}",
+          "git clean -f",
+          "git merge --abort"
+        ],
+        answer: 1,
+        time: 20
+      },
+      {
+        q: "What does 'Fast-forward' mean in `git merge` output?",
+        options: [
+          "The merge failed",
+          "It's the simplest type of merge where Git just moves the current branch pointer forward to match the merged branch, as there were no new commits on the current branch after the common base",
+          "It means the merge was very slow",
+          "It indicates a complex merge with many conflicts"
+        ],
+        answer: 1,
+        time: 20
+      },
+      {
+        q: "Is it always the case that branches will merge to `main` only?",
+        options: [
+          "Yes, `main` is the only target for merges",
+          "No, you can merge any branch into any other branch, depending on your workflow (e.g., `dev`, `release`, `feature` branches)",
+          "Only if the branches are named 'main'",
+          "Only in specific Git versions"
+        ],
+        answer: 1,
+        time: 20
+      },
+      {
+        q: "How do you unset (remove) the remote tracking for a local Git branch?",
+        options: [
+          "git remote rm origin",
+          "git branch --unset-upstream",
+          "git untrack branch-name",
+          "git config --unset branch.branch-name.remote"
+        ],
+        answer: 1,
+        time: 20
+      },
+      {
+        q: "How do you apply the same commit to multiple branches without merging the full branch?",
+        options: [
+          "git merge --squash",
+          "Use `git cherry-pick <commit-hash>` to copy the specific commit to other branches",
+          "git rebase --onto",
+          "Manually copy the code changes"
+        ],
+        answer: 1,
+        time: 20
+      },
+      {
+        q: "What does `git branch -M main` do?",
+        options: [
+          "It merges the `main` branch",
+          "It renames the current branch to `main`, with the `-M` flag meaning 'force move' (rename even if `main` already exists)",
+          "It deletes the `main` branch",
+          "It creates a new remote branch named `main`"
+        ],
+        answer: 1,
+        time: 20
+      },
+      {
+        q: "How can you create a branch in Git that starts as close as possible to a 'blank state' or 'empty initial commit'?",
+        options: [
+          "git branch new-branch --empty",
+          "Use `git checkout --orphan new-branch-name` to create a new branch with no commit history",
+          "git clone --depth 1",
+          "Delete all files manually and then commit"
+        ],
+        answer: 1,
+        time: 20
+      }
+    ];
+
+    let currentQuestionIndex = 0;
+    let userAnswers = new Array(questions.length).fill(null); // Stores the index of the selected option, or null if unanswered
+    let globalTimerInterval; // Global timer interval ID
+    let totalSecondsLeft; // Total time for the entire quiz
+    const passPercentage = 70; // Define the passing percentage
+    const timePerQuestion = 20; // 20 seconds per question
+
+    // Function to shuffle an array (Fisher-Yates algorithm)
+    function shuffleArray(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]]; // Swap elements
+        }
+    }
+
+    // Function to shuffle options for a single question and update its answer index
+    function shuffleOptionsAndAnswer(question) {
+        const correctOptionText = question.options[question.answer];
+        shuffleArray(question.options); // Shuffle the options array
+        question.answer = question.options.indexOf(correctOptionText); // Update the answer index
+    }
+
+    function calculateCorrectAnswers() {
+        let count = 0;
+        for (let i = 0; i < questions.length; i++) {
+            if (userAnswers[i] !== null && userAnswers[i] === questions[i].answer) {
+                count++;
+            }
+        }
+        return count;
+    }
+
+    function saveCurrentAnswer() {
+        const selected = document.querySelector("input[name='option']:checked");
+        if (selected) {
+            userAnswers[currentQuestionIndex] = parseInt(selected.value);
+        } else {
+            // If no option is selected, and it wasn't marked "Answer Later", keep it null
+            // If it was previously answered, and now unselected, set to null
+            if (userAnswers[currentQuestionIndex] !== null) {
+                userAnswers[currentQuestionIndex] = null;
+            }
+        }
+    }
+
+    function loadQuestion(index) {
+        // No clearInterval(timer) here, as globalTimerInterval is managed separately
+        document.getElementById("result").innerHTML = ""; // Clear results area
+
+        if (index >= questions.length) {
+            submitQuiz();
+            return;
+        }
+
+        currentQuestionIndex = index; // Ensure currentQuestionIndex is updated for direct jumps
+
+        const q = questions[currentQuestionIndex];
+        
+        // Format global time for display
+        const minutes = Math.floor(totalSecondsLeft / 60);
+        const seconds = totalSecondsLeft % 60;
+        const formattedTime = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+
+        // Removed the currentCorrectCount from progressHTML
+        const progressHTML = `<div id="progress">Question ${currentQuestionIndex + 1} of ${questions.length}</div>`;
+
+        document.getElementById("quiz").innerHTML = `
+            ${progressHTML}
+            <div class="timer">Total Time Left: <span id="timer">${formattedTime}</span></div>
+            <div class="question">Q${currentQuestionIndex + 1}. ${q.q}</div>
+            <div class="options">
+                ${q.options.map((opt, i) => `
+                    <label>
+                        <input type="radio" name="option" value="${i}" ${userAnswers[currentQuestionIndex] === i ? 'checked' : ''}> ${opt}
+                    </label>
+                `).join('')}
+            </div>
+        `;
+
+        // Update button visibility
+        document.getElementById("prevBtn").disabled = currentQuestionIndex === 0;
+        document.getElementById("nextBtn").style.display = currentQuestionIndex === questions.length - 1 ? "none" : "inline-block";
+        document.getElementById("submitBtn").style.display = "inline-block";
+        document.getElementById("answerLaterBtn").style.display = currentQuestionIndex === questions.length - 1 ? "none" : "inline-block";
+        
+        updateQuestionList(); // Update the navigation list
+        console.log(`Loaded question ${currentQuestionIndex + 1}. Total time left: ${formattedTime}`);
+    }
+
+    function saveAndMoveToNext() {
+        saveCurrentAnswer(); // Save the answer for the current question
+
+        if (currentQuestionIndex < questions.length - 1) {
+            currentQuestionIndex++;
+            loadQuestion(currentQuestionIndex);
+        } else {
+            submitQuiz(); // If it's the last question, submit
+        }
+    }
+
+    function goToPreviousQuestion() {
+        saveCurrentAnswer(); // Save the answer for the current question
+
+        if (currentQuestionIndex > 0) {
+            currentQuestionIndex--;
+            loadQuestion(currentQuestionIndex);
+        }
+    }
+
+    function answerLater() {
+        // Explicitly mark as unanswered (null)
+        userAnswers[currentQuestionIndex] = null; 
+        saveAndMoveToNext(); // Move to the next question
+    }
+
+    function submitQuiz() {
+        clearInterval(globalTimerInterval); // Stop the global timer
+        saveCurrentAnswer(); // Save the answer for the current question before final submission
+
+        console.log("Submitting quiz. Final answers:", userAnswers);
+        showResult();
+    }
+
+    function showResult() {
+        let finalScore = calculateCorrectAnswers();
+        let totalQuestions = questions.length;
+        let scorePercentage = (finalScore / totalQuestions) * 100;
+
+        let resultHTML = "<h3>Quiz Completed!</h3>";
+        resultHTML += `<h4>Your Final Score: ${finalScore} / ${totalQuestions}</h4>`;
+        resultHTML += `<h4>Your Percentage: ${scorePercentage.toFixed(2)}%</h4>`;
+
+        if (scorePercentage >= passPercentage) {
+            resultHTML += `<h4 class="pass">Congratulations! You Passed!</h4>`;
+        } else {
+            resultHTML += `<h4 class="fail">Sorry, you did not pass. Try again!</h4>`;
+        }
+        
+        resultHTML += "<h3>Detailed Review:</h3><ul>";
+
+        questions.forEach((q, i) => {
+            const userAnswer = userAnswers[i];
+            const correctOptionIndex = q.answer;
+            const correctText = q.options[correctOptionIndex];
+            const userText = userAnswer !== null ? q.options[userAnswer] : "(Not Answered)";
+            const isCorrect = (userAnswer === correctOptionIndex);
+
+            resultHTML += `<li>
+                <strong>Q${i + 1}:</strong> ${q.q}<br>
+                Your Answer: <span style="color: ${isCorrect ? 'green' : 'red'};">${userText}</span><br>
+                Correct Answer: <span style="color: green;">${correctText}</span>
+            </li><br>`;
+        });
+
+        resultHTML += `</ul>`;
+        resultHTML += `<button id="restartBtn" onclick="location.reload()">Restart Quiz</button>`;
+
+        document.getElementById("quiz").style.display = "none";
+        document.getElementById("quizControls").style.display = "none";
+        document.getElementById("questionList").style.display = "none"; // Hide question list on result
+        document.getElementById("result").innerHTML = resultHTML;
+    }
+
+    function updateQuestionList() {
+        const questionListDiv = document.getElementById("questionList");
+        let listHTML = "<h4>Question Navigation:</h4><div class='question-numbers'>";
+        questions.forEach((q, i) => {
+            let statusClass = '';
+            if (userAnswers[i] !== null) {
+                statusClass = 'answered';
+            } else if (userAnswers[i] === null && i < currentQuestionIndex) {
+                 // If they skipped or went back, and it's still null, it's unanswered
+                statusClass = 'unanswered';
+            } else if (userAnswers[i] === null && i > currentQuestionIndex) {
+                statusClass = ''; // Future questions, default color
+            }
             
+            const currentClass = i === currentQuestionIndex ? 'current' : '';
+            listHTML += `<span class='question-number ${statusClass} ${currentClass}' onclick='jumpToQuestion(${i})'>${i + 1}</span>`;
+        });
+        listHTML += "</div>";
+        questionListDiv.innerHTML = listHTML;
+    }
 
-      // ... (Ensure all 171 questions are included here)
-    
-    ];
-    // --- End of 171 SQL Questions Array ---
-    
-    let currentQuestionIndex = 0;
-    let userAnswers = [];
-    let timer;
-    const quizContainer = document.getElementById('quiz');
-    const resultContainer = document.getElementById('result');
-    const questionListContainer = document.getElementById('questionList');
-    
-    // Initialize user answers array
-    for (let i = 0; i < questions.length; i++) {
-        userAnswers.push({ selectedOption: null, answeredLater: false, timeRemaining: questions[i].time });
-    }
+    function jumpToQuestion(index) {
+        // No clearInterval(timer) here, as globalTimerInterval is managed separately
+        saveCurrentAnswer(); // Save the answer for the question they are leaving
+        loadQuestion(index); // Load the new question
+    }
 
-    /**
-     * Renders the current question and its options to the quiz container.
-     */
-    function renderQuestion() {
-        resultContainer.innerHTML = '';
-        const qData = questions[currentQuestionIndex];
-        const currentAnswer = userAnswers[currentQuestionIndex].selectedOption;
-        const totalQuestions = questions.length;
-        
-        let html = `<div id="progress">Question ${currentQuestionIndex + 1} of ${totalQuestions}</div>`;
-        html += `<div class="timer" id="timeRemaining">Time: ${userAnswers[currentQuestionIndex].timeRemaining}s</div>`;
-        html += `<div class="question">Q${currentQuestionIndex + 1}. ${qData.q}</div>`;
-        html += '<div class="options">';
+    // Initial setup: Shuffle questions, calculate total time, start global timer, and then load the first one
+    shuffleArray(questions); // Shuffle the order of questions
+    // For each question, shuffle its options and update the correct answer index
+    questions.forEach(q => shuffleOptionsAndAnswer(q));
 
-        qData.options.forEach((option, index) => {
-            const isChecked = currentAnswer === index ? 'checked' : '';
-            html += `
-                <label>
-                    <input type="radio" name="question${currentQuestionIndex}" value="${index}" ${isChecked}>
-                    ${option}
-                </label>
-            `;
-        });
-        
-        html += '</div>';
-        quizContainer.innerHTML = html;
-        
-        updateQuestionNavigation();
-        startTimer();
-        updateControlButtons();
-    }
+    totalSecondsLeft = questions.length * timePerQuestion; // Calculate total time
 
-    /**
-     * Manages the countdown timer for the current question.
-     */
-    function startTimer() {
-        clearInterval(timer);
-        
-        let time = userAnswers[currentQuestionIndex].timeRemaining;
-        const timeDisplay = document.getElementById('timeRemaining');
+    // Start the global timer
+    globalTimerInterval = setInterval(() => {
+        totalSecondsLeft--;
+        const minutes = Math.floor(totalSecondsLeft / 60);
+        const seconds = totalSecondsLeft % 60;
+        const formattedTime = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        
+        const timerElement = document.getElementById("timer");
+        if (timerElement) {
+            timerElement.textContent = formattedTime;
+        }
 
-        timer = setInterval(() => {
-            time--;
-            userAnswers[currentQuestionIndex].timeRemaining = time;
-            timeDisplay.textContent = `Time: ${time}s`;
+        if (totalSecondsLeft <= 0) {
+            submitQuiz(); // Automatically submit when time runs out
+        }
+    }, 1000);
 
-            if (time <= 0) {
-                clearInterval(timer);
-                saveAndMoveToNext(); // Move to the next question automatically
-            }
-        }, 1000);
-    }
-    
-    /**
-     * Saves the user's current selection and moves to the next question.
-     */
-    function saveAndMoveToNext() {
-        saveAnswer();
-        clearInterval(timer);
-        
-        if (currentQuestionIndex < questions.length - 1) {
-            currentQuestionIndex++;
-            renderQuestion();
-        } else {
-            // If it's the last question, show an alert or submit the quiz
-            alert("You have reached the end of the quiz! Please click 'Submit Exam'.");
-        }
-    }
-
-    /**
-     * Moves to the previous question.
-     */
-    function goToPreviousQuestion() {
-        saveAnswer();
-        clearInterval(timer);
-        
-        if (currentQuestionIndex > 0) {
-            currentQuestionIndex--;
-            renderQuestion();
-        }
-    }
-    
-    /**
-     * Saves the current selected radio button value into the userAnswers array.
-     */
-    function saveAnswer() {
-        const selectedOption = document.querySelector(`input[name="question${currentQuestionIndex}"]:checked`);
-        if (selectedOption) {
-            // Save the index of the selected option
-            userAnswers[currentQuestionIndex].selectedOption = parseInt(selectedOption.value);
-            userAnswers[currentQuestionIndex].answeredLater = false;
-        } else {
-            // If nothing is selected, ensure it's recorded as null/unanswered
-            userAnswers[currentQuestionIndex].selectedOption = null;
-            userAnswers[currentQuestionIndex].answeredLater = false;
-        }
-    }
-    
-    /**
-     * Flags the current question for review and moves to the next one.
-     */
-    function answerLater() {
-        saveAnswer(); // Save the current (possibly null) selection first
-        userAnswers[currentQuestionIndex].answeredLater = true;
-        saveAndMoveToNext();
-    }
-
-    /**
-     * Updates the state of the Previous/Next buttons.
-     */
-    function updateControlButtons() {
-        document.getElementById('prevBtn').disabled = currentQuestionIndex === 0;
-        // The Next button will automatically move to next or alert at the end
-    }
-
-    /**
-     * Renders the navigation panel with question numbers.
-     */
-    function updateQuestionNavigation() {
-        let html = '<h4>Question Navigation</h4><div class="question-numbers">';
-        
-        questions.forEach((_, index) => {
-            let classes = 'question-number';
-            
-            if (index === currentQuestionIndex) {
-                classes += ' current';
-            } else if (userAnswers[index].selectedOption !== null && userAnswers[index].answeredLater === false) {
-                classes += ' answered';
-            } else if (userAnswers[index].answeredLater === true) {
-                classes += ' unanswered'; // Using unanswered class for "Answer Later" (red)
-            }
-
-            html += `<div class="${classes}" onclick="goToQuestion(${index})">${index + 1}</div>`;
-        });
-
-        html += '</div>';
-        questionListContainer.innerHTML = html;
-    }
-
-    /**
-     * Jumps directly to a specific question.
-     */
-    function goToQuestion(index) {
-        saveAnswer();
-        clearInterval(timer);
-        currentQuestionIndex = index;
-        renderQuestion();
-    }
-
-    /**
-     * Submits the quiz and displays the final score and results.
-     */
-    function submitQuiz() {
-        saveAnswer(); // Save the final answer
-        clearInterval(timer);
-        
-        let score = 0;
-        let resultsHtml = '<h3>Quiz Results</h3><ul>';
-        
-        questions.forEach((qData, index) => {
-            const userAnswer = userAnswers[index].selectedOption;
-            const isCorrect = userAnswer === qData.answer;
-            
-            if (isCorrect) {
-                score++;
-            }
-            
-            const userSelection = userAnswer !== null ? qData.options[userAnswer] : 'Not Answered';
-            const statusClass = isCorrect ? 'pass' : 'fail';
-            
-            resultsHtml += `
-                <li>
-                    <h4>Q${index + 1}: ${qData.q}</h4>
-                    <p>Your Answer: ${userSelection} (${userAnswer !== null ? (isCorrect ? '<span class="pass">Correct</span>' : '<span class="fail">Incorrect</span>') : 'Unanswered'})</p>
-                    <p>Correct Answer: ${qData.options[qData.answer]}</p>
-                </li>
-            `;
-        });
-        
-        resultsHtml += `</ul>`;
-        
-        const finalScoreHtml = `<h2>Final Score: ${score} / ${questions.length} (${((score / questions.length) * 100).toFixed(2)}%)</h2>`;
-        
-        quizContainer.innerHTML = finalScoreHtml;
-        resultContainer.innerHTML = resultsHtml;
-        questionListContainer.innerHTML = '';
-        
-        // Show restart button
-        document.getElementById('quizControls').style.display = 'none';
-        quizContainer.insertAdjacentHTML('beforeend', '<button id="restartBtn" onclick="restartQuiz()">Restart Quiz</button>');
-    }
-
-    /**
-     * Resets the quiz to start from the beginning.
-     */
-    function restartQuiz() {
-        currentQuestionIndex = 0;
-        userAnswers = [];
-        for (let i = 0; i < questions.length; i++) {
-            userAnswers.push({ selectedOption: null, answeredLater: false, timeRemaining: questions[i].time });
-        }
-        
-        document.getElementById('quizControls').style.display = 'flex';
-        document.getElementById('restartBtn').remove();
-        loadQuiz();
-    }
-
-    /**
-     * Initializes the quiz on page load.
-     */
-    function loadQuiz() {
-        if (questions.length > 0) {
-            renderQuestion();
-        } else {
-            quizContainer.innerHTML = "No questions found. Please check the 'questions' array.";
-            document.getElementById('quizControls').style.display = 'none';
-        }
-    }
-
-    // Start the quiz when the page loads
-    window.onload = loadQuiz;
-  </script>
+    loadQuestion(currentQuestionIndex);
+  </script>
+</body>
+</html>
