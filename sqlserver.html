@@ -1,3 +1,4 @@
+<!-- Updated MCQ Quiz with LocalStorage Persistence + Pause Button -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,200 +6,43 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>SQL MCQ Quiz</title>
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #f4f4f4;
-      padding: 20px;
-      color: #333;
-    }
-    .container {
-      max-width: 700px;
-      margin: auto;
-      background: white;
-      padding: 20px;
-      border-radius: 10px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
-    }
-    .question {
-      font-size: 1.2em;
-      margin-bottom: 15px;
-    }
-    .options label {
-      display: block;
-      margin: 8px 0;
-      cursor: pointer;
-      padding: 8px;
-      border-radius: 5px;
-      transition: background-color 0.2s ease;
-    }
-    .options label:hover {
-        background-color: #e2f0ff;
-    }
-    .options input[type="radio"] {
-        margin-right: 10px;
-    }
-    .timer {
-      font-weight: bold;
-      margin-bottom: 10px;
-      color: #d9534f;
-    }
-    #quizControls {
-        display: flex;
-        justify-content: space-between;
-        flex-wrap: wrap;
-        margin-top: 20px;
-    }
-    #quizControls button {
-      padding: 10px 15px;
-      background-color: #007bff;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      margin-right: 10px; /* Space between buttons */
-      margin-bottom: 10px; /* For wrapping on small screens */
-      font-size: 1em;
-      transition: background-color 0.3s ease, transform 0.2s ease;
-      flex-grow: 1; /* Allow buttons to grow */
-      min-width: 120px; /* Minimum width for buttons */
-    }
-    #quizControls button:hover {
-        background-color: #0056b3;
-        transform: translateY(-2px);
-    }
-    #quizControls button:active {
-        transform: translateY(0);
-    }
-    #prevBtn {
-        background-color: #6c757d; /* Grey for Previous */
-    }
-    #prevBtn:hover {
-        background-color: #5a6268;
-    }
-    #answerLaterBtn {
-        background-color: #ffc107; /* Yellow for Answer Later */
-        color: #333;
-    }
-    #answerLaterBtn:hover {
-        background-color: #e0a800;
-    }
-    #submitBtn {
-        background-color: #dc3545; /* Red for Submit */
-    }
-    #submitBtn:hover {
-        background-color: #c82333;
-    }
-    #result {
-      margin-top: 20px;
-      background: #e9ffe9;
-      padding: 15px;
-      border-radius: 10px;
-      border: 1px solid #c3e6cb;
-    }
-    #progress {
-      font-size: 0.9em;
-      color: #666;
-      margin-bottom: 10px;
-    }
-    #restartBtn {
-        margin-top: 20px;
-        padding: 10px 15px;
-        background-color: #28a745; /* Green */
-        color: white;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-        font-size: 1em;
-        transition: background-color 0.3s ease, transform 0.2s ease;
-    }
-    #restartBtn:hover {
-        background-color: #218838;
-        transform: translateY(-2px);
-    }
-    #restartBtn:active {
-        transform: translateY(0);
-    }
-    h3, h4 {
-        color: #0056b3;
-    }
-    ul {
-        list-style-type: none;
-        padding: 0;
-    }
-    li {
-        margin-bottom: 10px;
-        padding-bottom: 5px;
-        border-bottom: 1px dashed #eee;
-    }
-    li:last-child {
-        border-bottom: none;
-    }
-    .pass {
-        color: green;
-        font-weight: bold;
-    }
-    .fail {
-        color: red;
-        font-weight: bold;
-    }
-    .question-navigation {
-        margin-top: 20px;
-        padding: 15px;
-        background: #f8f9fa;
-        border-radius: 10px;
-        box-shadow: 0 0 5px rgba(0,0,0,0.05);
-    }
-    .question-numbers {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 8px;
-    }
-    .question-number {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        width: 35px;
-        height: 35px;
-        border-radius: 50%;
-        background-color: #e9ecef;
-        color: #495057;
-        font-weight: bold;
-        cursor: pointer;
-        transition: background-color 0.2s ease, transform 0.2s ease;
-    }
-    .question-number:hover {
-        transform: translateY(-2px);
-    }
-    .question-number.answered {
-        background-color: #28a745;
-        color: white;
-    }
-    .question-number.unanswered {
-        background-color: #dc3545;
-        color: white;
-    }
-    .question-number.current {
-        border: 2px solid #007bff;
-        box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.5);
-    }
+    body { font-family: Arial, sans-serif; background: #f4f4f4; padding: 20px; color: #333; }
+    .container { max-width: 700px; margin: auto; background: white; padding: 20px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+    .question { font-size: 1.2em; margin-bottom: 15px; }
+    .options label { display: block; margin: 8px 0; cursor: pointer; padding: 8px; border-radius: 5px; transition: 0.2s; }
+    .options label:hover { background-color: #e2f0ff; }
+    .timer { font-weight: bold; margin-bottom: 10px; color: #d9534f; }
+    #quizControls button { padding: 10px; border-radius: 5px; cursor: pointer; border: none; margin: 5px; min-width: 120px; }
+    #pauseBtn { background: #ff9800; color: white; }
+    #resumeBtn { background: #4caf50; color: white; display:none; }
   </style>
 </head>
 <body>
-  <div class="container">
-    <div id="quiz"></div>
-    <div id="quizControls">
-        <button id="prevBtn" onclick="goToPreviousQuestion()">Previous</button>
-        <button id="nextBtn" onclick="saveAndMoveToNext()">Next</button>
-        <button id="answerLaterBtn" onclick="answerLater()">Answer Later</button>
-        <button id="submitBtn" onclick="submitQuiz()">Submit Exam</button>
-    </div>
-    <div id="questionList" class="question-navigation"></div>
-    <div id="result"></div>
+
+<div class="container">
+
+  <div id="quiz"></div>
+
+  <div id="quizControls">
+    <button onclick="goToPreviousQuestion()">Previous</button>
+    <button onclick="saveAndMoveToNext()">Next</button>
+    <button id="pauseBtn" onclick="pauseQuiz()">Pause</button>
+    <button id="resumeBtn" onclick="resumeQuiz()">Resume</button>
+    <button onclick="submitQuiz()">Submit</button>
   </div>
 
-  <script>
-    let questions = [ // Changed to 'let' as it will be reassigned after shuffling
+  <div id="result"></div>
+</div>
 
+<script>
+// ------------------ LOCAL STORAGE KEYS ------------------
+const LS_KEY_INDEX = "mcq_current_index";
+const LS_KEY_ANSWERS = "mcq_user_answers";
+const LS_KEY_TIMER = "mcq_timer";
+const LS_KEY_PAUSED = "mcq_paused";
+const LS_KEY_SHUFFLED_QUESTIONS = "mcq_shuffled_questions";
+
+let questions = [
   {
     "q": "Which SQL command is used to retrieve data from a database table?",
     "options": [
@@ -474,17 +318,7 @@
     "answer": 0,
     "time": 20
   },
-  {
-    "q": "What is the key difference between TRUNCATE and DELETE commands in SQL Server?",
-    "options": [
-      "DELETE is DDL and TRUNCATE is DML.",
-      "TRUNCATE is a DML command; DELETE is a DDL command.",
-      "DELETE is faster and doesn't use the transaction log; TRUNCATE is slower and uses the log.",
-      "TRUNCATE is DDL, logs minimal info, resets identity, and is faster; DELETE is DML, logs every row deletion, and is slower."
-    ],
-    "answer": 3,
-    "time": 20
-  },
+   
   {
     "q": "What is the difference between WHERE and HAVING clauses in SQL Server?",
     "options": [
@@ -540,28 +374,7 @@
     "answer": 3,
     "time": 20
   },
-  {
-    "q": "What is the key difference between Table Variable and Temporary Table?",
-    "options": [
-      "Table variables are stored in the `tempdb` database; Temporary tables are stored in memory.",
-      "Table variables are session-specific; Temporary tables are visible to all sessions.",
-      "Table variables do not support indexes and are used within a single batch or stored procedure; Temporary tables support indexes and can be retained longer.",
-      "The functionality is reserved for Enterprise Edition only."
-    ],
-    "answer": 2,
-    "time": 20
-  },
-  {
-    "q": "What is the difference between UNION and UNION ALL in SQL Server?",
-    "options": [
-      "`UNION` removes duplicate rows and is faster; `UNION ALL` retains duplicate rows and is slower.",
-      "`UNION ALL` removes duplicate rows and is slower; `UNION` retains duplicate rows and is faster.",
-      "`UNION` retains duplicate rows and is faster; `UNION ALL` removes duplicate rows and is slower.",
-      "`UNION` removes duplicate rows and is slower; `UNION ALL` retains duplicate rows and is faster."
-    ],
-    "answer": 3,
-    "time": 20
-  },
+  
   {
     "q": "What is a Self Join in SQL Server?",
     "options": [
@@ -624,17 +437,6 @@
       "A user is a security principal (login) that can connect and access the database; a schema is a container for database objects.",
       "The command is unsupported and results in an error.",
       "The maximum limit is 16 per table."
-    ],
-    "answer": 1,
-    "time": 20
-  },
-  {
-    "q": "What is the key difference between Primary Key and Unique Key in SQL Server?",
-    "options": [
-      "A table can have multiple Primary Keys but only one Unique Key.",
-      "Primary Key enforces non-NULL values and allows only one per table; Unique Key allows one NULL value and multiple per table.",
-      "Primary Key allows one NULL value; Unique Key does not allow any NULL values.",
-      "Both are the same, but Primary Key is faster."
     ],
     "answer": 1,
     "time": 20
@@ -728,17 +530,6 @@
     "time": 20
   },
   {
-    "q": "What is a Cursor in SQL Server?",
-    "options": [
-      "A database object that is used to generate sequential numbers.",
-      "A database control structure used to traverse and process records from a result set one row at a time.",
-      "The maximum limit is 16 per table.",
-      "The functionality is reserved for Enterprise Edition only."
-    ],
-    "answer": 1,
-    "time": 20
-  },
-  {
     "q": "What is the difference between NOLOCK and READ UNCOMMITTED?",
     "options": [
       "`NOLOCK` is a keyword; `READ UNCOMMITTED` is a transaction isolation level that achieves the same result (reading uncommitted changes).",
@@ -761,17 +552,6 @@
     "time": 20
   },
 
-  {
-    "q": "What is difference between Normalization and Denormalization?",
-    "options": [
-      "Normalization improves redundancy and makes queries faster; Denormalization reduces redundancy and makes updates slower.",
-      "Normalization reduces data redundancy, improving integrity but potentially slowing reads; Denormalization adds redundancy to improve query speed (reads).",
-      "It is not possible in SQL Server.",
-      "The maximum limit is 16 per table."
-    ],
-    "answer": 1,
-    "time": 20
-  },
   {
     "q": "What is difference between DDL and DML in SQL Server?",
     "options": [
@@ -828,17 +608,6 @@
     "time": 20
   },
   {
-    "q": "What is recursive CTE in SQL Server?",
-    "options": [
-      "A CTE that references itself, used to query hierarchical or tree-structured data.",
-      "A CTE that is only used to update data.",
-      "The maximum limit is 16 per table.",
-      "It is a feature related to distributed transactions only."
-    ],
-    "answer": 0,
-    "time": 20
-  },
-  {
     "q": "What is STUFF function in SQL Server?",
     "options": [
       "The STUFF function removes a specified length of characters from a string and inserts another string in its place.",
@@ -872,17 +641,6 @@
     "time": 20
   },
   {
-    "q": "What is difference between ROW_NUMBER(), RANK() and DENSE_RANK() in SQL Server?",
-    "options": [
-      "`ROW_NUMBER()` assigns sequential rank with gaps for ties; `RANK()` assigns sequential rank without gaps for ties; `DENSE_RANK()` assigns unique rank for each row.",
-      "`ROW_NUMBER()` assigns unique, sequential number; `RANK()` assigns rank with gaps for ties; `DENSE_RANK()` assigns rank without gaps for ties.",
-      "The functionality is reserved for Enterprise Edition only.",
-      "They are completely different and unrelated concepts."
-    ],
-    "answer": 1,
-    "time": 20
-  },
-  {
     "q": "What is an Identity column in SQL Server?",
     "options": [
       "A column that must be manually updated with a unique value.",
@@ -900,17 +658,6 @@
       "A primary key uniquely identifies a row in a table; a foreign key establishes a relationship by referencing the primary key in another table.",
       "A foreign key can only be created on temporary tables.",
       "Both enforce uniqueness at the column level."
-    ],
-    "answer": 1,
-    "time": 20
-  },
-  {
-    "q": "What is the key difference between a Clustered Index and a Non-Clustered Index?",
-    "options": [
-      "A Non-Clustered Index stores table data; a Clustered Index only stores pointers to data.",
-      "A Clustered Index defines the physical order of data; a Non-Clustered Index maintains a separate structure that points to the data rows.",
-      "Both determine the physical storage order of data in a table.",
-      "A table can have multiple Clustered Indexes and only one Non-Clustered Index."
     ],
     "answer": 1,
     "time": 20
@@ -1005,45 +752,12 @@
   },
 
 {
-  q: "What are data types in SQL Server?",
-  options: [
-    "A specification that defines the type of data a column can store (e.g., INT, VARCHAR, DATE).",
-    "A temporary object used to store session-level data.",
-    "A constraint applied to limit duplicate values in a column.",
-    "A property that controls indexing behavior in SQL tables."
-  ],
-  answer: 0,
-  time: 20
-},
-{
   q: "What are CAST and CONVERT functions used for in SQL Server?",
   options: [
     "Both are used to change an expression from one data type to another, but CONVERT allows formatting with an optional style parameter.",
     "They are used to encrypt and decrypt data.",
     "They are used to convert data into XML format only.",
     "They are used to transform table structures between databases."
-  ],
-  answer: 0,
-  time: 20
-},
-{
-  q: "What is the difference between RANK() and DENSE_RANK()?",
-  options: [
-    "`RANK()` assigns ranks with gaps for ties; `DENSE_RANK()` assigns ranks without gaps for ties.",
-    "`RANK()` skips ranking duplicates, while `DENSE_RANK()` assigns random order for ties.",
-    "`DENSE_RANK()` works only on distinct values, while `RANK()` works on all values.",
-    "`RANK()` is used for numeric data only; `DENSE_RANK()` for text data."
-  ],
-  answer: 0,
-  time: 20
-},
-{
-  q: "What is the difference between GETDATE() and SYSDATETIME() in SQL Server?",
-  options: [
-    "`GETDATE()` returns current date/time with milliseconds precision; `SYSDATETIME()` provides higher precision up to 100 nanoseconds.",
-    "`GETDATE()` shows only the date, while `SYSDATETIME()` shows only time.",
-    "`SYSDATETIME()` is available only in Azure SQL Database.",
-    "`GETDATE()` returns UTC time, while `SYSDATETIME()` returns local time."
   ],
   answer: 0,
   time: 20
@@ -1070,28 +784,7 @@
   answer: 0,
   time: 20
 },
-{
-  q: "What does the STRING_AGG() function do in SQL Server?",
-  options: [
-    "It concatenates string values from multiple rows into a single string, separated by a specified delimiter.",
-    "It aggregates numeric columns by converting them to strings.",
-    "It merges multiple tables into a single string output.",
-    "It returns a count of distinct string values in a column."
-  ],
-  answer: 0,
-  time: 20
-},
-{
-  q: "What is the difference between a Subquery and a CTE in SQL Server?",
-  options: [
-    "A CTE is a named temporary result set reusable in a query; a Subquery is defined and used only once within a statement.",
-    "A Subquery can be recursive; a CTE cannot.",
-    "A CTE is faster than any Subquery by default.",
-    "A Subquery stores results permanently in tempdb."
-  ],
-  answer: 0,
-  time: 20
-},
+ 
 {
   q: "What is the difference between a Table Variable and a Temp Table in SQL Server?",
   options: [
@@ -1113,18 +806,7 @@
   ],
   "answer": 1,
   "time": 20
-},
-{
-  "q": "What are the types of Execution Plans?",
-  "options": [
-    "Estimated Plan (before execution) and Actual Plan (after execution).",
-    "Parallel Plan and Serial Plan.",
-    "Temporary Plan and Permanent Plan.",
-    "Indexed Plan and Non-indexed Plan."
-  ],
-  "answer": 0,
-  "time": 20
-},
+}, 
 {
   "q": "How can you generate an Execution Plan in SQL Server?",
   "options": [
@@ -1135,18 +817,7 @@
   ],
   "answer": 0,
   "time": 20
-},
-{
-  "q": "What is the difference between Real and Estimated Execution Plans?",
-  "options": [
-    "Real Plan is generated before execution; Estimated Plan is generated after execution.",
-    "Real Plan includes actual runtime statistics such as row counts; Estimated Plan shows only estimated values based on statistics.",
-    "Estimated Plan is always faster to execute.",
-    "They both show identical results in every scenario."
-  ],
-  "answer": 1,
-  "time": 20
-},
+}, 
 {
   "q": "What is the Database Engine in SQL Server?",
   "options": [
@@ -1313,17 +984,7 @@
   "answer": 0,
   "time": 20
 },
-{
-  "q": "What is the difference between Local and Global Temporary Tables?",
-  "options": [
-    "Local tables (prefixed with `#`) are visible only to the current session; Global tables (prefixed with `##`) are visible to all sessions until the last connection using them is closed.",
-    "Local tables are visible to all sessions; Global tables are restricted to the current session.",
-    "Both types of tables are global in scope by default.",
-    "Global tables are stored in memory, while local tables are stored on disk."
-  ],
-  "answer": 0,
-  "time": 20
-},
+
 {
   "q": "What is database collation in SQL Server?",
   "options": [
@@ -1419,17 +1080,6 @@
     "Using the `CREATE LOGIN` command.",
     "By inserting a record into the sysroles table.",
     "By assigning a user directly to the sysadmin role."
-  ],
-  "answer": 0,
-  "time": 20
-},
-{
-  "q": "How do you create a Database User from a Login?",
-  "options": [
-    "Using the `CREATE USER` statement with a mapping to an existing login.",
-    "By restoring a user from a backup file.",
-    "By assigning a login to a schema directly.",
-    "By executing a GRANT statement on a login."
   ],
   "answer": 0,
   "time": 20
@@ -1545,17 +1195,6 @@
   "time": 20
 },
 {
-  "q": "What is the difference between Clustered and Non-Clustered Index?",
-  "options": [
-    "A Clustered Index determines the physical order of data; a Non-Clustered Index stores separate pointers to data rows.",
-    "A Non-Clustered Index determines the data order; a Clustered Index stores only metadata.",
-    "Both types store data in memory only.",
-    "A Clustered Index can be created multiple times per table."
-  ],
-  "answer": 0,
-  "time": 20
-},
-{
   "q": "What is a Deadlock in SQL Server?",
   "options": [
     "A condition where two or more processes wait indefinitely for each other to release locks.",
@@ -1599,28 +1238,7 @@
     "answer": 1,
     "time": 20
   },
-  {
-    "q": "What is the key difference between UNION and UNION ALL?",
-    "options": [
-      "UNION removes duplicates and is slower; UNION ALL includes duplicates and is faster.",
-      "UNION ALL removes duplicates; UNION includes all rows.",
-      "Both perform the same function but UNION ALL sorts data automatically.",
-      "UNION ALL cannot be used on tables with same columns."
-    ],
-    "answer": 0,
-    "time": 20
-  },
-  {
-    "q": "What is the key difference between Primary Key and Foreign Key?",
-    "options": [
-      "Primary Key uniquely identifies each record; Foreign Key enforces referential integrity with another table.",
-      "Foreign Key uniquely identifies a record; Primary Key references another table.",
-      "Both are used only to enforce unique values in a column.",
-      "Primary Key can have duplicates while Foreign Key cannot."
-    ],
-    "answer": 0,
-    "time": 20
-  },
+   
   {
     "q": "What is the key difference between Primary Key and Unique Key?",
     "options": [
@@ -1630,17 +1248,6 @@
       "Primary Key is used for non-clustered index, Unique Key is used for clustered index."
     ],
     "answer": 1,
-    "time": 20
-  },
-  {
-    "q": "What is the key difference between Clustered Index and Heap Table?",
-    "options": [
-      "Heap table has no index or order; Clustered Index stores rows in physical order of index key.",
-      "Clustered Index stores data randomly; Heap table stores data sorted by row ID.",
-      "Both physically order rows but only clustered index can be unique.",
-      "Heap tables are faster for all queries compared to clustered tables."
-    ],
-    "answer": 0,
     "time": 20
   },
   {
@@ -1654,28 +1261,7 @@
     "answer": 0,
     "time": 20
   },
-  {
-    "q": "What is the key difference between ISNULL and COALESCE?",
-    "options": [
-      "COALESCE returns the first non-null among multiple expressions; ISNULL works with only two arguments.",
-      "ISNULL and COALESCE both behave identically in all cases.",
-      "COALESCE can handle only one expression; ISNULL supports multiple.",
-      "ISNULL chooses the datatype of higher precedence; COALESCE chooses the first expression's datatype."
-    ],
-    "answer": 0,
-    "time": 20
-  },
-  {
-    "q": "What is the key difference between GETDATE() and SYSDATETIME()?",
-    "options": [
-      "GETDATE() returns higher precision than SYSDATETIME().",
-      "SYSDATETIME() returns higher precision (100 nanoseconds) and DATETIME2 type; GETDATE() returns DATETIME (1 millisecond).",
-      "Both have identical precision but different data types.",
-      "SYSDATETIME() is deprecated and replaced by GETDATE()."
-    ],
-    "answer": 1,
-    "time": 20
-  },
+  
   {
     "q": "What is the key difference between NVARCHAR and VARCHAR?",
     "options": [
@@ -1694,28 +1280,6 @@
       "VARCHAR is fixed-length while CHAR is variable-length.",
       "Both occupy equal storage regardless of data size.",
       "CHAR allows NULLs; VARCHAR does not."
-    ],
-    "answer": 0,
-    "time": 20
-  },
-  {
-    "q": "What is the key difference between User and Login?",
-    "options": [
-      "Login is a server-level identity; User is a database-level identity for permissions.",
-      "User is a server-level identity; Login exists only inside a specific database.",
-      "Login and User are identical objects used for authentication.",
-      "User controls server access, Login controls database access."
-    ],
-    "answer": 0,
-    "time": 20
-  },
-  {
-    "q": "What is the key difference between SQL and TSQL?",
-    "options": [
-      "SQL is the standard query language; T-SQL is Microsoft's extension with procedural programming and error handling.",
-      "Both are identical in functionality; T-SQL is just a new version name.",
-      "T-SQL is a subset of SQL used only for joins and subqueries.",
-      "SQL is procedural, T-SQL is purely declarative."
     ],
     "answer": 0,
     "time": 20
@@ -1744,28 +1308,7 @@
     "answer": 1,
     "time": 20
   },
-  {
-    "q": "What is the key difference between Local and Global Temp Table?",
-    "options": [
-      "Local table (`#`) is session-specific; Global table (`##`) is visible to all sessions.",
-      "Global table (`##`) is session-specific; Local table (`#`) is visible to all sessions.",
-      "Both Local and Global temp tables are visible to all sessions.",
-      "Temp tables exist permanently until the server restarts."
-    ],
-    "answer": 0,
-    "time": 20
-  },
-  {
-    "q": "What is the key difference between Table Variable and Temp Table?",
-    "options": [
-      "Table variables support indexes and statistics; Temp tables do not.",
-      "Table variables do not support indexes, locks, or statistics; Temp tables do support them and are stored in `tempdb`.",
-      "Table variables are visible to all sessions; Temp tables are session-specific.",
-      "Temp tables are faster for small datasets; Table variables are faster for large datasets."
-    ],
-    "answer": 1,
-    "time": 20
-  },
+  
   {
     "q": "What is the key difference between Subquery and CTE?",
     "options": [
@@ -1788,6 +1331,7 @@
     "answer": 0,
     "time": 20
   },
+   
   {
     "q": "What is the key difference between INNER JOIN and OUTER JOIN?",
     "options": [
@@ -1799,17 +1343,7 @@
     "answer": 0,
     "time": 20
   },
-  {
-    "q": "What is the key difference between TRUNCATE and DELETE statements?",
-    "options": [
-      "TRUNCATE is DDL, logs minimal info, resets identity, and is faster; DELETE is DML, logs every row deletion, and is slower.",
-      "DELETE is DDL and resets identity; TRUNCATE is DML and logs every deletion.",
-      "TRUNCATE and DELETE are functionally identical.",
-      "DELETE cannot be rolled back; TRUNCATE can."
-    ],
-    "answer": 0,
-    "time": 20
-  },
+  
   {
     "q": "What is the key difference between SQL and NoSQL?",
     "options": [
@@ -1872,17 +1406,6 @@
       "A data structure that improves the speed of data retrieval operations on database tables.",
       "A method to store data redundantly in tempdb.",
       "A type of stored procedure for queries."
-    ],
-    "answer": 1,
-    "time": 20
-  },
-  {
-    "q": "What is the key difference between Clustered Index and Non-Clustered Index?",
-    "options": [
-      "A Non-Clustered Index contains the data pages; a Clustered Index only contains pointers.",
-      "A Clustered Index determines the physical order of data (data at leaf level); a Non-Clustered Index is separate from data and uses pointers.",
-      "Clustered Indexes are always faster for queries than Non-Clustered Indexes.",
-      "Non-Clustered Indexes cannot be created on primary keys."
     ],
     "answer": 1,
     "time": 20
@@ -1999,17 +1522,6 @@
     "time": 20
   },
   {
-    "q": "What is the key difference between NOLOCK and READ UNCOMMITTED?",
-    "options": [
-      "`NOLOCK` is a keyword; `READ UNCOMMITTED` is a transaction isolation level that achieves the same result (reading uncommitted changes).",
-      "NOLOCK automatically locks the table; READ UNCOMMITTED does not.",
-      "They prevent deadlocks by default.",
-      "They are only relevant in temporary tables."
-    ],
-    "answer": 0,
-    "time": 20
-  },
-  {
     "q": "What is difference between CHAR and VARCHAR?",
     "options": [
       "`VARCHAR` is variable length and stores only necessary bytes; `CHAR` is fixed length and always uses the declared size.",
@@ -2020,17 +1532,7 @@
     "answer": 0,
     "time": 20
   },
-  {
-    "q": "What is difference between NVARCHAR and VARCHAR?",
-    "options": [
-      "`NVARCHAR` stores Unicode data (double the storage per character); `VARCHAR` stores non-Unicode (ASCII) data.",
-      "VARCHAR supports multiple languages; NVARCHAR supports only English.",
-      "NVARCHAR is deprecated in SQL Server 2019.",
-      "VARCHAR always requires double the storage space."
-    ],
-    "answer": 0,
-    "time": 20
-  },
+  
   {
     "q": "What is difference between Normalization and Denormalization?",
     "options": [
@@ -2049,17 +1551,6 @@
       "DDL only works on temporary tables; DML works on permanent tables.",
       "DML can modify schema; DDL cannot modify data.",
       "DDL is deprecated in SQL Server 2019."
-    ],
-    "answer": 0,
-    "time": 20
-  },
-  {
-    "q": "What is difference between Primary Key and Foreign Key?",
-    "options": [
-      "A Primary Key establishes a unique row identifier; a Foreign Key links two tables by referencing the Primary Key of another table.",
-      "Primary Key can have duplicates; Foreign Key cannot.",
-      "Foreign Key is always indexed; Primary Key is not.",
-      "Both enforce uniqueness in the same table."
     ],
     "answer": 0,
     "time": 20
@@ -2107,40 +1598,8 @@
     ],
     "answer": 0,
     "time": 20
-  },
-  {
-    "q": "What is the STUFF function in SQL Server?",
-    "options": [
-      "The STUFF function removes a specified length of characters from a string and inserts another string in its place.",
-      "The STUFF function concatenates two tables.",
-      "It truncates all rows in a table.",
-      "It generates sequential numbers automatically."
-    ],
-    "answer": 0,
-    "time": 20
-  },
-  {
-    "q": "What is PIVOT and UNPIVOT in SQL Server?",
-    "options": [
-      "PIVOT converts rows into columns (aggregation); UNPIVOT converts columns into rows (un-aggregation).",
-      "PIVOT merges tables; UNPIVOT splits tables.",
-      "PIVOT changes table storage; UNPIVOT deletes indexes.",
-      "They are SQL Server optimization hints."
-    ],
-    "answer": 0,
-    "time": 20
-  },
-  {
-    "q": "What is XML PATH in SQL Server?",
-    "options": [
-      "A clause used to concatenate row values into a single string.",
-      "A function to validate XML schemas.",
-      "A method to create XML indexes automatically.",
-      "An alternative to dynamic SQL execution."
-    ],
-    "answer": 0,
-    "time": 20
-  },
+  }, 
+  
   {
     "q": "What is the key difference between ROW_NUMBER(), RANK() and DENSE_RANK()?",
     "options": [
@@ -2152,17 +1611,7 @@
     "answer": 0,
     "time": 20
   },
-  {
-    "q": "What is an Identity Column in SQL Server?",
-    "options": [
-      "A property on a column that automatically generates sequential, numeric values.",
-      "A column that stores only null values.",
-      "A column used only for temporary tables.",
-      "A special index type."
-    ],
-    "answer": 0,
-    "time": 20
-  },
+  
   {
     "q": "What is the key difference between Clustered Index and Non-Clustered Index?",
     "options": [
@@ -2170,17 +1619,6 @@
       "Non-Clustered Index stores data physically; Clustered Index does not.",
       "Clustered Index can only be created on temporary tables.",
       "They are identical and interchangeable."
-    ],
-    "answer": 0,
-    "time": 20
-  },
-  {
-    "q": "What is the key difference between Left Join and Full Join?",
-    "options": [
-      "Left Join returns all rows from the left table and matched rows from the right; Full Join returns all rows when there is a match in either table.",
-      "Full Join returns only rows that match in both tables.",
-      "Left Join excludes unmatched rows from the left table.",
-      "Both joins always return the same result."
     ],
     "answer": 0,
     "time": 20
@@ -2197,39 +1635,6 @@
     "time": 20
   },
   {
-    "q": "What is a Schema in SQL Server?",
-    "options": [
-      "A container for database objects like tables, views, and stored procedures.",
-      "A special type of index used for query optimization.",
-      "A temporary table created in memory.",
-      "A property to enforce constraints on multiple tables."
-    ],
-    "answer": 0,
-    "time": 20
-  },
-  {
-    "q": "What is an Alias in SQL Server?",
-    "options": [
-      "A temporary name given to a table or a column.",
-      "A permanent alternative name for a database.",
-      "A type of constraint applied to columns.",
-      "A type of index to improve query performance."
-    ],
-    "answer": 0,
-    "time": 20
-  },
-  {
-    "q": "What is the key difference between CHECK and DEFAULT constraints?",
-    "options": [
-      "CHECK limits the range of values that can be placed in a column; DEFAULT specifies a default value for a column.",
-      "CHECK enforces uniqueness; DEFAULT enforces referential integrity.",
-      "DEFAULT prevents null values; CHECK allows nulls.",
-      "CHECK automatically generates sequential numbers; DEFAULT does not."
-    ],
-    "answer": 0,
-    "time": 20
-  },
-  {
     "q": "What are Data Types in SQL Server?",
     "options": [
       "A specification that identifies the type of data a column can hold (e.g., INT, VARCHAR, DATE).",
@@ -2240,28 +1645,7 @@
     "answer": 0,
     "time": 20
   },
-  {
-    "q": "What is the key difference between CAST and CONVERT?",
-    "options": [
-      "Both are used to convert an expression from one data type to another, but CONVERT allows for an optional style parameter.",
-      "CAST can change table structure; CONVERT cannot.",
-      "CONVERT always returns a string; CAST always returns a number.",
-      "CAST is used only in temporary tables; CONVERT is used in permanent tables."
-    ],
-    "answer": 0,
-    "time": 20
-  },
-  {
-    "q": "What is the key difference between RANK() and DENSE_RANK()?",
-    "options": [
-      "`RANK()` assigns rank with gaps for ties; `DENSE_RANK()` assigns rank without gaps for ties.",
-      "`RANK()` ignores ties; DENSE_RANK() duplicates numbers for ties.",
-      "`RANK()` is used only for temporary tables.",
-      "DENSE_RANK() always starts numbering from 0."
-    ],
-    "answer": 0,
-    "time": 20
-  },
+  
   {
     "q": "What is the key difference between GETDATE() and SYSDATETIME()?",
     "options": [
@@ -2273,28 +1657,8 @@
     "answer": 0,
     "time": 20
   },
-  {
-    "q": "What is the key difference between DateTime and DateTime2?",
-    "options": [
-      "`DATETIME2` has a larger date range and a configurable precision (default 7 decimal places); `DATETIME` has a smaller range and a fixed precision (3 decimal places).",
-      "`DATETIME2` is stored as string; `DATETIME` is numeric.",
-      "`DATETIME` supports timezone; `DATETIME2` does not.",
-      "Both have identical range and precision."
-    ],
-    "answer": 0,
-    "time": 20
-  },
-  {
-    "q": "What is the key difference between NCHAR and NVARCHAR?",
-    "options": [
-      "`NCHAR` is fixed length Unicode; `NVARCHAR` is variable length Unicode.",
-      "`NVARCHAR` stores ASCII only; NCHAR stores Unicode.",
-      "`NCHAR` is deprecated in SQL Server 2019.",
-      "`NVARCHAR` cannot store NULL values; NCHAR can."
-    ],
-    "answer": 0,
-    "time": 20
-  },
+  
+  
   {
     "q": "What is the STRING_AGG function in SQL Server?",
     "options": [
@@ -2317,28 +1681,8 @@
     "answer": 0,
     "time": 20
   },
-  {
-    "q": "What is the key difference between Table Variable and Temp Table?",
-    "options": [
-      "Table variables are non-transactional and scope-limited (stored in memory); Temp tables are transactional and retain data until the session ends (stored in tempdb).",
-      "Temp tables cannot have indexes; Table variables can.",
-      "Table variables are always persisted on disk; Temp tables are in memory.",
-      "They are identical and interchangeable."
-    ],
-    "answer": 0,
-    "time": 20
-  },
-  {
-    "q": "What is an Execution Plan in SQL Server?",
-    "options": [
-      "A series of steps SQL Server will take to execute an SQL statement efficiently.",
-      "A tool to generate sample data automatically.",
-      "A temporary table that logs queries.",
-      "A stored procedure for optimizing indexes."
-    ],
-    "answer": 0,
-    "time": 20
-  },
+  
+   
   {
     "q": "What are the types of Execution Plan?",
     "options": [
@@ -2374,225 +1718,114 @@
   }
 
 
+];
 
+let currentQuestionIndex = 0;
+let userAnswers = new Array(questions.length).fill(null);
+let totalSecondsLeft = questions.length * 20;
+let globalTimer = null;
+let paused = false;
 
-    ];
+//-------------------------------------------------------------
+// Shuffle function
+//-------------------------------------------------------------
+function shuffleArray(arr){ for(let i=arr.length-1;i>0;i--){ const j=Math.floor(Math.random()* (i+1)); [arr[i],arr[j]]=[arr[j],arr[i]]; }}
 
-    let currentQuestionIndex = 0;
-    let userAnswers = new Array(questions.length).fill(null); // Stores the index of the selected option, or null if unanswered
-    let globalTimerInterval; // Global timer interval ID
-    let totalSecondsLeft; // Total time for the entire quiz
-    const passPercentage = 70; // Define the passing percentage
-    const timePerQuestion = 20; // 20 seconds per question
+//-------------------------------------------------------------
+// Save State to LocalStorage
+//-------------------------------------------------------------
+function saveState(){
+  localStorage.setItem(LS_KEY_INDEX, currentQuestionIndex);
+  localStorage.setItem(LS_KEY_TIMER, totalSecondsLeft);
+  localStorage.setItem(LS_KEY_ANSWERS, JSON.stringify(userAnswers));
+  localStorage.setItem(LS_KEY_PAUSED, paused);
+  localStorage.setItem(LS_KEY_SHUFFLED_QUESTIONS, JSON.stringify(questions));
+}
 
-    // Function to shuffle an array (Fisher-Yates algorithm)
-    function shuffleArray(array) {
-        for (let i = array.length - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1));
-            [array[i], array[j]] = [array[j], array[i]]; // Swap elements
-        }
-    }
+//-------------------------------------------------------------
+// Load State from LocalStorage
+//-------------------------------------------------------------
+function loadState(){
+  if(localStorage.getItem(LS_KEY_SHUFFLED_QUESTIONS)){
+    questions = JSON.parse(localStorage.getItem(LS_KEY_SHUFFLED_QUESTIONS));
+    userAnswers = JSON.parse(localStorage.getItem(LS_KEY_ANSWERS));
+    currentQuestionIndex = parseInt(localStorage.getItem(LS_KEY_INDEX));
+    totalSecondsLeft = parseInt(localStorage.getItem(LS_KEY_TIMER));
+    paused = (localStorage.getItem(LS_KEY_PAUSED) === "true");
+  } else {
+    shuffleArray(questions);
+  }
+}
 
-    // Function to shuffle options for a single question and update its answer index
-    function shuffleOptionsAndAnswer(question) {
-        const correctOptionText = question.options[question.answer];
-        shuffleArray(question.options); // Shuffle the options array
-        question.answer = question.options.indexOf(correctOptionText); // Update the answer index
-    }
+//-------------------------------------------------------------
+// Timer
+//-------------------------------------------------------------
+function startTimer(){
+  if(paused) return;
 
-    function calculateCorrectAnswers() {
-        let count = 0;
-        for (let i = 0; i < questions.length; i++) {
-            if (userAnswers[i] !== null && userAnswers[i] === questions[i].answer) {
-                count++;
-            }
-        }
-        return count;
-    }
+  globalTimer = setInterval(() => {
+    totalSecondsLeft--;
+    saveState();
+    const t = document.getElementById("timer");
+    if(t) t.innerText = timeFormat(totalSecondsLeft);
+    if(totalSecondsLeft <= 0){ submitQuiz(); }
+  },1000);
+}
 
-    function saveCurrentAnswer() {
-        const selected = document.querySelector("input[name='option']:checked");
-        if (selected) {
-            userAnswers[currentQuestionIndex] = parseInt(selected.value);
-        } else {
-            // If no option is selected, and it wasn't marked "Answer Later", keep it null
-            // If it was previously answered, and now unselected, set to null
-            if (userAnswers[currentQuestionIndex] !== null) {
-                userAnswers[currentQuestionIndex] = null;
-            }
-        }
-    }
+function pauseQuiz(){ paused = true; clearInterval(globalTimer); saveState(); document.getElementById("pauseBtn").style.display="none"; document.getElementById("resumeBtn").style.display="inline-block"; }
+function resumeQuiz(){ paused = false; saveState(); startTimer(); document.getElementById("resumeBtn").style.display="none"; document.getElementById("pauseBtn").style.display="inline-block"; }
 
-    function loadQuestion(index) {
-        // No clearInterval(timer) here, as globalTimerInterval is managed separately
-        document.getElementById("result").innerHTML = ""; // Clear results area
+function timeFormat(sec){ return String(Math.floor(sec/60)).padStart(2,'0')+":"+String(sec%60).padStart(2,'0'); }
 
-        if (index >= questions.length) {
-            submitQuiz();
-            return;
-        }
+//-------------------------------------------------------------
+// Load Question
+//-------------------------------------------------------------
+function loadQuestion(index){
+  currentQuestionIndex = index;
 
-        currentQuestionIndex = index; // Ensure currentQuestionIndex is updated for direct jumps
+  let q = questions[index];
 
-        const q = questions[currentQuestionIndex];
-        
-        // Format global time for display
-        const minutes = Math.floor(totalSecondsLeft / 60);
-        const seconds = totalSecondsLeft % 60;
-        const formattedTime = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+  document.getElementById("quiz").innerHTML = `
+    <div class="timer">Time Left: <span id="timer">${timeFormat(totalSecondsLeft)}</span></div>
+    <div class="question">Q${index+1}. ${q.q}</div>
+    <div class="options">
+      ${q.options.map((opt,i)=>`<label><input type='radio' name='opt' value='${i}' ${userAnswers[index]===i?'checked':''}>${opt}</label>`).join('')}
+    </div>
+  `;
+}
 
-        // Removed the currentCorrectCount from progressHTML
-        const progressHTML = `<div id="progress">Question ${currentQuestionIndex + 1} of ${questions.length}</div>`;
+//-------------------------------------------------------------
+// Navigation
+//-------------------------------------------------------------
+function saveAnswer(){
+  let checked = document.querySelector("input[name='opt']:checked");
+  userAnswers[currentQuestionIndex] = checked ? parseInt(checked.value) : null;
+  saveState();
+}
 
-        document.getElementById("quiz").innerHTML = `
-            ${progressHTML}
-            <div class="timer">Total Time Left: <span id="timer">${formattedTime}</span></div>
-            <div class="question">Q${currentQuestionIndex + 1}. ${q.q}</div>
-            <div class="options">
-                ${q.options.map((opt, i) => `
-                    <label>
-                        <input type="radio" name="option" value="${i}" ${userAnswers[currentQuestionIndex] === i ? 'checked' : ''}> ${opt}
-                    </label>
-                `).join('')}
-            </div>
-        `;
+function saveAndMoveToNext(){ saveAnswer(); if(currentQuestionIndex < questions.length-1) loadQuestion(++currentQuestionIndex); }
+function goToPreviousQuestion(){ saveAnswer(); if(currentQuestionIndex > 0) loadQuestion(--currentQuestionIndex); }
 
-        // Update button visibility
-        document.getElementById("prevBtn").disabled = currentQuestionIndex === 0;
-        document.getElementById("nextBtn").style.display = currentQuestionIndex === questions.length - 1 ? "none" : "inline-block";
-        document.getElementById("submitBtn").style.display = "inline-block";
-        document.getElementById("answerLaterBtn").style.display = currentQuestionIndex === questions.length - 1 ? "none" : "inline-block";
-        
-        updateQuestionList(); // Update the navigation list
-        console.log(`Loaded question ${currentQuestionIndex + 1}. Total time left: ${formattedTime}`);
-    }
+//-------------------------------------------------------------
+// Submit
+//-------------------------------------------------------------
+function submitQuiz(){ clearInterval(globalTimer); localStorage.clear(); let score=0;
+  questions.forEach((q,i)=>{ if(userAnswers[i]===q.answer) score++; });
+  document.getElementById("quiz").style.display="none";
+  document.getElementById("quizControls").style.display="none";
+  document.getElementById("result").innerHTML = `
+     <h2>Quiz Submitted</h2>
+     <h3>Your Score: ${score} / ${questions.length}</h3>
+     <button onclick='location.reload()'>Restart</button>`;
+}
 
-    function saveAndMoveToNext() {
-        saveCurrentAnswer(); // Save the answer for the current question
+//-------------------------------------------------------------
+// Init
+//-------------------------------------------------------------
+loadState();
+loadQuestion(currentQuestionIndex);
+startTimer();
 
-        if (currentQuestionIndex < questions.length - 1) {
-            currentQuestionIndex++;
-            loadQuestion(currentQuestionIndex);
-        } else {
-            submitQuiz(); // If it's the last question, submit
-        }
-    }
-
-    function goToPreviousQuestion() {
-        saveCurrentAnswer(); // Save the answer for the current question
-
-        if (currentQuestionIndex > 0) {
-            currentQuestionIndex--;
-            loadQuestion(currentQuestionIndex);
-        }
-    }
-
-    function answerLater() {
-        // Explicitly mark as unanswered (null)
-        userAnswers[currentQuestionIndex] = null; 
-        saveAndMoveToNext(); // Move to the next question
-    }
-
-    function submitQuiz() {
-        clearInterval(globalTimerInterval); // Stop the global timer
-        saveCurrentAnswer(); // Save the answer for the current question before final submission
-
-        console.log("Submitting quiz. Final answers:", userAnswers);
-        showResult();
-    }
-
-    function showResult() {
-        let finalScore = calculateCorrectAnswers();
-        let totalQuestions = questions.length;
-        let scorePercentage = (finalScore / totalQuestions) * 100;
-
-        let resultHTML = "<h3>Quiz Completed!</h3>";
-        resultHTML += `<h4>Your Final Score: ${finalScore} / ${totalQuestions}</h4>`;
-        resultHTML += `<h4>Your Percentage: ${scorePercentage.toFixed(2)}%</h4>`;
-
-        if (scorePercentage >= passPercentage) {
-            resultHTML += `<h4 class="pass">Congratulations! You Passed!</h4>`;
-        } else {
-            resultHTML += `<h4 class="fail">Sorry, you did not pass. Try again!</h4>`;
-        }
-        
-        resultHTML += "<h3>Detailed Review:</h3><ul>";
-
-        questions.forEach((q, i) => {
-            const userAnswer = userAnswers[i];
-            const correctOptionIndex = q.answer;
-            const correctText = q.options[correctOptionIndex];
-            const userText = userAnswer !== null ? q.options[userAnswer] : "(Not Answered)";
-            const isCorrect = (userAnswer === correctOptionIndex);
-
-            resultHTML += `<li>
-                <strong>Q${i + 1}:</strong> ${q.q}<br>
-                Your Answer: <span style="color: ${isCorrect ? 'green' : 'red'};">${userText}</span><br>
-                Correct Answer: <span style="color: green;">${correctText}</span>
-            </li><br>`;
-        });
-
-        resultHTML += `</ul>`;
-        resultHTML += `<button id="restartBtn" onclick="location.reload()">Restart Quiz</button>`;
-
-        document.getElementById("quiz").style.display = "none";
-        document.getElementById("quizControls").style.display = "none";
-        document.getElementById("questionList").style.display = "none"; // Hide question list on result
-        document.getElementById("result").innerHTML = resultHTML;
-    }
-
-    function updateQuestionList() {
-        const questionListDiv = document.getElementById("questionList");
-        let listHTML = "<h4>Question Navigation:</h4><div class='question-numbers'>";
-        questions.forEach((q, i) => {
-            let statusClass = '';
-            if (userAnswers[i] !== null) {
-                statusClass = 'answered';
-            } else if (userAnswers[i] === null && i < currentQuestionIndex) {
-                // If they skipped or went back, and it's still null, it's unanswered
-                statusClass = 'unanswered';
-            } else if (userAnswers[i] === null && i > currentQuestionIndex) {
-                statusClass = ''; // Future questions, default color
-            }
-            
-            const currentClass = i === currentQuestionIndex ? 'current' : '';
-            listHTML += `<span class='question-number ${statusClass} ${currentClass}' onclick='jumpToQuestion(${i})'>${i + 1}</span>`;
-        });
-        listHTML += "</div>";
-        questionListDiv.innerHTML = listHTML;
-    }
-
-    function jumpToQuestion(index) {
-        // No clearInterval(timer) here, as globalTimerInterval is managed separately
-        saveCurrentAnswer(); // Save the answer for the question they are leaving
-        loadQuestion(index); // Load the new question
-    }
-
-    // Initial setup: Shuffle questions, calculate total time, start global timer, and then load the first one
-    shuffleArray(questions); // Shuffle the order of questions
-    // For each question, shuffle its options and update the correct answer index
-    questions.forEach(q => shuffleOptionsAndAnswer(q));
-
-    totalSecondsLeft = questions.length * timePerQuestion; // Calculate total time
-
-    // Start the global timer
-    globalTimerInterval = setInterval(() => {
-        totalSecondsLeft--;
-        const minutes = Math.floor(totalSecondsLeft / 60);
-        const seconds = totalSecondsLeft % 60;
-        const formattedTime = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-        
-        const timerElement = document.getElementById("timer");
-        if (timerElement) {
-            timerElement.textContent = formattedTime;
-        }
-
-        if (totalSecondsLeft <= 0) {
-            submitQuiz(); // Automatically submit when time runs out
-        }
-    }, 1000);
-
-    loadQuestion(currentQuestionIndex);
-  </script>
+</script>
 </body>
 </html>
