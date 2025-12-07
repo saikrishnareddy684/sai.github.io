@@ -5,189 +5,272 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>SQL MCQ Exam – Batch + Resume + Timers + Persistence</title>
   <style>
-    body{font-family:Arial;background:#f4f4f4;margin:0;padding:20px}
-    .container{max-width:900px;margin:auto;background:#fff;padding:20px;border-radius:10px;box-shadow:0 0 10px rgba(0,0,0,0.1)}
-    button{margin:5px;padding:10px 15px;border:none;border-radius:5px;cursor:pointer}
-    .primary{background:#007bff;color:#fff}
-    .danger{background:#dc3545;color:#fff}
-    .warn{background:#ffc107}
+    :root{--bg:#f4f4f4;--card:#fff;--accent:#007bff;--good:#28a745;--bad:#dc3545;--muted:#666}
+    body{font-family:Inter,Arial,Helvetica,sans-serif;background:var(--bg);margin:0;padding:20px;color:#222}
+    .container{max-width:1000px;margin:auto;background:var(--card);padding:18px;border-radius:10px;box-shadow:0 8px 30px rgba(0,0,0,0.06)}
+    h1{margin:0 0 12px;color:var(--accent)}
+    .row{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+    button{padding:8px 12px;border-radius:6px;border:0;cursor:pointer}
+    .primary{background:var(--accent);color:#fff}
     .secondary{background:#6c757d;color:#fff}
+    .warn{background:#ffc107}
+    .danger{background:var(--bad);color:#fff}
+    .menu{margin-bottom:12px}
+    #questionBox{padding:12px;border-radius:8px;background:#fafafa;margin:12px 0}
+    .progress{height:10px;background:#eee;border-radius:6px;overflow:hidden}
+    .progress > div{height:100%;background:var(--accent);width:0%}
+    .small{font-size:0.9rem;color:var(--muted)}
+    .navNums{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+    .navNums button{width:36px;height:36px;border-radius:50%;background:#e9ecef;border:2px solid transparent}
+    .navNums button.answered{background:var(--good);color:#fff}
+    .navNums button.marked{outline:2px dashed #ff9800}
+    .dark{background:#121214;color:#e6eef8}
+    .dark #questionBox{background:#1a1a1f}
   </style>
 </head>
 <body>
-<div class="container">
-  <h2>SQL MCQ Exam – Batch Mode</h2>
-  <div id="menu"></div>
-  <div id="exam" style="display:none">
-    <h3 id="batchTitle"></h3>
-    <div><strong>Global Time:</strong> <span id="globalTimer"></span></div>
-    <div><strong>Question Time:</strong> <span id="questionTimer"></span></div><hr>
-    <div id="questionBox"></div>
-    <button id="prevBtn" class="secondary">Previous</button>
-    <button id="nextBtn" class="primary">Next</button>
-    <button id="pauseBtn" class="warn">Pause</button>
-    <button id="resumeBtn" style="display:none" class="primary">Resume</button>
-    <button id="submitBtn" class="danger">Submit</button>
+<div class="container" id="app">
+  <h1>SQL MCQ Exam — Batch Mode</h1>
+
+  <div id="menu" class="menu"></div>
+
+  <div id="controls" style="display:none" class="row">
+    <div class="small">Batch: <strong id="batchTitle"></strong></div>
+    <div class="small">Global Time: <span id="globalTimer"></span></div>
+    <div class="small">Question Time: <span id="questionTimer"></span></div>
+    <div style="margin-left:auto">
+      <button id="shuffleToggle" class="secondary">Shuffle: ON</button>
+      <button id="darkToggle" class="secondary">Dark</button>
+      <button id="exportBtn" class="secondary">Export</button>
+      <input id="importFile" type="file" accept="application/json" style="display:none">
+      <button id="importBtn" class="secondary">Import</button>
+    </div>
   </div>
-  <div id="result"></div>
+
+  <div id="exam" style="display:none">
+    <div id="questionBox"></div>
+
+    <div class="row">
+      <button id="prevBtn" class="secondary">Previous</button>
+      <button id="nextBtn" class="primary">Next</button>
+      <button id="answerLaterBtn" class="warn">Answer Later (Mark)</button>
+      <button id="pauseBtn" class="secondary">Pause</button>
+      <button id="resumeBtn" class="primary" style="display:none">Resume</button>
+      <button id="submitBtn" class="danger">Submit Batch</button>
+    </div>
+
+    <div style="margin-top:12px">
+      <div class="progress"><div id="progBar"></div></div>
+      <div class="row small" style="justify-content:space-between;margin-top:6px">
+        <div id="progressText"></div>
+        <div id="marksLegend" class="small"></div>
+      </div>
+      <div class="navNums" id="navNums"></div>
+    </div>
+  </div>
+
+  <div id="result" style="margin-top:12px"></div>
 </div>
 
 <script>
+// ----------------- CONFIG -----------------
 const QUESTIONS_PER_BATCH = 25;
 const PER_QUESTION_SECONDS = 20;
+const LS_KEY = 'mcq_exam_v2_state';
 
+// ----------------- SAMPLE QUESTIONS (you'll replace with full set later) -----------------
 let originalQuestions = [
-  { q:"What does SQL stand for?",options:["Structured Query Language","Simple Query Logic","Statement Query Level","System Query Logic"],answer:0},
-  { q:"Which SQL keyword sorts results?",options:["ORDER BY","SORT","ALIGN","GROUP"],answer:0},
-  { q:"Which command removes a table?",options:["DELETE TABLE","DROP TABLE","REMOVE TABLE","ERASE TABLE"],answer:1},
-  { q:"Which function counts rows?",options:["SUM()","COUNT()","TOTAL()","ROWS()"],answer:1},
-  { q:"Which clause filters rows?",options:["WHERE","HAVING","FILTER","SELECT"],answer:0}
+  { q: "What does SQL stand for?", options: ["Structured Query Language","Simple Query Logic","Statement Query Level","System Query Logic"], answer: 0 },
+  { q: "Which SQL keyword sorts results?", options: ["ORDER BY","SORT","ALIGN","GROUP"], answer: 0 },
+  { q: "Which command removes a table?", options: ["DELETE TABLE","DROP TABLE","REMOVE TABLE","ERASE TABLE"], answer: 1 },
+  { q: "Which function counts rows?", options: ["SUM()","COUNT()","TOTAL()","ROWS()"], answer: 1 },
+  { q: "Which clause filters rows?", options: ["WHERE","HAVING","FILTER","SELECT"], answer: 0 }
+  // add more questions here...
 ];
 
+// ----------------- STATE -----------------
 let questions = [];
-let userAnswers = [];
-let questionRemain = [];
+let userAnswers = []; // integer | null
+let questionRemain = []; // seconds left per question
+let marked = []; // boolean mark for review
 let batchIndex = 0;
 let currentIndex = 0;
 let globalSeconds = 0;
 let paused = false;
-let globalTimerId, questionTimerId;
+let shuffleEnabled = true;
+let darkMode = false;
+let globalTimerId=null, questionTimerId=null;
 
+// ----------------- HELPERS -----------------
 function saveState(){
-  localStorage.setItem("exam_state", JSON.stringify({questions,userAnswers,questionRemain,batchIndex,currentIndex,globalSeconds,paused}));
+  const payload = { originalQuestions, questions, userAnswers, questionRemain, marked, batchIndex, currentIndex, globalSeconds, paused, shuffleEnabled, darkMode };
+  localStorage.setItem(LS_KEY, JSON.stringify(payload));
 }
-
 function loadState(){
-  const s = localStorage.getItem("exam_state");
-  return s ? JSON.parse(s) : null;
+  try{ const s = localStorage.getItem(LS_KEY); return s? JSON.parse(s): null; }catch(e){return null}
 }
 
-function generateBatchMenu(){
-  const menu=document.getElementById("menu");
-  const totalBatches=Math.ceil(originalQuestions.length/QUESTIONS_PER_BATCH);
-  menu.innerHTML = `<h3>Select Batch</h3>`;
-  for(let i=0;i<totalBatches;i++){
-    const btn=document.createElement("button");
-    btn.innerText=`Start Batch ${i+1}`;
-    btn.className='primary';
-    btn.onclick=()=>startBatch(i);
+function shuffleArray(arr){ for(let i=arr.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [arr[i],arr[j]]=[arr[j],arr[i]]; }}
+function formatTime(sec){ const m=Math.floor(sec/60); const s=sec%60; return `${m}:${String(s).padStart(2,'0')}`; }
+
+// ----------------- BATCH MENU -----------------
+function renderBatchMenu(){
+  const menu = document.getElementById('menu');
+  menu.innerHTML = '';
+  const total = Math.max(1, Math.ceil(originalQuestions.length / QUESTIONS_PER_BATCH));
+  const h = document.createElement('div'); h.innerHTML = `<strong>Select Batch</strong>`; menu.appendChild(h);
+
+  for(let b=0;b<total;b++){
+    const btn = document.createElement('button'); btn.className='primary'; btn.textContent=`Start Batch ${b+1}`;
+    btn.onclick = ()=>startBatch(b);
     menu.appendChild(btn);
   }
-  const resumeData = loadState();
-  if(resumeData){
-    let r=document.createElement("button");
-    r.innerText="Resume Previous Attempt";
-    r.className='warn';
-    r.onclick=()=>resumeExam();
-    menu.appendChild(document.createElement("br"));
-    menu.appendChild(r);
+
+  // resume
+  const st = loadState();
+  if(st && st.questions && st.questions.length){
+    const r = document.createElement('button'); r.className='warn'; r.textContent='Resume Last Attempt'; r.onclick=resumeExam; menu.appendChild(document.createElement('br')); menu.appendChild(r);
   }
 }
 
-generateBatchMenu();
-
+// ----------------- START / RESUME -----------------
 function startBatch(b){
-  batchIndex=b;
-  const start=b*QUESTIONS_PER_BATCH;
-  const end=Math.min(start+QUESTIONS_PER_BATCH,originalQuestions.length);
+  batchIndex = b;
+  const start = b*QUESTIONS_PER_BATCH; const end = Math.min(start+QUESTIONS_PER_BATCH, originalQuestions.length);
   questions = JSON.parse(JSON.stringify(originalQuestions.slice(start,end)));
+  if(shuffleEnabled) shuffleQuestionsAndOptions();
   userAnswers = new Array(questions.length).fill(null);
   questionRemain = new Array(questions.length).fill(PER_QUESTION_SECONDS);
+  marked = new Array(questions.length).fill(false);
   currentIndex = 0;
   globalSeconds = questions.length * PER_QUESTION_SECONDS;
-  paused=false;
+  paused = false;
   saveState();
   showExam();
 }
 
 function resumeExam(){
-  const s = loadState();
-  if(!s) return;
-  questions=s.questions;
-  userAnswers=s.userAnswers;
-  questionRemain=s.questionRemain;
-  batchIndex=s.batchIndex;
-  currentIndex=s.currentIndex;
-  globalSeconds=s.globalSeconds;
-  paused=s.paused;
+  const st = loadState(); if(!st) return alert('No saved attempt');
+  Object.assign(window, { originalQuestions: st.originalQuestions });
+  questions = st.questions; userAnswers = st.userAnswers; questionRemain = st.questionRemain; marked = st.marked;
+  batchIndex = st.batchIndex; currentIndex = st.currentIndex; globalSeconds = st.globalSeconds; paused = st.paused; shuffleEnabled = st.shuffleEnabled; darkMode = st.darkMode;
+  applyUISettings();
   showExam();
 }
 
+function shuffleQuestionsAndOptions(){
+  shuffleArray(questions);
+  questions.forEach(q=>{ const correctText = q.options[q.answer]; shuffleArray(q.options); q.answer = q.options.indexOf(correctText); });
+}
+
+// ----------------- RENDER EXAM -----------------
 function showExam(){
-  document.getElementById("menu").style.display="none";
-  document.getElementById("exam").style.display="block";
-  document.getElementById("batchTitle").innerText=`Batch ${batchIndex+1}`;
+  document.getElementById('menu').style.display='none';
+  document.getElementById('controls').style.display='flex';
+  document.getElementById('exam').style.display='block';
+  document.getElementById('batchTitle').textContent = `${batchIndex+1}`;
+  applyUISettings();
   renderQuestion();
+  renderNavNums();
+  updateProgress();
   updateTimersDisplay();
   if(!paused){ startGlobalTimer(); startQuestionTimer(); }
 }
 
+function applyUISettings(){
+  document.getElementById('shuffleToggle').textContent = `Shuffle: ${shuffleEnabled? 'ON':'OFF'}`;
+  document.getElementById('darkToggle').textContent = darkMode? 'Light':'Dark';
+  document.body.classList.toggle('dark', darkMode);
+}
+
 function renderQuestion(){
-  const q=questions[currentIndex];
-  let html=`<h3>Q${currentIndex+1}. ${q.q}</h3>`;
+  const q = questions[currentIndex];
+  let html = `<div style='display:flex;justify-content:space-between;align-items:center'><div><strong>Q${currentIndex+1}.</strong> ${escapeHtml(q.q)}</div><div class='small'>Marked: <strong>${marked[currentIndex]? 'Yes':'No'}</strong></div></div><hr>`;
   q.options.forEach((opt,i)=>{
-    const chk = userAnswers[currentIndex]==i ? "checked" : "";
-    html+=`<div><input type='radio' name='o' value='${i}' ${chk}> ${opt}</div>`;
+    const checked = (userAnswers[currentIndex]===i)? 'checked': '';
+    html += `<label style='display:block;margin:8px 0;padding:8px;border-radius:6px;border:1px solid #eee;cursor:pointer'><input type='radio' name='opt' value='${i}' ${checked}> ${escapeHtml(opt)}</label>`;
   });
-  document.getElementById("questionBox").innerHTML=html;
-  document.querySelectorAll("input[name='o']").forEach(el=>{
-    el.onclick=()=>{ userAnswers[currentIndex]=parseInt(el.value); saveState(); };
+  document.getElementById('questionBox').innerHTML = html;
+  document.querySelectorAll("input[name='opt']").forEach(el=>el.onchange = ()=>{ userAnswers[currentIndex]=parseInt(el.value); saveState(); renderNavNums(); updateProgress(); });
+}
+
+function renderNavNums(){
+  const wrap = document.getElementById('navNums'); wrap.innerHTML='';
+  questions.forEach((q,i)=>{
+    const b=document.createElement('button'); b.textContent = i+1; if(userAnswers[i]!==null) b.classList.add('answered'); if(marked[i]) b.classList.add('marked'); if(i===currentIndex) b.style.boxShadow='0 0 0 4px rgba(0,123,255,0.12)';
+    b.onclick = ()=>{ saveState(); currentIndex=i; renderQuestion(); startQuestionTimer(); updateTimersDisplay(); };
+    wrap.appendChild(b);
   });
 }
 
-function updateTimersDisplay(){
-  document.getElementById("globalTimer").innerText = format(globalSeconds);
-  document.getElementById("questionTimer").innerText = questionRemain[currentIndex];
+function updateProgress(){
+  const answered = userAnswers.filter(x=>x!==null).length; const total = questions.length; const pct = Math.round((answered/total)*100); document.getElementById('progBar').style.width = pct+'%'; document.getElementById('progressText').textContent = `Answered ${answered} / ${total} (${pct}%)`;
+  document.getElementById('marksLegend').innerHTML = `<span style='color:var(--good)'>Answered</span> &nbsp; <span style='border:2px dashed #ff9800;padding:2px;border-radius:4px'>Marked</span>`;
 }
 
-function startGlobalTimer(){
-  clearInterval(globalTimerId);
-  globalTimerId=setInterval(()=>{
-    if(paused) return;
-    globalSeconds--;
-    if(globalSeconds<=0){globalSeconds=0;submit();}
-    saveState(); updateTimersDisplay();
-  },1000);
-}
+// ----------------- TIMERS -----------------
+function startGlobalTimer(){ clearInterval(globalTimerId); globalTimerId=setInterval(()=>{ if(paused) return; globalSeconds--; if(globalSeconds<=0){ globalSeconds=0; submitBatch(); } saveState(); updateTimersDisplay(); },1000); }
+function startQuestionTimer(){ clearInterval(questionTimerId); questionTimerId=setInterval(()=>{ if(paused) return; questionRemain[currentIndex] = (questionRemain[currentIndex]||PER_QUESTION_SECONDS) -1; if(questionRemain[currentIndex]<=0){ questionRemain[currentIndex]=0; goNext(); } saveState(); updateTimersDisplay(); },1000); }
+function updateTimersDisplay(){ document.getElementById('globalTimer').textContent = formatTime(globalSeconds); document.getElementById('questionTimer').textContent = questionRemain[currentIndex]||PER_QUESTION_SECONDS; }
 
-function startQuestionTimer(){
-  clearInterval(questionTimerId);
-  questionTimerId=setInterval(()=>{
-    if(paused) return;
-    questionRemain[currentIndex]--;
-    if(questionRemain[currentIndex]<=0){ goNext(); }
-    saveState(); updateTimersDisplay();
-  },1000);
-}
+// ----------------- NAVIGATION -----------------
+function goNext(){ if(currentIndex < questions.length-1){ currentIndex++; renderQuestion(); renderNavNums(); startQuestionTimer(); saveState(); } else { submitBatch(); } }
+function goPrev(){ if(currentIndex > 0){ currentIndex--; renderQuestion(); renderNavNums(); startQuestionTimer(); saveState(); } }
 
-function goNext(){ if(currentIndex<questions.length-1){ currentIndex++; renderQuestion(); startQuestionTimer(); saveState(); } else submit(); }
-function goPrev(){ if(currentIndex>0){ currentIndex--; renderQuestion(); startQuestionTimer(); saveState(); } }
+document.getElementById('nextBtn').onclick = ()=>{ saveState(); goNext(); };
+document.getElementById('prevBtn').onclick = ()=>{ saveState(); goPrev(); };
 
-document.getElementById("nextBtn").onclick=goNext;
-document.getElementById("prevBtn").onclick=goPrev;
+document.getElementById('answerLaterBtn').onclick = ()=>{ marked[currentIndex]=true; saveState(); renderNavNums(); goNext(); };
 
-document.getElementById("pauseBtn").onclick=()=>{ paused=true; saveState(); document.getElementById("pauseBtn").style.display='none'; document.getElementById("resumeBtn").style.display='inline-block'; };
-document.getElementById("resumeBtn").onclick=()=>{ paused=false; saveState(); document.getElementById("pauseBtn").style.display='inline-block'; document.getElementById("resumeBtn").style.display='none'; startGlobalTimer(); startQuestionTimer(); };
+document.getElementById('pauseBtn').onclick = ()=>{ paused=true; saveState(); document.getElementById('pauseBtn').style.display='none'; document.getElementById('resumeBtn').style.display='inline-block'; };
+document.getElementById('resumeBtn').onclick = ()=>{ paused=false; saveState(); document.getElementById('pauseBtn').style.display='inline-block'; document.getElementById('resumeBtn').style.display='none'; startGlobalTimer(); startQuestionTimer(); };
 
-document.getElementById("submitBtn").onclick=submit;
-
-function submit(){
-  clearInterval(globalTimerId); clearInterval(questionTimerId);
-  let correct=0;
-  questions.forEach((q,i)=>{ if(userAnswers[i]===q.answer) correct++; });
-  let percent = ((correct/questions.length)*100).toFixed(2);
-
-  localStorage.removeItem("exam_state");
-
-  document.getElementById("exam").style.display="none";
-  document.getElementById("result").innerHTML = `
+// ----------------- SUBMIT & REVIEW -----------------
+function submitBatch(){ clearInterval(globalTimerId); clearInterval(questionTimerId); let correct=0; const details = questions.map((q,i)=>{ const ua = userAnswers[i]; const isCorrect = (ua!==null && ua===q.answer); if(isCorrect) correct++; return {q:q.q, options:q.options, ua, correctIndex:q.answer, isCorrect}; });
+  const total = questions.length; const pct = ((correct/total)*100).toFixed(2);
+  localStorage.removeItem(LS_KEY);
+  document.getElementById('exam').style.display='none'; document.getElementById('controls').style.display='none'; document.getElementById('result').innerHTML = `
     <h2>Batch ${batchIndex+1} Result</h2>
-    <p><strong>Score:</strong> ${correct} / ${questions.length} (${percent}%)</p>
-    <button onclick='location.reload()' class='primary'>Restart</button>
+    <p><strong>Score:</strong> ${correct} / ${total} (${pct}%)</p>
+    <button id='viewDetail' class='primary'>View Detailed Review</button>
+    <button id='restart' class='secondary'>Back to Menu</button>
   `;
+  document.getElementById('viewDetail').onclick = ()=>showDetailedReview(details);
+  document.getElementById('restart').onclick = ()=>{ location.reload(); };
 }
 
-function format(s){ let m=Math.floor(s/60); let ss=s%60; return `${m}:${ss.toString().padStart(2,'0')}`; }
+function showDetailedReview(details){
+  let html = `<h3>Detailed Review — Batch ${batchIndex+1}</h3><ol>`;
+  details.forEach((d,i)=>{ html += `<li style='margin:8px 0'><strong>${escapeHtml(d.q)}</strong><br>Your: ${d.ua!==null? escapeHtml(d.options[d.ua]) : '<em>Not answered</em>'} ${d.isCorrect? '<span style="color:var(--good)"> (Correct)</span>' : '<span style="color:var(--bad)"> (Wrong)</span>' }<br>Correct: ${escapeHtml(d.options[d.correctIndex])}</li>`; });
+  html += `</ol><button onclick='location.reload()' class='primary'>Back to Menu</button>`;
+  document.getElementById('result').innerHTML = html;
+}
+
+// ----------------- IMPORT / EXPORT / UI -----------------
+document.getElementById('exportBtn').onclick = ()=>{
+  const data = JSON.stringify(originalQuestions, null, 2);
+  const blob = new Blob([data],{type:'application/json'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a'); a.href=url; a.download = 'questions.json'; a.click(); URL.revokeObjectURL(url);
+};
+
+document.getElementById('importBtn').onclick = ()=>{ document.getElementById('importFile').click(); };
+document.getElementById('importFile').onchange = (e)=>{
+  const f = e.target.files[0]; if(!f) return; const reader = new FileReader(); reader.onload = ev=>{ try{ const arr = JSON.parse(ev.target.result); if(!Array.isArray(arr)) throw 0; originalQuestions = arr; alert('Imported '+arr.length+' questions.'); renderBatchMenu(); }catch(err){ alert('Invalid JSON file'); } }; reader.readAsText(f);
+};
+
+// Shuffle toggle
+document.getElementById('shuffleToggle').onclick = ()=>{ shuffleEnabled = !shuffleEnabled; document.getElementById('shuffleToggle').textContent = `Shuffle: ${shuffleEnabled? 'ON':'OFF'}`; saveState(); };
+// Dark toggle
+document.getElementById('darkToggle').onclick = ()=>{ darkMode = !darkMode; applyUISettings(); saveState(); };
+
+// ----------------- UTIL -----------------
+function escapeHtml(str){ return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+// ----------------- INIT -----------------
+renderBatchMenu();
+applyUISettings();
+
 </script>
 </body>
 </html>
