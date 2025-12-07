@@ -1,102 +1,193 @@
-<!-- Modified template for batch scoring; user will insert questions later -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>SQL MCQ Exam - With Batches</title>
+  <title>SQL MCQ Exam – Batch + Resume + Timers + Persistence</title>
+  <style>
+    body{font-family:Arial;background:#f4f4f4;margin:0;padding:20px}
+    .container{max-width:900px;margin:auto;background:#fff;padding:20px;border-radius:10px;box-shadow:0 0 10px rgba(0,0,0,0.1)}
+    button{margin:5px;padding:10px 15px;border:none;border-radius:5px;cursor:pointer}
+    .primary{background:#007bff;color:#fff}
+    .danger{background:#dc3545;color:#fff}
+    .warn{background:#ffc107}
+    .secondary{background:#6c757d;color:#fff}
+  </style>
 </head>
 <body>
+<div class="container">
+  <h2>SQL MCQ Exam – Batch Mode</h2>
+  <div id="menu"></div>
+  <div id="exam" style="display:none">
+    <h3 id="batchTitle"></h3>
+    <div><strong>Global Time:</strong> <span id="globalTimer"></span></div>
+    <div><strong>Question Time:</strong> <span id="questionTimer"></span></div><hr>
+    <div id="questionBox"></div>
+    <button id="prevBtn" class="secondary">Previous</button>
+    <button id="nextBtn" class="primary">Next</button>
+    <button id="pauseBtn" class="warn">Pause</button>
+    <button id="resumeBtn" style="display:none" class="primary">Resume</button>
+    <button id="submitBtn" class="danger">Submit</button>
+  </div>
+  <div id="result"></div>
+</div>
+
 <script>
-/* This is a clean placeholder structure. Full logic will be added by ChatGPT later. */
-
-// BATCH CONFIG
 const QUESTIONS_PER_BATCH = 25;
+const PER_QUESTION_SECONDS = 20;
 
-// Placeholder question list (user will replace later)
 let originalQuestions = [
-    {
-    "q": "Which SQL command is used to retrieve data from a database table?",
-    "options": [
-      "GET",
-      "FETCH",
-      "SELECT",
-      "OPEN TABLE"
-    ],
-    "answer": 2,
-    "time": 20
-  }
-
-
+  { q:"What does SQL stand for?",options:["Structured Query Language","Simple Query Logic","Statement Query Level","System Query Logic"],answer:0},
+  { q:"Which SQL keyword sorts results?",options:["ORDER BY","SORT","ALIGN","GROUP"],answer:0},
+  { q:"Which command removes a table?",options:["DELETE TABLE","DROP TABLE","REMOVE TABLE","ERASE TABLE"],answer:1},
+  { q:"Which function counts rows?",options:["SUM()","COUNT()","TOTAL()","ROWS()"],answer:1},
+  { q:"Which clause filters rows?",options:["WHERE","HAVING","FILTER","SELECT"],answer:0}
 ];
 
-// Compute batch index from question number
-function getBatchIndex(qIndex){
-  return Math.floor(qIndex / QUESTIONS_PER_BATCH);
+let questions = [];
+let userAnswers = [];
+let questionRemain = [];
+let batchIndex = 0;
+let currentIndex = 0;
+let globalSeconds = 0;
+let paused = false;
+let globalTimerId, questionTimerId;
+
+function saveState(){
+  localStorage.setItem("exam_state", JSON.stringify({questions,userAnswers,questionRemain,batchIndex,currentIndex,globalSeconds,paused}));
 }
 
-// Compute batch boundaries
-function getBatchInfo(batchIndex){
-  const start = batchIndex * QUESTIONS_PER_BATCH;
-  const end = Math.min(start + QUESTIONS_PER_BATCH, originalQuestions.length);
-  return { start, end };
+function loadState(){
+  const s = localStorage.getItem("exam_state");
+  return s ? JSON.parse(s) : null;
 }
 
-// Compute score for a batch
-function computeBatchScore(batchIndex, userAnswers, questions){
-  const {start, end} = getBatchInfo(batchIndex);
-  let correct = 0;
-
-  for(let i=start; i<end; i++){
-    if(userAnswers[i] !== null && userAnswers[i] === questions[i].answer){
-      correct++;
-    }
+function generateBatchMenu(){
+  const menu=document.getElementById("menu");
+  const totalBatches=Math.ceil(originalQuestions.length/QUESTIONS_PER_BATCH);
+  menu.innerHTML = `<h3>Select Batch</h3>`;
+  for(let i=0;i<totalBatches;i++){
+    const btn=document.createElement("button");
+    btn.innerText=`Start Batch ${i+1}`;
+    btn.className='primary';
+    btn.onclick=()=>startBatch(i);
+    menu.appendChild(btn);
   }
-
-  const total = end - start;
-  const percentage = total > 0 ? (correct / total) * 100 : 0;
-
-  return {
-    batch: batchIndex + 1,
-    correct,
-    total,
-    percentage: percentage.toFixed(2)
-  };
-}
-
-// --- Batch Support Added ---
-const QUESTIONS_PER_BATCH = 25;
-function getBatchIndex(qIndex){ return Math.floor(qIndex / QUESTIONS_PER_BATCH); }
-function getBatchInfo(batchIndex){ const start = batchIndex * QUESTIONS_PER_BATCH; const end = Math.min(start + QUESTIONS_PER_BATCH, questions.length); return {start,end}; }
-function computeBatchScore(batchIndex){ const {start,end}=getBatchInfo(batchIndex); let correct=0; for(let i=start;i<end;i++){ if(userAnswers[i]!==null && userAnswers[i]===questions[i].answer) correct++; } return {batch:batchIndex+1, correct, total:end-start, percent:((correct/(end-start))*100).toFixed(2)}; }
-</script>
-
-<!-- Batch Navigation UI -->
-<div id="batchNav" style="margin:20px;"></div>
-<script>
-// Create batch navigation buttons dynamically
-function renderBatchNavigation(){
-  const totalBatches = Math.ceil(originalQuestions.length / QUESTIONS_PER_BATCH);
-  const navDiv = document.getElementById('batchNav');
-  navDiv.innerHTML = '<h3>Select Batch</h3>';
-
-  for(let b=0; b<totalBatches; b++){
-    const btn = document.createElement('button');
-    btn.innerText = `Start Batch ${b+1}`;
-    btn.style.margin = '5px';
-    btn.onclick = ()=>loadBatch(b);
-    navDiv.appendChild(btn);
+  const resumeData = loadState();
+  if(resumeData){
+    let r=document.createElement("button");
+    r.innerText="Resume Previous Attempt";
+    r.className='warn';
+    r.onclick=()=>resumeExam();
+    menu.appendChild(document.createElement("br"));
+    menu.appendChild(r);
   }
 }
 
-// Load questions of a batch
-function loadBatch(batchIndex){
-  const info = getBatchInfo(batchIndex);
-  alert(`Batch ${batchIndex+1} loaded. Questions ${info.start+1} to ${info.end}`);
-  // Here you will later integrate display logic
+generateBatchMenu();
+
+function startBatch(b){
+  batchIndex=b;
+  const start=b*QUESTIONS_PER_BATCH;
+  const end=Math.min(start+QUESTIONS_PER_BATCH,originalQuestions.length);
+  questions = JSON.parse(JSON.stringify(originalQuestions.slice(start,end)));
+  userAnswers = new Array(questions.length).fill(null);
+  questionRemain = new Array(questions.length).fill(PER_QUESTION_SECONDS);
+  currentIndex = 0;
+  globalSeconds = questions.length * PER_QUESTION_SECONDS;
+  paused=false;
+  saveState();
+  showExam();
 }
 
-renderBatchNavigation();
+function resumeExam(){
+  const s = loadState();
+  if(!s) return;
+  questions=s.questions;
+  userAnswers=s.userAnswers;
+  questionRemain=s.questionRemain;
+  batchIndex=s.batchIndex;
+  currentIndex=s.currentIndex;
+  globalSeconds=s.globalSeconds;
+  paused=s.paused;
+  showExam();
+}
+
+function showExam(){
+  document.getElementById("menu").style.display="none";
+  document.getElementById("exam").style.display="block";
+  document.getElementById("batchTitle").innerText=`Batch ${batchIndex+1}`;
+  renderQuestion();
+  updateTimersDisplay();
+  if(!paused){ startGlobalTimer(); startQuestionTimer(); }
+}
+
+function renderQuestion(){
+  const q=questions[currentIndex];
+  let html=`<h3>Q${currentIndex+1}. ${q.q}</h3>`;
+  q.options.forEach((opt,i)=>{
+    const chk = userAnswers[currentIndex]==i ? "checked" : "";
+    html+=`<div><input type='radio' name='o' value='${i}' ${chk}> ${opt}</div>`;
+  });
+  document.getElementById("questionBox").innerHTML=html;
+  document.querySelectorAll("input[name='o']").forEach(el=>{
+    el.onclick=()=>{ userAnswers[currentIndex]=parseInt(el.value); saveState(); };
+  });
+}
+
+function updateTimersDisplay(){
+  document.getElementById("globalTimer").innerText = format(globalSeconds);
+  document.getElementById("questionTimer").innerText = questionRemain[currentIndex];
+}
+
+function startGlobalTimer(){
+  clearInterval(globalTimerId);
+  globalTimerId=setInterval(()=>{
+    if(paused) return;
+    globalSeconds--;
+    if(globalSeconds<=0){globalSeconds=0;submit();}
+    saveState(); updateTimersDisplay();
+  },1000);
+}
+
+function startQuestionTimer(){
+  clearInterval(questionTimerId);
+  questionTimerId=setInterval(()=>{
+    if(paused) return;
+    questionRemain[currentIndex]--;
+    if(questionRemain[currentIndex]<=0){ goNext(); }
+    saveState(); updateTimersDisplay();
+  },1000);
+}
+
+function goNext(){ if(currentIndex<questions.length-1){ currentIndex++; renderQuestion(); startQuestionTimer(); saveState(); } else submit(); }
+function goPrev(){ if(currentIndex>0){ currentIndex--; renderQuestion(); startQuestionTimer(); saveState(); } }
+
+document.getElementById("nextBtn").onclick=goNext;
+document.getElementById("prevBtn").onclick=goPrev;
+
+document.getElementById("pauseBtn").onclick=()=>{ paused=true; saveState(); document.getElementById("pauseBtn").style.display='none'; document.getElementById("resumeBtn").style.display='inline-block'; };
+document.getElementById("resumeBtn").onclick=()=>{ paused=false; saveState(); document.getElementById("pauseBtn").style.display='inline-block'; document.getElementById("resumeBtn").style.display='none'; startGlobalTimer(); startQuestionTimer(); };
+
+document.getElementById("submitBtn").onclick=submit;
+
+function submit(){
+  clearInterval(globalTimerId); clearInterval(questionTimerId);
+  let correct=0;
+  questions.forEach((q,i)=>{ if(userAnswers[i]===q.answer) correct++; });
+  let percent = ((correct/questions.length)*100).toFixed(2);
+
+  localStorage.removeItem("exam_state");
+
+  document.getElementById("exam").style.display="none";
+  document.getElementById("result").innerHTML = `
+    <h2>Batch ${batchIndex+1} Result</h2>
+    <p><strong>Score:</strong> ${correct} / ${questions.length} (${percent}%)</p>
+    <button onclick='location.reload()' class='primary'>Restart</button>
+  `;
+}
+
+function format(s){ let m=Math.floor(s/60); let ss=s%60; return `${m}:${ss.toString().padStart(2,'0')}`; }
 </script>
 </body>
 </html>
