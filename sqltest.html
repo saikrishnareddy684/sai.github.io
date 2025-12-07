@@ -1,0 +1,1769 @@
+<!-- Modified template for batch scoring; user will insert questions later -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>SQL MCQ Exam - With Batches</title>
+</head>
+<body>
+<script>
+/* This is a clean placeholder structure. Full logic will be added by ChatGPT later. */
+
+// BATCH CONFIG
+const QUESTIONS_PER_BATCH = 25;
+
+// Placeholder question list (user will replace later)
+let originalQuestions = [
+    {
+    "q": "Which SQL command is used to retrieve data from a database table?",
+    "options": [
+      "GET",
+      "FETCH",
+      "SELECT",
+      "OPEN TABLE"
+    ],
+    "answer": 2,
+    "time": 20
+  },
+  {
+    "q": "Which SQL clause is used to filter rows based on a specific condition?",
+    "options": [
+      "CONDITION",
+      "FILTER BY",
+      "WHERE",
+      "LIMIT TO"
+    ],
+    "answer": 2,
+    "time": 20
+  },
+  {
+    "q": "Which SQL command is used to insert new rows into a table?",
+    "options": [
+      "ADD ROW",
+      "INSERT INTO",
+      "CREATE RECORD",
+      "UPDATE"
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "What does the acronym SQL stand for?",
+    "options": [
+      "Structured Question Language",
+      "Standard Query Logic",
+      "Simple Query Language",
+      "Structured Query Language"
+    ],
+    "answer": 3,
+    "time": 20
+  },
+  {
+    "q": "Which operator is used to search for a specific pattern in a column?",
+    "options": [
+      "PATTERN",
+      "LIKE",
+      "MATCH",
+      "COMPARE"
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "Which type of JOIN returns only the rows with matching values in both tables?",
+    "options": [
+      "FULL JOIN",
+      "LEFT JOIN",
+      "INNER JOIN",
+      "OUTER JOIN"
+    ],
+    "answer": 2,
+    "time": 20
+  },
+  {
+    "q": "Which SQL command is used to modify existing data in a table?",
+    "options": [
+      "MODIFY",
+      "CHANGE",
+      "ALTER",
+      "UPDATE"
+    ],
+    "answer": 3,
+    "time": 20
+  },
+  {
+    "q": "Which SQL keyword is used to sort the result-set of a query?",
+    "options": [
+      "SORT BY",
+      "ARRANGE BY",
+      "GROUP BY",
+      "ORDER BY"
+    ],
+    "answer": 3,
+    "time": 20
+  },
+  {
+    "q": "A table must have a column defined as a ______ to uniquely identify each record.",
+    "options": [
+      "Foreign Key",
+      "Candidate Key",
+      "Primary Key",
+      "Unique Key"
+    ],
+    "answer": 2,
+    "time": 20
+  },
+  {
+    "q": "Which function is used to count the number of rows in a table?",
+    "options": [
+      "SUM()",
+      "COUNT()",
+      "NUMBER()",
+      "ROWS()"
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "Can we add a column with IDENTITY property in an existing table?",
+    "options": [
+      "Yes, by using the `ALTER COLUMN` command directly.",
+      "No, the operation is restricted or requires an alternative approach.",
+      "No, because it would violate referential integrity.",
+      "You must drop and recreate the database."
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "Can we add a NOT NULL column to an existing table?",
+    "options": [
+      "No, because it would violate referential integrity.",
+      "Yes, by using the `ALTER COLUMN` command directly.",
+      "Yes, but a DEFAULT value must be provided for existing rows.",
+      "You must drop and recreate the database."
+    ],
+    "answer": 2,
+    "time": 20
+  },
+  {
+    "q": "How can you create an incrementing sequence object in SQL Server?",
+    "options": [
+      "Use an `IDENTITY` column to generate sequential numbers.",
+      "The command to restart is `RESET SEQUENCE`.",
+      "Sequence values are only generated during table creation.",
+      "A SEQUENCE object generates a sequence of numeric values in order."
+    ],
+    "answer": 3,
+    "time": 20
+  },
+  {
+    "q": "How do you reset the value of a sequence object?",
+    "options": [
+      "Drop and recreate the database.",
+      "Use an `IDENTITY` column to generate sequential numbers.",
+      "ALTER SEQUENCE dbo.SequenceObject RESTART WITH 1",
+      "The command to restart is `RESET SEQUENCE`."
+    ],
+    "answer": 2,
+    "time": 20
+  },
+  {
+    "q": "Which command is used to drop a sequence?",
+    "options": [
+      "RESET SEQUENCE",
+      "Unsupported operation",
+      "DROP SEQUENCE",
+      "ROLLBACK"
+    ],
+    "answer": 2,
+    "time": 20
+  },
+  {
+    "q": "What is a Clustered Index?",
+    "options": [
+      "A clustered index allows up to 5 indexes per table.",
+      "It dictates the physical, sorted storage order of data rows.",
+      "The index is stored in memory only.",
+      "The index structure is a hash table."
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+  "q": "What is the maximum number of clustered indexes that can exist on a single table in SQL Server?",
+  "options": [
+    "A table can have one clustered index, but additional clustered indexes can be simulated using indexed views.",
+    "A table may contain multiple clustered indexes if each is defined on a separate partition scheme.",
+    "Only one clustered index is allowed per table, because the table's rows can be physically ordered in only one way.",
+    "Clustered indexes can be created in pairs as long as different unique keys are used for each."
+  ],
+  "answer": 2,
+  "time": 20
+}
+,
+  {
+    "q": "What is a Page Split?",
+    "options": [
+      "Moving half the rows from a full page to a new page for inserts.",
+      "Page splits occur only during SELECT operations.",
+      "A page split is a database corruption error.",
+      "Resolved by using `ROLLBACK`."
+    ],
+    "answer": 0,
+    "time": 20
+  },
+  {
+    "q": "What is the physical structure of a clustered index?",
+    "options": [
+      "Hash table",
+      "B-tree hash map",
+      "B-Tree",
+      "Enterprise-only feature"
+    ],
+    "answer": 2,
+    "time": 20
+  },
+  {
+    "q": "What is a Non-Clustered Index?",
+    "options": [
+      "Dictates physical order of data rows.",
+      "Contains key values and row pointers separate from the data.",
+      "Stored in the same location as the data.",
+      "Unsupported command resulting in error."
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "How many non-clustered indexes can a table have?",
+    "options": [
+      "Stored in the same location as data.",
+      "Only one clustered index per table.",
+      "Drop and recreate the database.",
+      "Maximum of 999 non-clustered indexes."
+    ],
+    "answer": 3,
+    "time": 20
+  },
+  {
+    "q": "What is index fragmentation?",
+    "options": [
+      "Feature related to distributed transactions.",
+      "Index stored only in memory.",
+      "When index data pages are scattered, degrading performance.",
+      "Process of deleting the database file."
+    ],
+    "answer": 2,
+    "time": 20
+  },
+  {
+    "q": "What is the difference between Index Rebuild and Index Reorganize?",
+    "options": [
+      "Rebuild is online and faster, Reorganize is offline and slower.",
+      "Rebuild creates a new index and drops the old one; Reorganize physically reorders the leaf-level pages in place.",
+      "The solution is to use the `ROLLBACK` command.",
+      "Reorganize creates a new index and drops the old one; Rebuild physically reorders the leaf-level pages in place."
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "What is Fill Factor in SQL Server indexes?",
+    "options": [
+      "Fill factor only applies to the root node of the index.",
+      "It is a value from 0 to 100 that specifies the percentage of space to leave empty on each leaf-level page.",
+      "The functionality is reserved for Enterprise Edition only.",
+      "It specifies the maximum number of columns an index can contain."
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "What is a Covered Index in SQL Server?",
+    "options": [
+      "An index that includes all the columns requested in the query, allowing the query to complete without looking up the data row.",
+      "It is a feature related to distributed transactions only.",
+      "The index is stored in memory (RAM) only.",
+      "The index structure is a Hash Table (Hash map)."
+    ],
+    "answer": 0,
+    "time": 20
+  },
+   
+  {
+    "q": "What is the difference between WHERE and HAVING clauses in SQL Server?",
+    "options": [
+      "`WHERE` is used for row filtering before aggregation; `HAVING` is used for group filtering after aggregation.",
+      "`HAVING` is faster than `WHERE` and is used only on indexed columns.",
+      "It is not possible in SQL Server.",
+      "`WHERE` is used for filtering data after aggregation; `HAVING` is used for filtering before aggregation."
+    ],
+    "answer": 0,
+    "time": 20
+  },
+  {
+    "q": "What is a Stored Procedure in SQL Server?",
+    "options": [
+      "A temporary object that holds data only for the current session.",
+      "A precompiled set of one or more SQL statements stored in the database.",
+      "The functionality is reserved for Enterprise Edition only.",
+      "An index that includes all the columns requested in the query."
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "What is the key difference between Stored Procedure and Function in SQL Server?",
+    "options": [
+      "Functions can modify data and cannot be used in `SELECT` statements; Procedures can only return a single value.",
+      "Stored Procedures can modify data and return 0 or more values; Functions cannot modify data (usually) and return a single value or table.",
+      "The command is unsupported and results in an error.",
+      "Functions can modify data; Procedures are read-only."
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "What is the difference between Local Temporary Table and Global Temporary Table?",
+    "options": [
+      "Local temporary tables are visible to all sessions; Global temporary tables are visible only to the session that created them.",
+      "Local tables are prefixed with `##` and are session-specific; Global tables are prefixed with `#` and are visible to all sessions.",
+      "Local tables are prefixed with `#` and are session-specific; Global tables are prefixed with `##` and are visible to all sessions.",
+      "It is only available in older SQL Server versions."
+    ],
+    "answer": 2,
+    "time": 20
+  },
+  {
+    "q": "How to create a Global Temporary Table in SQL Server?",
+    "options": [
+      "CREATE GLOBAL TABLE #TableName",
+      "CREATE TABLE ##TableName",
+      "It is not possible in SQL Server.",
+      "CREATE TABLE ##TableName (Col1 INT)"
+    ],
+    "answer": 3,
+    "time": 20
+  },
+  
+{
+  "q": "What is a Self Join in SQL Server?",
+  "options": [
+    "A join where a table is logically paired with itself using different aliases to compare rows within the same dataset.",
+    "A join that requires a self-referencing foreign key to relate parent and child records within a hierarchical structure.",
+    "A join used when two tables share identical structures and need to be compared column-by-column.",
+    "A join operation that forces SQL Server to perform a recursive traversal of the same table using a CTE."
+  ],
+  "answer": 0,
+  "time": 20
+}
+,
+  {
+    "q": "What is a Subquery in SQL Server?",
+    "options": [
+      "A precompiled set of one or more SQL statements stored in the database.",
+      "A query embedded inside another SQL query (SELECT, INSERT, UPDATE, or DELETE).",
+      "It is a feature related to distributed transactions only.",
+      "The solution is to use the `ROLLBACK` command."
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "What is the difference between Scalar and Inline Table-Valued Functions?",
+    "options": [
+      "Scalar functions return a single value; Inline Table-Valued Functions return a table.",
+      "Scalar functions return a table; Inline Table-Valued Functions return a single value.",
+      "The functionality is reserved for Enterprise Edition only.",
+      "Inline Table-Valued Functions cannot be used in the `FROM` clause."
+    ],
+    "answer": 0,
+    "time": 20
+  },
+  {
+    "q": "What is a Trigger in SQL Server?",
+    "options": [
+      "A temporary object that holds data only for the current session.",
+      "A special kind of stored procedure that automatically executes when a specified event occurs (INSERT, UPDATE, DELETE).",
+      "Triggers are only used for creating indexes.",
+      "The command is unsupported and results in an error."
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "What is the difference between INSTEAD OF and AFTER triggers?",
+    "options": [
+      "`AFTER` triggers fire before the action and can bypass it; `INSTEAD OF` triggers fire after the action.",
+      "`INSTEAD OF` triggers fire instead of the action, allowing you to bypass or replace it; `AFTER` triggers fire after the action is complete.",
+      "It is only available in older SQL Server versions.",
+      "The functionality is reserved for Enterprise Edition only."
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+  "q": "What is the difference between User and Schema in SQL Server?",
+  "options": [
+    "A user is a container for database objects; a schema is a login used to connect to the database.",
+    "A user is a security principal that can access a database; a schema is a logical container that holds database objects.",
+    "Schemas and users are the same in SQL Server and interchangeable.",
+    "A schema controls permissions, while the user stores objects."
+  ],
+  "answer": 1,
+  "time": 20
+}
+,
+  {
+    "q": "What is the difference between View and Indexed View?",
+    "options": [
+      "A view is a stored query; an indexed view (materialized view) stores the results physically, making it faster to query.",
+      "Indexed views are only allowed on temporary tables.",
+      "Views allow data modification; Indexed views do not.",
+      "The functionality is reserved for Enterprise Edition only."
+    ],
+    "answer": 0,
+    "time": 20
+  },
+  {
+    "q": "What is the difference between Dynamic SQL and Static SQL?",
+    "options": [
+      "Static SQL is generated at runtime and is prone to SQL injection; Dynamic SQL is precompiled and safe.",
+      "Dynamic SQL is generated at runtime and is prone to SQL injection; Static SQL is precompiled and safe.",
+      "The solution is to use the `ROLLBACK` command.",
+      "Dynamic SQL is faster because it uses a compiled plan."
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "How to execute Dynamic SQL in SQL Server?",
+    "options": [
+      "The correct command is `EXECUTE PROCEDURE`.",
+      "You must drop and recreate the database.",
+      "Using the `EXEC` or `sp_executesql` command.",
+      "It is not possible in SQL Server."
+    ],
+    "answer": 2,
+    "time": 20
+  },
+  {
+    "q": "What is the difference between EXEC and sp_executesql?",
+    "options": [
+      "EXEC is safer and uses parameterization; `sp_executesql` is faster but is more prone to SQL injection.",
+      "The command is unsupported and results in an error.",
+      "`sp_executesql` supports parameterized queries, which improves security (prevents SQL injection) and execution plan reuse.",
+      "EXEC is faster and supports parameterized queries."
+    ],
+    "answer": 2,
+    "time": 20
+  },
+  {
+    "q": "What is a Transaction in SQL Server?",
+    "options": [
+      "A single database operation that modifies exactly one row.",
+      "A sequence of one or more SQL statements that are treated as a single, indivisible unit of work.",
+      "It is only available in older SQL Server versions.",
+      "The functionality is reserved for Enterprise Edition only."
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+  "q": "Which statement correctly defines the ACID properties in SQL Server?",
+  "options": [
+    "A collection of transaction behaviors ensuring that once a transaction begins, all locks are escalated to prevent partial writes across filegroups.",
+    "A fundamental set of guarantees—Atomicity, Consistency, Isolation, Durability—that ensure reliable transaction processing regardless of system failures.",
+    "A mechanism that applies only when snapshot isolation or read-committed snapshot isolation (RCSI) is enabled in the database.",
+    "A legacy feature used only in distributed or two-phase commit transactions, ensuring remote resource managers validate log records."
+  ],
+  "answer": 1,
+  "time": 25
+}
+,
+  {
+    "q": "What is the difference between Commit and Rollback in SQL Server?",
+    "options": [
+      "`COMMIT` makes all changes permanent; `ROLLBACK` undoes all changes since the last `BEGIN TRANSACTION` or `COMMIT`.",
+      "`ROLLBACK` makes all changes permanent; `COMMIT` undoes all changes.",
+      "The command is unsupported and results in an error.",
+      "The functionality is reserved for Enterprise Edition only."
+    ],
+    "answer": 0,
+    "time": 20
+  },
+  {
+    "q": "What is the difference between ISNULL and COALESCE in SQL Server?",
+    "options": [
+      "`ISNULL` supports only one check value and uses the check value's data type; `COALESCE` supports multiple check values and uses the highest precedence data type.",
+      "`COALESCE` is an older function and is less compatible; `ISNULL` is the modern replacement.",
+      "It is not possible in SQL Server.",
+      "`COALESCE` only works on non-string data types."
+    ],
+    "answer": 0,
+    "time": 20
+  },
+  {
+    "q": "What is the difference between NOLOCK and READ UNCOMMITTED?",
+    "options": [
+      "`NOLOCK` is a keyword; `READ UNCOMMITTED` is a transaction isolation level that achieves the same result (reading uncommitted changes).",
+      "`READ UNCOMMITTED` is faster and does not introduce dirty reads; `NOLOCK` is slower and causes dirty reads.",
+      "The command is unsupported and results in an error.",
+      "They are completely different and unrelated concepts."
+    ],
+    "answer": 0,
+    "time": 20
+  },
+  {
+    "q": "What is the difference between CHAR and VARCHAR in SQL Server?",
+    "options": [
+      "`CHAR` is variable length; `VARCHAR` is fixed length.",
+      "`VARCHAR` is variable length and stores only necessary bytes; `CHAR` is fixed length and always uses the declared size.",
+      "The solution is to use the `ROLLBACK` command.",
+      "The functionality is reserved for Enterprise Edition only."
+    ],
+    "answer": 1,
+    "time": 20
+  },
+
+  {
+    "q": "What is difference between DDL and DML in SQL Server?",
+    "options": [
+      "DDL (Data Definition Language) manages data and rows; DML (Data Manipulation Language) manages structure and objects.",
+      "DDL manages structure/objects (CREATE, ALTER, DROP); DML manages data/rows (INSERT, UPDATE, DELETE).",
+      "The command is unsupported and results in an error.",
+      "DDL only works on temporary tables; DML works on permanent tables."
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "What is difference between primary and foreign key?",
+    "options": [
+      "A primary key establishes a unique row identifier; a foreign key links two tables by referencing the primary key of another table.",
+      "Both are the same, but the foreign key is faster.",
+      "A primary key allows one NULL value; a foreign key does not allow any NULL values.",
+      "The solution is to use the `ROLLBACK` command."
+    ],
+    "answer": 0,
+    "time": 20
+  },
+  {
+  "q": "Which statement best describes the relationship between a primary key and candidate keys?",
+  "options": [
+    "A primary key is the candidate key selected to uniquely identify rows, while other candidate keys remain alternate unique identifiers that also guarantee uniqueness.",
+    "A candidate key is any column participating in a foreign key relationship, whereas the primary key is always system-generated unless overridden.",
+    "Primary keys enforce both entity integrity and referential integrity, while candidate keys enforce only referential integrity.",
+    "Candidate keys must be natural keys, whereas primary keys must be surrogate keys generated by the database engine."
+  ],
+  "answer": 0,
+  "time": 25
+}
+,
+  {
+    "q": "What is difference between user and login in SQL Server?",
+    "options": [
+      "A login is a database identity that grants permissions; a user is a server identity used for connection.",
+      "A login is a server-level identity used to connect to the SQL Server instance; a user is a database-level identity used to grant permissions.",
+      "The functionality is reserved for Enterprise Edition only.",
+      "They are completely different and unrelated concepts."
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "What is CTE in SQL Server?",
+    "options": [
+      "A temporary object that holds data only for the current session.",
+      "Common Table Expression (CTE) is a named temporary result set defined within the execution scope of a single SELECT, INSERT, UPDATE, or DELETE statement.",
+      "It is only available in older SQL Server versions.",
+      "The command is unsupported and results in an error."
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "What is STUFF function in SQL Server?",
+    "options": [
+      "The STUFF function removes a specified length of characters from a string and inserts another string in its place.",
+      "The STUFF function converts a table into a single column string.",
+      "The solution is to use the `ROLLBACK` command.",
+      "The correct command is `EXECUTE PROCEDURE`."
+    ],
+    "answer": 0,
+    "time": 20
+  },
+  {
+    "q": "What is PIVOT and UNPIVOT in SQL Server?",
+    "options": [
+      "PIVOT converts columns into rows; UNPIVOT converts rows into columns.",
+      "PIVOT converts rows into columns; UNPIVOT converts columns into rows.",
+      "It is not possible in SQL Server.",
+      "The functionality is reserved for Enterprise Edition only."
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+  "q": "In SQL Server, what is the primary use of the FOR XML PATH() construct?",
+  "options": [
+    "It generates XML fragments that can be manipulated to concatenate row values or build custom-shaped XML output.",
+    "It is used strictly for shredding XML data into relational tables during parsing operations.",
+    "It is a legacy feature that only works on XML datatype columns and cannot be used with regular SELECT statements.",
+    "It is primarily used to enforce hierarchical referential constraints across related tables."
+  ],
+  "answer": 0,
+  "time": 25
+}
+,
+  {
+    "q": "What is an Identity column in SQL Server?",
+    "options": [
+      "A column that must be manually updated with a unique value.",
+      "A property on a column that automatically generates sequential numeric values when new rows are inserted.",
+      "A column that enforces referential integrity between tables.",
+      "A setting that restricts duplicate values in a table."
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "What is difference between Primary Key and Foreign Key?",
+    "options": [
+      "A primary key links two tables; a foreign key ensures data uniqueness.",
+      "A primary key uniquely identifies a row in a table; a foreign key establishes a relationship by referencing the primary key in another table.",
+      "A foreign key can only be created on temporary tables.",
+      "Both enforce uniqueness at the column level."
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "What is the difference between a Left Join and a Full Join?",
+    "options": [
+      "Left Join returns only matching rows; Full Join returns only non-matching rows.",
+      "Left Join returns all rows from the left table and matching rows from the right; Full Join returns all rows from both tables whether matched or not.",
+      "Left Join and Full Join return identical results.",
+      "Full Join returns rows only when both tables contain matching records."
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "What is a Cross Join in SQL Server?",
+    "options": [
+      "A join that returns only matching rows between two tables.",
+      "A join that returns the Cartesian product of all rows from both tables.",
+      "A join that requires a primary-foreign key relationship.",
+      "A join that is used to merge duplicate rows."
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "What is the difference between Inner Join and Outer Join?",
+    "options": [
+      "Inner Join returns only the rows that match in both tables; Outer Join returns matching rows plus non-matching rows from one or both sides.",
+      "Outer Join returns only rows that match in both tables; Inner Join includes non-matching rows.",
+      "Inner Join retrieves all rows from both tables regardless of condition.",
+      "Outer Join can only be used with aggregate functions."
+    ],
+    "answer": 0,
+    "time": 20
+  },
+  {
+    "q": "What is a Schema in SQL Server?",
+    "options": [
+      "A database connection used for authentication.",
+      "A logical container that groups database objects like tables, views, and stored procedures.",
+      "A system object that stores execution plans.",
+      "A structure used to enforce referential integrity."
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "What is an Alias in SQL Server?",
+    "options": [
+      "A permanent name assigned to a table or column.",
+      "A temporary name assigned to a table or column in a query for readability.",
+      "A feature used to store XML data in SQL Server.",
+      "A system-defined name used for stored procedures."
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "What is a View in SQL Server?",
+    "options": [
+      "A physical table that stores data permanently.",
+      "A virtual table based on the result set of a SQL query.",
+      "A synonym for a schema in SQL Server.",
+      "A system object used to manage indexes."
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "What is an Index in SQL Server?",
+    "options": [
+      "A feature that enforces referential integrity between tables.",
+      "A data structure that speeds up data retrieval operations on a table.",
+      "A logical container for grouping stored procedures.",
+      "A command used to define the primary key on a table."
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "What is the difference between CHECK and DEFAULT constraint?",
+    "options": [
+      "CHECK defines a default value for a column; DEFAULT limits the allowed range of values.",
+      "CHECK restricts the allowed values in a column; DEFAULT provides an automatic value when no explicit value is given.",
+      "CHECK is only applicable to string columns; DEFAULT is for numeric columns.",
+      "DEFAULT can be applied multiple times; CHECK can only be used once per column."
+    ],
+    "answer": 1,
+    "time": 20
+  },
+
+{
+  q: "What are CAST and CONVERT functions used for in SQL Server?",
+  options: [
+    "Both are used to change an expression from one data type to another, but CONVERT allows formatting with an optional style parameter.",
+    "They are used to encrypt and decrypt data.",
+    "They are used to convert data into XML format only.",
+    "They are used to transform table structures between databases."
+  ],
+  answer: 0,
+  time: 20
+},
+{
+  q: "What is the difference between DATETIME and DATETIME2 in SQL Server?",
+  options: [
+    "`DATETIME2` supports a larger date range and higher precision (up to 7 digits); `DATETIME` has a smaller range and fixed 3-digit precision.",
+    "`DATETIME` supports fractional seconds; `DATETIME2` does not.",
+    "`DATETIME` can store timezone info; `DATETIME2` cannot.",
+    "`DATETIME2` is available only in SQL Server 2022 and later."
+  ],
+  answer: 0,
+  time: 20
+},
+{
+  q: "What is the difference between NCHAR and NVARCHAR in SQL Server?",
+  options: [
+    "`NCHAR` is fixed-length Unicode; `NVARCHAR` is variable-length Unicode.",
+    "`NCHAR` stores ASCII characters; `NVARCHAR` stores Unicode.",
+    "`NVARCHAR` is fixed-length Unicode; `NCHAR` is variable-length Unicode.",
+    "Both are identical in functionality and storage."
+  ],
+  answer: 0,
+  time: 20
+},
+ 
+{
+  q: "What is the difference between a Table Variable and a Temp Table in SQL Server?",
+  options: [
+    "Table variables are scope-limited and non-transactional (often in memory); Temp tables are transactional and stored in tempdb until the session ends.",
+    "Temp tables are stored in memory only; Table variables are stored permanently.",
+    "Table variables can have indexes; Temp tables cannot.",
+    "Table variables persist even after the session is closed."
+  ],
+  answer: 0,
+  time: 20
+},
+{
+  "q": "What is an Execution Plan in SQL Server?",
+  "options": [
+    "A metadata table that records index fragmentation details.",
+    "A detailed set of steps SQL Server takes internally to execute a query efficiently.",
+    "A temporary cache used to store result sets.",
+    "A system process for backing up databases automatically."
+  ],
+  "answer": 1,
+  "time": 20
+}, 
+{
+  "q": "How can you generate an Execution Plan in SQL Server?",
+  "options": [
+    "By using `SET SHOWPLAN_ALL ON` or viewing the graphical plan in SQL Server Management Studio (SSMS).",
+    "By enabling query notifications.",
+    "By using the BACKUP DATABASE command.",
+    "It is automatically created but cannot be viewed by users."
+  ],
+  "answer": 0,
+  "time": 20
+}, 
+{
+  "q": "What is the Database Engine in SQL Server?",
+  "options": [
+    "The core component that processes queries, manages storage, indexing, and transactions.",
+    "A client tool for writing and testing SQL queries.",
+    "A monitoring service that tracks user activity.",
+    "A system view that lists all tables in a database."
+  ],
+  "answer": 0,
+  "time": 20
+},
+{
+  "q": "What is the difference between User and System Databases?",
+  "options": [
+    "User databases are created by users to store application data; system databases are required for SQL Server’s internal operations.",
+    "System databases are optional and can be deleted safely.",
+    "User databases are read-only by default; system databases are writable.",
+    "Both are automatically created during SQL Server installation."
+  ],
+  "answer": 0,
+  "time": 20
+},
+{
+  "q": "What is the Master Database in SQL Server?",
+  "options": [
+    "It stores user tables and indexes.",
+    "It stores system-level information such as logins, configuration, and references to other databases.",
+    "It holds temporary objects created by queries.",
+    "It is used only for backup operations."
+  ],
+  "answer": 1,
+  "time": 20
+},
+{
+  "q": "What is the Model Database in SQL Server?",
+  "options": [
+    "A template database used as a blueprint for creating new databases.",
+    "A read-only database used for metadata storage.",
+    "It stores information about SQL Server Agent jobs.",
+    "It acts as a system cache for query results."
+  ],
+  "answer": 0,
+  "time": 20
+},
+{
+  "q": "What is the MSDB Database in SQL Server?",
+  "options": [
+    "It stores information related to SQL Server Agent jobs, alerts, and maintenance plans.",
+    "It holds query execution plans for reuse.",
+    "It tracks index fragmentation for all user databases.",
+    "It is a backup of the Master database."
+  ],
+  "answer": 0,
+  "time": 20
+},
+{
+  "q": "What is the TempDB Database in SQL Server?",
+  "options": [
+    "A workspace for temporary tables, table variables, and intermediate query results.",
+    "A repository for system logins and credentials.",
+    "A read-only database used for configuration settings.",
+    "A database that stores historical backups."
+  ],
+  "answer": 0,
+  "time": 20
+},
+{
+  "q": "What is the Resource Database in SQL Server?",
+  "options": [
+    "It stores all system objects physically and is read-only for users.",
+    "It stores the backup history of all databases.",
+    "It is used to track SQL Agent activity logs.",
+    "It contains the user-defined functions and triggers."
+  ],
+  "answer": 0,
+  "time": 20
+},
+{
+  "q": "What is Replication in SQL Server?",
+  "options": [
+    "A technology for copying and distributing data and objects between databases and synchronizing them for consistency.",
+    "A feature to compress data during backups.",
+    "A method to encrypt database connections.",
+    "A query optimization feature for distributed systems."
+  ],
+  "answer": 0,
+  "time": 20
+},
+{
+  "q": "What is Database Mirroring in SQL Server?",
+  "options": [
+    "A high-availability solution that maintains two synchronized copies of a database (principal and mirror).",
+    "A backup mechanism that runs once a day.",
+    "A process for migrating databases between servers.",
+    "A feature for real-time performance tuning."
+  ],
+  "answer": 0,
+  "time": 20
+},
+{
+  "q": "What is Log Shipping in SQL Server?",
+  "options": [
+    "A disaster recovery solution that transfers transaction log backups from a primary server to secondary servers.",
+    "A process of shipping database backups using SSIS packages.",
+    "A manual method of synchronizing two databases.",
+    "A feature used for encrypting log files."
+  ],
+  "answer": 0,
+  "time": 20
+},
+{
+  "q": "What are AlwaysOn Availability Groups in SQL Server?",
+  "options": [
+    "A high-availability and disaster-recovery feature that allows a group of databases to failover together as a single unit.",
+    "A data compression feature used for large databases.",
+    "A configuration setting for query parallelism.",
+    "A performance monitoring tool in SQL Server Management Studio."
+  ],
+  "answer": 0,
+  "time": 20
+},
+{
+  "q": "What is the difference between Database Mirroring and AlwaysOn Availability Groups?",
+  "options": [
+    "Database Mirroring supports only one mirror database, while AlwaysOn supports multiple secondary replicas and automatic failover.",
+    "Both provide identical functionality with different names.",
+    "AlwaysOn supports only synchronous replication; Mirroring supports both modes.",
+    "Mirroring allows more replicas than AlwaysOn."
+  ],
+  "answer": 0,
+  "time": 20
+},
+{
+  "q": "What is the difference between Database Mirroring and Log Shipping?",
+  "options": [
+    "Mirroring provides real-time synchronization for high availability; Log Shipping provides delayed synchronization for disaster recovery.",
+    "Log Shipping is faster but less reliable than Mirroring.",
+    "Mirroring requires manual synchronization; Log Shipping is automatic.",
+    "Both perform identical roles in database recovery."
+  ],
+  "answer": 0,
+  "time": 20
+},
+{
+  "q": "What is Data Guard in SQL Server?",
+  "options": [
+    "A built-in SQL Server backup utility.",
+    "A replication mechanism for synchronizing servers.",
+    "An Oracle feature similar to SQL Server’s AlwaysOn Availability Groups.",
+    "A monitoring tool for transaction logs."
+  ],
+  "answer": 2,
+  "time": 20
+},
+
+{
+  "q": "What is the difference between a Hotfix and a Cumulative Update in SQL Server?",
+  "options": [
+    "A Hotfix is a small, targeted fix for a specific issue; a Cumulative Update includes all previous hotfixes and updates.",
+    "A Hotfix contains performance improvements, while Cumulative Updates are security-only patches.",
+    "A Cumulative Update fixes only one issue at a time, while Hotfixes include multiple fixes.",
+    "A Hotfix can only be installed on Enterprise Edition; Cumulative Updates work on all editions."
+  ],
+  "answer": 0,
+  "time": 20
+},
+
+{
+  "q": "What is database collation in SQL Server?",
+  "options": [
+    "A set of rules defining how strings are sorted and compared, including case and accent sensitivity.",
+    "A method used to compress character data for faster performance.",
+    "A process of replicating databases across multiple servers.",
+    "A backup setting that determines file storage order."
+  ],
+  "answer": 0,
+  "time": 20
+},
+{
+  "q": "What is an Extended Event in SQL Server?",
+  "options": [
+    "A lightweight event-handling system for monitoring and collecting performance and troubleshooting data.",
+    "A trigger that fires automatically after every SQL statement execution.",
+    "A logging mechanism for user activities only.",
+    "A background job used to schedule periodic database events."
+  ],
+  "answer": 0,
+  "time": 20
+},
+{
+  "q": "What is a Database Snapshot in SQL Server?",
+  "options": [
+    "A static, read-only view of a database captured at a specific point in time.",
+    "A dynamic, writable copy of a database used for real-time analysis.",
+    "A compressed backup of the database transaction log.",
+    "A transaction log mirror used for failover purposes."
+  ],
+  "answer": 0,
+  "time": 20
+},
+{
+  "q": "What is the difference between a User and a Database Principal?",
+  "options": [
+    "A User is a type of Database Principal; a Database Principal represents any entity (user, role, or application) that can access the database.",
+    "A User is created automatically, while a Database Principal must be created manually.",
+    "They are two unrelated concepts used for schema mapping.",
+    "A Database Principal refers only to server-level roles."
+  ],
+  "answer": 0,
+  "time": 20
+},
+{
+  "q": "What is the difference between Windows and SQL Server Authentication?",
+  "options": [
+    "Windows Authentication uses Active Directory credentials; SQL Server Authentication uses credentials stored in SQL Server.",
+    "Windows Authentication allows only one user per server; SQL Authentication allows multiple users.",
+    "SQL Authentication uses Windows password policies; Windows Authentication does not.",
+    "Both methods store credentials directly in the master database."
+  ],
+  "answer": 0,
+  "time": 20
+},
+{
+  "q": "What is the difference between Permission and Access Control?",
+  "options": [
+    "Permission grants a specific right on a securable; Access Control is the overall framework for managing who can perform which actions.",
+    "Permission and Access Control are identical concepts in SQL Server.",
+    "Access Control applies only to stored procedures, while Permission applies to tables.",
+    "Permission controls login creation; Access Control controls database design."
+  ],
+  "answer": 0,
+  "time": 20
+},
+{
+  "q": "What is the difference between Fixed and Flexible Database Roles?",
+  "options": [
+    "Fixed roles have predefined permissions (e.g., db_owner); Flexible roles are user-defined and can be customized.",
+    "Fixed roles can be dropped, while Flexible roles cannot.",
+    "Flexible roles are created by the system; Fixed roles are created by users.",
+    "Both types have identical behavior but different names."
+  ],
+  "answer": 0,
+  "time": 20
+},
+{
+  "q": "What is the difference between Database and Server Roles?",
+  "options": [
+    "Database roles manage permissions within a database; Server roles manage permissions at the SQL Server instance level.",
+    "Server roles can only manage logins; Database roles can manage instances.",
+    "Database roles are read-only; Server roles are write-only.",
+    "Both serve identical purposes but exist in different databases."
+  ],
+  "answer": 0,
+  "time": 20
+},
+{
+  "q": "How can you create a Database Role in SQL Server?",
+  "options": [
+    "Using the `CREATE ROLE` statement.",
+    "Using the `CREATE LOGIN` command.",
+    "By inserting a record into the sysroles table.",
+    "By assigning a user directly to the sysadmin role."
+  ],
+  "answer": 0,
+  "time": 20
+},
+{
+  "q": "How do you add a User to a Database Role?",
+  "options": [
+    "Using `ALTER ROLE ADD MEMBER` or the `sp_addrolemember` procedure.",
+    "By updating the sysmembers table manually.",
+    "By granting permissions directly to a schema.",
+    "By creating a new login with the same name as the role."
+  ],
+  "answer": 0,
+  "time": 20
+},
+{
+  "q": "What is Database Consistency in SQL Server?",
+  "options": [
+    "The property that ensures the database moves from one valid state to another while maintaining integrity constraints.",
+    "The ability of multiple users to access the same data simultaneously.",
+    "A measure of how efficiently indexes are used.",
+    "The synchronization of backup and restore operations."
+  ],
+  "answer": 0,
+  "time": 20
+},
+{
+  "q": "What is the difference between SQL and T-SQL?",
+  "options": [
+    "SQL is the standard query language; T-SQL is Microsoft’s extension that includes procedural features like variables and error handling.",
+    "T-SQL is the standard, while SQL is Microsoft’s extension.",
+    "Both are completely identical languages.",
+    "SQL is only for querying; T-SQL can only define tables."
+  ],
+  "answer": 0,
+  "time": 20
+},
+{
+  "q": "What is a Database Server Instance in SQL Server?",
+  "options": [
+    "An isolated environment containing one or more databases and services, running as a separate SQL Server installation.",
+    "A physical file that stores database logs.",
+    "A user connection to the SQL Server Management Studio.",
+    "A process that runs only system databases."
+  ],
+  "answer": 0,
+  "time": 20
+},
+{
+  "q": "What is the difference between SQL Server and SQL Database?",
+  "options": [
+    "SQL Server is the on-premises software; SQL Database is the managed cloud-based PaaS service offered by Azure.",
+    "SQL Server is cloud-only; SQL Database runs only on Windows.",
+    "SQL Database is used for backups; SQL Server is used for queries.",
+    "Both are identical in deployment and management."
+  ],
+  "answer": 0,
+  "time": 20
+},
+{
+  "q": "What is the difference between IaaS, PaaS, and SaaS?",
+  "options": [
+    "IaaS provides infrastructure (VMs, storage), PaaS provides a managed platform, and SaaS provides ready-to-use software applications.",
+    "IaaS provides applications, PaaS provides infrastructure, and SaaS provides servers.",
+    "IaaS and SaaS are the same, but PaaS is local deployment.",
+    "PaaS is hardware-only, while SaaS is platform-only."
+  ],
+  "answer": 0,
+  "time": 20
+},
+{
+  "q": "What is the difference between Azure SQL Database and Azure SQL Managed Instance?",
+  "options": [
+    "Azure SQL DB is a fully managed single database with some feature limitations; Managed Instance offers near full SQL Server compatibility with minimal admin effort.",
+    "Azure SQL DB supports SQL Agent; Managed Instance does not.",
+    "Managed Instance supports only single databases, while SQL DB supports multiple databases.",
+    "They are identical in features and configuration."
+  ],
+  "answer": 0,
+  "time": 20
+},
+{
+  "q": "What is Database Integrity in SQL Server?",
+  "options": [
+    "The accuracy, validity, and consistency of data enforced by constraints and relationships.",
+    "The speed at which a database can process transactions.",
+    "A feature that allows data encryption at rest.",
+    "The ability to recover data after a crash."
+  ],
+  "answer": 0,
+  "time": 20
+},
+{
+  "q": "What is the difference between Data and Information?",
+  "options": [
+    "Data is raw and unprocessed; Information is structured and meaningful data after processing.",
+    "Data and Information are synonyms and used interchangeably.",
+    "Information is collected from reports; Data comes from databases only.",
+    "Data is always numeric, whereas Information is always textual."
+  ],
+  "answer": 0,
+  "time": 20
+},
+{
+  "q": "What is a Database Schema in SQL Server?",
+  "options": [
+    "A logical container that defines how database objects like tables and views are organized and grouped.",
+    "The physical file structure where database data is stored.",
+    "A user account used to access data.",
+    "A backup plan configuration setting."
+  ],
+  "answer": 0,
+  "time": 20
+},
+{
+  "q": "What is a Deadlock in SQL Server?",
+  "options": [
+    "A condition where two or more processes wait indefinitely for each other to release locks.",
+    "A temporary block that resolves automatically after 10 seconds.",
+    "A type of syntax error that stops query execution.",
+    "A failed login attempt caused by invalid credentials."
+  ],
+  "answer": 0,
+  "time": 20
+},
+  {
+    "q": "What is difference between table and temporary table?",
+    "options": [
+      "Temporary tables exist permanently unless dropped manually; permanent tables are dropped automatically when session ends.",
+      "Permanent tables are stored in the database until dropped; Temporary tables are stored in tempdb and dropped when session ends.",
+      "Permanent tables are faster because they use memory; Temporary tables are slower as they use disk space.",
+      "Temporary tables cannot be indexed, while permanent tables can."
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "What is the difference between TRUNCATE and DELETE statements?",
+    "options": [
+      "DELETE is a DDL command that removes all rows and resets identity; TRUNCATE is DML and logs each deletion.",
+      "TRUNCATE is DDL, logs minimal info, resets identity, and is faster; DELETE is DML, logs every row deletion, and is slower.",
+      "TRUNCATE supports WHERE clause while DELETE does not.",
+      "Both are identical except for rollback behavior."
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "What is difference between WHERE and HAVING clause?",
+    "options": [
+      "HAVING filters individual rows before aggregation; WHERE filters after aggregation.",
+      "WHERE filters rows before aggregation; HAVING filters aggregated results.",
+      "Both WHERE and HAVING can be used interchangeably in SELECT queries.",
+      "HAVING is used only with ORDER BY clause."
+    ],
+    "answer": 1,
+    "time": 20
+  },
+   
+  {
+    "q": "What is the key difference between Primary Key and Unique Key?",
+    "options": [
+      "Primary Key allows NULLs, Unique Key does not.",
+      "Primary Key enforces non-NULL values and only one per table; Unique Key allows one NULL and multiple per table.",
+      "Both Primary and Unique Keys can have multiple NULLs.",
+      "Primary Key is used for non-clustered index, Unique Key is used for clustered index."
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "What is the key difference between IDENTITY and SEQUENCE?",
+    "options": [
+      "IDENTITY generates numbers per table; SEQUENCE is a standalone object that can be shared across tables.",
+      "SEQUENCE resets automatically on restart; IDENTITY always continues from the last value.",
+      "IDENTITY values can be reused automatically; SEQUENCE cannot be reused.",
+      "IDENTITY requires explicit creation; SEQUENCE is created by default with each table."
+    ],
+    "answer": 0,
+    "time": 20
+  },
+  
+  {
+    "q": "What is the key difference between NVARCHAR and VARCHAR?",
+    "options": [
+      "NVARCHAR stores Unicode characters using 2 bytes per char; VARCHAR stores non-Unicode using 1 byte per char.",
+      "Both store Unicode data but NVARCHAR has smaller storage.",
+      "VARCHAR supports emojis while NVARCHAR does not.",
+      "NVARCHAR is faster than VARCHAR because it uses less memory."
+    ],
+    "answer": 0,
+    "time": 20
+  },
+  {
+    "q": "What is the key difference between CHAR and VARCHAR?",
+    "options": [
+      "CHAR uses fixed length; VARCHAR uses variable length and saves space.",
+      "VARCHAR is fixed-length while CHAR is variable-length.",
+      "Both occupy equal storage regardless of data size.",
+      "CHAR allows NULLs; VARCHAR does not."
+    ],
+    "answer": 0,
+    "time": 20
+  },
+
+ 
+  {
+    "q": "What is the key difference between View and Indexed View?",
+    "options": [
+      "Indexed views physically store their result set and use a unique clustered index; Views are only stored queries.",
+      "Indexed views are temporary and only allowed on temporary tables.",
+      "Views allow data modification; Indexed views do not.",
+      "Indexed views cannot be queried directly."
+    ],
+    "answer": 0,
+    "time": 20
+  },
+  {
+    "q": "What is the key difference between Stored Procedure and Function?",
+    "options": [
+      "Functions can modify data; Procedures cannot modify data.",
+      "Stored Procedures can modify data and return multiple result sets; Functions return a single value or table and usually cannot modify data.",
+      "Functions can return multiple result sets like Procedures.",
+      "Procedures are read-only, Functions can modify tables."
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  
+  {
+    "q": "What is the key difference between Subquery and CTE?",
+    "options": [
+      "A CTE is a named temporary result set that can be referenced multiple times; a Subquery is only defined and used within a single statement.",
+      "Subqueries are stored and can be reused across multiple queries; CTEs cannot.",
+      "CTEs are always faster than subqueries.",
+      "Subqueries are physically materialized like CTEs."
+    ],
+    "answer": 0,
+    "time": 20
+  },
+  {
+    "q": "What is the key difference between UNION and UNION ALL?",
+    "options": [
+      "UNION removes duplicate rows (slower); UNION ALL retains all rows (faster).",
+      "UNION ALL removes duplicates automatically; UNION retains all rows.",
+      "Both UNION and UNION ALL remove duplicates.",
+      "UNION can be used only with numeric columns; UNION ALL with all types."
+    ],
+    "answer": 0,
+    "time": 20
+  },
+   
+  {
+    "q": "What is the key difference between INNER JOIN and OUTER JOIN?",
+    "options": [
+      "Inner Join returns only matching rows; Outer Join returns matching rows plus non-matching rows from one or both sides.",
+      "Outer Join returns only matching rows; Inner Join returns all rows.",
+      "Inner Join returns unmatched rows only; Outer Join returns matched rows only.",
+      "Both Inner and Outer Joins return all rows regardless of matches."
+    ],
+    "answer": 0,
+    "time": 20
+  },
+  
+  {
+    "q": "What is the key difference between SQL and NoSQL?",
+    "options": [
+      "NoSQL databases are vertically scalable; SQL databases are horizontally scalable.",
+      "SQL databases are vertically scalable, schema-rigid, and ideal for complex transactions; NoSQL databases are horizontally scalable, schema-flexible, and ideal for large volumes of unstructured data.",
+      "They are completely different and unrelated concepts.",
+      "SQL databases are schema-flexible; NoSQL databases are schema-rigid."
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "What is a transaction in SQL Server?",
+    "options": [
+      "A sequence of one or more SQL statements treated as a single, indivisible unit of work (all succeed or all fail).",
+      "A temporary object that holds data only for the current session.",
+      "Transactions are only used for backup operations.",
+      "A unit of work that can be partially committed."
+    ],
+    "answer": 0,
+    "time": 20
+  },
+  {
+    "q": "What is ACID in SQL Server?",
+    "options": [
+      "It is only available in older SQL Server versions.",
+      "A set of properties (Atomicity, Consistency, Isolation, Durability) that guarantee database transactions are processed reliably.",
+      "ACID refers to the SQL engine optimization settings.",
+      "It is a special type of transaction."
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "What is a stored procedure in SQL Server?",
+    "options": [
+      "A temporary name given to a table or a column.",
+      "A named, precompiled set of one or more SQL statements stored in the database.",
+      "A command to roll back database changes automatically.",
+      "A query that cannot accept parameters."
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "What is a view in SQL Server?",
+    "options": [
+      "A virtual table based on the result-set of a SQL query.",
+      "A temporary name given to a table or a column.",
+      "A stored procedure that returns a table.",
+      "A method to physically store aggregated data."
+    ],
+    "answer": 0,
+    "time": 20
+  },
+  {
+    "q": "What is an Index in SQL Server?",
+    "options": [
+      "A temporary object that holds data only for the current session.",
+      "A data structure that improves the speed of data retrieval operations on database tables.",
+      "A method to store data redundantly in tempdb.",
+      "A type of stored procedure for queries."
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "What is Index Fragmentation?",
+    "options": [
+      "A condition where index data pages are scattered and not logically ordered, degrading performance.",
+      "Index pages are duplicated to improve read speed.",
+      "Indexes are stored in memory only.",
+      "Index structure is converted into a heap table."
+    ],
+    "answer": 0,
+    "time": 20
+  },
+  {
+    "q": "What is the key difference between Index Rebuild and Index Reorganize?",
+    "options": [
+      "Rebuild creates a new index and drops the old one; Reorganize physically reorders the leaf-level pages in place.",
+      "Reorganize creates a new index; Rebuild modifies the existing one in place.",
+      "Both operations are identical and have no performance impact.",
+      "Rebuild only works on Non-Clustered Indexes; Reorganize only works on Clustered Indexes."
+    ],
+    "answer": 0,
+    "time": 20
+  },
+  {
+    "q": "What is Fill Factor in SQL Server Index?",
+    "options": [
+      "It is a value from 0 to 100 that specifies the percentage of space to leave empty on each leaf-level page.",
+      "Fill Factor determines the maximum number of indexes on a table.",
+      "It sets the CPU utilization for index creation.",
+      "Fill Factor is the total memory allocated to an index."
+    ],
+    "answer": 0,
+    "time": 20
+  },
+  {
+    "q": "What is Covered Index in SQL Server?",
+    "options": [
+      "An index that includes all the columns requested in the query, allowing the query to complete without looking up the data row.",
+      "An index that is stored only in tempdb.",
+      "An index used only for primary keys.",
+      "A clustered index that covers multiple tables."
+    ],
+    "answer": 0,
+    "time": 20
+  },
+  {
+    "q": "What is Dynamic SQL in SQL Server?",
+    "options": [
+      "Dynamic SQL is generated at runtime and is prone to SQL injection; Static SQL is precompiled and safe.",
+      "Dynamic SQL cannot accept parameters or variables.",
+      "Dynamic SQL is executed only once per database.",
+      "It refers to system-generated temporary tables."
+    ],
+    "answer": 0,
+    "time": 20
+  },
+  {
+    "q": "How to execute Dynamic SQL in SQL Server?",
+    "options": [
+      "Using the `EXEC` or `sp_executesql` command.",
+      "By creating a temporary table first.",
+      "Dynamic SQL executes automatically when a query runs.",
+      "It is not supported in SQL Server."
+    ],
+    "answer": 0,
+    "time": 20
+  },
+  {
+    "q": "What is the key difference between EXECUTE and sp_executesql?",
+    "options": [
+      "`sp_executesql` supports parameterized queries, which improves security (prevents SQL injection) and execution plan reuse.",
+      "EXEC supports parameterized queries while sp_executesql does not.",
+      "EXEC is only for dynamic SQL; sp_executesql is only for static SQL.",
+      "Both are identical in functionality and performance."
+    ],
+    "answer": 0,
+    "time": 20
+  },
+  {
+    "q": "What is Isolation Level in SQL Server?",
+    "options": [
+      "The set of rules that governs how transactions interact with each other, affecting concurrency and data integrity.",
+      "It defines the physical storage of indexes in the database.",
+      "It determines which users can execute a transaction.",
+      "Isolation Level is only relevant for NoSQL databases."
+    ],
+    "answer": 0,
+    "time": 20
+  },
+  {
+    "q": "What are the Isolation Levels in SQL Server?",
+    "options": [
+      "Read Uncommitted, Read Committed, Repeatable Read, Serializable, and Snapshot.",
+      "Isolation levels determine the maximum number of concurrent connections.",
+      "Serializable and Repeatable Read are the only isolation levels.",
+      "Isolation levels are used only for backup transactions."
+    ],
+    "answer": 0,
+    "time": 20
+  },
+ 
+  {
+    "q": "What is Cursor in SQL Server?",
+    "options": [
+      "A database control structure used to traverse and process records from a result set one row at a time.",
+      "A special type of index that speeds up queries.",
+      "A temporary table created in memory.",
+      "A method to enforce primary key constraints."
+    ],
+    "answer": 0,
+    "time": 20
+  },
+  {
+    "q": "What is difference between CHAR and VARCHAR?",
+    "options": [
+      "`VARCHAR` is variable length and stores only necessary bytes; `CHAR` is fixed length and always uses the declared size.",
+      "CHAR stores Unicode; VARCHAR stores only ASCII.",
+      "VARCHAR can store more than 8000 characters; CHAR cannot.",
+      "CHAR automatically trims trailing spaces; VARCHAR does not."
+    ],
+    "answer": 0,
+    "time": 20
+  },
+  
+  {
+    "q": "What is difference between Normalization and Denormalization?",
+    "options": [
+      "Normalization reduces data redundancy, improving integrity but potentially slowing reads; Denormalization adds redundancy to improve query speed (reads).",
+      "Normalization merges tables; Denormalization splits tables.",
+      "Denormalization eliminates all null values; Normalization allows them.",
+      "Normalization is only used in NoSQL databases."
+    ],
+    "answer": 0,
+    "time": 20
+  },
+  {
+    "q": "What is difference between DDL and DML?",
+    "options": [
+      "DDL (Data Definition Language) manages structure/objects (CREATE, ALTER, DROP); DML (Data Manipulation Language) manages data/rows (INSERT, UPDATE, DELETE).",
+      "DDL only works on temporary tables; DML works on permanent tables.",
+      "DML can modify schema; DDL cannot modify data.",
+      "DDL is deprecated in SQL Server 2019."
+    ],
+    "answer": 0,
+    "time": 20
+  },
+  {
+    "q": "What is difference between Primary Key and Unique Key?",
+    "options": [
+      "Primary Key enforces non-NULL values and allows only one per table; Unique Key allows one NULL value and multiple per table.",
+      "Unique Key can never be null; Primary Key can have multiple nulls.",
+      "Primary Key allows duplicates; Unique Key does not.",
+      "Unique Key is used only for temporary tables."
+    ],
+    "answer": 0,
+    "time": 20
+  },
+  {
+    "q": "What is difference between User and Login?",
+    "options": [
+      "A Login is a server-level identity used for connection; a User is a database-level identity used for permissions.",
+      "User can connect to SQL Server; Login cannot.",
+      "Login is for temporary tables only; User is for permanent tables.",
+      "Both are synonyms and used interchangeably."
+    ],
+    "answer": 0,
+    "time": 20
+  },
+  {
+    "q": "What is a CTE in SQL Server?",
+    "options": [
+      "Common Table Expression (CTE) is a named temporary result set defined within the execution scope of a single statement.",
+      "A permanent table created dynamically during query execution.",
+      "A special type of index to optimize queries.",
+      "A stored procedure that returns multiple tables."
+    ],
+    "answer": 0,
+    "time": 20
+  },
+  {
+    "q": "What is a recursive CTE in SQL Server?",
+    "options": [
+      "A CTE that references itself, used to query hierarchical or tree-structured data.",
+      "A CTE that runs only once per session.",
+      "A temporary table stored in memory.",
+      "A CTE used for creating indexes."
+    ],
+    "answer": 0,
+    "time": 20
+  }, 
+  
+  {
+    "q": "What is the key difference between ROW_NUMBER(), RANK() and DENSE_RANK()?",
+    "options": [
+      "`ROW_NUMBER()` assigns unique, sequential number; `RANK()` assigns rank with gaps for ties; `DENSE_RANK()` assigns rank without gaps for ties.",
+      "`RANK()` ignores ties; ROW_NUMBER() creates duplicates.",
+      "`DENSE_RANK()` skips numbers for non-matching rows.",
+      "ROW_NUMBER() is only used in temporary tables."
+    ],
+    "answer": 0,
+    "time": 20
+  },
+  
+  {
+    "q": "What is the key difference between Clustered Index and Non-Clustered Index?",
+    "options": [
+      "A Clustered Index determines the physical order of data (data at leaf level); a Non-Clustered Index is separate from data and uses pointers.",
+      "Non-Clustered Index stores data physically; Clustered Index does not.",
+      "Clustered Index can only be created on temporary tables.",
+      "They are identical and interchangeable."
+    ],
+    "answer": 0,
+    "time": 20
+  },
+  {
+    "q": "What is Cross Join in SQL Server?",
+    "options": [
+      "A join that returns the Cartesian product of the rows from the tables in the join.",
+      "A join that only returns matching rows.",
+      "A join that merges tables physically.",
+      "A join that can be applied only to indexed tables."
+    ],
+    "answer": 0,
+    "time": 20
+  },
+  {
+    "q": "What are Data Types in SQL Server?",
+    "options": [
+      "A specification that identifies the type of data a column can hold (e.g., INT, VARCHAR, DATE).",
+      "Rules to create indexes for tables.",
+      "A type of temporary table in memory.",
+      "Constraints applied to enforce primary keys."
+    ],
+    "answer": 0,
+    "time": 20
+  },
+  
+  {
+    "q": "What is the key difference between GETDATE() and SYSDATETIME()?",
+    "options": [
+      "`GETDATE()` returns the current date/time with a precision of 3 milliseconds; `SYSDATETIME()` returns the current date/time with a higher precision of 100 nanoseconds.",
+      "`GETDATE()` returns UTC; `SYSDATETIME()` returns local time.",
+      "`SYSDATETIME()` is deprecated; `GETDATE()` is recommended.",
+      "Both always return the same values and precision."
+    ],
+    "answer": 0,
+    "time": 20
+  },
+  
+  
+  {
+    "q": "What is the STRING_AGG function in SQL Server?",
+    "options": [
+      "A function that returns a single string by concatenating the values of string expressions and placing separator values between them.",
+      "A function to split strings into rows.",
+      "A function that counts distinct strings in a table.",
+      "A function to generate sequential numbers."
+    ],
+    "answer": 0,
+    "time": 20
+  },
+  {
+    "q": "What is the key difference between Subquery and CTE?",
+    "options": [
+      "A CTE is a named temporary result set that can be referenced multiple times; a Subquery is only defined and used within a single statement.",
+      "A Subquery is always faster than a CTE.",
+      "CTEs can only return single columns; Subqueries can return multiple columns.",
+      "Subqueries are temporary tables; CTEs are permanent tables."
+    ],
+    "answer": 0,
+    "time": 20
+  },
+  
+   
+  {
+    "q": "What are the types of Execution Plan?",
+    "options": [
+      "Estimated Plan (before execution) and Actual Plan (after execution).",
+      "Simple Plan and Complex Plan.",
+      "Clustered Plan and Non-Clustered Plan.",
+      "Logical Plan and Physical Plan only."
+    ],
+    "answer": 0,
+    "time": 20
+  },
+  {
+    "q": "How to generate an Execution Plan?",
+    "options": [
+      "By using `SET SHOWPLAN_ALL ON` or using the graphical display tools in SQL Server Management Studio (SSMS).",
+      "By creating a temporary table with execution details.",
+      "By running `DBCC CHECKDB` on the database.",
+      "By enabling TRACE flag 1111."
+    ],
+    "answer": 0,
+    "time": 20
+  },
+  {
+    "q": "What is the key difference between Real and Estimated Execution Plan?",
+    "options": [
+      "Real Plan includes runtime statistics (actual rows, time); Estimated Plan does not (based on statistics only).",
+      "Estimated Plan includes actual runtime data; Real Plan does not.",
+      "Real Plan is generated for temp tables only.",
+      "There is no difference; both are identical."
+    ],
+    "answer": 0,
+    "time": 20
+  }
+
+];
+
+// Compute batch index from question number
+function getBatchIndex(qIndex){
+  return Math.floor(qIndex / QUESTIONS_PER_BATCH);
+}
+
+// Compute batch boundaries
+function getBatchInfo(batchIndex){
+  const start = batchIndex * QUESTIONS_PER_BATCH;
+  const end = Math.min(start + QUESTIONS_PER_BATCH, originalQuestions.length);
+  return { start, end };
+}
+
+// Compute score for a batch
+function computeBatchScore(batchIndex, userAnswers, questions){
+  const {start, end} = getBatchInfo(batchIndex);
+  let correct = 0;
+
+  for(let i=start; i<end; i++){
+    if(userAnswers[i] !== null && userAnswers[i] === questions[i].answer){
+      correct++;
+    }
+  }
+
+  const total = end - start;
+  const percentage = total > 0 ? (correct / total) * 100 : 0;
+
+  return {
+    batch: batchIndex + 1,
+    correct,
+    total,
+    percentage: percentage.toFixed(2)
+  };
+}
+
+// --- Batch Support Added ---
+const QUESTIONS_PER_BATCH = 25;
+function getBatchIndex(qIndex){ return Math.floor(qIndex / QUESTIONS_PER_BATCH); }
+function getBatchInfo(batchIndex){ const start = batchIndex * QUESTIONS_PER_BATCH; const end = Math.min(start + QUESTIONS_PER_BATCH, questions.length); return {start,end}; }
+function computeBatchScore(batchIndex){ const {start,end}=getBatchInfo(batchIndex); let correct=0; for(let i=start;i<end;i++){ if(userAnswers[i]!==null && userAnswers[i]===questions[i].answer) correct++; } return {batch:batchIndex+1, correct, total:end-start, percent:((correct/(end-start))*100).toFixed(2)}; }
+</script>
+
+<!-- Batch Navigation UI -->
+<div id="batchNav" style="margin:20px;"></div>
+<script>
+// Create batch navigation buttons dynamically
+function renderBatchNavigation(){
+  const totalBatches = Math.ceil(originalQuestions.length / QUESTIONS_PER_BATCH);
+  const navDiv = document.getElementById('batchNav');
+  navDiv.innerHTML = '<h3>Select Batch</h3>';
+
+  for(let b=0; b<totalBatches; b++){
+    const btn = document.createElement('button');
+    btn.innerText = `Start Batch ${b+1}`;
+    btn.style.margin = '5px';
+    btn.onclick = ()=>loadBatch(b);
+    navDiv.appendChild(btn);
+  }
+}
+
+// Load questions of a batch
+function loadBatch(batchIndex){
+  const info = getBatchInfo(batchIndex);
+  alert(`Batch ${batchIndex+1} loaded. Questions ${info.start+1} to ${info.end}`);
+  // Here you will later integrate display logic
+}
+
+renderBatchNavigation();
+</script>
+</body>
+</html>
