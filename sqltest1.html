@@ -26,6 +26,7 @@
     .navNums button.marked{outline:2px dashed #ff9800}
     .dark{background:#121214;color:#e6eef8}
     .dark #questionBox{background:#1a1a1f}
+    .controls-left { display:flex; gap:8px; align-items:center; }
   </style>
 </head>
 <body>
@@ -38,7 +39,11 @@
     <div class="small">Batch: <strong id="batchTitle"></strong></div>
     <div class="small">Global Time: <span id="globalTimer"></span></div>
     <div class="small">Question Time: <span id="questionTimer"></span></div>
-    <div style="margin-left:auto">
+
+    <div style="margin-left:auto" class="controls-left">
+      <button id="homeBtn" class="secondary">Home</button>
+      <button id="prevBatchBtn" class="secondary">Prev Batch</button>
+      <button id="nextBatchBtn" class="secondary">Next Batch</button>
       <button id="shuffleToggle" class="secondary">Shuffle: ON</button>
       <button id="darkToggle" class="secondary">Dark</button>
       <button id="exportBtn" class="secondary">Export</button>
@@ -80,7 +85,7 @@ const LS_KEY = 'mcq_exam_v2_state';
 
 // ----------------- SAMPLE QUESTIONS (you'll replace with full set later) -----------------
 let originalQuestions = [
-   {
+      {
     "q": "Which SQL command is used to retrieve data from a database table?",
     "options": [
       "GET",
@@ -9161,7 +9166,6 @@ let originalQuestions = [
 }
  
   
-  
   // add more questions here...
 ];
 
@@ -9176,7 +9180,7 @@ let globalSeconds = 0;
 let paused = false;
 let shuffleEnabled = true;
 let darkMode = false;
-let globalTimerId=null, questionTimerId=null;
+let globalTimerId = null, questionTimerId = null;
 
 // ----------------- HELPERS -----------------
 function saveState(){
@@ -9186,9 +9190,11 @@ function saveState(){
 function loadState(){
   try{ const s = localStorage.getItem(LS_KEY); return s? JSON.parse(s): null; }catch(e){return null}
 }
+function clearSavedState(){ localStorage.removeItem(LS_KEY); }
 
 function shuffleArray(arr){ for(let i=arr.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [arr[i],arr[j]]=[arr[j],arr[i]]; }}
 function formatTime(sec){ const m=Math.floor(sec/60); const s=sec%60; return `${m}:${String(s).padStart(2,'0')}`; }
+function inProgress(){ return questions && questions.length && userAnswers.some(a=>a!==null); }
 
 // ----------------- BATCH MENU -----------------
 function renderBatchMenu(){
@@ -9197,24 +9203,46 @@ function renderBatchMenu(){
   const total = Math.max(1, Math.ceil(originalQuestions.length / QUESTIONS_PER_BATCH));
   const h = document.createElement('div'); h.innerHTML = `<strong>Select Batch</strong>`; menu.appendChild(h);
 
+  const btnWrap = document.createElement('div');
+  btnWrap.style.display = 'flex';
+  btnWrap.style.flexWrap = 'wrap';
+  btnWrap.style.gap = '8px';
+  btnWrap.style.marginTop = '8px';
+
   for(let b=0;b<total;b++){
     const btn = document.createElement('button'); btn.className='primary'; btn.textContent=`Start Batch ${b+1}`;
-    btn.onclick = ()=>startBatch(b);
-    menu.appendChild(btn);
+    btn.onclick = ()=> startBatchWithCheck(b);
+    btnWrap.appendChild(btn);
   }
+  menu.appendChild(btnWrap);
 
-  // resume
+  // Resume button if saved
   const st = loadState();
   if(st && st.questions && st.questions.length){
-    const r = document.createElement('button'); r.className='warn'; r.textContent='Resume Last Attempt'; r.onclick=resumeExam; menu.appendChild(document.createElement('br')); menu.appendChild(r);
+    const r = document.createElement('button'); r.className='warn'; r.textContent='Resume Last Attempt'; r.onclick=resumeExam;
+    menu.appendChild(document.createElement('br')); menu.appendChild(r);
   }
+
+  // Small note
+  const note = document.createElement('div'); note.className='small'; note.style.marginTop='10px'; note.textContent = 'You can submit any batch anytime and switch batches freely. Progress is saved locally.';
+  menu.appendChild(note);
+}
+
+// helper: confirm before starting new batch if current in-progress
+function startBatchWithCheck(targetBatch){
+  if(inProgress()){
+    const ok = confirm('You have in-progress answers in the current batch. Starting another batch will discard the current in-memory progress (saved attempts remain). Proceed?');
+    if(!ok) return;
+  }
+  startBatch(targetBatch);
 }
 
 // ----------------- START / RESUME -----------------
 function startBatch(b){
   batchIndex = b;
-  const start = b*QUESTIONS_PER_BATCH; const end = Math.min(start+QUESTIONS_PER_BATCH, originalQuestions.length);
-  questions = JSON.parse(JSON.stringify(originalQuestions.slice(start,end)));
+  const start = b * QUESTIONS_PER_BATCH;
+  const end = Math.min(start + QUESTIONS_PER_BATCH, originalQuestions.length);
+  questions = JSON.parse(JSON.stringify(originalQuestions.slice(start, end)));
   if(shuffleEnabled) shuffleQuestionsAndOptions();
   userAnswers = new Array(questions.length).fill(null);
   questionRemain = new Array(questions.length).fill(PER_QUESTION_SECONDS);
@@ -9227,31 +9255,50 @@ function startBatch(b){
 }
 
 function resumeExam(){
-  const st = loadState(); if(!st) return alert('No saved attempt');
-  Object.assign(window, { originalQuestions: st.originalQuestions });
-  questions = st.questions; userAnswers = st.userAnswers; questionRemain = st.questionRemain; marked = st.marked;
-  batchIndex = st.batchIndex; currentIndex = st.currentIndex; globalSeconds = st.globalSeconds; paused = st.paused; shuffleEnabled = st.shuffleEnabled; darkMode = st.darkMode;
+  const st = loadState();
+  if(!st) return alert('No saved attempt');
+  // restore
+  originalQuestions = st.originalQuestions || originalQuestions;
+  questions = st.questions || [];
+  userAnswers = st.userAnswers || new Array(questions.length).fill(null);
+  questionRemain = st.questionRemain || new Array(questions.length).fill(PER_QUESTION_SECONDS);
+  marked = st.marked || new Array(questions.length).fill(false);
+  batchIndex = st.batchIndex || 0;
+  currentIndex = st.currentIndex || 0;
+  globalSeconds = st.globalSeconds || (questions.length * PER_QUESTION_SECONDS);
+  paused = !!st.paused;
+  shuffleEnabled = typeof st.shuffleEnabled === 'boolean' ? st.shuffleEnabled : shuffleEnabled;
+  darkMode = !!st.darkMode;
   applyUISettings();
   showExam();
 }
 
 function shuffleQuestionsAndOptions(){
   shuffleArray(questions);
-  questions.forEach(q=>{ const correctText = q.options[q.answer]; shuffleArray(q.options); q.answer = q.options.indexOf(correctText); });
+  questions.forEach(q=>{
+    const correctText = q.options[q.answer];
+    shuffleArray(q.options);
+    q.answer = q.options.indexOf(correctText);
+  });
 }
 
 // ----------------- RENDER EXAM -----------------
 function showExam(){
-  document.getElementById('menu').style.display='none';
-  document.getElementById('controls').style.display='flex';
-  document.getElementById('exam').style.display='block';
+  document.getElementById('menu').style.display = 'none';
+  document.getElementById('controls').style.display = 'flex';
+  document.getElementById('exam').style.display = 'block';
+  document.getElementById('result').innerHTML = '';
   document.getElementById('batchTitle').textContent = `${batchIndex+1}`;
   applyUISettings();
   renderQuestion();
   renderNavNums();
   updateProgress();
   updateTimersDisplay();
+  // ensure timers are running according to paused state
+  clearInterval(globalTimerId); clearInterval(questionTimerId);
   if(!paused){ startGlobalTimer(); startQuestionTimer(); }
+  // show/hide prev/next batch buttons appropriately
+  updateBatchNavButtons();
 }
 
 function applyUISettings(){
@@ -9261,6 +9308,10 @@ function applyUISettings(){
 }
 
 function renderQuestion(){
+  if(!questions || questions.length === 0){
+    document.getElementById('questionBox').innerHTML = '<em>No questions in this batch.</em>';
+    return;
+  }
   const q = questions[currentIndex];
   let html = `<div style='display:flex;justify-content:space-between;align-items:center'><div><strong>Q${currentIndex+1}.</strong> ${escapeHtml(q.q)}</div><div class='small'>Marked: <strong>${marked[currentIndex]? 'Yes':'No'}</strong></div></div><hr>`;
   q.options.forEach((opt,i)=>{
@@ -9268,59 +9319,153 @@ function renderQuestion(){
     html += `<label style='display:block;margin:8px 0;padding:8px;border-radius:6px;border:1px solid #eee;cursor:pointer'><input type='radio' name='opt' value='${i}' ${checked}> ${escapeHtml(opt)}</label>`;
   });
   document.getElementById('questionBox').innerHTML = html;
-  document.querySelectorAll("input[name='opt']").forEach(el=>el.onchange = ()=>{ userAnswers[currentIndex]=parseInt(el.value); saveState(); renderNavNums(); updateProgress(); });
+  document.querySelectorAll("input[name='opt']").forEach(el=>el.onchange = ()=>{
+    userAnswers[currentIndex] = parseInt(el.value);
+    saveState();
+    renderNavNums();
+    updateProgress();
+  });
 }
 
 function renderNavNums(){
-  const wrap = document.getElementById('navNums'); wrap.innerHTML='';
+  const wrap = document.getElementById('navNums'); wrap.innerHTML = '';
+  if(!questions) return;
   questions.forEach((q,i)=>{
-    const b=document.createElement('button'); b.textContent = i+1; if(userAnswers[i]!==null) b.classList.add('answered'); if(marked[i]) b.classList.add('marked'); if(i===currentIndex) b.style.boxShadow='0 0 0 4px rgba(0,123,255,0.12)';
-    b.onclick = ()=>{ saveState(); currentIndex=i; renderQuestion(); startQuestionTimer(); updateTimersDisplay(); };
+    const b = document.createElement('button');
+    b.textContent = i+1;
+    b.style.minWidth = '36px';
+    b.style.minHeight = '36px';
+    if(userAnswers[i] !== null) b.classList.add('answered');
+    if(marked[i]) b.classList.add('marked');
+    if(i===currentIndex) b.style.boxShadow='0 0 0 4px rgba(0,123,255,0.12)';
+    b.onclick = ()=>{ saveState(); currentIndex = i; renderQuestion(); startQuestionTimer(); updateTimersDisplay(); renderNavNums(); };
     wrap.appendChild(b);
   });
 }
 
 function updateProgress(){
-  const answered = userAnswers.filter(x=>x!==null).length; const total = questions.length; const pct = Math.round((answered/total)*100); document.getElementById('progBar').style.width = pct+'%'; document.getElementById('progressText').textContent = `Answered ${answered} / ${total} (${pct}%)`;
+  const answered = userAnswers.filter(x=>x!==null).length;
+  const total = questions.length;
+  const pct = total ? Math.round((answered/total)*100) : 0;
+  document.getElementById('progBar').style.width = pct+'%';
+  document.getElementById('progressText').textContent = `Answered ${answered} / ${total} (${pct}%)`;
   document.getElementById('marksLegend').innerHTML = `<span style='color:var(--good)'>Answered</span> &nbsp; <span style='border:2px dashed #ff9800;padding:2px;border-radius:4px'>Marked</span>`;
 }
 
 // ----------------- TIMERS -----------------
-function startGlobalTimer(){ clearInterval(globalTimerId); globalTimerId=setInterval(()=>{ if(paused) return; globalSeconds--; if(globalSeconds<=0){ globalSeconds=0; submitBatch(); } saveState(); updateTimersDisplay(); },1000); }
-function startQuestionTimer(){ clearInterval(questionTimerId); questionTimerId=setInterval(()=>{ if(paused) return; questionRemain[currentIndex] = (questionRemain[currentIndex]||PER_QUESTION_SECONDS) -1; if(questionRemain[currentIndex]<=0){ questionRemain[currentIndex]=0; goNext(); } saveState(); updateTimersDisplay(); },1000); }
-function updateTimersDisplay(){ document.getElementById('globalTimer').textContent = formatTime(globalSeconds); document.getElementById('questionTimer').textContent = questionRemain[currentIndex]||PER_QUESTION_SECONDS; }
+function startGlobalTimer(){ clearInterval(globalTimerId); globalTimerId = setInterval(()=>{
+  if(paused) return;
+  globalSeconds--;
+  if(globalSeconds <= 0){ globalSeconds = 0; submitBatch(); }
+  saveState(); updateTimersDisplay();
+}, 1000); }
+
+function startQuestionTimer(){ clearInterval(questionTimerId); questionTimerId = setInterval(()=>{
+  if(paused) return;
+  if(!questionRemain[currentIndex] && questionRemain[currentIndex] !== 0) questionRemain[currentIndex] = PER_QUESTION_SECONDS;
+  questionRemain[currentIndex] = (questionRemain[currentIndex] || PER_QUESTION_SECONDS) - 1;
+  if(questionRemain[currentIndex] <= 0){ questionRemain[currentIndex] = 0; goNext(); }
+  saveState(); updateTimersDisplay();
+}, 1000); }
+
+function updateTimersDisplay(){
+  document.getElementById('globalTimer').textContent = formatTime(globalSeconds || 0);
+  document.getElementById('questionTimer').textContent = (questionRemain[currentIndex] !== undefined ? questionRemain[currentIndex] : PER_QUESTION_SECONDS);
+}
 
 // ----------------- NAVIGATION -----------------
-function goNext(){ if(currentIndex < questions.length-1){ currentIndex++; renderQuestion(); renderNavNums(); startQuestionTimer(); saveState(); } else { submitBatch(); } }
-function goPrev(){ if(currentIndex > 0){ currentIndex--; renderQuestion(); renderNavNums(); startQuestionTimer(); saveState(); } }
+function goNext(){
+  if(!questions || questions.length===0) return;
+  if(currentIndex < questions.length - 1){
+    currentIndex++;
+    renderQuestion(); renderNavNums(); startQuestionTimer(); saveState();
+  } else {
+    // at end — don't force submit automatically; show a message then let user decide
+    const ok = confirm('You are at the last question. Do you want to submit this batch now?');
+    if(ok) submitBatch();
+  }
+}
+function goPrev(){
+  if(!questions || questions.length===0) return;
+  if(currentIndex > 0){
+    currentIndex--;
+    renderQuestion(); renderNavNums(); startQuestionTimer(); saveState();
+  }
+}
 
 document.getElementById('nextBtn').onclick = ()=>{ saveState(); goNext(); };
 document.getElementById('prevBtn').onclick = ()=>{ saveState(); goPrev(); };
 
-document.getElementById('answerLaterBtn').onclick = ()=>{ marked[currentIndex]=true; saveState(); renderNavNums(); goNext(); };
+document.getElementById('answerLaterBtn').onclick = ()=>{ if(!questions || !questions.length) return; marked[currentIndex] = true; saveState(); renderNavNums(); goNext(); };
 
-document.getElementById('pauseBtn').onclick = ()=>{ paused=true; saveState(); document.getElementById('pauseBtn').style.display='none'; document.getElementById('resumeBtn').style.display='inline-block'; };
-document.getElementById('resumeBtn').onclick = ()=>{ paused=false; saveState(); document.getElementById('pauseBtn').style.display='inline-block'; document.getElementById('resumeBtn').style.display='none'; startGlobalTimer(); startQuestionTimer(); };
+document.getElementById('pauseBtn').onclick = ()=>{ paused = true; saveState(); document.getElementById('pauseBtn').style.display='none'; document.getElementById('resumeBtn').style.display='inline-block'; };
+document.getElementById('resumeBtn').onclick = ()=>{ paused = false; saveState(); document.getElementById('pauseBtn').style.display='inline-block'; document.getElementById('resumeBtn').style.display='none'; startGlobalTimer(); startQuestionTimer(); };
+
+// ----------------- BATCH NAV BUTTONS & HOME -----------------
+document.getElementById('homeBtn').onclick = ()=>{ // go back to menu (keeps saved state)
+  clearInterval(globalTimerId); clearInterval(questionTimerId);
+  document.getElementById('exam').style.display = 'none';
+  document.getElementById('controls').style.display = 'none';
+  document.getElementById('menu').style.display = 'block';
+  document.getElementById('result').innerHTML = '';
+  renderBatchMenu();
+};
+
+document.getElementById('nextBatchBtn').onclick = ()=>{ const total = Math.max(1, Math.ceil(originalQuestions.length / QUESTIONS_PER_BATCH)); if(batchIndex+1 >= total){ alert('No next batch'); return; } startBatchWithCheck(batchIndex+1); };
+document.getElementById('prevBatchBtn').onclick = ()=>{ if(batchIndex-1 < 0){ alert('No previous batch'); return; } startBatchWithCheck(batchIndex-1); };
 
 // ----------------- SUBMIT & REVIEW -----------------
-function submitBatch(){ clearInterval(globalTimerId); clearInterval(questionTimerId); let correct=0; const details = questions.map((q,i)=>{ const ua = userAnswers[i]; const isCorrect = (ua!==null && ua===q.answer); if(isCorrect) correct++; return {q:q.q, options:q.options, ua, correctIndex:q.answer, isCorrect}; });
-  const total = questions.length; const pct = ((correct/total)*100).toFixed(2);
-  localStorage.removeItem(LS_KEY);
-  document.getElementById('exam').style.display='none'; document.getElementById('controls').style.display='none'; document.getElementById('result').innerHTML = `
+document.getElementById('submitBtn').onclick = ()=>{ // allow submit at any time
+  const confirmNow = confirm('Submit this batch now? You will see the result and saved attempt will be cleared.');
+  if(confirmNow) submitBatch();
+};
+
+function submitBatch(){
+  clearInterval(globalTimerId); clearInterval(questionTimerId);
+  let correct = 0;
+  const details = (questions || []).map((q,i)=>{
+    const ua = userAnswers[i];
+    const isCorrect = (ua !== null && ua === q.answer);
+    if(isCorrect) correct++;
+    return { q: q.q, options: q.options, ua, correctIndex: q.answer, isCorrect };
+  });
+
+  const total = questions.length || 0;
+  const pct = total ? ((correct/total)*100).toFixed(2) : '0.00';
+
+  // clear saved state for this attempt
+  clearSavedState();
+
+  document.getElementById('exam').style.display = 'none';
+  document.getElementById('controls').style.display = 'none';
+  document.getElementById('result').innerHTML = `
     <h2>Batch ${batchIndex+1} Result</h2>
     <p><strong>Score:</strong> ${correct} / ${total} (${pct}%)</p>
-    <button id='viewDetail' class='primary'>View Detailed Review</button>
-    <button id='restart' class='secondary'>Back to Menu</button>
+    <div style="margin-top:12px">
+      <button id='viewDetail' class='primary'>View Detailed Review</button>
+      <button id='backMenu' class='secondary'>Back to Menu</button>
+      <button id='startNext' class='secondary'>Start Next Batch</button>
+    </div>
   `;
-  document.getElementById('viewDetail').onclick = ()=>showDetailedReview(details);
-  document.getElementById('restart').onclick = ()=>{ location.reload(); };
+
+  document.getElementById('viewDetail').onclick = ()=> showDetailedReview(details);
+  document.getElementById('backMenu').onclick = ()=> { location.reload(); }; // simple reload to restore initial UI
+  document.getElementById('startNext').onclick = ()=> {
+    const totalB = Math.max(1, Math.ceil(originalQuestions.length / QUESTIONS_PER_BATCH));
+    if(batchIndex+1 < totalB) startBatch(batchIndex+1);
+    else alert('No next batch available.');
+  };
 }
 
+// detailed review view
 function showDetailedReview(details){
   let html = `<h3>Detailed Review — Batch ${batchIndex+1}</h3><ol>`;
-  details.forEach((d,i)=>{ html += `<li style='margin:8px 0'><strong>${escapeHtml(d.q)}</strong><br>Your: ${d.ua!==null? escapeHtml(d.options[d.ua]) : '<em>Not answered</em>'} ${d.isCorrect? '<span style="color:var(--good)"> (Correct)</span>' : '<span style="color:var(--bad)"> (Wrong)</span>' }<br>Correct: ${escapeHtml(d.options[d.correctIndex])}</li>`; });
-  html += `</ol><button onclick='location.reload()' class='primary'>Back to Menu</button>`;
+  details.forEach((d,i)=>{
+    html += `<li style='margin:8px 0'><strong>${escapeHtml(d.q)}</strong><br>Your: ${d.ua !== null ? escapeHtml(d.options[d.ua]) : '<em>Not answered</em>'} ${d.isCorrect? '<span style="color:var(--good)"> (Correct)</span>' : '<span style="color:var(--bad)"> (Wrong)</span>' }<br>Correct: ${escapeHtml(d.options[d.correctIndex])}</li>`;
+  });
+  html += `</ol><div style="margin-top:12px"><button id='detailBack' class='primary'>Back to Menu</button></div>`;
   document.getElementById('result').innerHTML = html;
+  document.getElementById('detailBack').onclick = ()=> { location.reload(); };
 }
 
 // ----------------- IMPORT / EXPORT / UI -----------------
@@ -9333,7 +9478,14 @@ document.getElementById('exportBtn').onclick = ()=>{
 
 document.getElementById('importBtn').onclick = ()=>{ document.getElementById('importFile').click(); };
 document.getElementById('importFile').onchange = (e)=>{
-  const f = e.target.files[0]; if(!f) return; const reader = new FileReader(); reader.onload = ev=>{ try{ const arr = JSON.parse(ev.target.result); if(!Array.isArray(arr)) throw 0; originalQuestions = arr; alert('Imported '+arr.length+' questions.'); renderBatchMenu(); }catch(err){ alert('Invalid JSON file'); } }; reader.readAsText(f);
+  const f = e.target.files[0]; if(!f) return; const reader = new FileReader(); reader.onload = ev=>{
+    try{
+      const arr = JSON.parse(ev.target.result);
+      if(!Array.isArray(arr)) throw 0;
+      originalQuestions = arr;
+      alert('Imported '+arr.length+' questions.'); renderBatchMenu();
+    }catch(err){ alert('Invalid JSON file'); }
+  }; reader.readAsText(f);
 };
 
 // Shuffle toggle
@@ -9343,6 +9495,13 @@ document.getElementById('darkToggle').onclick = ()=>{ darkMode = !darkMode; appl
 
 // ----------------- UTIL -----------------
 function escapeHtml(str){ return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+// update prev/next batch button visibility
+function updateBatchNavButtons(){
+  const total = Math.max(1, Math.ceil(originalQuestions.length / QUESTIONS_PER_BATCH));
+  document.getElementById('nextBatchBtn').disabled = (batchIndex+1 >= total);
+  document.getElementById('prevBatchBtn').disabled = (batchIndex <= 0);
+}
 
 // ----------------- INIT -----------------
 renderBatchMenu();
