@@ -94,6 +94,7 @@ Output columns: Name, Total Visits, Most Visited Floor, Used Resources.
         {name:"Charlie", email:"charlie@mail.com", floor:2, resources:"Projector"},
         {name:"Alice", email:"a2@mail.com", floor:2, resources:"Whiteboard"}
     ],
+    output: [],
     answer: `
 WITH floor_rank AS (
     SELECT 
@@ -191,7 +192,11 @@ JOIN no_of_wins b ON a.team_name = b.team_name
 ORDER BY b.no_of_wins DESC;
 `
 },
-    {
+
+/* ----------------------------------------------------------
+   QUESTION 3 — Daily New vs Repeat Customers
+   ---------------------------------------------------------- */
+{
     question: `
 Given the daily orders dataset, write a SQL query to determine:
 
@@ -235,9 +240,14 @@ AND a.order_date = b.first_order_date
 GROUP BY a.order_date
 ORDER BY a.order_date;
 `
-},{
+},
+
+/* ----------------------------------------------------------
+   QUESTION 4 — Daily Revenue from New vs Repeat Customers
+   ---------------------------------------------------------- */
+{
     question: `
-Using the daily orders dataset, extend the previous analysis to compute:
+Extend the previous analysis to compute:
 
 1. New customer count per day  
 2. Repeat customer count per day  
@@ -302,20 +312,18 @@ ORDER BY v.order_date;
 `
 }
 
-
-
 ]; // END QUESTIONS ARRAY
 
-
-
 /* ----------------------------------------------------------
-   RENDER FUNCTION
+   RENDER FUNCTION WITH QUESTION NUMBERS
    ---------------------------------------------------------- */
 function renderQuestion(index) {
 
     let q = questions[index];
 
-    document.getElementById('questionBox').innerHTML = `<p>${q.question}</p>`;
+    /* ---- Add Question Number ---- */
+    let questionNumber = `Question ${index + 1}`;
+    document.getElementById('questionBox').innerHTML = `<h3>${questionNumber}</h3><p>${q.question}</p>`;
 
     /* ---- Dataset Table ---- */
     let tableHtml = "<table><tr>";
@@ -351,7 +359,6 @@ function renderQuestion(index) {
     /* ---- SQL Answer ---- */
     document.getElementById('answerBox').innerText = q.answer;
 }
-
 
 /* ----------------------------------------------------------
    Navigation Buttons
