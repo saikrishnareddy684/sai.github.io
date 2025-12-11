@@ -31,32 +31,67 @@
             overflow-x: auto;
             font-size: 15px;
         }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-top: 10px;
+        }
+        table, th, td {
+            border: 1px solid #ccc;
+        }
+        th, td {
+            padding: 8px;
+            text-align: left;
+        }
+        .nav-buttons {
+            margin-top: 20px;
+            display: flex;
+            justify-content: space-between;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 14px;
+            border-radius: 6px;
+            border: none;
+            cursor: pointer;
+            background-color: #4CAF50;
+            color: white;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
     </style>
-</head>
-<body>
+    <script>
+        let currentQuestion = 0;
 
-<div class="container">
+        const questions = [
+            {
+                question: `
+A company tracks employee visits, allowing only one entry per employee per day, although a loophole 
+exists where employees can enter multiple times if they use a different email ID for each entry.
 
-    <h2>📌 SQL Question</h2>
-    <div class="box">
-        <p>
-            A company tracks employee visits, allowing only one entry per employee per day, although a loophole 
-            exists where employees can enter multiple times if they use a different email ID for each entry.
-            <br><br>
-            Given this input data, determine:
-        </p>
-        <ul>
-            <li>Name of each person</li>
-            <li>Total number of times they visited</li>
-            <li>The floor they visited the most frequently</li>
-            <li>A comma-separated list of distinct resources they used</li>
-        </ul>
-        <p>The output should include: <b>Name, Total Visits, Most Visited Floor, Used Resources</b>.</p>
-    </div>
+Given this input data, determine:
+- Name of each person
+- Total number of times they visited
+- The floor they visited the most frequently
+- A comma-separated list of distinct resources they used
 
-    <h2>🟢 SQL Answer</h2>
-    <div class="box">
-        <pre>
+The output should include: Name, Total Visits, Most Visited Floor, Used Resources.
+
+Sample Dataset (resources_data):
+
+| name      | email              | floor | resources       |
+|-----------|------------------|-------|----------------|
+| Alice     | a1@mail.com       | 2     | Laptop         |
+| Alice     | a2@mail.com       | 2     | Projector      |
+| Bob       | bob@mail.com      | 1     | Printer        |
+| Alice     | a1@mail.com       | 3     | Laptop         |
+| Bob       | bob2@mail.com     | 1     | Laptop         |
+| Charlie   | charlie@mail.com  | 2     | Laptop         |
+| Charlie   | charlie@mail.com  | 2     | Projector      |
+| Alice     | a2@mail.com       | 2     | Whiteboard     |
+`,
+                answer: `
 WITH floor_rank AS (
     -- Find how many times each person visited each floor
     SELECT 
@@ -107,10 +142,68 @@ FROM floor_rank FR
 JOIN total_visits TV ON FR.name = TV.name
 JOIN resource_list RL ON FR.name = RL.name
 WHERE FR.rn = 1;  -- Only the most visited floor
+`
+            }
+
+            // You can add more questions here in the same format
+        ];
+
+        function renderQuestion(index) {
+            document.getElementById('questionBox').innerText = questions[index].question;
+            document.getElementById('answerBox').innerText = questions[index].answer;
+        }
+
+        function nextQuestion() {
+            if (currentQuestion < questions.length - 1) {
+                currentQuestion++;
+                renderQuestion(currentQuestion);
+            } else {
+                alert("This is the last question.");
+            }
+        }
+
+        function previousQuestion() {
+            if (currentQuestion > 0) {
+                currentQuestion--;
+                renderQuestion(currentQuestion);
+            } else {
+                alert("This is the first question.");
+            }
+        }
+
+        window.onload = function() {
+            renderQuestion(currentQuestion);
+        }
+    </script>
+</head>
+<body>
+
+<div class="container">
+
+    <h2>📌 SQL Question</h2>
+    <div class="box" id="questionBox">
+        <!-- Question content will appear here dynamically -->
+    </div>
+
+    <h2>🟢 SQL Answer</h2>
+    <div class="box">
+        <pre id="answerBox">
+        <!-- Answer content will appear here dynamically -->
         </pre>
     </div>
+
+    <div class="nav-buttons">
+        <button onclick="previousQuestion()">⬅ Previous</button>
+        <button onclick="nextQuestion()">Next ➡</button>
+    </div>
+
+    <!-- 
+        Comment: Add more questions in the `questions` array in the <script> section above.
+        Each question should be an object with 'question' and 'answer' keys.
+    -->
 
 </div>
 
 </body>
 </html>
+
