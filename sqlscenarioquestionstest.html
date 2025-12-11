@@ -1,89 +1,121 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>SQL Question & Answer</title>
-
+    <meta charset="utf-8" />
+    <title>SQL Question & Answer — Full</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
     <style>
         body {
             font-family: Arial, sans-serif;
             margin: 20px;
             background-color: #f4f4f9;
+            color: #222;
         }
         .container {
-            width: 90%;
-            margin: auto;
+            width: 95%;
+            max-width: 1100px;
+            margin: 0 auto;
         }
-        h2, h3 {
-            color: #333;
-        }
+        h1 { margin: 0 0 8px; font-size: 22px; }
+        h2 { margin: 18px 0 6px; font-size: 18px; color: #333; }
+        h3 { margin: 8px 0; font-size: 16px; color: #333; }
         .box {
             background: white;
-            padding: 20px;
-            margin-top: 20px;
+            padding: 18px;
+            margin-top: 14px;
             border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            box-shadow: 0 0 10px rgba(0,0,0,0.06);
         }
+        .jump-buttons {
+            margin-bottom: 12px;
+        }
+        .jump-buttons button {
+            background-color: #008CBA;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            margin-right: 8px;
+            margin-bottom: 8px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 13px;
+        }
+        .jump-buttons button:hover { background-color: #007399; }
         table {
             border-collapse: collapse;
             width: 100%;
             margin-top: 10px;
         }
-        table, th, td {
-            border: 1px solid #ccc;
-        }
-        th, td {
-            padding: 8px;
-            text-align: left;
-        }
+        table, th, td { border: 1px solid #ddd; }
+        th, td { padding: 8px; text-align: left; font-size: 13px; }
+        th { background: #fafafa; }
         pre {
             background: #272822;
             color: #f8f8f2;
-            padding: 15px;
+            padding: 14px;
             border-radius: 6px;
             overflow-x: auto;
-            font-size: 15px;
-            font-family: monospace;
+            font-size: 13px;
+            line-height: 1.45;
         }
         .nav-buttons {
-            margin-top: 20px;
+            margin-top: 14px;
             display: flex;
             justify-content: space-between;
+            gap: 8px;
         }
-        button {
-            padding: 10px 20px;
-            font-size: 14px;
-            border-radius: 6px;
-            border: none;
-            cursor: pointer;
+        .nav-controls button {
             background-color: #4CAF50;
             color: white;
+            border: none;
+            padding: 10px 16px;
+            border-radius: 6px;
+            cursor: pointer;
         }
-        button:hover {
-            background-color: #45a049;
-        }
-
-        /* Jump-to buttons */
-        .jump-buttons {
-            margin-bottom: 20px;
-        }
-        .jump-buttons button {
-            background-color: #008CBA;
-            margin-right: 8px;
-        }
-        .jump-buttons button:hover {
-            background-color: #007399;
-        }
+        .nav-controls button:hover { background-color: #45a049; }
+        .small-muted { color: #666; font-size: 13px; margin-top: 6px; }
     </style>
+</head>
+<body>
+<div class="container">
+    <h1>📚 SQL Questions & Answers</h1>
+    <div class="small-muted">Click any question button to jump directly to that question. Buttons are auto-generated from the `questions` array — add new question objects there and a button appears automatically.</div>
+
+    <!-- Jump buttons (auto-generated) -->
+    <div id="jumpButtons" class="jump-buttons"></div>
+
+    <!-- Question area -->
+    <div id="questionBox" class="box"></div>
+
+    <h3>Sample Dataset</h3>
+    <div id="datasetBox" class="box"></div>
+
+    <h3>Expected Output</h3>
+    <div id="outputBox" class="box"></div>
+
+    <h2>🟢 SQL Answer</h2>
+    <div class="box">
+        <pre id="answerBox"></pre>
+    </div>
+
+    <div class="nav-buttons">
+        <div class="nav-controls">
+            <button id="prevBtn">⬅ Previous</button>
+            <button id="nextBtn">Next ➡</button>
+        </div>
+        <div class="small-muted" id="questionCounter"></div>
+    </div>
+</div>
 
 <script>
-let currentQuestion = 0;
-
+/* ============================
+   QUESTIONS ARRAY (6 questions)
+   Keep the same object format when adding new questions.
+   Buttons will be generated automatically.
+   ============================ */
 const questions = [
 
-/* ----------------------------------------------------------
-   QUESTION 1 — Employee Visit Tracking
-   ---------------------------------------------------------- */
+/* QUESTION 1 — Employee Visit Tracking */
 {
     question: `
 A company tracks employee visits, allowing only one entry per employee per day.
@@ -97,19 +129,17 @@ Determine:
 Output columns: Name, Total Visits, Most Visited Floor, Used Resources.
 `,
     dataset: [
-    {name:"A    ", address:"Bangalore", email:"A@gmail.com  ", floor:"1    ", resources:"CPU     "},
-    {name:"A    ", address:"Bangalore", email:"A1@gmail.com ", floor:"1    ", resources:"CPU     "},
-    {name:"A    ", address:"Bangalore", email:"A2@gmail.com ", floor:"2    ", resources:"DESKTOP "},
-    {name:"B    ", address:"Bangalore", email:"B@gmail.com  ", floor:"2    ", resources:"DESKTOP "},
-    {name:"B    ", address:"Bangalore", email:"B1@gmail.com ", floor:"2    ", resources:"DESKTOP "},
-    {name:"B    ", address:"Bangalore", email:"B2@gmail.com ", floor:"1    ", resources:"MONITOR "}
-],
-
+        {name:"A    ", address:"Bangalore", email:"A@gmail.com  ", floor:"1    ", resources:"CPU     "},
+        {name:"A    ", address:"Bangalore", email:"A1@gmail.com ", floor:"1    ", resources:"CPU     "},
+        {name:"A    ", address:"Bangalore", email:"A2@gmail.com ", floor:"2    ", resources:"DESKTOP "},
+        {name:"B    ", address:"Bangalore", email:"B@gmail.com  ", floor:"2    ", resources:"DESKTOP "},
+        {name:"B    ", address:"Bangalore", email:"B1@gmail.com ", floor:"2    ", resources:"DESKTOP "},
+        {name:"B    ", address:"Bangalore", email:"B2@gmail.com ", floor:"1    ", resources:"MONITOR "}
+    ],
     output: [
-    {name:"A    ", total_visits:"3", most_visited_floor:"1    ", resources_used:"CPU,DESKTOP   "},
-    {name:"B    ", total_visits:"3", most_visited_floor:"2    ", resources_used:"DESKTOP,MONITOR"}
-],
-
+        {name:"A    ", total_visits:"3", most_visited_floor:"1    ", resources_used:"CPU,DESKTOP   "},
+        {name:"B    ", total_visits:"3", most_visited_floor:"2    ", resources_used:"DESKTOP,MONITOR"}
+    ],
     answer: `
 WITH floor_rank AS (
     SELECT 
@@ -146,9 +176,7 @@ WHERE FR.rn = 1;
 `
 },
 
-/* ----------------------------------------------------------
-   QUESTION 2 — Team Match Results
-   ---------------------------------------------------------- */
+/* QUESTION 2 — Team Match Results */
 {
     question: `
 Using the match result dataset, write a SQL query to:
@@ -166,7 +194,6 @@ Using the match result dataset, write a SQL query to:
         {Team_1:"Eng", Team_2:"NZ", Winner:"NZ"},
         {Team_1:"Aus", Team_2:"India", Winner:"India"}
     ],
-
     output: [
         {Team_Name:"India", Matches_played:2, no_of_wins:2, no_of_losses:0},
         {Team_Name:"SL", Matches_played:2, no_of_wins:0, no_of_losses:2},
@@ -175,7 +202,6 @@ Using the match result dataset, write a SQL query to:
         {Team_Name:"Aus", Matches_played:2, no_of_wins:1, no_of_losses:1},
         {Team_Name:"NZ", Matches_played:1, no_of_wins:1, no_of_losses:0}
     ],
-
     answer: `
 WITH team_name AS (
    SELECT team_name, COUNT(*) matches_played FROM (
@@ -208,9 +234,7 @@ ORDER BY b.no_of_wins DESC;
 `
 },
 
-/* ----------------------------------------------------------
-   QUESTION 3 — Daily New vs Repeat Customers
-   ---------------------------------------------------------- */
+/* QUESTION 3 — Daily New vs Repeat Customers */
 {
     question: `
 Given the daily orders dataset, write a SQL query to determine:
@@ -220,7 +244,6 @@ Given the daily orders dataset, write a SQL query to determine:
 3. Display order_date, first_visit_flag (new customers), repeat_visit_flag (repeat customers)  
 4. Order the results by order_date  
 `,
-
     dataset: [
         {order_id:1, customer_id:100, order_date:"2022-01-01", order_amount:2000},
         {order_id:2, customer_id:200, order_date:"2022-01-01", order_amount:2500},
@@ -232,13 +255,11 @@ Given the daily orders dataset, write a SQL query to determine:
         {order_id:8, customer_id:400, order_date:"2022-01-03", order_amount:1000},
         {order_id:9, customer_id:600, order_date:"2022-01-03", order_amount:3000}
     ],
-
     output: [
         {order_date:"2022-01-01", first_visit_flag:3, repeat_visit_flag:0},
         {order_date:"2022-01-02", first_visit_flag:2, repeat_visit_flag:1},
         {order_date:"2022-01-03", first_visit_flag:1, repeat_visit_flag:2}
     ],
-
     answer: `
 SELECT 
     a.order_date,
@@ -257,9 +278,7 @@ ORDER BY a.order_date;
 `
 },
 
-/* ----------------------------------------------------------
-   QUESTION 4 — Daily Revenue (New vs Repeat)
-   ---------------------------------------------------------- */
+/* QUESTION 4 — Daily Revenue (New vs Repeat) */
 {
     question: `
 Extend the previous analysis to compute:
@@ -269,7 +288,6 @@ Extend the previous analysis to compute:
 3. Revenue by new customers  
 4. Revenue by repeat customers  
 `,
-
     dataset: [
         {order_id:1, customer_id:100, order_date:"2022-01-01", order_amount:2000},
         {order_id:2, customer_id:200, order_date:"2022-01-01", order_amount:2500},
@@ -281,13 +299,11 @@ Extend the previous analysis to compute:
         {order_id:8, customer_id:400, order_date:"2022-01-03", order_amount:1000},
         {order_id:9, customer_id:600, order_date:"2022-01-03", order_amount:3000}
     ],
-
     output: [
         {order_date:"2022-01-01", first_visit:3, repeat_visit:0, new_customer_amount:6600, old_customer_amount:0},
         {order_date:"2022-01-02", first_visit:2, repeat_visit:1, new_customer_amount:4900, old_customer_amount:2000},
         {order_date:"2022-01-03", first_visit:1, repeat_visit:2, new_customer_amount:3000, old_customer_amount:4000}
     ],
-
     answer: `
 WITH first_order AS (
     SELECT customer_id, MIN(order_date) AS first_order_date
@@ -326,9 +342,7 @@ ORDER BY v.order_date;
 `
 },
 
-/* ----------------------------------------------------------
-   QUESTION 5 — Nth Future Sunday
-   ---------------------------------------------------------- */
+/* QUESTION 5 — Nth Future Sunday */
 {
     question: `
 Write a SQL query to find the date of the Nth occurrence of Sunday in the future from a given starting date.
@@ -339,10 +353,8 @@ Provide two solutions:
 
 Also explain why (n - 1) and (8 - weekday) are used.
 `,
-
     dataset: [],
     output: [],
-
     answer_1: `
 -- Approach 1: Using date generation (loop)
 
@@ -372,7 +384,6 @@ FROM (
 WHERE weekday = @weekday AND rn = @n
 ORDER BY dt;
 `,
-
     answer_2: `
 -- Approach 2: Direct mathematical formula
 
@@ -384,7 +395,6 @@ SELECT DATEADD(
            DATEADD(DAY, 8 - DATEPART(WEEKDAY, @today_date), @today_date)
        ) AS nth_future_sunday;
 `,
-
     explanation: `
 Explanation:
 
@@ -401,7 +411,8 @@ Explanation:
    Nth Sunday → (n - 1) additional weeks.
 `
 },
-     
+
+/* QUESTION 6 — Order Shipping Analysis */
 {
     question: `
 Given the below order dataset with columns (order_id, customer_id, order_date, ship_date),
@@ -413,31 +424,28 @@ calculate the following for each order:
 
 Return all columns including the calculated ones.
 `,
-
     dataset: [
-    {order_id:"1000", customer_id:"1", order_date:"2022-01-05", ship_date:"2022-01-11"},
-    {order_id:"1001", customer_id:"2", order_date:"2022-02-04", ship_date:"2022-02-16"},
-    {order_id:"1002", customer_id:"3", order_date:"2022-01-01", ship_date:"2022-01-19"},
-    {order_id:"1003", customer_id:"4", order_date:"2022-01-06", ship_date:"2022-01-30"},
-    {order_id:"1004", customer_id:"1", order_date:"2022-02-07", ship_date:"2022-02-13"},
-    {order_id:"1005", customer_id:"4", order_date:"2022-01-07", ship_date:"2022-01-31"},
-    {order_id:"1006", customer_id:"3", order_date:"2022-02-08", ship_date:"2022-02-26"},
-    {order_id:"1007", customer_id:"2", order_date:"2022-02-09", ship_date:"2022-02-21"},
-    {order_id:"1008", customer_id:"4", order_date:"2022-02-10", ship_date:"2022-03-06"}
+        {order_id:"1000", customer_id:"1", order_date:"2022-01-05", ship_date:"2022-01-11"},
+        {order_id:"1001", customer_id:"2", order_date:"2022-02-04", ship_date:"2022-02-16"},
+        {order_id:"1002", customer_id:"3", order_date:"2022-01-01", ship_date:"2022-01-19"},
+        {order_id:"1003", customer_id:"4", order_date:"2022-01-06", ship_date:"2022-01-30"},
+        {order_id:"1004", customer_id:"1", order_date:"2022-02-07", ship_date:"2022-02-13"},
+        {order_id:"1005", customer_id:"4", order_date:"2022-01-07", ship_date:"2022-01-31"},
+        {order_id:"1006", customer_id:"3", order_date:"2022-02-08", ship_date:"2022-02-26"},
+        {order_id:"1007", customer_id:"2", order_date:"2022-02-09", ship_date:"2022-02-21"},
+        {order_id:"1008", customer_id:"4", order_date:"2022-02-10", ship_date:"2022-03-06"}
     ],
-
     output: [
-    {order_id:"1000", customer_id:"1", order_date:"2022-01-05", ship_date:"2022-01-11", days_to_ship:"6",  week_between_days:"1", business_days_to_ship:"4"},
-    {order_id:"1001", customer_id:"2", order_date:"2022-02-04", ship_date:"2022-02-16", days_to_ship:"12", week_between_days:"2", business_days_to_ship:"8"},
-    {order_id:"1002", customer_id:"3", order_date:"2022-01-01", ship_date:"2022-01-19", days_to_ship:"18", week_between_days:"3", business_days_to_ship:"12"},
-    {order_id:"1003", customer_id:"4", order_date:"2022-01-06", ship_date:"2022-01-30", days_to_ship:"24", week_between_days:"4", business_days_to_ship:"16"},
-    {order_id:"1004", customer_id:"1", order_date:"2022-02-07", ship_date:"2022-02-13", days_to_ship:"6",  week_between_days:"1", business_days_to_ship:"4"},
-    {order_id:"1005", customer_id:"4", order_date:"2022-01-07", ship_date:"2022-01-31", days_to_ship:"24", week_between_days:"4", business_days_to_ship:"16"},
-    {order_id:"1006", customer_id:"3", order_date:"2022-02-08", ship_date:"2022-02-26", days_to_ship:"18", week_between_days:"2", business_days_to_ship:"14"},
-    {order_id:"1007", customer_id:"2", order_date:"2022-02-09", ship_date:"2022-02-21", days_to_ship:"12", week_between_days:"2", business_days_to_ship:"8"},
-    {order_id:"1008", customer_id:"4", order_date:"2022-02-10", ship_date:"2022-03-06", days_to_ship:"24", week_between_days:"4", business_days_to_ship:"16"}
+        {order_id:"1000", customer_id:"1", order_date:"2022-01-05", ship_date:"2022-01-11", days_to_ship:"6",  week_between_days:"1", business_days_to_ship:"4"},
+        {order_id:"1001", customer_id:"2", order_date:"2022-02-04", ship_date:"2022-02-16", days_to_ship:"12", week_between_days:"2", business_days_to_ship:"8"},
+        {order_id:"1002", customer_id:"3", order_date:"2022-01-01", ship_date:"2022-01-19", days_to_ship:"18", week_between_days:"3", business_days_to_ship:"12"},
+        {order_id:"1003", customer_id:"4", order_date:"2022-01-06", ship_date:"2022-01-30", days_to_ship:"24", week_between_days:"4", business_days_to_ship:"16"},
+        {order_id:"1004", customer_id:"1", order_date:"2022-02-07", ship_date:"2022-02-13", days_to_ship:"6",  week_between_days:"1", business_days_to_ship:"4"},
+        {order_id:"1005", customer_id:"4", order_date:"2022-01-07", ship_date:"2022-01-31", days_to_ship:"24", week_between_days:"4", business_days_to_ship:"16"},
+        {order_id:"1006", customer_id:"3", order_date:"2022-02-08", ship_date:"2022-02-26", days_to_ship:"18", week_between_days:"2", business_days_to_ship:"14"},
+        {order_id:"1007", customer_id:"2", order_date:"2022-02-09", ship_date:"2022-02-21", days_to_ship:"12", week_between_days:"2", business_days_to_ship:"8"},
+        {order_id:"1008", customer_id:"4", order_date:"2022-02-10", ship_date:"2022-03-06", days_to_ship:"24", week_between_days:"4", business_days_to_ship:"16"}
     ],
-
     answer: `
 SELECT
     order_id,
@@ -462,128 +470,90 @@ SELECT
 FROM orders_data;
 `
 }
- 
 
+/* End of questions array */
+];
 
-]; // END QUESTIONS ARRAY
+/* ============================
+   UI & Rendering Helpers
+   ============================ */
 
+let currentQuestion = 0;
 
-/* ----------------------------------------------------------
-   RENDER FUNCTION — FIXED TO SUPPORT MULTIPLE ANSWERS
------------------------------------------------------------- */
+function createJumpButtons() {
+    const container = document.getElementById('jumpButtons');
+    container.innerHTML = '';
+    questions.forEach((q, idx) => {
+        const btn = document.createElement('button');
+        btn.textContent = 'Q' + (idx + 1);
+        btn.title = 'Go to Question ' + (idx + 1);
+        btn.onclick = () => {
+            currentQuestion = idx;
+            renderQuestion(idx);
+        };
+        container.appendChild(btn);
+    });
+}
+
+function renderTableFromObjects(list) {
+    if (!list || list.length === 0) return '';
+    const cols = Object.keys(list[0]);
+    let html = '<table><thead><tr>';
+    cols.forEach(c => html += `<th>${c}</th>`);
+    html += '</tr></thead><tbody>';
+    list.forEach(r => {
+        html += '<tr>';
+        cols.forEach(c => html += `<td>${r[c]}</td>`);
+        html += '</tr>';
+    });
+    html += '</tbody></table>';
+    return html;
+}
+
 function renderQuestion(index) {
+    const q = questions[index];
+    // Question text
+    document.getElementById('questionBox').innerHTML = `<h3>Question ${index + 1}</h3><p>${q.question.replace(/\n\s+/g,'\n')}</p>`;
 
-    let q = questions[index];
+    // Dataset
+    const datasetHtml = q.dataset && q.dataset.length ? renderTableFromObjects(q.dataset) : '<p>No dataset for this question.</p>';
+    document.getElementById('datasetBox').innerHTML = datasetHtml;
 
-    document.getElementById('questionBox').innerHTML = `<h3>Question ${index + 1}</h3><p>${q.question}</p>`;
+    // Output
+    const outputHtml = q.output && q.output.length ? renderTableFromObjects(q.output) : '<p>No output for this question.</p>';
+    document.getElementById('outputBox').innerHTML = outputHtml;
 
-    /* ---- Dataset ---- */
-    if (q.dataset && q.dataset.length > 0) {
-        let tableHtml = "<table><tr>";
-        Object.keys(q.dataset[0]).forEach(col => tableHtml += `<th>${col}</th>`);
-        tableHtml += "</tr>";
+    // Answers: combine answer, answer_1, answer_2, explanation
+    let answerText = '';
+    if (q.answer) answerText += q.answer.trim() + '\n\n';
+    if (q.answer_1) answerText += '-- Solution 1:\n' + q.answer_1.trim() + '\n\n';
+    if (q.answer_2) answerText += '-- Solution 2:\n' + q.answer_2.trim() + '\n\n';
+    if (q.explanation) answerText += '-- Explanation:\n' + q.explanation.trim();
 
-        q.dataset.forEach(row => {
-            tableHtml += "<tr>";
-            Object.values(row).forEach(val => tableHtml += `<td>${val}</td>`);
-            tableHtml += "</tr>";
-        });
-        tableHtml += "</table>";
-        document.getElementById('datasetBox').innerHTML = tableHtml;
-    } else {
-        document.getElementById('datasetBox').innerHTML = "<p>No dataset for this question.</p>";
-    }
+    document.getElementById('answerBox').textContent = answerText || '-- No answer provided --';
 
-    /* ---- Output ---- */
-    if (q.output && q.output.length > 0) {
-        let outHtml = "<table><tr>";
-        Object.keys(q.output[0]).forEach(col => outHtml += `<th>${col}</th>`);
-        outHtml += "</tr>";
-
-        q.output.forEach(row => {
-            outHtml += "<tr>";
-            Object.values(row).forEach(val => outHtml += `<td>${val}</td>`);
-            outHtml += "</tr>";
-        });
-        outHtml += "</table>";
-        document.getElementById("outputBox").innerHTML = outHtml;
-    } else {
-        document.getElementById("outputBox").innerHTML = "<p>No output for this question.</p>";
-    }
-
-    /* ---- Answer section ---- */
-    let finalAnswer = "";
-
-    if (q.answer) finalAnswer += q.answer + "\n\n";
-    if (q.answer_1) finalAnswer += "-- Solution 1:\n" + q.answer_1 + "\n\n";
-    if (q.answer_2) finalAnswer += "-- Solution 2:\n" + q.answer_2 + "\n\n";
-    if (q.explanation) finalAnswer += "-- Explanation:\n" + q.explanation;
-
-    document.getElementById('answerBox').innerText = finalAnswer;
+    // update counter
+    document.getElementById('questionCounter').textContent = `Question ${index+1} of ${questions.length}`;
 }
 
-/* ----------------------------------------------------------
-   Navigation Buttons
------------------------------------------------------------- */
-function nextQuestion() {
-    if (currentQuestion < questions.length - 1) {
-        currentQuestion++;
-        renderQuestion(currentQuestion);
-    }
-}
-
-function previousQuestion() {
+/* Navigation buttons */
+document.getElementById('prevBtn').addEventListener('click', () => {
     if (currentQuestion > 0) {
         currentQuestion--;
         renderQuestion(currentQuestion);
     }
-}
+});
+document.getElementById('nextBtn').addEventListener('click', () => {
+    if (currentQuestion < questions.length - 1) {
+        currentQuestion++;
+        renderQuestion(currentQuestion);
+    }
+});
 
-function jumpToQuestion(i) {
-    currentQuestion = i;
-    renderQuestion(i);
-}
+/* Initialize UI */
+createJumpButtons();
+renderQuestion(0);
 
-window.onload = function() {
-    renderQuestion(currentQuestion);
-}
 </script>
-
-</head>
-
-
-<body>
-<div class="container">
-
-    <h2>📌 SQL Questions</h2>
-
-    <!-- Jump Buttons -->
-    <div class="jump-buttons">
-        <button onclick="jumpToQuestion(0)">Q1</button>
-        <button onclick="jumpToQuestion(1)">Q2</button>
-        <button onclick="jumpToQuestion(2)">Q3</button>
-        <button onclick="jumpToQuestion(3)">Q4</button>
-        <button onclick="jumpToQuestion(4)">Q5</button>
-    </div>
-
-    <div class="box" id="questionBox"></div>
-
-    <h3>Sample Dataset</h3>
-    <div class="box" id="datasetBox"></div>
-
-    <h3>Expected Output</h3>
-    <div class="box" id="outputBox"></div>
-
-    <h2>🟢 SQL Answer</h2>
-    <div class="box">
-        <pre id="answerBox"></pre>
-    </div>
-
-    <div class="nav-buttons">
-        <button onclick="previousQuestion()">⬅ Previous</button>
-        <button onclick="nextQuestion()">Next ➡</button>
-    </div>
-
-</div>
 </body>
 </html>
