@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>SQL Question & Answer</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f4f4f9;
+        }
+        .container {
+            width: 90%;
+            margin: auto;
+        }
+        h2 {
+            color: #333;
+        }
+        .box {
+            background: white;
+            padding: 20px;
+            margin-top: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-top: 10px;
+        }
+        table, th, td {
+            border: 1px solid #ccc;
+        }
+        th, td {
+            padding: 8px;
+            text-align: left;
+        }
+        pre {
+            background: #272822;
+            color: #f8f8f2;
+            padding: 15px;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-size: 15px;
+            font-family: monospace;
+        }
+        .nav-buttons {
+            margin-top: 20px;
+            display: flex;
+            justify-content: space-between;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 14px;
+            border-radius: 6px;
+            border: none;
+            cursor: pointer;
+            background-color: #4CAF50;
+            color: white;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+
+    <script>
+        let currentQuestion = 0;
+
+        const questions = [
+
+            /* ----------------------------------------------------------
+               QUESTION 1 — Employee Visit Tracking
+               ---------------------------------------------------------- */
+            {
+                question: `
+A company tracks employee visits, allowing only one entry per employee per day.
+A loophole allows multiple entries using different email IDs.
+
+Determine:
+- Total visits
+- Most visited floor
+- Distinct resources used
+
+Output columns: Name, Total Visits, Most Visited Floor, Used Resources.
+`,
+                dataset: [
+                    {name:"Alice", email:"a1@mail.com", floor:2, resources:"Laptop"},
+                    {name:"Alice", email:"a2@mail.com", floor:2, resources:"Projector"},
+                    {name:"Bob", email:"bob@mail.com", floor:1, resources:"Printer"},
+                    {name:"Alice", email:"a1@mail.com", floor:3, resources:"Laptop"},
+                    {name:"Bob", email:"bob2@mail.com", floor:1, resources:"Laptop"},
+                    {name:"Charlie", email:"charlie@mail.com", floor:2, resources:"Laptop"},
+                    {name:"Charlie", email:"charlie@mail.com", floor:2, resources:"Projector"},
+                    {name:"Alice", email:"a2@mail.com", floor:2, resources:"Whiteboard"}
+                ],
+                answer: `
+WITH floor_rank AS (
+    SELECT 
+        name,
+        floor,
+        COUNT(*) AS floor_visit_count,
+        RANK() OVER (PARTITION BY name ORDER BY COUNT(*) DESC) AS rn
+    FROM resources_data
+    GROUP BY name, floor
+),
+distinct_resources AS (
+    SELECT DISTINCT name, resources 
+    FROM resources_data
+),
+resource_list AS (
+    SELECT name, STRING_AGG(resources, ',') AS used_resources
+    FROM distinct_resources
+    GROUP BY name
+),
+total_visits AS (
+    SELECT name, COUNT(*) AS total_visits
+    FROM resources_data
+    GROUP BY name
+)
+SELECT 
+    FR.name,
+    TV.total_visits,
+    FR.floor AS most_visited_floor,
+    RL.used_resources
+FROM floor_rank FR
+JOIN total_visits TV ON FR.name = TV.name
+JOIN resource_list RL ON FR.name = RL.name
+WHERE FR.rn = 1;
+`
+            },
+
+            /* ----------------------------------------------------------
+               QUESTION 2 — Team Match Results (Merged XML Scenario)
+               ---------------------------------------------------------- */
+            {
+                question: `
+Using the match result dataset, write a SQL query to:
+
+1. Calculate total matches played by each team.
+2. Calculate total matches won by each team.
+3. Calculate number of losses = matches_played - no_of_wins.
+4. Display team_name, matches_played, no_of_wins, no_of_losses.
+5. Order result by highest wins.
+`,
+                dataset: [
+                    {Team_1:"India", Team_2:"SL", Winner:"India"},
+                    {Team_1:"SL", Team_2:"Aus", Winner:"Aus"},
+                    {Team_1:"SA", Team_2:"Eng", Winner:"Eng"},
+                    {Team_1:"Eng", Team_2:"NZ", Winner:"NZ"},
+                    {Team_1:"Aus", Team_2:"India", Winner:"India"}
+                ],
+                answer: `
+WITH team_name AS (
+    SELECT 
+        team_name,
+        COUNT(*) AS matches_played
+    FROM (
+        SELECT Team_1 AS team_name FROM MatchResults
+        UNION ALL
+        SELECT Team_2 FROM MatchResults
+    ) a
+    GROUP BY team_name
+),
+no_of_wins AS (
+    SELECT 
+        team_name,
+        SUM(no_of_wins) AS no_of_wins
+    FROM (
+        SELECT 
+            Team_1 AS team_name,
+            SUM(CASE WHEN Team_1 = Winner THEN 1 ELSE 0 END) AS no_of_wins
+        FROM MatchResults
+        GROUP BY Team_1
+
+        UNION ALL
+
+        SELECT 
+            Team_2 AS team_name,
+            SUM(CASE WHEN Team_2 = Winner THEN 1 ELSE 0 END) AS no_of_wins
+        FROM MatchResults
+        GROUP BY Team_2
+    ) a
+    GROUP BY team_name
+)
+SELECT 
+    a.team_name,
+    a.matches_played,
+    b.no_of_wins,
+    a.matches_played - b.no_of_wins AS no_of_losses
+FROM team_name a
+JOIN no_of_wins b 
+    ON a.team_name = b.team_name
+ORDER BY b.no_of_wins DESC;
+`
+            }
+
+            /* ----------------------------------------------------------
+               👉 COMMENT: PASTE MORE QUESTIONS BELOW THIS LINE
+               COPY STRUCTURE OF THE ABOVE QUESTION OBJECTS
+               ---------------------------------------------------------- */
+
+        ];
+
+        function renderQuestion(index) {
+            let q = questions[index];
+            document.getElementById('questionBox').innerHTML = `<p>${q.question}</p>`;
+            
+            let tableHtml = "<table><tr>";
+
+            // dynamic column headers
+            Object.keys(q.dataset[0]).forEach(col => {
+                tableHtml += `<th>${col}</th>`;
+            });
+            tableHtml += "</tr>";
+
+            q.dataset.forEach(row => {
+                tableHtml += "<tr>";
+                Object.values(row).forEach(val => {
+                    tableHtml += `<td>${val}</td>`;
+                });
+                tableHtml += "</tr>";
+            });
+
+            tableHtml += "</table>";
+            document.getElementById('datasetBox').innerHTML = tableHtml;
+
+            document.getElementById('answerBox').innerText = q.answer;
+        }
+
+        function nextQuestion() {
+            if (currentQuestion < questions.length - 1) {
+                currentQuestion++;
+                renderQuestion(currentQuestion);
+            } else {
+                alert("This is the last question.");
+            }
+        }
+
+        function previousQuestion() {
+            if (currentQuestion > 0) {
+                currentQuestion--;
+                renderQuestion(currentQuestion);
+            } else {
+                alert("This is the first question.");
+            }
+        }
+
+        window.onload = function() {
+            renderQuestion(currentQuestion);
+        }
+    </script>
+
+</head>
+
+
+<body>
+<div class="container">
+
+    <h2>📌 SQL Question</h2>
+    <div class="box" id="questionBox"></div>
+
+    <h3>Sample Dataset</h3>
+    <div class="box" id="datasetBox"></div>
+
+    <h2>🟢 SQL Answer</h2>
+    <div class="box">
+        <pre id="answerBox"></pre>
+    </div>
+
+    <div class="nav-buttons">
+        <button onclick="previousQuestion()">⬅ Previous</button>
+        <button onclick="nextQuestion()">Next ➡</button>
+    </div>
+
+</div>
+</body>
+</html>
