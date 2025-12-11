@@ -313,7 +313,88 @@ FROM visits v
 JOIN amount a ON v.order_date = a.order_date
 ORDER BY v.order_date;
 `
+},
+    {
+    question: `
+Write a SQL query to find the date of the Nth occurrence of Sunday in the future from a given starting date.
+
+Provide two solutions:
+1. Using a date generator (loop or recursive method)
+2. Using a direct mathematical formula with DATEADD and DATEPART
+
+Also explain why (n - 1) and (8 - weekday) are used in the formula.
+`,
+
+    answer_1: `
+-- Approach 1: Using date generation (loop method)
+
+DROP TABLE IF EXISTS ##date_list;
+
+CREATE TABLE ##date_list (dt DATE);
+
+DECLARE @startdate DATE = CONVERT(DATE, GETDATE());
+DECLARE @enddate DATE = DATEADD(WEEK, 10, @startdate);
+DECLARE @dt DATE = @startdate;
+
+WHILE @dt <= @enddate
+BEGIN
+    INSERT INTO ##date_list VALUES (@dt);
+    SET @dt = DATEADD(DAY, 1, @dt);
+END;
+
+DECLARE @n INT = 3, @weekday VARCHAR(10) = 'Sunday';
+
+SELECT TOP 1 dt
+FROM (
+    SELECT 
+        dt,
+        DATENAME(WEEKDAY, dt) AS weekday,
+        ROW_NUMBER() OVER (PARTITION BY DATENAME(WEEKDAY, dt) ORDER BY dt) AS rn
+    FROM ##date_list
+) x
+WHERE weekday = @weekday AND rn = @n
+ORDER BY dt;
+`,
+
+    answer_2: `
+-- Approach 2: Direct mathematical formula (efficient)
+
+DECLARE @today_date DATE = CONVERT(DATE, GETDATE());
+DECLARE @n INT = 3;
+
+SELECT DATEADD(
+           WEEK, @n - 1,
+           DATEADD(DAY, 8 - DATEPART(WEEKDAY, @today_date), @today_date)
+       ) AS nth_future_sunday;
+`,
+
+    explanation: `
+Explanation of the formula:
+
+1. DATEPART(WEEKDAY, @today_date)
+   Returns a number between 1 and 7 (Sunday=1, Monday=2, ... Saturday=7).
+
+2. (8 - weekday) finds how many days until next Sunday.
+   Examples:
+   - If today is Saturday (7): 8 - 7 = 1 → next Sunday is 1 day away
+   - If today is Monday (2): 8 - 2 = 6 → next Sunday is 6 days away
+
+   So:
+   next_sunday = DATEADD(DAY, 8 - weekday, today)
+
+3. Why (n - 1)?
+   - 1st Sunday → +0 weeks
+   - 2nd Sunday → +1 week
+   - 3rd Sunday → +2 weeks
+   - Nth Sunday → +(n - 1) weeks
+
+   Thus:
+   nth_sunday = next_sunday + (n - 1) weeks
+
+This method is fast and avoids loops or temporary tables.
+`
 }
+
 
 ]; // END QUESTIONS ARRAY
 
