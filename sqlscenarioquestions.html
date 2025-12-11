@@ -85,16 +85,19 @@ Determine:
 Output columns: Name, Total Visits, Most Visited Floor, Used Resources.
 `,
     dataset: [
-        {name:"Alice", email:"a1@mail.com", floor:2, resources:"Laptop"},
-        {name:"Alice", email:"a2@mail.com", floor:2, resources:"Projector"},
-        {name:"Bob", email:"bob@mail.com", floor:1, resources:"Printer"},
-        {name:"Alice", email:"a1@mail.com", floor:3, resources:"Laptop"},
-        {name:"Bob", email:"bob2@mail.com", floor:1, resources:"Laptop"},
-        {name:"Charlie", email:"charlie@mail.com", floor:2, resources:"Laptop"},
-        {name:"Charlie", email:"charlie@mail.com", floor:2, resources:"Projector"},
-        {name:"Alice", email:"a2@mail.com", floor:2, resources:"Whiteboard"}
-    ],
-    output: [],
+    {name:"A    ", address:"Bangalore", email:"A@gmail.com  ", floor:"1    ", resources:"CPU     "},
+    {name:"A    ", address:"Bangalore", email:"A1@gmail.com ", floor:"1    ", resources:"CPU     "},
+    {name:"A    ", address:"Bangalore", email:"A2@gmail.com ", floor:"2    ", resources:"DESKTOP "},
+    {name:"B    ", address:"Bangalore", email:"B@gmail.com  ", floor:"2    ", resources:"DESKTOP "},
+    {name:"B    ", address:"Bangalore", email:"B1@gmail.com ", floor:"2    ", resources:"DESKTOP "},
+    {name:"B    ", address:"Bangalore", email:"B2@gmail.com ", floor:"1    ", resources:"MONITOR "}
+],
+
+    output: [
+    {name:"A    ", total_visits:"3", most_visited_floor:"1    ", resources_used:"CPU,DESKTOP   "},
+    {name:"B    ", total_visits:"3", most_visited_floor:"2    ", resources_used:"DESKTOP,MONITOR"}
+],
+
     answer: `
 WITH floor_rank AS (
     SELECT 
