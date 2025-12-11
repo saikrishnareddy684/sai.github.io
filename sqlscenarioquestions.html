@@ -190,7 +190,53 @@ FROM team_name a
 JOIN no_of_wins b ON a.team_name = b.team_name
 ORDER BY b.no_of_wins DESC;
 `
+},
+    {
+    question: `
+Given the daily orders dataset, write a SQL query to determine:
+
+1. How many customers are NEW on each order date  
+2. How many customers are REPEAT on each order date  
+3. Display order_date, first_visit_flag (new customers), repeat_visit_flag (repeat customers)  
+4. Order the results by order_date  
+`,
+
+    dataset: [
+        {order_id:1, customer_id:100, order_date:"2022-01-01", order_amount:2000},
+        {order_id:2, customer_id:200, order_date:"2022-01-01", order_amount:2500},
+        {order_id:3, customer_id:300, order_date:"2022-01-01", order_amount:2100},
+        {order_id:4, customer_id:100, order_date:"2022-01-02", order_amount:2000},
+        {order_id:5, customer_id:400, order_date:"2022-01-02", order_amount:2200},
+        {order_id:6, customer_id:500, order_date:"2022-01-02", order_amount:2700},
+        {order_id:7, customer_id:100, order_date:"2022-01-03", order_amount:3000},
+        {order_id:8, customer_id:400, order_date:"2022-01-03", order_amount:1000},
+        {order_id:9, customer_id:600, order_date:"2022-01-03", order_amount:3000}
+    ],
+
+    output: [
+        {order_date:"2022-01-01", first_visit_flag:3, repeat_visit_flag:0},
+        {order_date:"2022-01-02", first_visit_flag:2, repeat_visit_flag:1},
+        {order_date:"2022-01-03", first_visit_flag:1, repeat_visit_flag:2}
+    ],
+
+    answer: `
+SELECT 
+    a.order_date,
+    SUM(CASE WHEN b.customer_id IS NOT NULL THEN 1 ELSE 0 END) AS first_visit_flag,
+    SUM(CASE WHEN b.customer_id IS NULL THEN 1 ELSE 0 END) AS repeat_visit_flag
+FROM orders a
+LEFT JOIN (
+    SELECT customer_id, MIN(order_date) AS first_order_date
+    FROM orders
+    GROUP BY customer_id
+) b 
+ON a.customer_id = b.customer_id
+AND a.order_date = b.first_order_date
+GROUP BY a.order_date
+ORDER BY a.order_date;
+`
 }
+
 
 ]; // END QUESTIONS ARRAY
 
