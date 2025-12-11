@@ -23,6 +23,18 @@
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(0,0,0,0.1);
         }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-top: 10px;
+        }
+        table, th, td {
+            border: 1px solid #ccc;
+        }
+        th, td {
+            padding: 8px;
+            text-align: left;
+        }
         pre {
             background: #272822;
             color: #f8f8f2;
@@ -30,7 +42,7 @@
             border-radius: 6px;
             overflow-x: auto;
             font-size: 15px;
-            font-family: monospace; /* Fixed width for aligned columns */
+            font-family: monospace;
         }
         .nav-buttons {
             margin-top: 20px;
@@ -66,22 +78,17 @@ Given this input data, determine:
 - A comma-separated list of distinct resources they used
 
 The output should include: Name, Total Visits, Most Visited Floor, Used Resources.
-
-Sample Dataset (resources_data):
-
-+---------+-------------------+-------+------------+
-| name    | email             | floor | resources  |
-+---------+-------------------+-------+------------+
-| Alice   | a1@mail.com       | 2     | Laptop     |
-| Alice   | a2@mail.com       | 2     | Projector  |
-| Bob     | bob@mail.com      | 1     | Printer    |
-| Alice   | a1@mail.com       | 3     | Laptop     |
-| Bob     | bob2@mail.com     | 1     | Laptop     |
-| Charlie | charlie@mail.com  | 2     | Laptop     |
-| Charlie | charlie@mail.com  | 2     | Projector  |
-| Alice   | a2@mail.com       | 2     | Whiteboard |
-+---------+-------------------+-------+------------+
 `,
+                dataset: [
+                    {name:"Alice", email:"a1@mail.com", floor:2, resources:"Laptop"},
+                    {name:"Alice", email:"a2@mail.com", floor:2, resources:"Projector"},
+                    {name:"Bob", email:"bob@mail.com", floor:1, resources:"Printer"},
+                    {name:"Alice", email:"a1@mail.com", floor:3, resources:"Laptop"},
+                    {name:"Bob", email:"bob2@mail.com", floor:1, resources:"Laptop"},
+                    {name:"Charlie", email:"charlie@mail.com", floor:2, resources:"Laptop"},
+                    {name:"Charlie", email:"charlie@mail.com", floor:2, resources:"Projector"},
+                    {name:"Alice", email:"a2@mail.com", floor:2, resources:"Whiteboard"}
+                ],
                 answer: `
 WITH floor_rank AS (
     -- Find how many times each person visited each floor
@@ -135,13 +142,27 @@ JOIN resource_list RL ON FR.name = RL.name
 WHERE FR.rn = 1;  -- Only the most visited floor
 `
             }
-
-            // Additional questions can be added here
         ];
 
         function renderQuestion(index) {
-            document.getElementById('questionBox').innerText = questions[index].question;
-            document.getElementById('answerBox').innerText = questions[index].answer;
+            let q = questions[index];
+            document.getElementById('questionBox').innerHTML = `<p>${q.question}</p>`;
+            
+            // Render dataset table
+            let tableHtml = '<table><tr><th>Name</th><th>Email</th><th>Floor</th><th>Resources</th></tr>';
+            q.dataset.forEach(row => {
+                tableHtml += `<tr>
+                    <td>${row.name}</td>
+                    <td>${row.email}</td>
+                    <td>${row.floor}</td>
+                    <td>${row.resources}</td>
+                </tr>`;
+            });
+            tableHtml += '</table>';
+            document.getElementById('datasetBox').innerHTML = tableHtml;
+
+            // Render answer
+            document.getElementById('answerBox').innerText = q.answer;
         }
 
         function nextQuestion() {
@@ -176,6 +197,11 @@ WHERE FR.rn = 1;  -- Only the most visited floor
         <!-- Question content will appear here dynamically -->
     </div>
 
+    <h3>Sample Dataset</h3>
+    <div class="box" id="datasetBox">
+        <!-- Dataset table will appear here dynamically -->
+    </div>
+
     <h2>🟢 SQL Answer</h2>
     <div class="box">
         <pre id="answerBox">
@@ -190,7 +216,7 @@ WHERE FR.rn = 1;  -- Only the most visited floor
 
     <!-- 
         Comment: Add more questions in the `questions` array in the <script> section above.
-        Each question should be an object with 'question' and 'answer' keys.
+        Each question should be an object with 'question', 'dataset', and 'answer' keys.
     -->
 
 </div>
