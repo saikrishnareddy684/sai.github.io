@@ -1,138 +1,516 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>SQL Scenario Viewer</title>
+<meta charset="UTF-8">
+<title>SQL Scenario Practice</title>
 
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-            line-height: 1.6;
-        }
-        #container {
-            max-width: 900px;
-            margin: auto;
-            padding: 20px;
-            border: 1px solid #ddd;
-            border-radius: 12px;
-            background: #fafafa;
-        }
-        pre {
-            background: #272822;
-            color: #f8f8f2;
-            padding: 12px;
-            border-radius: 8px;
-            overflow-x: auto;
-        }
-        table {
-            border-collapse: collapse;
-            margin: 10px 0;
-            width: 100%;
-        }
-        th, td {
-            border: 1px solid #999;
-            padding: 6px 10px;
-            text-align: left;
-        }
-        .navigation {
-            margin-top: 20px;
-            text-align: center;
-        }
-        button {
-            padding: 10px 18px;
-            margin: 5px;
-            border-radius: 8px;
-            border: none;
-            background: #0078ff;
-            color: white;
-            cursor: pointer;
-        }
-        button:disabled {
-            background: #999;
-        }
-    </style>
+<!-- Styling -->
+<style>
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background: #f7f7f7;
+}
+.container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 20px;
+}
+.card {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.15);
+}
+h2 { margin-top: 0; }
+
+pre {
+    background: #2d2d2d;
+    color: #f8f8f2;
+    padding: 15px;
+    border-radius: 8px;
+    overflow-x: auto;
+}
+
+.button-group {
+    margin-top: 20px;
+    display: flex;
+    justify-content: space-between;
+}
+button {
+    padding: 10px 20px;
+    font-size: 16px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    background:#007bff;
+    color:white;
+}
+button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+.meta-box {
+    background:#eef1f5;
+    padding:10px;
+    border-radius:8px;
+    margin-bottom:15px;
+}
+.tag {
+    background:#007bff;
+    color:white;
+    padding:3px 8px;
+    border-radius:5px;
+    margin-right:4px;
+    font-size:12px;
+}
+</style>
+
 </head>
-
 <body>
 
-<div id="container">
-    <h2 id="scenarioTitle"></h2>
-    <div id="scenarioContent"></div>
+<div class="container">
+    <div id="content" class="card"></div>
 
-    <div class="navigation">
-        <button id="prevBtn" onclick="prevScenario()">Previous</button>
-        <button id="nextBtn" onclick="nextScenario()">Next</button>
+    <div class="button-group">
+        <button id="prevBtn" onclick="prevQuestion()">Previous</button>
+        <button id="nextBtn" onclick="nextQuestion()">Next</button>
     </div>
 </div>
 
 <script>
-let scenarios = [];
-let current = 0;
+// =============================
+//   ALL 10 SCENARIOS
+// =============================
 
-fetch("scenarios.xml")
-    .then(r => r.text())
-    .then(xmlText => {
-        let parser = new DOMParser();
-        let xml = parser.parseFromString(xmlText, "text/xml");
+const scenarios = [
 
-        scenarios = [...xml.getElementsByTagName("SCENARIO")];
-        displayScenario(0);
-    });
+/* ------------------------------------------
+   SCENARIO 1
+-------------------------------------------*/
+{
+number: 1,
+category: "Data Warehouse / Banking",
+difficulty: "Intermediate",
+tags: ["reconciliation","aggregation","left join"],
+xml: `
+<SCENARIO id="SQL_001">
+    <META>
+        <NUMBER>1</NUMBER>
+        <CATEGORY>Data Warehouse / Banking</CATEGORY>
+        <DIFFICULTY>Intermediate</DIFFICULTY>
+        <TAGS>reconciliation, aggregation, left join</TAGS>
+    </META>
 
-function displayScenario(i) {
-    current = i;
-    const s = scenarios[i];
+    <QUESTION>
+        Given two transaction tables, produce a daily reconciliation...
+    </QUESTION>
 
-    document.getElementById("scenarioTitle").innerHTML =
-        "Scenario " + s.getAttribute("id");
+    <DATASET>
+transactions(txn_id, customer_id, txn_date, amount)
+accounts_changes(customer_id, change_date, expected_change)
+    </DATASET>
 
-    let html = "";
+    <SOLUTION><![CDATA[
+WITH txn_summary AS (
+    SELECT customer_id, txn_date AS date, SUM(amount) AS total_txn_amount
+    FROM transactions
+    GROUP BY customer_id, txn_date
+)
+SELECT t.customer_id, t.date, t.total_txn_amount,
+       a.expected_change,
+       CASE WHEN t.total_txn_amount = a.expected_change THEN 'MATCH'
+            ELSE 'MISMATCH' END AS reconciliation_status
+FROM txn_summary t
+LEFT JOIN accounts_changes a
+    ON t.customer_id = a.customer_id
+   AND t.date = a.change_date;
+    ]]></SOLUTION>
+</SCENARIO>
+`
+},
 
-    // QUESTION
-    html += `<h3>Question</h3><p>${s.getElementsByTagName("QUESTION")[0].textContent.trim()}</p>`;
+/* ------------------------------------------
+   SCENARIO 2
+-------------------------------------------*/
+{
+number: 2,
+category: "IT / Employee Access",
+difficulty: "Intermediate",
+tags: ["string_agg","distinct","date aggregation"],
+xml: `
+<SCENARIO id="SQL_002">
+    <META><NUMBER>2</NUMBER>
+        <CATEGORY>Employee Mgmt</CATEGORY>
+        <DIFFICULTY>Intermediate</DIFFICULTY>
+        <TAGS>count distinct,string_agg</TAGS>
+    </META>
 
-    // DATASET
-    html += `<h3>Dataset</h3>`;
-    let tables = s.getElementsByTagName("TABLE");
+    <QUESTION>Compute total_days_accessed...</QUESTION>
 
-    [...tables].forEach(t => {
-        html += `<h4>Table: ${t.getAttribute("name")}</h4>`;
+    <SOLUTION><![CDATA[
+SELECT employee_id,
+       COUNT(DISTINCT access_date) AS total_days_accessed,
+       MIN(access_date) AS first_access_date,
+       MAX(access_date) AS last_access_date,
+       STRING_AGG(DISTINCT resource, '|') 
+            WITHIN GROUP (ORDER BY resource) AS resources_used
+FROM access_logs
+GROUP BY employee_id;
+    ]]></SOLUTION>
+</SCENARIO>
+`
+},
 
-        let cols = t.getElementsByTagName("COLUMNS")[0].textContent.split(",");
-        let rows = [...t.getElementsByTagName("ROW")].map(r => r.textContent.split(","));
+/* ------------------------------------------
+   SCENARIO 3
+-------------------------------------------*/
+{
+number: 3,
+category: "E-commerce",
+difficulty: "Intermediate",
+tags: ["window functions","ranking","aggregation"],
+xml: `
+<SCENARIO id="SQL_003">
+    <META><NUMBER>3</NUMBER>
+    <CATEGORY>E-commerce</CATEGORY>
+    <DIFFICULTY>Intermediate</DIFFICULTY>
+    <TAGS>window,rank,aggregation</TAGS></META>
 
-        html += `<table><tr>${cols.map(c => `<th>${c.trim()}</th>`).join("")}</tr>`;
+    <QUESTION>Find monthly customer stats...</QUESTION>
 
-        rows.forEach(r => {
-            html += `<tr>${r.map(col => `<td>${col.trim()}</td>`).join("")}</tr>`;
-        });
+    <SOLUTION><![CDATA[
+WITH cust_orders AS (
+    SELECT customer_id, order_id, order_date, total_amount
+    FROM orders
+    WHERE DATEPART(month, order_date) = 9
+),
+items_per_order AS (
+    SELECT order_id, SUM(qty) AS total_items
+    FROM order_items
+    GROUP BY order_id
+),
+cust_item_stats AS (
+    SELECT c.customer_id,
+           COUNT(DISTINCT c.order_id) AS total_orders,
+           SUM(c.total_amount) AS total_order_value,
+           AVG(ip.total_items*1.0) AS avg_items_per_order
+    FROM cust_orders c
+    LEFT JOIN items_per_order ip ON c.order_id = ip.order_id
+    GROUP BY c.customer_id
+),
+product_rank AS (
+    SELECT o.customer_id, oi.product_id,
+           SUM(oi.qty) AS total_qty,
+           RANK() OVER (PARTITION BY o.customer_id
+                        ORDER BY SUM(oi.qty) DESC, oi.product_id ASC) rn
+    FROM cust_orders o
+    JOIN order_items oi ON o.order_id = oi.order_id
+    GROUP BY o.customer_id, oi.product_id
+)
+SELECT s.*, p.product_id AS top_product
+FROM cust_item_stats s
+LEFT JOIN product_rank p
+    ON s.customer_id = p.customer_id
+   AND p.rn = 1;
+    ]]></SOLUTION>
+</SCENARIO>
+`
+},
 
-        html += `</table>`;
-    });
+/* -------------------------------
+   SCENARIO 4
+--------------------------------*/
+{
+number: 4,
+category: "Support / SLA",
+difficulty: "Intermediate",
+tags: ["datediff","group by","percentage"],
+xml: `
+<SCENARIO id="SQL_004">
+    <META><NUMBER>4</NUMBER><CATEGORY>Support SLA</CATEGORY><DIFFICULTY>Intermediate</DIFFICULTY>
+    <TAGS>datediff,percent,aggregation</TAGS></META>
 
-    // SOLUTION
-    html += `<h3>Solution SQL</h3>`;
-    let sql = s.getElementsByTagName("SQL")[0].textContent.trim();
-    html += `<pre>${sql}</pre>`;
+    <QUESTION>Produce SLA report...</QUESTION>
 
-    // NOTES
-    html += `<h3>Notes</h3><p>${s.getElementsByTagName("NOTES")[0].textContent.trim()}</p>`;
+    <SOLUTION><![CDATA[
+WITH recent AS (
+    SELECT *, DATEDIFF(day, opened_at, closed_at) AS ticket_age_days
+    FROM support_tickets
+    WHERE opened_at >= DATEADD(day, -30, '2025-11-10')
+)
+SELECT team,
+       AVG(CAST(ticket_age_days AS FLOAT)) AS avg_ticket_age_by_team,
+       100.0 * SUM(CASE WHEN priority='High' THEN 1 ELSE 0 END) / COUNT(*) 
+           AS percent_high_priority
+FROM recent
+GROUP BY team;
+    ]]></SOLUTION>
+</SCENARIO>
+`
+},
 
-    document.getElementById("scenarioContent").innerHTML = html;
+/* -------------------------------
+   SCENARIO 5
+--------------------------------*/
+{
+number: 5,
+category: "E-commerce Revenue",
+difficulty: "Intermediate",
+tags: ["window","rolling sum","date filling"],
+xml: `
+<SCENARIO id="SQL_005">
+<META><NUMBER>5</NUMBER><CATEGORY>E-commerce</CATEGORY>
+<DIFFICULTY>Intermediate</DIFFICULTY><TAGS>calendar,rolling window</TAGS></META>
 
-    // BUTTON STATE
-    document.getElementById("prevBtn").disabled = (current === 0);
-    document.getElementById("nextBtn").disabled = (current === scenarios.length - 1);
+<QUESTION>Rolling 7-day revenue...</QUESTION>
+
+<SOLUTION><![CDATA[
+WITH calendar AS (
+    SELECT DATEADD(day, v.number, '2025-11-01') AS dt
+    FROM (VALUES (0),(1),(2),(3),(4),(5),(6),(7),(8),(9)) v(number)
+),
+store_dates AS (
+    SELECT s.store_id, c.dt AS revenue_date
+    FROM (SELECT DISTINCT store_id FROM store_revenue) s
+    CROSS JOIN calendar c
+),
+rev_filled AS (
+    SELECT sd.store_id, sd.revenue_date,
+           COALESCE(sr.revenue, 0.0) AS revenue
+    FROM store_dates sd
+    LEFT JOIN store_revenue sr
+       ON sd.store_id = sr.store_id
+      AND sd.revenue_date = sr.revenue_date
+)
+SELECT store_id, revenue_date, revenue,
+       SUM(revenue) OVER (PARTITION BY store_id
+                          ORDER BY revenue_date
+                          ROWS BETWEEN 6 PRECEDING AND CURRENT ROW)
+       AS rolling_7d_revenue
+FROM rev_filled
+ORDER BY store_id, revenue_date;
+]]></SOLUTION>
+</SCENARIO>
+`
+},
+
+/* -------------------------------
+   SCENARIO 6
+--------------------------------*/
+{
+number: 6,
+category: "Banking",
+difficulty: "Advanced",
+tags: ["reversals","window","conditional logic"],
+xml: `
+<SCENARIO id="SQL_006">
+    <META><NUMBER>6</NUMBER><CATEGORY>Banking</CATEGORY><DIFFICULTY>Advanced</DIFFICULTY>
+    <TAGS>reversal logic,window</TAGS></META>
+
+<SOLUTION><![CDATA[
+WITH rev_sum AS (
+    SELECT r.payment_id,
+           SUM(r.amount) AS total_reversed,
+           SUM(CASE WHEN DATEDIFF(day, p.payment_date, r.reversal_date) <= 7 
+                    THEN r.amount ELSE 0 END) AS reversed_within_7d
+    FROM reversals r
+    JOIN payments p ON r.payment_id = p.payment_id
+    GROUP BY r.payment_id
+),
+pay_with_revs AS (
+    SELECT p.payment_id, p.account_id, p.payment_date, p.amount,
+           COALESCE(rs.total_reversed,0) AS total_reversed,
+           COALESCE(rs.reversed_within_7d,0) AS reversed_within_7d
+    FROM payments p
+    LEFT JOIN rev_sum rs ON p.payment_id = rs.payment_id
+)
+SELECT DATEFROMPARTS(YEAR(payment_date), MONTH(payment_date), 1) AS month_start,
+       account_id,
+       SUM(amount - total_reversed) AS net_payments,
+       CASE WHEN reversed_within_7d > 0 
+             AND reversed_within_7d*1.0/amount > 0.5 
+            THEN 1 ELSE 0 END AS suspicious
+FROM pay_with_revs
+GROUP BY DATEFROMPARTS(YEAR(payment_date), MONTH(payment_date), 1), 
+         account_id;
+]]></SOLUTION>
+
+</SCENARIO>
+`
+},
+
+/* -------------------------------
+   SCENARIO 7
+--------------------------------*/
+{
+number: 7,
+category: "Data Warehouse",
+difficulty: "Advanced",
+tags: ["SCD2","dimension lookup","date range join"],
+xml: `
+<SCENARIO id="SQL_007">
+<META><NUMBER>7</NUMBER><CATEGORY>DWH / SCD2</CATEGORY>
+<DIFFICULTY>Advanced</DIFFICULTY><TAGS>scd2,date range join</TAGS></META>
+
+<SOLUTION><![CDATA[
+SELECT DATEFROMPARTS(YEAR(s.sale_date), MONTH(s.sale_date), 1) AS month_start,
+       d.product_id,
+       SUM(s.qty) AS total_qty
+FROM sales s
+JOIN dim_product d
+  ON s.product_code = d.product_code
+ AND s.sale_date BETWEEN d.effective_from AND d.effective_to
+GROUP BY DATEFROMPARTS(YEAR(s.sale_date), MONTH(s.sale_date), 1),
+         d.product_id
+ORDER BY month_start, d.product_id;
+]]></SOLUTION>
+
+</SCENARIO>
+`
+},
+
+/* -------------------------------
+   SCENARIO 8
+--------------------------------*/
+{
+number: 8,
+category: "Hierarchy / Recursive",
+difficulty: "Advanced",
+tags: ["recursive cte","hierarchy","path building"],
+xml: `
+<SCENARIO id="SQL_008">
+<META><NUMBER>8</NUMBER><CATEGORY>Recursive</CATEGORY>
+<DIFFICULTY>Advanced</DIFFICULTY><TAGS>hierarchy,path,recursive cte</TAGS></META>
+
+<SOLUTION><![CDATA[
+WITH org AS (
+    SELECT emp_id, manager_id, name,
+           CAST(name AS VARCHAR(1000)) AS path,
+           0 AS depth
+    FROM employees
+    WHERE manager_id IS NULL
+    UNION ALL
+    SELECT e.emp_id, e.manager_id, e.name,
+           o.path + ' > ' + e.name,
+           o.depth + 1
+    FROM employees e
+    JOIN org o ON e.manager_id = o.emp_id
+    WHERE o.depth < 10
+)
+SELECT * FROM org;
+]]></SOLUTION>
+
+</SCENARIO>
+`
+},
+
+/* -------------------------------
+   SCENARIO 9
+--------------------------------*/
+{
+number: 9,
+category: "Logs / String Parsing",
+difficulty: "Advanced",
+tags: ["regexp","lag","datediff"],
+xml: `
+<SCENARIO id="SQL_009">
+<META><NUMBER>9</NUMBER><CATEGORY>Logs</CATEGORY>
+<DIFFICULTY>Advanced</DIFFICULTY><TAGS>regexp,lag,session break</TAGS></META>
+
+<SOLUTION><![CDATA[
+WITH parsed AS (
+    SELECT log_id, user_id, event_time,
+           REGEXP_SUBSTR(event_details,'action=([^;]+)',1,1,NULL,1) AS action,
+           REGEXP_SUBSTR(event_details,'resource=([^;]+)',1,1,NULL,1) AS resource,
+           REGEXP_SUBSTR(event_details,'status=([^;]+)',1,1,NULL,1) AS status
+    FROM logs
+),
+ordered AS (
+    SELECT *, LAG(event_time) OVER (PARTITION BY user_id ORDER BY event_time) AS prev_time
+    FROM parsed
+)
+SELECT log_id, user_id, event_time, action, resource, status,
+       DATEDIFF(second, prev_time, event_time) AS seconds_since_prev,
+       CASE WHEN DATEDIFF(minute, prev_time, event_time) > 30 THEN 1 ELSE 0 END AS new_session_flag
+FROM ordered
+ORDER BY user_id, event_time;
+]]></SOLUTION>
+</SCENARIO>
+`
+},
+
+/* -------------------------------
+   SCENARIO 10
+--------------------------------*/
+{
+number: 10,
+category: "Currency / Pivot",
+difficulty: "Advanced",
+tags: ["pivot","conditional aggregation"],
+xml: `
+<SCENARIO id="SQL_010">
+<META><NUMBER>10</NUMBER><CATEGORY>Pivot</CATEGORY>
+<DIFFICULTY>Advanced</DIFFICULTY><TAGS>pivot,case sum</TAGS></META>
+
+<SOLUTION><![CDATA[
+SELECT payment_date,
+       SUM(CASE WHEN currency_code='USD' THEN amount ELSE 0 END) AS USD,
+       SUM(CASE WHEN currency_code='EUR' THEN amount ELSE 0 END) AS EUR,
+       SUM(CASE WHEN currency_code='INR' THEN amount ELSE 0 END) AS INR,
+       SUM(amount) AS grand_total
+FROM payments_fx
+GROUP BY payment_date
+ORDER BY payment_date;
+]]></SOLUTION>
+</SCENARIO>
+`
 }
 
-function nextScenario() {
-    if (current < scenarios.length - 1) displayScenario(current + 1);
+];
+
+// =============================
+//   RENDERING LOGIC
+// =============================
+
+let currentIndex = 0;
+
+function renderQuestion() {
+    const sc = scenarios[currentIndex];
+
+    document.getElementById("content").innerHTML = `
+        <h2>Question ${sc.number}</h2>
+
+        <div class="meta-box">
+            <strong>Category:</strong> ${sc.category}<br>
+            <strong>Difficulty:</strong> ${sc.difficulty}<br>
+            <strong>Tags:</strong> ${sc.tags.map(t=>`<span class="tag">${t}</span>`).join("")}
+        </div>
+
+        <pre>${sc.xml}</pre>
+    `;
+
+    document.getElementById("prevBtn").disabled = currentIndex === 0;
+    document.getElementById("nextBtn").disabled = currentIndex === scenarios.length - 1;
 }
 
-function prevScenario() {
-    if (current > 0) displayScenario(current - 1);
+function nextQuestion() {
+    if (currentIndex < scenarios.length - 1) {
+        currentIndex++;
+        renderQuestion();
+    }
 }
+
+function prevQuestion() {
+    if (currentIndex > 0) {
+        currentIndex--;
+        renderQuestion();
+    }
+}
+
+renderQuestion();
+
 </script>
 
 </body>
