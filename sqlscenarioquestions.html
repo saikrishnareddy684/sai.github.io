@@ -1,499 +1,139 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<SCENARIOS>
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>SQL Scenario Viewer</title>
 
-  <SCENARIO id="SQL_001">
-    <QUESTION>
-      (Intermediate - Data Warehouse/Banking)
-      Given two transaction tables (transactions and customer_accounts), produce a daily reconciliation report showing: customer_id, transaction_date, total_txn_amount (sum of amounts from transactions), expected_balance_change (from accounts_changes), and a flag reconciliation_status = 'MATCH' if totals equal, otherwise 'MISMATCH'.
-    </QUESTION>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            line-height: 1.6;
+        }
+        #container {
+            max-width: 900px;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 12px;
+            background: #fafafa;
+        }
+        pre {
+            background: #272822;
+            color: #f8f8f2;
+            padding: 12px;
+            border-radius: 8px;
+            overflow-x: auto;
+        }
+        table {
+            border-collapse: collapse;
+            margin: 10px 0;
+            width: 100%;
+        }
+        th, td {
+            border: 1px solid #999;
+            padding: 6px 10px;
+            text-align: left;
+        }
+        .navigation {
+            margin-top: 20px;
+            text-align: center;
+        }
+        button {
+            padding: 10px 18px;
+            margin: 5px;
+            border-radius: 8px;
+            border: none;
+            background: #0078ff;
+            color: white;
+            cursor: pointer;
+        }
+        button:disabled {
+            background: #999;
+        }
+    </style>
+</head>
 
-    <DATASET>
-      <TABLE name="transactions">
-        <COLUMNS>txn_id INT, customer_id INT, txn_date DATE, amount DECIMAL(10,2)</COLUMNS>
-        <ROWS>
-          <ROW>1, 101, 2025-11-01, 100.00</ROW>
-          <ROW>2, 101, 2025-11-01, -20.00</ROW>
-          <ROW>3, 102, 2025-11-01, 50.00</ROW>
-          <ROW>4, 101, 2025-11-02, 30.00</ROW>
-        </ROWS>
-      </TABLE>
+<body>
 
-      <TABLE name="accounts_changes">
-        <COLUMNS>customer_id INT, change_date DATE, expected_change DECIMAL(10,2)</COLUMNS>
-        <ROWS>
-          <ROW>101, 2025-11-01, 80.00</ROW>
-          <ROW>102, 2025-11-01, 50.00</ROW>
-          <ROW>101, 2025-11-02, 30.00</ROW>
-        </ROWS>
-      </TABLE>
-    </DATASET>
+<div id="container">
+    <h2 id="scenarioTitle"></h2>
+    <div id="scenarioContent"></div>
 
-    <SOLUTION>
-      <SQL><![CDATA[
-WITH txn_summary AS (
-  SELECT customer_id, txn_date AS date, SUM(amount) AS total_txn_amount
-  FROM transactions
-  GROUP BY customer_id, txn_date
-)
-SELECT
-  t.customer_id,
-  t.date AS transaction_date,
-  t.total_txn_amount,
-  a.expected_change AS expected_balance_change,
-  CASE WHEN t.total_txn_amount = a.expected_change THEN 'MATCH' ELSE 'MISMATCH' END AS reconciliation_status
-FROM txn_summary t
-LEFT JOIN accounts_changes a
-  ON t.customer_id = a.customer_id AND t.date = a.change_date;
-      ]]></SQL>
-    </SOLUTION>
+    <div class="navigation">
+        <button id="prevBtn" onclick="prevScenario()">Previous</button>
+        <button id="nextBtn" onclick="nextScenario()">Next</button>
+    </div>
+</div>
 
-    <NOTES>
-      Uses aggregation + LEFT JOIN to identify missing expected changes. Good for basic recon logic.
-    </NOTES>
-  </SCENARIO>
+<script>
+let scenarios = [];
+let current = 0;
 
-  <SCENARIO id="SQL_002">
-    <QUESTION>
-      (Intermediate - IT / Employee Management)
-      From an access_logs table (employee_id, access_date, resource), produce for each employee: total_days_accessed, first_access_date, last_access_date, and a pipe-separated list of distinct resources used ordered alphabetically.
-    </QUESTION>
+fetch("scenarios.xml")
+    .then(r => r.text())
+    .then(xmlText => {
+        let parser = new DOMParser();
+        let xml = parser.parseFromString(xmlText, "text/xml");
 
-    <DATASET>
-      <TABLE name="access_logs">
-        <COLUMNS>log_id INT, employee_id INT, access_date DATE, resource VARCHAR(50)</COLUMNS>
-        <ROWS>
-          <ROW>1, 201, 2025-10-01, Printer</ROW>
-          <ROW>2, 201, 2025-10-02, Scanner</ROW>
-          <ROW>3, 201, 2025-10-02, Printer</ROW>
-          <ROW>4, 202, 2025-10-01, Badge</ROW>
-          <ROW>5, 202, 2025-10-05, Printer</ROW>
-        </ROWS>
-      </TABLE>
-    </DATASET>
+        scenarios = [...xml.getElementsByTagName("SCENARIO")];
+        displayScenario(0);
+    });
 
-    <SOLUTION>
-      <SQL><![CDATA[
-SELECT
-  employee_id,
-  COUNT(DISTINCT access_date) AS total_days_accessed,
-  MIN(access_date) AS first_access_date,
-  MAX(access_date) AS last_access_date,
-  STRING_AGG(DISTINCT resource, '|') WITHIN GROUP (ORDER BY resource) AS resources_used
-FROM access_logs
-GROUP BY employee_id;
-      ]]></SQL>
-    </SOLUTION>
+function displayScenario(i) {
+    current = i;
+    const s = scenarios[i];
 
-    <NOTES>
-      Use COUNT(DISTINCT) to count days, STRING_AGG DISTINCT for resource list (SQL Server 2017+ / PostgreSQL variants differ slightly).
-    </NOTES>
-  </SCENARIO>
+    document.getElementById("scenarioTitle").innerHTML =
+        "Scenario " + s.getAttribute("id");
 
-  <SCENARIO id="SQL_003">
-    <QUESTION>
-      (Intermediate - E-commerce)
-      Given orders(order_id, customer_id, order_date, total_amount) and order_items(order_id, product_id, qty, price), find for each customer in a month: total_orders, total_order_value, average_items_per_order, and top_product (most ordered product_id by sum(qty)). Tie-break on lower product_id.
-    </QUESTION>
+    let html = "";
 
-    <DATASET>
-      <TABLE name="orders">
-        <COLUMNS>order_id INT, customer_id INT, order_date DATE, total_amount DECIMAL(10,2)</COLUMNS>
-        <ROWS>
-          <ROW>1001, 301, 2025-09-10, 150.00</ROW>
-          <ROW>1002, 301, 2025-09-15, 200.00</ROW>
-          <ROW>1003, 302, 2025-09-20, 50.00</ROW>
-        </ROWS>
-      </TABLE>
+    // QUESTION
+    html += `<h3>Question</h3><p>${s.getElementsByTagName("QUESTION")[0].textContent.trim()}</p>`;
 
-      <TABLE name="order_items">
-        <COLUMNS>order_item_id INT, order_id INT, product_id INT, qty INT, price DECIMAL(10,2)</COLUMNS>
-        <ROWS>
-          <ROW>1, 1001, 501, 1, 100.00</ROW>
-          <ROW>2, 1001, 502, 2, 25.00</ROW>
-          <ROW>3, 1002, 501, 2, 100.00</ROW>
-          <ROW>4, 1003, 503, 1, 50.00</ROW>
-        </ROWS>
-      </TABLE>
-    </DATASET>
+    // DATASET
+    html += `<h3>Dataset</h3>`;
+    let tables = s.getElementsByTagName("TABLE");
 
-    <SOLUTION>
-      <SQL><![CDATA[
-WITH cust_orders AS (
-  SELECT o.customer_id, o.order_id, o.order_date, o.total_amount
-  FROM orders o
-  WHERE DATEPART(month, o.order_date) = 9 AND DATEPART(year, o.order_date) = 2025
-),
-items_per_order AS (
-  SELECT oi.order_id, SUM(qty) AS total_items
-  FROM order_items oi
-  GROUP BY oi.order_id
-),
-cust_item_stats AS (
-  SELECT c.customer_id,
-         COUNT(DISTINCT c.order_id) AS total_orders,
-         SUM(c.total_amount) AS total_order_value,
-         AVG(ip.total_items*1.0) AS avg_items_per_order
-  FROM cust_orders c
-  LEFT JOIN items_per_order ip ON c.order_id = ip.order_id
-  GROUP BY c.customer_id
-),
-product_rank AS (
-  SELECT o.customer_id, oi.product_id, SUM(oi.qty) AS total_qty,
-         RANK() OVER (PARTITION BY o.customer_id ORDER BY SUM(oi.qty) DESC, oi.product_id ASC) rn
-  FROM cust_orders o
-  JOIN order_items oi ON o.order_id = oi.order_id
-  GROUP BY o.customer_id, oi.product_id
-)
-SELECT
-  s.customer_id,
-  s.total_orders,
-  s.total_order_value,
-  s.avg_items_per_order,
-  p.product_id AS top_product
-FROM cust_item_stats s
-LEFT JOIN product_rank p ON s.customer_id = p.customer_id AND p.rn = 1;
-      ]]></SQL>
-    </SOLUTION>
+    [...tables].forEach(t => {
+        html += `<h4>Table: ${t.getAttribute("name")}</h4>`;
 
-    <NOTES>
-      Uses window functions to rank products per customer, and aggregates per order/customer. Adjust month filter as needed.
-    </NOTES>
-  </SCENARIO>
+        let cols = t.getElementsByTagName("COLUMNS")[0].textContent.split(",");
+        let rows = [...t.getElementsByTagName("ROW")].map(r => r.textContent.split(","));
 
-  <SCENARIO id="SQL_004">
-    <QUESTION>
-      (Intermediate - Mixed)
-      From a support_tickets table (ticket_id, opened_by, opened_at, closed_at, priority, team), produce SLA report: ticket_age_days (closed_at - opened_at), avg_ticket_age_by_team, percent_high_priority (priority='High') per team in the last 30 days.
-    </QUESTION>
+        html += `<table><tr>${cols.map(c => `<th>${c.trim()}</th>`).join("")}</tr>`;
 
-    <DATASET>
-      <TABLE name="support_tickets">
-        <COLUMNS>ticket_id INT, opened_by INT, opened_at DATE, closed_at DATE, priority VARCHAR(10), team VARCHAR(50)</COLUMNS>
-        <ROWS>
-          <ROW>1, 401, 2025-11-01, 2025-11-03, High, Platform</ROW>
-          <ROW>2, 402, 2025-11-05, 2025-11-06, Low, Ops</ROW>
-          <ROW>3, 403, 2025-10-25, 2025-11-02, High, Platform</ROW>
-        </ROWS>
-      </TABLE>
-    </DATASET>
+        rows.forEach(r => {
+            html += `<tr>${r.map(col => `<td>${col.trim()}</td>`).join("")}</tr>`;
+        });
 
-    <SOLUTION>
-      <SQL><![CDATA[
-WITH recent AS (
-  SELECT *, DATEDIFF(day, opened_at, closed_at) AS ticket_age_days
-  FROM support_tickets
-  WHERE opened_at >= DATEADD(day, -30, CAST('2025-11-10' AS DATE)) -- reference date for example
-)
-SELECT
-  team,
-  AVG(CAST(ticket_age_days AS FLOAT)) AS avg_ticket_age_by_team,
-  100.0 * SUM(CASE WHEN priority = 'High' THEN 1 ELSE 0 END) / COUNT(*) AS percent_high_priority
-FROM recent
-GROUP BY team;
-      ]]></SQL>
-    </SOLUTION>
+        html += `</table>`;
+    });
 
-    <NOTES>
-      Use DATEDIFF for age in days. Percent calculation uses COUNT of records per team. Replace reference date with CURRENT_DATE in production.
-    </NOTES>
-  </SCENARIO>
+    // SOLUTION
+    html += `<h3>Solution SQL</h3>`;
+    let sql = s.getElementsByTagName("SQL")[0].textContent.trim();
+    html += `<pre>${sql}</pre>`;
 
-  <SCENARIO id="SQL_005">
-    <QUESTION>
-      (Intermediate - E-commerce)
-      Create a daily rolling 7-day revenue per store (store_id, revenue_date, revenue, rolling_7d_revenue). Include days with zero revenue.
-    </QUESTION>
+    // NOTES
+    html += `<h3>Notes</h3><p>${s.getElementsByTagName("NOTES")[0].textContent.trim()}</p>`;
 
-    <DATASET>
-      <TABLE name="store_revenue">
-        <COLUMNS>store_id INT, revenue_date DATE, revenue DECIMAL(12,2)</COLUMNS>
-        <ROWS>
-          <ROW>10, 2025-11-01, 1000.00</ROW>
-          <ROW>10, 2025-11-02, 500.00</ROW>
-          <ROW>10, 2025-11-04, 200.00</ROW>
-          <ROW>11, 2025-11-01, 300.00</ROW>
-        </ROWS>
-      </TABLE>
-    </DATASET>
+    document.getElementById("scenarioContent").innerHTML = html;
 
-    <SOLUTION>
-      <SQL><![CDATA[
--- Ensure a calendar of dates exists; here we construct a simple one for sample
-WITH calendar AS (
-  SELECT DATEADD(day, v.number, '2025-11-01') AS dt
-  FROM (VALUES (0),(1),(2),(3),(4),(5),(6),(7),(8),(9)) v(number)
-),
-store_dates AS (
-  SELECT s.store_id, c.dt AS revenue_date
-  FROM (SELECT DISTINCT store_id FROM store_revenue) s
-  CROSS JOIN calendar c
-),
-rev_filled AS (
-  SELECT sd.store_id, sd.revenue_date,
-         COALESCE(sr.revenue, 0.0) AS revenue
-  FROM store_dates sd
-  LEFT JOIN store_revenue sr
-    ON sd.store_id = sr.store_id AND sd.revenue_date = sr.revenue_date
-)
-SELECT
-  store_id,
-  revenue_date,
-  revenue,
-  SUM(revenue) OVER (PARTITION BY store_id ORDER BY revenue_date ROWS BETWEEN 6 PRECEDING AND CURRENT ROW) AS rolling_7d_revenue
-FROM rev_filled
-ORDER BY store_id, revenue_date;
-      ]]></SQL>
-    </SOLUTION>
+    // BUTTON STATE
+    document.getElementById("prevBtn").disabled = (current === 0);
+    document.getElementById("nextBtn").disabled = (current === scenarios.length - 1);
+}
 
-    <NOTES>
-      Use calendar/cross join to fill missing dates. In production, use a persistent calendar table for large date ranges.
-    </NOTES>
-  </SCENARIO>
+function nextScenario() {
+    if (current < scenarios.length - 1) displayScenario(current + 1);
+}
 
-  <!-- Advanced Scenarios start here -->
+function prevScenario() {
+    if (current > 0) displayScenario(current - 1);
+}
+</script>
 
-  <SCENARIO id="SQL_006">
-    <QUESTION>
-      (Advanced - Banking)
-      Given two tables: payments(payment_id, account_id, payment_date, amount) and reversals(reversal_id, payment_id, reversal_date, amount), write a query to compute net_payments per account per month that excludes payments fully reversed within 30 days. Partial reversals reduce payment amount. Also produce a flagged column 'suspicious' when reversals amount > 50% of payment within 7 days.
-    </QUESTION>
-
-    <DATASET>
-      <TABLE name="payments">
-        <COLUMNS>payment_id INT, account_id INT, payment_date DATE, amount DECIMAL(12,2)</COLUMNS>
-        <ROWS>
-          <ROW>100, 501, 2025-09-01, 1000.00</ROW>
-          <ROW>101, 501, 2025-09-05, 200.00</ROW>
-          <ROW>102, 502, 2025-09-10, 500.00</ROW>
-        </ROWS>
-      </TABLE>
-
-      <TABLE name="reversals">
-        <COLUMNS>reversal_id INT, payment_id INT, reversal_date DATE, amount DECIMAL(12,2)</COLUMNS>
-        <ROWS>
-          <ROW>1, 100, 2025-09-10, 1000.00</ROW>
-          <ROW>2, 101, 2025-09-07, 150.00</ROW>
-        </ROWS>
-      </TABLE>
-    </DATASET>
-
-    <SOLUTION>
-      <SQL><![CDATA[
-WITH rev_sum AS (
-  SELECT r.payment_id,
-         SUM(r.amount) AS total_reversed,
-         SUM(CASE WHEN DATEDIFF(day, p.payment_date, r.reversal_date) <= 7 THEN r.amount ELSE 0 END) AS reversed_within_7d
-  FROM reversals r
-  JOIN payments p ON r.payment_id = p.payment_id
-  GROUP BY r.payment_id
-),
-pay_with_revs AS (
-  SELECT p.payment_id, p.account_id, p.payment_date, p.amount,
-         COALESCE(rs.total_reversed,0) AS total_reversed,
-         COALESCE(rs.reversed_within_7d,0) AS reversed_within_7d
-  FROM payments p
-  LEFT JOIN rev_sum rs ON p.payment_id = rs.payment_id
-),
--- Exclude payments fully reversed within 30 days
-valid_payments AS (
-  SELECT pw.*
-  FROM pay_with_revs pw
-  LEFT JOIN reversals r ON pw.payment_id = r.payment_id
-  GROUP BY pw.payment_id, pw.account_id, pw.payment_date, pw.amount, pw.total_reversed, pw.reversed_within_7d
-  HAVING NOT (pw.total_reversed >= pw.amount AND MIN(DATEDIFF(day, pw.payment_date, r.reversal_date)) <= 30)
-)
-SELECT
-  DATEFROMPARTS(YEAR(payment_date), MONTH(payment_date), 1) AS month_start,
-  account_id,
-  SUM(amount - total_reversed) AS net_payments,
-  CASE WHEN reversed_within_7d > 0 AND (reversed_within_7d * 1.0 / amount) > 0.5 THEN 1 ELSE 0 END AS suspicious
-FROM valid_payments
-GROUP BY DATEFROMPARTS(YEAR(payment_date), MONTH(payment_date), 1), account_id;
-      ]]></SQL>
-    </SOLUTION>
-
-    <NOTES>
-      This query aggregates reversals per payment and filters fully reversed payments within 30 days. Edge cases: multiple reversals, partial reversals.
-    </NOTES>
-  </SCENARIO>
-
-  <SCENARIO id="SQL_007">
-    <QUESTION>
-      (Advanced - Data Warehouse / Recon)
-      You have a historical dimension table dim_product(product_id, product_code, effective_from, effective_to) using slowly changing type 2. Given a sales table (sale_id, product_code, sale_date, qty), map each sale to the correct product_id based on sale_date falling into the product's effective range, and produce monthly sales per product_id.
-    </QUESTION>
-
-    <DATASET>
-      <TABLE name="dim_product">
-        <COLUMNS>product_id INT, product_code VARCHAR(20), effective_from DATE, effective_to DATE</COLUMNS>
-        <ROWS>
-          <ROW>1, 'P-A', 2025-01-01, 2025-06-30</ROW>
-          <ROW>2, 'P-A', 2025-07-01, 9999-12-31</ROW>
-          <ROW>3, 'P-B', 2025-01-01, 9999-12-31</ROW>
-        </ROWS>
-      </TABLE>
-
-      <TABLE name="sales">
-        <COLUMNS>sale_id INT, product_code VARCHAR(20), sale_date DATE, qty INT</COLUMNS>
-        <ROWS>
-          <ROW>10, 'P-A', 2025-05-15, 5</ROW>
-          <ROW>11, 'P-A', 2025-08-03, 2</ROW>
-          <ROW>12, 'P-B', 2025-04-20, 3</ROW>
-        </ROWS>
-      </TABLE>
-    </DATASET>
-
-    <SOLUTION>
-      <SQL><![CDATA[
-SELECT
-  DATEFROMPARTS(YEAR(s.sale_date), MONTH(s.sale_date), 1) AS month_start,
-  d.product_id,
-  SUM(s.qty) AS total_qty
-FROM sales s
-JOIN dim_product d
-  ON s.product_code = d.product_code
-  AND s.sale_date >= d.effective_from
-  AND s.sale_date <= d.effective_to
-GROUP BY DATEFROMPARTS(YEAR(s.sale_date), MONTH(s.sale_date), 1), d.product_id
-ORDER BY month_start, d.product_id;
-      ]]></SQL>
-    </SOLUTION>
-
-    <NOTES>
-      This classic SCD2 mapping uses date range join; ensure dim has non-overlapping ranges per product_code.
-    </NOTES>
-  </SCENARIO>
-
-  <SCENARIO id="SQL_008">
-    <QUESTION>
-      (Advanced - Recursive / Hierarchies)
-      Given an employees table (emp_id, manager_id, name, hire_date), produce for every employee their top-most manager (root) and depth (levels between employee and root). Also produce a path string like 'CEO > VP > Manager > Employee'. Limit recursion depth to 10.
-    </QUESTION>
-
-    <DATASET>
-      <TABLE name="employees">
-        <COLUMNS>emp_id INT, manager_id INT, name VARCHAR(50), hire_date DATE</COLUMNS>
-        <ROWS>
-          <ROW>1, NULL, 'Alice', 2010-01-01</ROW>
-          <ROW>2, 1, 'Bob', 2012-05-10</ROW>
-          <ROW>3, 2, 'Carol', 2018-07-20</ROW>
-          <ROW>4, 2, 'Dave', 2019-08-01</ROW>
-        </ROWS>
-      </TABLE>
-    </DATASET>
-
-    <SOLUTION>
-      <SQL><![CDATA[
-WITH RECURSIVE org AS (
-  SELECT emp_id, manager_id, name, CAST(name AS VARCHAR(1000)) AS path, 0 AS depth
-  FROM employees
-  WHERE manager_id IS NULL
-  UNION ALL
-  SELECT e.emp_id, e.manager_id, e.name, CAST(o.path || ' > ' || e.name AS VARCHAR(1000)), o.depth + 1
-  FROM employees e
-  JOIN org o ON e.manager_id = o.emp_id
-  WHERE o.depth < 10
-)
-SELECT
-  emp_id,
-  (SELECT name FROM org o2 WHERE o2.emp_id = (
-     SELECT manager_id FROM employees e3 WHERE e3.emp_id = emp_id
-  ) ORDER BY depth DESC LIMIT 1) AS immediate_manager,
-  (SELECT name FROM org o_root WHERE o_root.depth = 0 AND EXISTS (SELECT 1 FROM org o_child WHERE o_child.emp_id = emp_id AND o_child.path LIKE o_root.name || '%')) AS top_manager,
-  (SELECT MAX(depth) FROM org o_where WHERE o_where.path LIKE '%' || (SELECT name FROM employees e4 WHERE e4.emp_id = emp_id) || '%') AS depth_levels,
-  (SELECT path FROM org o_p WHERE o_p.emp_id = emp_id) AS org_path
-FROM employees;
-      ]]></SQL>
-    <NOTES>
-      SQL syntax for recursive CTEs and string concatenation differs between engines. The above is a template — adjust string concat (|| vs +) and LIMIT/SELECT patterns for SQL Server or Snowflake.
-    </NOTES>
-  </SCENARIO>
-
-  <SCENARIO id="SQL_009">
-    <QUESTION>
-      (Advanced - String manipulation & Window)
-      From a logs table (log_id, user_id, event_time, event_details) where event_details contains 'action=XYZ;resource=ABC;status=OK', parse action/resource/status into columns and for each user compute time-between-actions (in seconds) ordered by event_time and flag sessions where gap > 30 minutes.
-    </QUESTION>
-
-    <DATASET>
-      <TABLE name="logs">
-        <COLUMNS>log_id INT, user_id INT, event_time DATETIME, event_details VARCHAR(200)</COLUMNS>
-        <ROWS>
-          <ROW>1, 601, '2025-11-01 08:00:00', 'action=login;resource=web;status=OK'</ROW>
-          <ROW>2, 601, '2025-11-01 08:10:00', 'action=view;resource=product;status=OK'</ROW>
-          <ROW>3, 601, '2025-11-01 09:00:00', 'action=checkout;resource=cart;status=FAIL'</ROW>
-        </ROWS>
-      </TABLE>
-    </DATASET>
-
-    <SOLUTION>
-      <SQL><![CDATA[
-WITH parsed AS (
-  SELECT
-    log_id,
-    user_id,
-    event_time,
-    -- example using PARSENAME-like parsing; replace with engine-specific functions
-    REGEXP_SUBSTR(event_details, 'action=([^;]+)', 1, 1, NULL, 1) AS action,
-    REGEXP_SUBSTR(event_details, 'resource=([^;]+)', 1, 1, NULL, 1) AS resource,
-    REGEXP_SUBSTR(event_details, 'status=([^;]+)', 1, 1, NULL, 1) AS status
-  FROM logs
-),
-ordered AS (
-  SELECT *, LAG(event_time) OVER (PARTITION BY user_id ORDER BY event_time) AS prev_time
-  FROM parsed
-)
-SELECT
-  log_id,
-  user_id,
-  event_time,
-  action,
-  resource,
-  status,
-  DATEDIFF(second, prev_time, event_time) AS seconds_since_prev,
-  CASE WHEN DATEDIFF(minute, prev_time, event_time) > 30 THEN 1 ELSE 0 END AS new_session_flag
-FROM ordered
-ORDER BY user_id, event_time;
-      ]]></SQL>
-    <NOTES>
-      Parsing functions differ by engine (REGEXP_SUBSTR shown). Use CHARINDEX/SUBSTRING or SPLIT_PART in other engines. DATEDIFF signature may vary.
-    </NOTES>
-  </SCENARIO>
-
-  <SCENARIO id="SQL_010">
-    <QUESTION>
-      (Advanced - Pivot / Conditional Aggregation)
-      You have payments data with currency_code and amount. Produce a report that shows per day the total amount per currency as columns (USD, EUR, INR) and a grand_total column. Ensure currencies with no transactions show 0.
-    </QUESTION>
-
-    <DATASET>
-      <TABLE name="payments_fx">
-        <COLUMNS>payment_id INT, payment_date DATE, currency_code VARCHAR(3), amount DECIMAL(12,2)</COLUMNS>
-        <ROWS>
-          <ROW>1, 2025-11-01, USD, 100.00</ROW>
-          <ROW>2, 2025-11-01, INR, 5000.00</ROW>
-          <ROW>3, 2025-11-02, EUR, 80.00</ROW>
-        </ROWS>
-      </TABLE>
-    </DATASET>
-
-    <SOLUTION>
-      <SQL><![CDATA[
-SELECT
-  payment_date,
-  SUM(CASE WHEN currency_code = 'USD' THEN amount ELSE 0 END) AS USD,
-  SUM(CASE WHEN currency_code = 'EUR' THEN amount ELSE 0 END) AS EUR,
-  SUM(CASE WHEN currency_code = 'INR' THEN amount ELSE 0 END) AS INR,
-  SUM(amount) AS grand_total
-FROM payments_fx
-GROUP BY payment_date
-ORDER BY payment_date;
-
--- Alternatively, use PIVOT in SQL Server for dynamic pivoting.
-      ]]></SQL>
-    <NOTES>
-      Simple conditional aggregation covers fixed known currency columns. For dynamic currencies, generate SQL dynamically.
-    </NOTES>
-  </SCENARIO>
-
-</SCENARIOS>
+</body>
+</html>
