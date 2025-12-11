@@ -14,7 +14,7 @@
             width: 90%;
             margin: auto;
         }
-        h2 {
+        h2, h3 {
             color: #333;
         }
         .box {
@@ -62,18 +62,30 @@
         button:hover {
             background-color: #45a049;
         }
+
+        /* Jump-to buttons */
+        .jump-buttons {
+            margin-bottom: 20px;
+        }
+        .jump-buttons button {
+            background-color: #008CBA;
+            margin-right: 8px;
+        }
+        .jump-buttons button:hover {
+            background-color: #007399;
+        }
     </style>
 
-    <script>
-        let currentQuestion = 0;
+<script>
+let currentQuestion = 0;
 
-        const questions = [
+const questions = [
 
-            /* ----------------------------------------------------------
-               QUESTION 1 — Employee Visit Tracking
-               ---------------------------------------------------------- */
-            {
-                question: `
+/* ----------------------------------------------------------
+   QUESTION 1 — Employee Visit Tracking
+   ---------------------------------------------------------- */
+{
+    question: `
 A company tracks employee visits, allowing only one entry per employee per day.
 A loophole allows multiple entries using different email IDs.
 
@@ -84,17 +96,21 @@ Determine:
 
 Output columns: Name, Total Visits, Most Visited Floor, Used Resources.
 `,
-                dataset: [
-                    {name:"Alice", email:"a1@mail.com", floor:2, resources:"Laptop"},
-                    {name:"Alice", email:"a2@mail.com", floor:2, resources:"Projector"},
-                    {name:"Bob", email:"bob@mail.com", floor:1, resources:"Printer"},
-                    {name:"Alice", email:"a1@mail.com", floor:3, resources:"Laptop"},
-                    {name:"Bob", email:"bob2@mail.com", floor:1, resources:"Laptop"},
-                    {name:"Charlie", email:"charlie@mail.com", floor:2, resources:"Laptop"},
-                    {name:"Charlie", email:"charlie@mail.com", floor:2, resources:"Projector"},
-                    {name:"Alice", email:"a2@mail.com", floor:2, resources:"Whiteboard"}
-                ],
-                answer: `
+    dataset: [
+    {name:"A    ", address:"Bangalore", email:"A@gmail.com  ", floor:"1    ", resources:"CPU     "},
+    {name:"A    ", address:"Bangalore", email:"A1@gmail.com ", floor:"1    ", resources:"CPU     "},
+    {name:"A    ", address:"Bangalore", email:"A2@gmail.com ", floor:"2    ", resources:"DESKTOP "},
+    {name:"B    ", address:"Bangalore", email:"B@gmail.com  ", floor:"2    ", resources:"DESKTOP "},
+    {name:"B    ", address:"Bangalore", email:"B1@gmail.com ", floor:"2    ", resources:"DESKTOP "},
+    {name:"B    ", address:"Bangalore", email:"B2@gmail.com ", floor:"1    ", resources:"MONITOR "}
+],
+
+    output: [
+    {name:"A    ", total_visits:"3", most_visited_floor:"1    ", resources_used:"CPU,DESKTOP   "},
+    {name:"B    ", total_visits:"3", most_visited_floor:"2    ", resources_used:"DESKTOP,MONITOR"}
+],
+
+    answer: `
 WITH floor_rank AS (
     SELECT 
         name,
@@ -128,60 +144,58 @@ JOIN total_visits TV ON FR.name = TV.name
 JOIN resource_list RL ON FR.name = RL.name
 WHERE FR.rn = 1;
 `
-            },
+},
 
-            /* ----------------------------------------------------------
-               QUESTION 2 — Team Match Results (Merged XML Scenario)
-               ---------------------------------------------------------- */
-            {
-                question: `
+/* ----------------------------------------------------------
+   QUESTION 2 — Team Match Results
+   ---------------------------------------------------------- */
+{
+    question: `
 Using the match result dataset, write a SQL query to:
 
-1. Calculate total matches played by each team.
-2. Calculate total matches won by each team.
-3. Calculate number of losses = matches_played - no_of_wins.
-4. Display team_name, matches_played, no_of_wins, no_of_losses.
-5. Order result by highest wins.
+1. Total matches played  
+2. Total wins  
+3. Total losses  
+4. Display team_name, matches_played, wins, losses  
+5. Order by wins desc  
 `,
-                dataset: [
-                    {Team_1:"India", Team_2:"SL", Winner:"India"},
-                    {Team_1:"SL", Team_2:"Aus", Winner:"Aus"},
-                    {Team_1:"SA", Team_2:"Eng", Winner:"Eng"},
-                    {Team_1:"Eng", Team_2:"NZ", Winner:"NZ"},
-                    {Team_1:"Aus", Team_2:"India", Winner:"India"}
-                ],
-                answer: `
+    dataset: [
+        {Team_1:"India", Team_2:"SL", Winner:"India"},
+        {Team_1:"SL", Team_2:"Aus", Winner:"Aus"},
+        {Team_1:"SA", Team_2:"Eng", Winner:"Eng"},
+        {Team_1:"Eng", Team_2:"NZ", Winner:"NZ"},
+        {Team_1:"Aus", Team_2:"India", Winner:"India"}
+    ],
+
+    output: [
+        {Team_Name:"India", Matches_played:2, no_of_wins:2, no_of_losses:0},
+        {Team_Name:"SL", Matches_played:2, no_of_wins:0, no_of_losses:2},
+        {Team_Name:"SA", Matches_played:1, no_of_wins:0, no_of_losses:1},
+        {Team_Name:"Eng", Matches_played:2, no_of_wins:1, no_of_losses:1},
+        {Team_Name:"Aus", Matches_played:2, no_of_wins:1, no_of_losses:1},
+        {Team_Name:"NZ", Matches_played:1, no_of_wins:1, no_of_losses:0}
+    ],
+
+    answer: `
 WITH team_name AS (
-    SELECT 
-        team_name,
-        COUNT(*) AS matches_played
-    FROM (
-        SELECT Team_1 AS team_name FROM MatchResults
-        UNION ALL
-        SELECT Team_2 FROM MatchResults
-    ) a
-    GROUP BY team_name
+   SELECT team_name, COUNT(*) matches_played FROM (
+       SELECT Team_1 AS team_name FROM MatchResults
+       UNION ALL
+       SELECT Team_2 FROM MatchResults
+   ) a GROUP BY team_name
 ),
 no_of_wins AS (
-    SELECT 
-        team_name,
-        SUM(no_of_wins) AS no_of_wins
-    FROM (
-        SELECT 
-            Team_1 AS team_name,
-            SUM(CASE WHEN Team_1 = Winner THEN 1 ELSE 0 END) AS no_of_wins
-        FROM MatchResults
-        GROUP BY Team_1
+    SELECT team_name, SUM(no_of_wins) AS no_of_wins FROM (
+        SELECT Team_1 AS team_name,
+               SUM(CASE WHEN Team_1 = Winner THEN 1 ELSE 0 END) AS no_of_wins
+        FROM MatchResults GROUP BY Team_1
 
         UNION ALL
 
-        SELECT 
-            Team_2 AS team_name,
-            SUM(CASE WHEN Team_2 = Winner THEN 1 ELSE 0 END) AS no_of_wins
-        FROM MatchResults
-        GROUP BY Team_2
-    ) a
-    GROUP BY team_name
+        SELECT Team_2 AS team_name,
+               SUM(CASE WHEN Team_2 = Winner THEN 1 ELSE 0 END) AS no_of_wins
+        FROM MatchResults GROUP BY Team_2
+    ) a GROUP BY team_name
 )
 SELECT 
     a.team_name,
@@ -189,67 +203,288 @@ SELECT
     b.no_of_wins,
     a.matches_played - b.no_of_wins AS no_of_losses
 FROM team_name a
-JOIN no_of_wins b 
-    ON a.team_name = b.team_name
+JOIN no_of_wins b ON a.team_name = b.team_name
 ORDER BY b.no_of_wins DESC;
 `
-            }
+},
 
-            /* ----------------------------------------------------------
-               👉 COMMENT: PASTE MORE QUESTIONS BELOW THIS LINE
-               COPY STRUCTURE OF THE ABOVE QUESTION OBJECTS
-               ---------------------------------------------------------- */
+/* ----------------------------------------------------------
+   QUESTION 3 — Daily New vs Repeat Customers
+   ---------------------------------------------------------- */
+{
+    question: `
+Given the daily orders dataset, write a SQL query to determine:
 
-        ];
+1. How many customers are NEW on each order date  
+2. How many customers are REPEAT on each order date  
+3. Display order_date, first_visit_flag (new customers), repeat_visit_flag (repeat customers)  
+4. Order the results by order_date  
+`,
 
-        function renderQuestion(index) {
-            let q = questions[index];
-            document.getElementById('questionBox').innerHTML = `<p>${q.question}</p>`;
-            
-            let tableHtml = "<table><tr>";
+    dataset: [
+        {order_id:1, customer_id:100, order_date:"2022-01-01", order_amount:2000},
+        {order_id:2, customer_id:200, order_date:"2022-01-01", order_amount:2500},
+        {order_id:3, customer_id:300, order_date:"2022-01-01", order_amount:2100},
+        {order_id:4, customer_id:100, order_date:"2022-01-02", order_amount:2000},
+        {order_id:5, customer_id:400, order_date:"2022-01-02", order_amount:2200},
+        {order_id:6, customer_id:500, order_date:"2022-01-02", order_amount:2700},
+        {order_id:7, customer_id:100, order_date:"2022-01-03", order_amount:3000},
+        {order_id:8, customer_id:400, order_date:"2022-01-03", order_amount:1000},
+        {order_id:9, customer_id:600, order_date:"2022-01-03", order_amount:3000}
+    ],
 
-            // dynamic column headers
-            Object.keys(q.dataset[0]).forEach(col => {
-                tableHtml += `<th>${col}</th>`;
-            });
+    output: [
+        {order_date:"2022-01-01", first_visit_flag:3, repeat_visit_flag:0},
+        {order_date:"2022-01-02", first_visit_flag:2, repeat_visit_flag:1},
+        {order_date:"2022-01-03", first_visit_flag:1, repeat_visit_flag:2}
+    ],
+
+    answer: `
+SELECT 
+    a.order_date,
+    SUM(CASE WHEN b.customer_id IS NOT NULL THEN 1 ELSE 0 END) AS first_visit_flag,
+    SUM(CASE WHEN b.customer_id IS NULL THEN 1 ELSE 0 END) AS repeat_visit_flag
+FROM orders a
+LEFT JOIN (
+    SELECT customer_id, MIN(order_date) AS first_order_date
+    FROM orders
+    GROUP BY customer_id
+) b 
+ON a.customer_id = b.customer_id
+AND a.order_date = b.first_order_date
+GROUP BY a.order_date
+ORDER BY a.order_date;
+`
+},
+
+/* ----------------------------------------------------------
+   QUESTION 4 — Daily Revenue (New vs Repeat)
+   ---------------------------------------------------------- */
+{
+    question: `
+Extend the previous analysis to compute:
+
+1. New customer count per day  
+2. Repeat customer count per day  
+3. Revenue by new customers  
+4. Revenue by repeat customers  
+`,
+
+    dataset: [
+        {order_id:1, customer_id:100, order_date:"2022-01-01", order_amount:2000},
+        {order_id:2, customer_id:200, order_date:"2022-01-01", order_amount:2500},
+        {order_id:3, customer_id:300, order_date:"2022-01-01", order_amount:2100},
+        {order_id:4, customer_id:100, order_date:"2022-01-02", order_amount:2000},
+        {order_id:5, customer_id:400, order_date:"2022-01-02", order_amount:2200},
+        {order_id:6, customer_id:500, order_date:"2022-01-02", order_amount:2700},
+        {order_id:7, customer_id:100, order_date:"2022-01-03", order_amount:3000},
+        {order_id:8, customer_id:400, order_date:"2022-01-03", order_amount:1000},
+        {order_id:9, customer_id:600, order_date:"2022-01-03", order_amount:3000}
+    ],
+
+    output: [
+        {order_date:"2022-01-01", first_visit:3, repeat_visit:0, new_customer_amount:6600, old_customer_amount:0},
+        {order_date:"2022-01-02", first_visit:2, repeat_visit:1, new_customer_amount:4900, old_customer_amount:2000},
+        {order_date:"2022-01-03", first_visit:1, repeat_visit:2, new_customer_amount:3000, old_customer_amount:4000}
+    ],
+
+    answer: `
+WITH first_order AS (
+    SELECT customer_id, MIN(order_date) AS first_order_date
+    FROM orders
+    GROUP BY customer_id
+),
+visits AS (
+    SELECT 
+        a.order_date,
+        SUM(CASE WHEN a.order_date = b.first_order_date THEN 1 ELSE 0 END) AS first_visit,
+        SUM(CASE WHEN a.order_date <> b.first_order_date THEN 1 ELSE 0 END) AS repeat_visit
+    FROM orders a
+    JOIN first_order b
+        ON a.customer_id = b.customer_id
+    GROUP BY a.order_date
+),
+amount AS (
+    SELECT 
+        a.order_date,
+        SUM(CASE WHEN a.order_date = b.first_order_date THEN order_amount ELSE 0 END) AS new_customer_amount,
+        SUM(CASE WHEN a.order_date <> b.first_order_date THEN order_amount ELSE 0 END) AS old_customer_amount
+    FROM orders a
+    JOIN first_order b
+        ON a.customer_id = b.customer_id
+    GROUP BY a.order_date
+)
+SELECT 
+    v.order_date,
+    v.first_visit,
+    v.repeat_visit,
+    a.new_customer_amount,
+    a.old_customer_amount
+FROM visits v
+JOIN amount a ON v.order_date = a.order_date
+ORDER BY v.order_date;
+`
+},
+
+/* ----------------------------------------------------------
+   QUESTION 5 — Nth Future Sunday
+   ---------------------------------------------------------- */
+{
+    question: `
+Write a SQL query to find the date of the Nth occurrence of Sunday in the future from a given starting date.
+
+Provide two solutions:
+1. Using a date generator (loop or recursive method)
+2. Using a direct mathematical formula
+
+Also explain why (n - 1) and (8 - weekday) are used.
+`,
+
+    dataset: [],
+    output: [],
+
+    answer_1: `
+-- Approach 1: Using date generation (loop)
+
+DROP TABLE IF EXISTS ##date_list;
+
+CREATE TABLE ##date_list (dt DATE);
+
+DECLARE @startdate DATE = CONVERT(DATE, GETDATE());
+DECLARE @enddate DATE = DATEADD(WEEK, 10, @startdate);
+DECLARE @dt DATE = @startdate;
+
+WHILE @dt <= @enddate
+BEGIN
+    INSERT INTO ##date_list VALUES (@dt);
+    SET @dt = DATEADD(DAY, 1, @dt);
+END;
+
+DECLARE @n INT = 3, @weekday VARCHAR(10) = 'Sunday';
+
+SELECT TOP 1 dt
+FROM (
+    SELECT dt,
+           DATENAME(WEEKDAY, dt) AS weekday,
+           ROW_NUMBER() OVER (PARTITION BY DATENAME(WEEKDAY, dt) ORDER BY dt) AS rn
+    FROM ##date_list
+) x
+WHERE weekday = @weekday AND rn = @n
+ORDER BY dt;
+`,
+
+    answer_2: `
+-- Approach 2: Direct mathematical formula
+
+DECLARE @today_date DATE = CONVERT(DATE, GETDATE());
+DECLARE @n INT = 3;
+
+SELECT DATEADD(
+           WEEK, @n - 1,
+           DATEADD(DAY, 8 - DATEPART(WEEKDAY, @today_date), @today_date)
+       ) AS nth_future_sunday;
+`,
+
+    explanation: `
+Explanation:
+
+1. DATEPART(WEEKDAY, @today_date)
+   Returns 1–7 (Sunday–Saturday).
+
+2. (8 - weekday):
+   Gives number of days until next Sunday.
+
+3. (n - 1):
+   1st Sunday → +0 weeks
+   2nd Sunday → +1 week
+   3rd Sunday → +2 weeks
+   Nth Sunday → (n - 1) additional weeks.
+`
+}
+
+]; // END QUESTIONS ARRAY
+
+
+/* ----------------------------------------------------------
+   RENDER FUNCTION — FIXED TO SUPPORT MULTIPLE ANSWERS
+------------------------------------------------------------ */
+function renderQuestion(index) {
+
+    let q = questions[index];
+
+    document.getElementById('questionBox').innerHTML = `<h3>Question ${index + 1}</h3><p>${q.question}</p>`;
+
+    /* ---- Dataset ---- */
+    if (q.dataset && q.dataset.length > 0) {
+        let tableHtml = "<table><tr>";
+        Object.keys(q.dataset[0]).forEach(col => tableHtml += `<th>${col}</th>`);
+        tableHtml += "</tr>";
+
+        q.dataset.forEach(row => {
+            tableHtml += "<tr>";
+            Object.values(row).forEach(val => tableHtml += `<td>${val}</td>`);
             tableHtml += "</tr>";
+        });
+        tableHtml += "</table>";
+        document.getElementById('datasetBox').innerHTML = tableHtml;
+    } else {
+        document.getElementById('datasetBox').innerHTML = "<p>No dataset for this question.</p>";
+    }
 
-            q.dataset.forEach(row => {
-                tableHtml += "<tr>";
-                Object.values(row).forEach(val => {
-                    tableHtml += `<td>${val}</td>`;
-                });
-                tableHtml += "</tr>";
-            });
+    /* ---- Output ---- */
+    if (q.output && q.output.length > 0) {
+        let outHtml = "<table><tr>";
+        Object.keys(q.output[0]).forEach(col => outHtml += `<th>${col}</th>`);
+        outHtml += "</tr>";
 
-            tableHtml += "</table>";
-            document.getElementById('datasetBox').innerHTML = tableHtml;
+        q.output.forEach(row => {
+            outHtml += "<tr>";
+            Object.values(row).forEach(val => outHtml += `<td>${val}</td>`);
+            outHtml += "</tr>";
+        });
+        outHtml += "</table>";
+        document.getElementById("outputBox").innerHTML = outHtml;
+    } else {
+        document.getElementById("outputBox").innerHTML = "<p>No output for this question.</p>";
+    }
 
-            document.getElementById('answerBox').innerText = q.answer;
-        }
+    /* ---- Answer section ---- */
+    let finalAnswer = "";
 
-        function nextQuestion() {
-            if (currentQuestion < questions.length - 1) {
-                currentQuestion++;
-                renderQuestion(currentQuestion);
-            } else {
-                alert("This is the last question.");
-            }
-        }
+    if (q.answer) finalAnswer += q.answer + "\n\n";
+    if (q.answer_1) finalAnswer += "-- Solution 1:\n" + q.answer_1 + "\n\n";
+    if (q.answer_2) finalAnswer += "-- Solution 2:\n" + q.answer_2 + "\n\n";
+    if (q.explanation) finalAnswer += "-- Explanation:\n" + q.explanation;
 
-        function previousQuestion() {
-            if (currentQuestion > 0) {
-                currentQuestion--;
-                renderQuestion(currentQuestion);
-            } else {
-                alert("This is the first question.");
-            }
-        }
+    document.getElementById('answerBox').innerText = finalAnswer;
+}
 
-        window.onload = function() {
-            renderQuestion(currentQuestion);
-        }
-    </script>
+/* ----------------------------------------------------------
+   Navigation Buttons
+------------------------------------------------------------ */
+function nextQuestion() {
+    if (currentQuestion < questions.length - 1) {
+        currentQuestion++;
+        renderQuestion(currentQuestion);
+    }
+}
+
+function previousQuestion() {
+    if (currentQuestion > 0) {
+        currentQuestion--;
+        renderQuestion(currentQuestion);
+    }
+}
+
+function jumpToQuestion(i) {
+    currentQuestion = i;
+    renderQuestion(i);
+}
+
+window.onload = function() {
+    renderQuestion(currentQuestion);
+}
+</script>
 
 </head>
 
@@ -257,11 +492,24 @@ ORDER BY b.no_of_wins DESC;
 <body>
 <div class="container">
 
-    <h2>📌 SQL Question</h2>
+    <h2>📌 SQL Questions</h2>
+
+    <!-- Jump Buttons -->
+    <div class="jump-buttons">
+        <button onclick="jumpToQuestion(0)">Q1</button>
+        <button onclick="jumpToQuestion(1)">Q2</button>
+        <button onclick="jumpToQuestion(2)">Q3</button>
+        <button onclick="jumpToQuestion(3)">Q4</button>
+        <button onclick="jumpToQuestion(4)">Q5</button>
+    </div>
+
     <div class="box" id="questionBox"></div>
 
     <h3>Sample Dataset</h3>
     <div class="box" id="datasetBox"></div>
+
+    <h3>Expected Output</h3>
+    <div class="box" id="outputBox"></div>
 
     <h2>🟢 SQL Answer</h2>
     <div class="box">
