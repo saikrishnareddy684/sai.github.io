@@ -400,7 +400,70 @@ Explanation:
    3rd Sunday → +2 weeks
    Nth Sunday → (n - 1) additional weeks.
 `
+},
+     
+{
+    question: `
+Given the below order dataset with columns (order_id, customer_id, order_date, ship_date),
+calculate the following for each order:
+
+1. days_to_ship  → Total days between order_date and ship_date  
+2. week_between_days → Number of complete weeks between the dates  
+3. business_days_to_ship → Count of business days (Mon–Fri), excluding weekends
+
+Return all columns including the calculated ones.
+`,
+
+    dataset: [
+    {order_id:"1000", customer_id:"1", order_date:"2022-01-05", ship_date:"2022-01-11"},
+    {order_id:"1001", customer_id:"2", order_date:"2022-02-04", ship_date:"2022-02-16"},
+    {order_id:"1002", customer_id:"3", order_date:"2022-01-01", ship_date:"2022-01-19"},
+    {order_id:"1003", customer_id:"4", order_date:"2022-01-06", ship_date:"2022-01-30"},
+    {order_id:"1004", customer_id:"1", order_date:"2022-02-07", ship_date:"2022-02-13"},
+    {order_id:"1005", customer_id:"4", order_date:"2022-01-07", ship_date:"2022-01-31"},
+    {order_id:"1006", customer_id:"3", order_date:"2022-02-08", ship_date:"2022-02-26"},
+    {order_id:"1007", customer_id:"2", order_date:"2022-02-09", ship_date:"2022-02-21"},
+    {order_id:"1008", customer_id:"4", order_date:"2022-02-10", ship_date:"2022-03-06"}
+    ],
+
+    output: [
+    {order_id:"1000", customer_id:"1", order_date:"2022-01-05", ship_date:"2022-01-11", days_to_ship:"6",  week_between_days:"1", business_days_to_ship:"4"},
+    {order_id:"1001", customer_id:"2", order_date:"2022-02-04", ship_date:"2022-02-16", days_to_ship:"12", week_between_days:"2", business_days_to_ship:"8"},
+    {order_id:"1002", customer_id:"3", order_date:"2022-01-01", ship_date:"2022-01-19", days_to_ship:"18", week_between_days:"3", business_days_to_ship:"12"},
+    {order_id:"1003", customer_id:"4", order_date:"2022-01-06", ship_date:"2022-01-30", days_to_ship:"24", week_between_days:"4", business_days_to_ship:"16"},
+    {order_id:"1004", customer_id:"1", order_date:"2022-02-07", ship_date:"2022-02-13", days_to_ship:"6",  week_between_days:"1", business_days_to_ship:"4"},
+    {order_id:"1005", customer_id:"4", order_date:"2022-01-07", ship_date:"2022-01-31", days_to_ship:"24", week_between_days:"4", business_days_to_ship:"16"},
+    {order_id:"1006", customer_id:"3", order_date:"2022-02-08", ship_date:"2022-02-26", days_to_ship:"18", week_between_days:"2", business_days_to_ship:"14"},
+    {order_id:"1007", customer_id:"2", order_date:"2022-02-09", ship_date:"2022-02-21", days_to_ship:"12", week_between_days:"2", business_days_to_ship:"8"},
+    {order_id:"1008", customer_id:"4", order_date:"2022-02-10", ship_date:"2022-03-06", days_to_ship:"24", week_between_days:"4", business_days_to_ship:"16"}
+    ],
+
+    answer: `
+SELECT
+    order_id,
+    customer_id,
+    order_date,
+    ship_date,
+
+    -- 1. Total days between the dates
+    DATEDIFF(day, order_date, ship_date) AS days_to_ship,
+
+    -- 2. Number of complete weeks between dates
+    DATEDIFF(week, order_date, ship_date) AS week_between_days,
+
+    -- 3. Business days between dates (Mon–Fri)
+    (
+        (DATEDIFF(day, order_date, ship_date) + 1)                  -- total days inclusive
+        - 2 * (DATEDIFF(week, order_date, ship_date))              -- remove Saturdays & Sundays
+        - CASE WHEN DATENAME(weekday, order_date) = 'Sunday' THEN 1 ELSE 0 END
+        - CASE WHEN DATENAME(weekday, ship_date) = 'Saturday' THEN 1 ELSE 0 END
+    ) AS business_days_to_ship
+
+FROM orders_data;
+`
 }
+ 
+
 
 ]; // END QUESTIONS ARRAY
 
