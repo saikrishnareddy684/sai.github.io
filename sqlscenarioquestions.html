@@ -14,7 +14,7 @@
             width: 90%;
             margin: auto;
         }
-        h2 {
+        h2, h3 {
             color: #333;
         }
         .box {
@@ -64,16 +64,16 @@
         }
     </style>
 
-    <script>
-        let currentQuestion = 0;
+<script>
+let currentQuestion = 0;
 
-        const questions = [
+const questions = [
 
-            /* ----------------------------------------------------------
-               QUESTION 1 — Employee Visit Tracking
-               ---------------------------------------------------------- */
-            {
-                question: `
+/* ----------------------------------------------------------
+   QUESTION 1 — Employee Visit Tracking
+   ---------------------------------------------------------- */
+{
+    question: `
 A company tracks employee visits, allowing only one entry per employee per day.
 A loophole allows multiple entries using different email IDs.
 
@@ -84,17 +84,17 @@ Determine:
 
 Output columns: Name, Total Visits, Most Visited Floor, Used Resources.
 `,
-                dataset: [
-                    {name:"Alice", email:"a1@mail.com", floor:2, resources:"Laptop"},
-                    {name:"Alice", email:"a2@mail.com", floor:2, resources:"Projector"},
-                    {name:"Bob", email:"bob@mail.com", floor:1, resources:"Printer"},
-                    {name:"Alice", email:"a1@mail.com", floor:3, resources:"Laptop"},
-                    {name:"Bob", email:"bob2@mail.com", floor:1, resources:"Laptop"},
-                    {name:"Charlie", email:"charlie@mail.com", floor:2, resources:"Laptop"},
-                    {name:"Charlie", email:"charlie@mail.com", floor:2, resources:"Projector"},
-                    {name:"Alice", email:"a2@mail.com", floor:2, resources:"Whiteboard"}
-                ],
-                answer: `
+    dataset: [
+        {name:"Alice", email:"a1@mail.com", floor:2, resources:"Laptop"},
+        {name:"Alice", email:"a2@mail.com", floor:2, resources:"Projector"},
+        {name:"Bob", email:"bob@mail.com", floor:1, resources:"Printer"},
+        {name:"Alice", email:"a1@mail.com", floor:3, resources:"Laptop"},
+        {name:"Bob", email:"bob2@mail.com", floor:1, resources:"Laptop"},
+        {name:"Charlie", email:"charlie@mail.com", floor:2, resources:"Laptop"},
+        {name:"Charlie", email:"charlie@mail.com", floor:2, resources:"Projector"},
+        {name:"Alice", email:"a2@mail.com", floor:2, resources:"Whiteboard"}
+    ],
+    answer: `
 WITH floor_rank AS (
     SELECT 
         name,
@@ -128,13 +128,13 @@ JOIN total_visits TV ON FR.name = TV.name
 JOIN resource_list RL ON FR.name = RL.name
 WHERE FR.rn = 1;
 `
-            },
+},
 
-            /* ----------------------------------------------------------
-           QUESTION 2 — Team Match Results (Merged XML Scenario)
-           ---------------------------------------------------------- */
-        {
-            question: `
+/* ----------------------------------------------------------
+   QUESTION 2 — Team Match Results
+   ---------------------------------------------------------- */
+{
+    question: `
 Using the match result dataset, write a SQL query to:
 
 1. Total matches played  
@@ -143,25 +143,24 @@ Using the match result dataset, write a SQL query to:
 4. Display team_name, matches_played, wins, losses  
 5. Order by wins desc  
 `,
-            dataset: [
-                {Team_1:"India", Team_2:"SL", Winner:"India"},
-                {Team_1:"SL", Team_2:"Aus", Winner:"Aus"},
-                {Team_1:"SA", Team_2:"Eng", Winner:"Eng"},
-                {Team_1:"Eng", Team_2:"NZ", Winner:"NZ"},
-                {Team_1:"Aus", Team_2:"India", Winner:"India"}
-            ],
+    dataset: [
+        {Team_1:"India", Team_2:"SL", Winner:"India"},
+        {Team_1:"SL", Team_2:"Aus", Winner:"Aus"},
+        {Team_1:"SA", Team_2:"Eng", Winner:"Eng"},
+        {Team_1:"Eng", Team_2:"NZ", Winner:"NZ"},
+        {Team_1:"Aus", Team_2:"India", Winner:"India"}
+    ],
 
-            /* ⭐ NEW: Expected Output dataset added */
-            output: [
-                {Team_Name:"India", Matches_played:2, no_of_wins:2, no_of_losses:0},
-                {Team_Name:"SL", Matches_played:2, no_of_wins:0, no_of_losses:2},
-                {Team_Name:"SA", Matches_played:1, no_of_wins:0, no_of_losses:1},
-                {Team_Name:"Eng", Matches_played:2, no_of_wins:1, no_of_losses:1},
-                {Team_Name:"Aus", Matches_played:2, no_of_wins:1, no_of_losses:1},
-                {Team_Name:"NZ", Matches_played:1, no_of_wins:1, no_of_losses:0}
-            ],
+    output: [
+        {Team_Name:"India", Matches_played:2, no_of_wins:2, no_of_losses:0},
+        {Team_Name:"SL", Matches_played:2, no_of_wins:0, no_of_losses:2},
+        {Team_Name:"SA", Matches_played:1, no_of_wins:0, no_of_losses:1},
+        {Team_Name:"Eng", Matches_played:2, no_of_wins:1, no_of_losses:1},
+        {Team_Name:"Aus", Matches_played:2, no_of_wins:1, no_of_losses:1},
+        {Team_Name:"NZ", Matches_played:1, no_of_wins:1, no_of_losses:0}
+    ],
 
-            answer: `
+    answer: `
 WITH team_name AS (
    SELECT team_name, COUNT(*) matches_played FROM (
        SELECT Team_1 AS team_name FROM MatchResults
@@ -191,64 +190,82 @@ FROM team_name a
 JOIN no_of_wins b ON a.team_name = b.team_name
 ORDER BY b.no_of_wins DESC;
 `
-        }
+}
+
+]; // END QUESTIONS ARRAY
 
 
-            /* ----------------------------------------------------------
-               👉 COMMENT: PASTE MORE QUESTIONS BELOW THIS LINE
-               COPY STRUCTURE OF THE ABOVE QUESTION OBJECTS
-               ---------------------------------------------------------- */
 
-        ];
+/* ----------------------------------------------------------
+   RENDER FUNCTION
+   ---------------------------------------------------------- */
+function renderQuestion(index) {
 
-        function renderQuestion(index) {
-            let q = questions[index];
-            document.getElementById('questionBox').innerHTML = `<p>${q.question}</p>`;
-            
-            let tableHtml = "<table><tr>";
+    let q = questions[index];
 
-            // dynamic column headers
-            Object.keys(q.dataset[0]).forEach(col => {
-                tableHtml += `<th>${col}</th>`;
-            });
-            tableHtml += "</tr>";
+    document.getElementById('questionBox').innerHTML = `<p>${q.question}</p>`;
 
-            q.dataset.forEach(row => {
-                tableHtml += "<tr>";
-                Object.values(row).forEach(val => {
-                    tableHtml += `<td>${val}</td>`;
-                });
-                tableHtml += "</tr>";
-            });
+    /* ---- Dataset Table ---- */
+    let tableHtml = "<table><tr>";
+    Object.keys(q.dataset[0]).forEach(col => tableHtml += `<th>${col}</th>`);
+    tableHtml += "</tr>";
 
-            tableHtml += "</table>";
-            document.getElementById('datasetBox').innerHTML = tableHtml;
+    q.dataset.forEach(row => {
+        tableHtml += "<tr>";
+        Object.values(row).forEach(val => tableHtml += `<td>${val}</td>`);
+        tableHtml += "</tr>";
+    });
+    tableHtml += "</table>";
+    document.getElementById('datasetBox').innerHTML = tableHtml;
 
-            document.getElementById('answerBox').innerText = q.answer;
-        }
+    /* ---- Expected Output Table ---- */
+    if (q.output) {
+        let outHtml = "<table><tr>";
+        Object.keys(q.output[0]).forEach(col => outHtml += `<th>${col}</th>`);
+        outHtml += "</tr>";
 
-        function nextQuestion() {
-            if (currentQuestion < questions.length - 1) {
-                currentQuestion++;
-                renderQuestion(currentQuestion);
-            } else {
-                alert("This is the last question.");
-            }
-        }
+        q.output.forEach(row => {
+            outHtml += "<tr>";
+            Object.values(row).forEach(val => outHtml += `<td>${val}</td>`);
+            outHtml += "</tr>";
+        });
+        outHtml += "</table>";
 
-        function previousQuestion() {
-            if (currentQuestion > 0) {
-                currentQuestion--;
-                renderQuestion(currentQuestion);
-            } else {
-                alert("This is the first question.");
-            }
-        }
+        document.getElementById("outputBox").innerHTML = outHtml;
+    } else {
+        document.getElementById("outputBox").innerHTML = "";
+    }
 
-        window.onload = function() {
-            renderQuestion(currentQuestion);
-        }
-    </script>
+    /* ---- SQL Answer ---- */
+    document.getElementById('answerBox').innerText = q.answer;
+}
+
+
+/* ----------------------------------------------------------
+   Navigation Buttons
+   ---------------------------------------------------------- */
+function nextQuestion() {
+    if (currentQuestion < questions.length - 1) {
+        currentQuestion++;
+        renderQuestion(currentQuestion);
+    } else {
+        alert("This is the last question.");
+    }
+}
+
+function previousQuestion() {
+    if (currentQuestion > 0) {
+        currentQuestion--;
+        renderQuestion(currentQuestion);
+    } else {
+        alert("This is the first question.");
+    }
+}
+
+window.onload = function() {
+    renderQuestion(currentQuestion);
+}
+</script>
 
 </head>
 
@@ -261,6 +278,9 @@ ORDER BY b.no_of_wins DESC;
 
     <h3>Sample Dataset</h3>
     <div class="box" id="datasetBox"></div>
+
+    <h3>Expected Output</h3>
+    <div class="box" id="outputBox"></div>
 
     <h2>🟢 SQL Answer</h2>
     <div class="box">
