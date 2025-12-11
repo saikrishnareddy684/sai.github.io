@@ -30,18 +30,7 @@
             border-radius: 6px;
             overflow-x: auto;
             font-size: 15px;
-        }
-        table {
-            border-collapse: collapse;
-            width: 100%;
-            margin-top: 10px;
-        }
-        table, th, td {
-            border: 1px solid #ccc;
-        }
-        th, td {
-            padding: 8px;
-            text-align: left;
+            font-family: monospace; /* Fixed width for aligned columns */
         }
         .nav-buttons {
             margin-top: 20px;
@@ -80,16 +69,18 @@ The output should include: Name, Total Visits, Most Visited Floor, Used Resource
 
 Sample Dataset (resources_data):
 
-| name      | email              | floor | resources       |
-|-----------|------------------|-------|----------------|
-| Alice     | a1@mail.com       | 2     | Laptop         |
-| Alice     | a2@mail.com       | 2     | Projector      |
-| Bob       | bob@mail.com      | 1     | Printer        |
-| Alice     | a1@mail.com       | 3     | Laptop         |
-| Bob       | bob2@mail.com     | 1     | Laptop         |
-| Charlie   | charlie@mail.com  | 2     | Laptop         |
-| Charlie   | charlie@mail.com  | 2     | Projector      |
-| Alice     | a2@mail.com       | 2     | Whiteboard     |
++---------+-------------------+-------+------------+
+| name    | email             | floor | resources  |
++---------+-------------------+-------+------------+
+| Alice   | a1@mail.com       | 2     | Laptop     |
+| Alice   | a2@mail.com       | 2     | Projector  |
+| Bob     | bob@mail.com      | 1     | Printer    |
+| Alice   | a1@mail.com       | 3     | Laptop     |
+| Bob     | bob2@mail.com     | 1     | Laptop     |
+| Charlie | charlie@mail.com  | 2     | Laptop     |
+| Charlie | charlie@mail.com  | 2     | Projector  |
+| Alice   | a2@mail.com       | 2     | Whiteboard |
++---------+-------------------+-------+------------+
 `,
                 answer: `
 WITH floor_rank AS (
@@ -145,7 +136,7 @@ WHERE FR.rn = 1;  -- Only the most visited floor
 `
             }
 
-            // You can add more questions here in the same format
+            // Additional questions can be added here
         ];
 
         function renderQuestion(index) {
@@ -206,4 +197,3 @@ WHERE FR.rn = 1;  -- Only the most visited floor
 
 </body>
 </html>
-
