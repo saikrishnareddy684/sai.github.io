@@ -470,6 +470,63 @@ SELECT
 FROM orders_data;
 `
 }
+    ,
+    {
+    question: `
+A company wants to identify the key products contributing to most of its revenue
+using the Pareto Principle (80/20 Rule).
+
+Determine:
+- Total sales per product
+- Running cumulative sales (highest to lowest)
+- Products that together contribute to 80% of total sales
+
+Output columns:
+Product_ID, Product_Sales, Running_Sales, Total_Sales_80_Percent
+`,
+    dataset: [
+        {product_id:"P1", sales:5000},
+        {product_id:"P2", sales:3000},
+        {product_id:"P3", sales:2000},
+        {product_id:"P4", sales:1500},
+        {product_id:"P5", sales:1000},
+        {product_id:"P6", sales:800},
+        {product_id:"P7", sales:700},
+        {product_id:"P8", sales:500}
+    ],
+    output: [
+        {product_id:"P1", product_sales:5000, running_sales:5000, total_sales_80_percent:11200},
+        {product_id:"P2", product_sales:3000, running_sales:8000, total_sales_80_percent:11200},
+        {product_id:"P3", product_sales:2000, running_sales:10000, total_sales_80_percent:11200},
+        {product_id:"P4", product_sales:1500, running_sales:11500, total_sales_80_percent:11200}
+    ],
+    answer: `
+WITH product_sales AS (
+    SELECT 
+        product_id,
+        SUM(sales) AS product_sales
+    FROM orders
+    GROUP BY product_id
+),
+running_totals AS (
+    SELECT *,
+           SUM(product_sales) OVER (
+               ORDER BY product_sales DESC
+               ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW
+           ) AS running_sales,
+           0.8 * SUM(product_sales) OVER () AS total_sales_80_percent
+    FROM product_sales
+)
+SELECT 
+    product_id,
+    product_sales,
+    running_sales,
+    total_sales_80_percent
+FROM running_totals
+WHERE running_sales <= total_sales_80_percent;
+`
+}
+
 
 /* End of questions array */
 ];
