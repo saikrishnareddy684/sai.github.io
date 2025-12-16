@@ -525,7 +525,68 @@ SELECT
 FROM running_totals
 WHERE running_sales <= total_sales_80_percent;
 `
+},
+    {
+    question: `
+Given two tables:
+1) PersonScores (person details and scores)
+2) PersonFriends (person to friend mapping)
+
+Write a query to find:
+- Person ID
+- Person Name
+- Number of friends
+- Total score of all their friends
+
+Return only those persons whose friends' total score is greater than 100.
+
+Output columns:
+PersonID, Total_Friend_Score, No_Of_Friends, Person_Name
+`,
+    dataset: {
+        PersonScores: [
+            {PersonID:1, Name:"Alice", Email:"alice2018@hotmail.com", Score:88},
+            {PersonID:2, Name:"Bob",   Email:"bob2018@hotmail.com",   Score:11},
+            {PersonID:3, Name:"Davis", Email:"davis2018@hotmail.com", Score:27},
+            {PersonID:4, Name:"Tara",  Email:"tara2018@hotmail.com",  Score:45},
+            {PersonID:5, Name:"John",  Email:"john2018@hotmail.com",  Score:63}
+        ],
+        PersonFriends: [
+            {PersonID:1, FriendID:2},
+            {PersonID:1, FriendID:3},
+            {PersonID:2, FriendID:1},
+            {PersonID:2, FriendID:3},
+            {PersonID:3, FriendID:5},
+            {PersonID:4, FriendID:2},
+            {PersonID:4, FriendID:3},
+            {PersonID:4, FriendID:5}
+        ]
+    },
+    output: [
+        {personid:2, total_friend_score:115, no_of_friends:2, person_name:"Bob"},
+        {personid:4, total_friend_score:101, no_of_friends:3, person_name:"Tara"}
+    ],
+    answer: `
+SELECT a.PersonID,
+       a.total_friend_score,
+       a.no_of_friends,
+       p.Name AS person_name
+FROM (
+    SELECT 
+        f.PersonID,
+        COUNT(f.FriendID) AS no_of_friends,
+        SUM(ps.Score) AS total_friend_score
+    FROM PersonFriends f
+    JOIN PersonScores ps
+        ON ps.PersonID = f.FriendID
+    GROUP BY f.PersonID
+    HAVING SUM(ps.Score) > 100
+) a
+LEFT JOIN PersonScores p
+    ON a.PersonID = p.PersonID;
+`
 }
+
 
 
 /* End of questions array */
