@@ -586,6 +586,70 @@ LEFT JOIN PersonScores p
     ON a.PersonID = p.PersonID;
 `
 }
+,
+     
+{
+    question: `
+Find customers who placed orders in all months of 2024.
+
+A customer qualifies only if they have at least one order
+in every month (January–December) of the year 2024.
+
+Output columns: Customer, Count_of_Months.
+`,
+    dataset: [
+        {customer:"A", order_date:"2024-01-15", calmonth:"1"},
+        {customer:"A", order_date:"2024-02-20", calmonth:"2"},
+        {customer:"A", order_date:"2024-03-05", calmonth:"3"},
+        {customer:"A", order_date:"2024-04-12", calmonth:"4"},
+        {customer:"A", order_date:"2024-05-30", calmonth:"5"},
+        {customer:"A", order_date:"2024-06-10", calmonth:"6"},
+        {customer:"A", order_date:"2024-07-01", calmonth:"7"},
+        {customer:"A", order_date:"2024-08-22", calmonth:"8"},
+        {customer:"A", order_date:"2024-09-18", calmonth:"9"},
+        {customer:"A", order_date:"2024-10-11", calmonth:"10"},
+        {customer:"A", order_date:"2024-11-25", calmonth:"11"},
+        {customer:"A", order_date:"2024-12-03", calmonth:"12"},
+
+        {customer:"B", order_date:"2024-01-10", calmonth:"1"},
+        {customer:"B", order_date:"2024-02-17", calmonth:"2"},
+        {customer:"B", order_date:"2024-03-21", calmonth:"3"},
+        {customer:"B", order_date:"2024-05-08", calmonth:"5"},
+        {customer:"B", order_date:"2024-06-14", calmonth:"6"},
+
+        {customer:"C", order_date:"2024-01-05", calmonth:"1"},
+        {customer:"C", order_date:"2024-02-08", calmonth:"2"},
+        {customer:"C", order_date:"2024-03-15", calmonth:"3"},
+        {customer:"C", order_date:"2024-04-12", calmonth:"4"},
+        {customer:"C", order_date:"2024-05-19", calmonth:"5"},
+        {customer:"C", order_date:"2024-06-22", calmonth:"6"},
+        {customer:"C", order_date:"2024-07-30", calmonth:"7"},
+        {customer:"C", order_date:"2024-08-09", calmonth:"8"},
+        {customer:"C", order_date:"2024-09-14", calmonth:"9"},
+        {customer:"C", order_date:"2024-10-20", calmonth:"10"},
+        {customer:"C", order_date:"2024-11-25", calmonth:"11"},
+        {customer:"C", order_date:"2024-12-31", calmonth:"12"}
+    ],
+    output: [
+        {customer:"A", count:"12"},
+        {customer:"C", count:"12"}
+    ],
+    answer: `
+WITH months_2024 AS (
+    SELECT COUNT(DISTINCT calmonth) AS total_months
+    FROM orders
+    WHERE YEAR(order_date) = 2024
+)
+SELECT
+    customer,
+    COUNT(DISTINCT calmonth) AS count
+FROM orders
+WHERE YEAR(order_date) = 2024
+GROUP BY customer
+HAVING COUNT(DISTINCT calmonth) = (SELECT total_months FROM months_2024);
+`
+}
+ 
 
 
 
