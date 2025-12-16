@@ -1,91 +1,77 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>SQL MCQ Exam – Auto Batch (25)</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>SQL MCQ Exam – Batch + Pause + Resume + Results</title>
 
 <style>
-:root{
-  --bg:#f4f4f4;--card:#fff;--accent:#007bff;
-  --good:#28a745;--bad:#dc3545;--warn:#ffc107;--muted:#666
-}
-body{margin:0;padding:20px;font-family:Arial;background:var(--bg)}
-.container{max-width:1000px;margin:auto;background:#fff;padding:18px;border-radius:10px;box-shadow:0 8px 25px rgba(0,0,0,.08)}
-h1{color:var(--accent)}
-.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+:root{--bg:#f4f4f4;--card:#fff;--accent:#007bff;--good:#28a745;--bad:#dc3545;--muted:#666}
+body{font-family:Arial;background:var(--bg);margin:0;padding:20px}
+.container{max-width:1000px;margin:auto;background:var(--card);padding:20px;border-radius:10px}
 button{padding:8px 12px;border-radius:6px;border:0;cursor:pointer}
 .primary{background:var(--accent);color:#fff}
 .secondary{background:#6c757d;color:#fff}
-.warn{background:var(--warn)}
+.warn{background:#ffc107}
 .danger{background:var(--bad);color:#fff}
-.small{font-size:.9rem;color:var(--muted)}
-#questionBox{margin:12px 0;padding:12px;background:#fafafa;border-radius:8px}
-.navNums{display:flex;flex-wrap:wrap;gap:6px}
+.small{font-size:0.9rem;color:var(--muted)}
+.progress{height:10px;background:#eee;border-radius:6px}
+.progress div{height:100%;background:var(--accent)}
+.navNums{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
 .navNums button{width:36px;height:36px;border-radius:50%}
 .answered{background:var(--good);color:#fff}
 .marked{outline:2px dashed orange}
-.progress{height:10px;background:#eee;border-radius:6px;overflow:hidden}
-.progress div{height:100%;background:var(--accent);width:0%}
-.dark{background:#121212;color:#eee}
-.dark .container{background:#1e1e1e}
-.dark #questionBox{background:#2a2a2a}
+.dark{background:#121214;color:#eee}
+.dark .container{background:#1a1a1f}
+.batch-wrap{display:flex;gap:8px;flex-wrap:wrap}
 </style>
 </head>
 
 <body>
 <div class="container">
-<h1>SQL MCQ Exam</h1>
+<h2>SQL MCQ Exam</h2>
 
 <div id="menu"></div>
 
-<div id="controls" class="row" style="display:none">
-  <div class="small">Batch: <b id="batchTitle"></b></div>
-  <div class="small">Global: <span id="globalTimer"></span></div>
-  <div class="small">Question: <span id="questionTimer"></span></div>
-
-  <div style="margin-left:auto" class="row">
-    <button id="homeBtn" class="secondary">Home</button>
-    <button id="prevBatchBtn" class="secondary">Prev Batch</button>
-    <button id="nextBatchBtn" class="secondary">Next Batch</button>
-    <button id="shuffleBtn" class="secondary">Shuffle: ON</button>
-    <button id="darkBtn" class="secondary">Dark</button>
-  </div>
+<div id="controls" style="display:none">
+<span class="small">Batch: <b id="batchTitle"></b></span> |
+<span class="small">Global Time: <b id="globalTimer"></b></span> |
+<span class="small">Question Time: <b id="questionTimer"></b></span>
+<br><br>
+<button id="homeBtn" class="secondary">Home</button>
+<button id="pauseBtn" class="warn">Pause</button>
+<button id="resumeBtn" class="primary" style="display:none">Resume</button>
+<button id="darkToggle" class="secondary">Dark</button>
 </div>
 
 <div id="exam" style="display:none">
-  <div id="questionBox"></div>
+<div id="questionBox"></div>
 
-  <div class="row">
-    <button id="prevBtn" class="secondary">Previous</button>
-    <button id="nextBtn" class="primary">Next</button>
-    <button id="markBtn" class="warn">Answer Later</button>
-    <button id="pauseBtn" class="secondary">Pause</button>
-    <button id="resumeBtn" class="primary" style="display:none">Resume</button>
-    <button id="submitBtn" class="danger">Submit</button>
-  </div>
+<br>
+<button id="prevBtn" class="secondary">Previous</button>
+<button id="nextBtn" class="primary">Next</button>
+<button id="markBtn" class="warn">Answer Later</button>
+<button id="submitBtn" class="danger">Submit Batch</button>
 
-  <div style="margin-top:12px">
-    <div class="progress"><div id="progBar"></div></div>
-    <div id="progressText" class="small"></div>
-    <div id="navNums" class="navNums"></div>
-  </div>
+<div class="progress"><div id="progBar"></div></div>
+<div id="progressText" class="small"></div>
+<div id="navNums" class="navNums"></div>
 </div>
 
 <div id="result"></div>
 </div>
 
 <script>
-/* ================= CONFIG ================= */
+/* CONFIG */
 const QUESTIONS_PER_BATCH = 25;
-const QUESTION_TIME = 20;
-const LS_STATE = 'exam_state';
-const LS_DONE = 'completed_batches';
+const PER_QUESTION_SECONDS = 20;
+const STATE_KEY = 'mcq_state';
+const COMPLETED_KEY = 'mcq_completed';
+const RESULT_KEY = 'mcq_results';
 
-/* ================= ADD QUESTIONS HERE ================= */
-let originalQuestions = [ 
-
-        {
+/* SAMPLE QUESTIONS */
+let originalQuestions = [
+         {
     "q": "Which SQL command is used to retrieve data from a database table?",
     "options": [
       "GET",
@@ -9164,139 +9150,188 @@ let originalQuestions = [
   "answer": 0,
   "time": 20
 }
-
-
-  // 👉 add ALL questions here (25, 50, 100...)
 ];
 
-/* ================= STATE ================= */
-let questions=[], answers=[], marked=[], remain=[];
-let batchIndex=0, current=0, globalSec=0;
-let paused=false, shuffle=true, dark=false;
-let completed = JSON.parse(localStorage.getItem(LS_DONE)||"[]");
-let gTimer,qTimer;
+/* STATE */
+let questions=[],answers=[],marked=[],remain=[],batchIndex=0,currentIndex=0;
+let globalTime=0,paused=false,timerG=null,timerQ=null;
+let completed=JSON.parse(localStorage.getItem(COMPLETED_KEY)||"[]");
 
-/* ================= MENU ================= */
+/* UTIL */
+function saveState(){
+localStorage.setItem(STATE_KEY,JSON.stringify({
+originalQuestions,questions,answers,marked,remain,batchIndex,currentIndex,globalTime,paused
+}));
+}
+function loadState(){return JSON.parse(localStorage.getItem(STATE_KEY)||"null");}
+function saveResult(b,c,t){
+let r=JSON.parse(localStorage.getItem(RESULT_KEY)||"{}");
+r[b]={score:c,total:t,pct:((c/t)*100).toFixed(2)};
+localStorage.setItem(RESULT_KEY,JSON.stringify(r));
+}
+function getResults(){return JSON.parse(localStorage.getItem(RESULT_KEY)||"{}");}
+function format(s){return Math.floor(s/60)+":"+String(s%60).padStart(2,'0');}
+
+/* MENU */
 function renderMenu(){
-  const m=document.getElementById('menu');
-  m.innerHTML='<b>Select Batch</b><br>';
-  const total=Math.ceil(originalQuestions.length/QUESTIONS_PER_BATCH)||1;
+const m=document.getElementById("menu");
+m.innerHTML="<h3>Select Batch</h3>";
+const wrap=document.createElement("div");wrap.className="batch-wrap";
+const total=Math.ceil(originalQuestions.length/QUESTIONS_PER_BATCH);
+const results=getResults();
 
-  for(let i=0;i<total;i++){
-    const b=document.createElement('button');
-    b.textContent=completed.includes(i)?`Batch ${i+1} ✓`:`Start Batch ${i+1}`;
-    b.className=completed.includes(i)?'primary':'secondary';
-    b.onclick=()=>startBatch(i);
-    m.appendChild(b);
-  }
+for(let i=0;i<total;i++){
+const b=document.createElement("button");
+if(completed.includes(i)){
+b.textContent=`Batch ${i+1} ✓`;
+b.className="primary";
+}else{
+b.textContent=`Start Batch ${i+1}`;
+b.className="secondary";
+}
+b.onclick=()=>startBatch(i);
+wrap.appendChild(b);
+
+if(results[i]){
+const r=document.createElement("button");
+r.textContent="View Result";
+r.className="warn";
+r.onclick=()=>showResult(i);
+wrap.appendChild(r);
+}
+}
+m.appendChild(wrap);
+
+const st=loadState();
+if(st){
+const r=document.createElement("button");
+r.textContent="Resume Last Attempt";
+r.className="primary";
+r.onclick=resumeExam;
+m.appendChild(document.createElement("br"));
+m.appendChild(r);
+}
 }
 
-/* ================= START ================= */
+/* START */
 function startBatch(b){
-  batchIndex=b;
-  const s=b*QUESTIONS_PER_BATCH;
-  const e=Math.min(s+QUESTIONS_PER_BATCH,originalQuestions.length);
-  questions=JSON.parse(JSON.stringify(originalQuestions.slice(s,e)));
-  if(shuffle)shuffleQ();
-  answers=new Array(questions.length).fill(null);
-  marked=new Array(questions.length).fill(false);
-  remain=new Array(questions.length).fill(QUESTION_TIME);
-  current=0;
-  globalSec=questions.length*QUESTION_TIME;
-  showExam();
+batchIndex=b;
+questions=originalQuestions.slice(b*QUESTIONS_PER_BATCH,(b+1)*QUESTIONS_PER_BATCH);
+answers=new Array(questions.length).fill(null);
+marked=new Array(questions.length).fill(false);
+remain=new Array(questions.length).fill(PER_QUESTION_SECONDS);
+currentIndex=0;
+globalTime=questions.length*PER_QUESTION_SECONDS;
+paused=false;
+saveState();
+showExam();
 }
 
-/* ================= EXAM ================= */
+/* RESUME */
+function resumeExam(){
+const s=loadState(); if(!s) return;
+Object.assign(window,s);
+showExam();
+}
+
+/* EXAM */
 function showExam(){
-  menu.style.display='none';
-  exam.style.display='block';
-  controls.style.display='flex';
-  batchTitle.textContent=batchIndex+1;
-  renderQ();
-  renderNav();
-  startTimers();
+menu.style.display="none";
+controls.style.display="block";
+exam.style.display="block";
+batchTitle.textContent=batchIndex+1;
+renderQuestion();
+renderNav();
+startTimers();
 }
 
-function renderQ(){
-  const q=questions[current];
-  let h=`<b>Q${current+1}.</b> ${q.q}<hr>`;
-  q.options.forEach((o,i)=>{
-    h+=`<label><input type="radio" name="opt" ${answers[current]==i?'checked':''} 
-      onclick="answers[${current}]=${i};save()">${o}</label><br>`;
-  });
-  questionBox.innerHTML=h;
+/* QUESTION */
+function renderQuestion(){
+const q=questions[currentIndex];
+let h=`<b>Q${currentIndex+1}.</b> ${q.q}<hr>`;
+q.options.forEach((o,i)=>{
+h+=`<label><input type=radio name=opt ${answers[currentIndex]==i?'checked':''}
+onclick="selectAns(${i})"> ${o}</label><br>`;
+});
+questionBox.innerHTML=h;
+updateProgress();
 }
+function selectAns(i){answers[currentIndex]=i;saveState();renderNav();}
 
+/* NAV */
 function renderNav(){
-  navNums.innerHTML='';
-  questions.forEach((_,i)=>{
-    const b=document.createElement('button');
-    b.textContent=i+1;
-    if(answers[i]!=null)b.classList.add('answered');
-    if(marked[i])b.classList.add('marked');
-    b.onclick=()=>{current=i;renderQ();};
-    navNums.appendChild(b);
-  });
-  const done=answers.filter(x=>x!=null).length;
-  progBar.style.width=(done/questions.length*100)+'%';
-  progressText.textContent=`Answered ${done}/${questions.length}`;
+navNums.innerHTML="";
+questions.forEach((_,i)=>{
+const b=document.createElement("button");
+b.textContent=i+1;
+if(answers[i]!=null)b.classList.add("answered");
+if(marked[i])b.classList.add("marked");
+b.onclick=()=>{currentIndex=i;renderQuestion();}
+navNums.appendChild(b);
+});
+}
+function updateProgress(){
+const a=answers.filter(x=>x!=null).length;
+progBar.style.width=(a/questions.length*100)+"%";
+progressText.textContent=`Answered ${a}/${questions.length}`;
 }
 
-/* ================= TIMERS ================= */
+/* TIMERS */
 function startTimers(){
-  clearInterval(gTimer);clearInterval(qTimer);
-  gTimer=setInterval(()=>{if(!paused){globalSec--;updateTime();if(globalSec<=0)submit();}},1000);
-  qTimer=setInterval(()=>{if(!paused){remain[current]--;updateTime();if(remain[current]<=0)next();}},1000);
+clearInterval(timerG);clearInterval(timerQ);
+timerG=setInterval(()=>{
+if(paused)return;
+globalTime--; if(globalTime<=0)submit();
+globalTimer.textContent=format(globalTime);
+saveState();
+},1000);
+
+timerQ=setInterval(()=>{
+if(paused)return;
+remain[currentIndex]--;
+if(remain[currentIndex]<=0){remain[currentIndex]=0;next();}
+questionTimer.textContent=remain[currentIndex];
+saveState();
+},1000);
 }
 
-function updateTime(){
-  globalTimer.textContent=Math.floor(globalSec/60)+':'+String(globalSec%60).padStart(2,'0');
-  questionTimer.textContent=remain[current];
-}
-
-/* ================= NAV ================= */
+/* CONTROLS */
 nextBtn.onclick=()=>next();
-prevBtn.onclick=()=>{if(current>0){current--;renderQ();}};
-markBtn.onclick=()=>{marked[current]=true;next();};
-
-function next(){
-  if(current<questions.length-1){current++;renderQ();}else submit();
-}
-
-/* ================= SUBMIT ================= */
-submitBtn.onclick=submit;
-function submit(){
-  clearInterval(gTimer);clearInterval(qTimer);
-  let score=0;
-  questions.forEach((q,i)=>{if(answers[i]===q.answer)score++;});
-  if(!completed.includes(batchIndex)){
-    completed.push(batchIndex);
-    localStorage.setItem(LS_DONE,JSON.stringify(completed));
-  }
-  result.innerHTML=`<h2>Batch ${batchIndex+1} Result</h2>
-  <p>Score: ${score}/${questions.length}</p>
-  <button onclick="location.reload()">Home</button>`;
-  exam.style.display='none';controls.style.display='none';
-}
-
-/* ================= HELPERS ================= */
-function shuffleQ(){
-  questions.sort(()=>Math.random()-.5);
-  questions.forEach(q=>{
-    const a=q.options[q.answer];
-    q.options.sort(()=>Math.random()-.5);
-    q.answer=q.options.indexOf(a);
-  });
-}
-function save(){renderNav();}
-
+prevBtn.onclick=()=>{if(currentIndex>0){currentIndex--;renderQuestion();}};
+markBtn.onclick=()=>{marked[currentIndex]=true;next();};
+pauseBtn.onclick=()=>{paused=true;pauseBtn.style.display="none";resumeBtn.style.display="inline";saveState();};
+resumeBtn.onclick=()=>{paused=false;resumeBtn.style.display="none";pauseBtn.style.display="inline";saveState();};
 homeBtn.onclick=()=>location.reload();
-nextBatchBtn.onclick=()=>startBatch(batchIndex+1);
-prevBatchBtn.onclick=()=>startBatch(batchIndex-1);
-shuffleBtn.onclick=()=>{shuffle=!shuffle;shuffleBtn.textContent=`Shuffle: ${shuffle?'ON':'OFF'}`;}
-darkBtn.onclick=()=>{dark=!dark;document.body.classList.toggle('dark',dark);}
+darkToggle.onclick=()=>document.body.classList.toggle("dark");
 
-/* ================= INIT ================= */
+/* NAV LOGIC */
+function next(){
+if(currentIndex<questions.length-1){currentIndex++;renderQuestion();}
+else if(confirm("Submit batch?"))submit();
+}
+
+/* SUBMIT */
+function submit(){
+clearInterval(timerG);clearInterval(timerQ);
+let c=0;answers.forEach((a,i)=>{if(a===questions[i].answer)c++;});
+saveResult(batchIndex,c,questions.length);
+if(!completed.includes(batchIndex)){completed.push(batchIndex);localStorage.setItem(COMPLETED_KEY,JSON.stringify(completed));}
+localStorage.removeItem(STATE_KEY);
+showResult(batchIndex);
+}
+
+/* RESULT */
+function showResult(b){
+const r=getResults()[b];
+result.innerHTML=`<h3>Batch ${b+1} Result</h3>
+Score: ${r.score}/${r.total} (${r.pct}%)
+<br><br><button class="primary" onclick="location.reload()">Home</button>`;
+menu.style.display="none";
+controls.style.display="none";
+exam.style.display="none";
+}
+
+/* INIT */
 renderMenu();
 </script>
 </body>
