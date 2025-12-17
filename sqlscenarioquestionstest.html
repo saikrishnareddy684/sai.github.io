@@ -648,72 +648,166 @@ WHERE YEAR(order_date) = 2024
 GROUP BY customer
 HAVING COUNT(DISTINCT calmonth) = (SELECT total_months FROM months_2024);
 `
-}
- ,{
+},
+    {
     question: `
-Find employees who earn more than the average salary of all employees.
-
-Output columns:
-EmpID, Salary
+Explain SQL Performance Optimization Techniques.
+The answer should be interview-ready, practical, and cover both query-level and database-level optimizations.
 `,
     dataset: [
-        { EmpID: 1, Name: "Alice",   Department: "HR",        Salary: 50000 },
-        { EmpID: 2, Name: "Bob",     Department: "IT",        Salary: 75000 },
-        { EmpID: 3, Name: "Charlie", Department: "Finance",   Salary: 62000 },
-        { EmpID: 4, Name: "Diana",   Department: "IT",        Salary: 80000 },
-        { EmpID: 5, Name: "Ethan",   Department: "HR",        Salary: 48000 },
-        { EmpID: 6, Name: "Fiona",   Department: "Marketing", Salary: 54000 },
-        { EmpID: 7, Name: "George",  Department: "Finance",   Salary: 70000 }
+        { table: "orders", columns: ["order_id", "customer_id", "order_date", "amount"] },
+        { table: "customers", columns: ["customer_id", "customer_name"] }
     ],
     output: [
-        { EmpID: 2, Salary: 75000 },
-        { EmpID: 4, Salary: 80000 },
-        { EmpID: 7, Salary: 70000 }
+        { area: "Indexing", focus: "JOIN, WHERE, ORDER BY columns" },
+        { area: "Query Design", focus: "Filter early, avoid SELECT *" },
+        { area: "Execution Plan", focus: "Remove scans, key lookups" }
     ],
-    answers: {
-        version_1_subquery: `
--- Version 1: Simple subquery (most common & interview-friendly)
-SELECT EmpID, Salary
-FROM Employees
-WHERE Salary > (
-    SELECT AVG(Salary)
-    FROM Employees
-);
-`,
-        version_2_window_function: `
--- Version 2: Window function (clean & modern SQL)
-SELECT EmpID, Salary
-FROM (
-    SELECT 
-        EmpID,
-        Salary,
-        AVG(Salary) OVER () AS avg_salary
-    FROM Employees
-) t
-WHERE Salary > avg_salary;
-`,
-        version_3_aggregated_window: `
--- Version 3: Aggregation + window function
--- Useful when employees may have multiple salary rows
-SELECT EmpID, Salary
-FROM (
-    SELECT 
-        EmpID,
-        Salary,
-        AVG(Salary) OVER () AS avg_salary
-    FROM (
-        SELECT 
-            EmpID,
-            SUM(Salary) AS Salary
-        FROM Employees
-        GROUP BY EmpID
-    ) a
-) b
-WHERE Salary > avg_salary;
-`
-    
-}
+    answer: `
+-- SQL Performance Optimization Techniques
 
+-- 1) Indexing (Most Important)
+-- Create indexes on JOIN / WHERE / GROUP BY columns
+
+CREATE INDEX idx_orders_customer_date
+ON orders(customer_id, order_date);
+
+-- Covering index to avoid key lookups
+CREATE INDEX idx_orders_cover
+ON orders(customer_id)
+INCLUDE (order_date, amount);
+
+
+-- 2) Query Design Best Practices
+-- Avoid SELECT *
+-- Filter early
+
+SELECT customer_id, SUM(amount)
+FROM orders
+WHERE order_date >= '2024-01-01'
+GROUP BY customer_id;
+
+-- Avoid functions on indexed columns
+-- BAD
+-- WHERE YEAR(order_date) = 2024
+
+-- GOOD
+WHERE order_date >= '2024-01-01'
+  AND order_date < '2025-01-01';
+
+
+-- 3) Execution Plan Analysis
+SET STATISTICS IO ON;
+SET STATISTICS TIME ON;
+-- Check for table scans, key lookups, missing indexes
+
+
+-- 4) Aggregation Before Join
+WITH agg_orders AS (
+    SELECT customer_id, SUM(amount) AS total_amount
+    FROM orders
+    GROUP BY customer_id
+)
+SELECT c.customer_name, a.total_amount
+FROM agg_orders a
+JOIN customers c
+ON a.customer_id = c.customer_id;
+
+
+-- 5) Data Types & Storage
+-- Use INT over VARCHAR for numeric data
+-- Use DATE instead of DATETIME if time not required
+
+
+-- 6) Statistics & Index Maintenance
+UPDATE STATISTICS orders;
+
+ALTER INDEX ALL ON orders REBUILD;
+
+
+-- 7) Partitioning (Large Tables)
+-- Partition by date for pruning
+PARTITION BY RANGE (order_date);
+
+
+-- 8) Avoid Cursors & RBAR
+-- Prefer set-based operations over row-by-row logic
+
+
+-- 9) Temporary Objects
+-- Use temp tables if reused multiple times
+CREATE TABLE #temp_orders (...);
+
+
+-- 10) Concurrency & Locking
+-- Keep transactions short
+-- Use NOLOCK only if dirty reads are acceptable
+
+
+-- One-line Interview Answer:
+-- SQL performance optimization focuses on proper indexing,
+-- efficient query design, minimizing scans, and analyzing execution plans.
+`
+}
+,
+{
+  question: "Find employees who earn more than the average salary of all employees.\n\nOutput columns:\nEmpID, Salary",
+
+  dataset: [
+    { EmpID: 1, Name: "Alice",   Department: "HR",        Salary: 50000 },
+    { EmpID: 2, Name: "Bob",     Department: "IT",        Salary: 75000 },
+    { EmpID: 3, Name: "Charlie", Department: "Finance",   Salary: 62000 },
+    { EmpID: 4, Name: "Diana",   Department: "IT",        Salary: 80000 },
+    { EmpID: 5, Name: "Ethan",   Department: "HR",        Salary: 48000 },
+    { EmpID: 6, Name: "Fiona",   Department: "Marketing", Salary: 54000 },
+    { EmpID: 7, Name: "George",  Department: "Finance",   Salary: 70000 }
+  ],
+
+  output: [
+    { EmpID: 2, Salary: 75000 },
+    { EmpID: 4, Salary: 80000 },
+    { EmpID: 7, Salary: 70000 }
+  ],
+
+  answers: {
+    version_1_subquery:
+      "-- Version 1: Simple subquery (most common & interview-friendly)\n" +
+      "SELECT EmpID, Salary\n" +
+      "FROM Employees\n" +
+      "WHERE Salary > (\n" +
+      "    SELECT AVG(Salary)\n" +
+      "    FROM Employees\n" +
+      ");",
+
+    version_2_window_function:
+      "-- Version 2: Window function (clean & modern SQL)\n" +
+      "SELECT EmpID, Salary\n" +
+      "FROM (\n" +
+      "    SELECT EmpID,\n" +
+      "           Salary,\n" +
+      "           AVG(Salary) OVER () AS avg_salary\n" +
+      "    FROM Employees\n" +
+      ") t\n" +
+      "WHERE Salary > avg_salary;",
+
+    version_3_aggregated_window:
+      "-- Version 3: Aggregation + window function\n" +
+      "-- Useful when employees may have multiple salary rows\n" +
+      "SELECT EmpID, Salary\n" +
+      "FROM (\n" +
+      "    SELECT EmpID,\n" +
+      "           Salary,\n" +
+      "           AVG(Salary) OVER () AS avg_salary\n" +
+      "    FROM (\n" +
+      "        SELECT EmpID,\n" +
+      "               SUM(Salary) AS Salary\n" +
+      "        FROM Employees\n" +
+      "        GROUP BY EmpID\n" +
+      "    ) a\n" +
+      ") b\n" +
+      "WHERE Salary > avg_salary;"
+  }
+}
 
 
 
