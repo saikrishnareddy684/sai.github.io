@@ -826,6 +826,176 @@ Explanation:
 5. Approach 3 first aggregates salary per employee, then compares against the overall average.
 `
 }
+,
+    {
+    question: `
+A company wants to report customers and their related data.
+The requirement is to ALWAYS return all customers, even if no matching records exist
+on the right-side tables.
+
+This question tests common SQL traps where LEFT JOIN unintentionally turns into INNER JOIN.
+
+Identify and fix the mistakes.
+
+Output varies per case but customers with no matches must NOT be removed.
+`,
+    dataset: [
+        { customer_id: 1, customer_name: "Alice" },
+        { customer_id: 2, customer_name: "Bob" },
+        { customer_id: 3, customer_name: "Charlie" },
+        { customer_id: 4, customer_name: "Diana" }
+    ],
+    dataset_orders: [
+        { order_id: 101, customer_id: 1, order_date: "2024-03-15", status: "Completed", amount: 1000 },
+        { order_id: 102, customer_id: 1, order_date: "2023-11-10", status: "Cancelled", amount: 500 },
+        { order_id: 103, customer_id: 2, order_date: "2024-06-20", status: "Completed", amount: 1500 },
+        { order_id: 104, customer_id: 3, order_date: "2022-08-05", status: "Completed", amount: 800 }
+        // Diana has no orders
+    ],
+    output: [
+        { customer_id: 1, order_id: 101 },
+        { customer_id: 2, order_id: 103 },
+        { customer_id: 3, order_id: null },
+        { customer_id: 4, order_id: null }
+    ],
+    answer: `
+----------------------------------------------------
+1️⃣ WHERE filter on RIGHT table (Classic Trap)
+----------------------------------------------------
+
+❌ WRONG
+SELECT c.customer_id, o.order_id
+FROM customers c
+LEFT JOIN orders o ON c.customer_id = o.customer_id
+WHERE o.status = 'Completed';
+
+-- LEFT JOIN becomes INNER JOIN
+
+
+✅ CORRECT
+SELECT c.customer_id, o.order_id
+FROM customers c
+LEFT JOIN orders o
+  ON c.customer_id = o.customer_id
+ AND o.status = 'Completed';
+
+
+
+----------------------------------------------------
+2️⃣ Date filter in WHERE
+----------------------------------------------------
+
+❌ WRONG
+WHERE o.order_date >= '2024-01-01';
+
+✅ CORRECT
+AND o.order_date >= '2024-01-01';
+
+
+
+----------------------------------------------------
+3️⃣ YEAR() / MONTH() in WHERE
+----------------------------------------------------
+
+❌ WRONG
+WHERE YEAR(o.order_date) = 2024;
+
+-- Removes NULLs + blocks index usage
+
+
+✅ CORRECT
+AND o.order_date >= '2024-01-01'
+AND o.order_date <  '2025-01-01';
+
+
+
+----------------------------------------------------
+4️⃣ HAVING removes customers with no orders
+----------------------------------------------------
+
+❌ WRONG
+SELECT c.customer_id, COUNT(o.order_id)
+FROM customers c
+LEFT JOIN orders o ON c.customer_id = o.customer_id
+GROUP BY c.customer_id
+HAVING COUNT(o.order_id) > 0;
+
+
+✅ CORRECT
+SELECT c.customer_id, COUNT(o.order_id)
+FROM customers c
+LEFT JOIN orders o ON c.customer_id = o.customer_id
+GROUP BY c.customer_id;
+
+
+
+----------------------------------------------------
+5️⃣ COUNT(*) instead of COUNT(right_table_column)
+----------------------------------------------------
+
+❌ WRONG
+COUNT(*)   -- counts even NULL-matched rows
+
+
+✅ CORRECT
+COUNT(o.order_id);
+
+
+
+----------------------------------------------------
+6️⃣ SUM without COALESCE
+----------------------------------------------------
+
+❌ WRONG
+SUM(o.amount)  -- returns NULL for no matches
+
+
+✅ CORRECT
+COALESCE(SUM(o.amount), 0);
+
+
+
+----------------------------------------------------
+7️⃣ Filtering RIGHT table in subquery
+----------------------------------------------------
+
+❌ WRONG
+LEFT JOIN (
+    SELECT * FROM orders WHERE status = 'Completed'
+) o ON c.customer_id = o.customer_id;
+
+
+✅ CORRECT
+LEFT JOIN orders o
+  ON c.customer_id = o.customer_id
+ AND o.status = 'Completed';
+
+
+
+----------------------------------------------------
+8️⃣ OR condition to keep NULLs (Anti-pattern)
+----------------------------------------------------
+
+❌ WRONG
+WHERE o.status = 'Completed'
+   OR o.status IS NULL;
+
+
+✅ CORRECT
+AND o.status = 'Completed';
+
+
+
+----------------------------------------------------
+🎯 MASTER INTERVIEW RULE
+----------------------------------------------------
+Any filter on the RIGHT table of a LEFT JOIN
+MUST be placed inside the JOIN condition.
+
+Otherwise:
+LEFT JOIN ➜ INNER JOIN (silently)
+`
+}
 
 
 
