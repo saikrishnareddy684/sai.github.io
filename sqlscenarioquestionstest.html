@@ -649,7 +649,71 @@ GROUP BY customer
 HAVING COUNT(DISTINCT calmonth) = (SELECT total_months FROM months_2024);
 `
 }
- 
+ ,{
+    question: `
+Find employees who earn more than the average salary of all employees.
+
+Output columns:
+EmpID, Salary
+`,
+    dataset: [
+        { EmpID: 1, Name: "Alice",   Department: "HR",        Salary: 50000 },
+        { EmpID: 2, Name: "Bob",     Department: "IT",        Salary: 75000 },
+        { EmpID: 3, Name: "Charlie", Department: "Finance",   Salary: 62000 },
+        { EmpID: 4, Name: "Diana",   Department: "IT",        Salary: 80000 },
+        { EmpID: 5, Name: "Ethan",   Department: "HR",        Salary: 48000 },
+        { EmpID: 6, Name: "Fiona",   Department: "Marketing", Salary: 54000 },
+        { EmpID: 7, Name: "George",  Department: "Finance",   Salary: 70000 }
+    ],
+    output: [
+        { EmpID: 2, Salary: 75000 },
+        { EmpID: 4, Salary: 80000 },
+        { EmpID: 7, Salary: 70000 }
+    ],
+    answers: {
+        version_1_subquery: `
+-- Version 1: Simple subquery (most common & interview-friendly)
+SELECT EmpID, Salary
+FROM Employees
+WHERE Salary > (
+    SELECT AVG(Salary)
+    FROM Employees
+);
+`,
+        version_2_window_function: `
+-- Version 2: Window function (clean & modern SQL)
+SELECT EmpID, Salary
+FROM (
+    SELECT 
+        EmpID,
+        Salary,
+        AVG(Salary) OVER () AS avg_salary
+    FROM Employees
+) t
+WHERE Salary > avg_salary;
+`,
+        version_3_aggregated_window: `
+-- Version 3: Aggregation + window function
+-- Useful when employees may have multiple salary rows
+SELECT EmpID, Salary
+FROM (
+    SELECT 
+        EmpID,
+        Salary,
+        AVG(Salary) OVER () AS avg_salary
+    FROM (
+        SELECT 
+            EmpID,
+            SUM(Salary) AS Salary
+        FROM Employees
+        GROUP BY EmpID
+    ) a
+) b
+WHERE Salary > avg_salary;
+`
+    }
+}
+
 
 
 
