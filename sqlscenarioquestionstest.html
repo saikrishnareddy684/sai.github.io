@@ -751,62 +751,80 @@ CREATE TABLE #temp_orders (...);
 }
 ,
 {
-  question: "Find employees who earn more than the average salary of all employees.\n\nOutput columns:\nEmpID, Salary",
+    question: `
+Find employees who earn more than the average salary of all employees.
 
-  dataset: [
-    { EmpID: 1, Name: "Alice",   Department: "HR",        Salary: 50000 },
-    { EmpID: 2, Name: "Bob",     Department: "IT",        Salary: 75000 },
-    { EmpID: 3, Name: "Charlie", Department: "Finance",   Salary: 62000 },
-    { EmpID: 4, Name: "Diana",   Department: "IT",        Salary: 80000 },
-    { EmpID: 5, Name: "Ethan",   Department: "HR",        Salary: 48000 },
-    { EmpID: 6, Name: "Fiona",   Department: "Marketing", Salary: 54000 },
-    { EmpID: 7, Name: "George",  Department: "Finance",   Salary: 70000 }
-  ],
+Return only those employees whose salary is strictly greater than the overall average salary.
 
-  output: [
-    { EmpID: 2, Salary: 75000 },
-    { EmpID: 4, Salary: 80000 },
-    { EmpID: 7, Salary: 70000 }
-  ],
+Output columns:
+EmpID, Salary
+`,
+    dataset: [
+        { EmpID: 1, Name: "Alice",   Department: "HR",        Salary: 50000 },
+        { EmpID: 2, Name: "Bob",     Department: "IT",        Salary: 75000 },
+        { EmpID: 3, Name: "Charlie", Department: "Finance",   Salary: 62000 },
+        { EmpID: 4, Name: "Diana",   Department: "IT",        Salary: 80000 },
+        { EmpID: 5, Name: "Ethan",   Department: "HR",        Salary: 48000 },
+        { EmpID: 6, Name: "Fiona",   Department: "Marketing", Salary: 54000 },
+        { EmpID: 7, Name: "George",  Department: "Finance",   Salary: 70000 }
+    ],
+    output: [
+        { EmpID: 2, Salary: 75000 },
+        { EmpID: 4, Salary: 80000 },
+        { EmpID: 7, Salary: 70000 }
+    ],
+    answer_1: `
+-- Approach 1: Subquery (most common & interview-friendly)
 
-  answers: {
-    version_1_subquery:
-      "-- Version 1: Simple subquery (most common & interview-friendly)\n" +
-      "SELECT EmpID, Salary\n" +
-      "FROM Employees\n" +
-      "WHERE Salary > (\n" +
-      "    SELECT AVG(Salary)\n" +
-      "    FROM Employees\n" +
-      ");",
+SELECT EmpID, Salary
+FROM Employees
+WHERE Salary > (
+    SELECT AVG(Salary)
+    FROM Employees
+);
+`,
+    answer_2: `
+-- Approach 2: Window function (clean & modern SQL)
 
-    version_2_window_function:
-      "-- Version 2: Window function (clean & modern SQL)\n" +
-      "SELECT EmpID, Salary\n" +
-      "FROM (\n" +
-      "    SELECT EmpID,\n" +
-      "           Salary,\n" +
-      "           AVG(Salary) OVER () AS avg_salary\n" +
-      "    FROM Employees\n" +
-      ") t\n" +
-      "WHERE Salary > avg_salary;",
+SELECT EmpID, Salary
+FROM (
+    SELECT
+        EmpID,
+        Salary,
+        AVG(Salary) OVER () AS avg_salary
+    FROM Employees
+) t
+WHERE Salary > avg_salary;
+`,
+    answer_3: `
+-- Approach 3: Aggregation + window function
+-- Useful when multiple salary rows exist per employee
 
-    version_3_aggregated_window:
-      "-- Version 3: Aggregation + window function\n" +
-      "-- Useful when employees may have multiple salary rows\n" +
-      "SELECT EmpID, Salary\n" +
-      "FROM (\n" +
-      "    SELECT EmpID,\n" +
-      "           Salary,\n" +
-      "           AVG(Salary) OVER () AS avg_salary\n" +
-      "    FROM (\n" +
-      "        SELECT EmpID,\n" +
-      "               SUM(Salary) AS Salary\n" +
-      "        FROM Employees\n" +
-      "        GROUP BY EmpID\n" +
-      "    ) a\n" +
-      ") b\n" +
-      "WHERE Salary > avg_salary;"
-  }
+SELECT EmpID, Salary
+FROM (
+    SELECT
+        EmpID,
+        Salary,
+        AVG(Salary) OVER () AS avg_salary
+    FROM (
+        SELECT
+            EmpID,
+            SUM(Salary) AS Salary
+        FROM Employees
+        GROUP BY EmpID
+    ) a
+) b
+WHERE Salary > avg_salary;
+`,
+    explanation: `
+Explanation:
+
+1. Average salary is calculated across all employees.
+2. Only employees whose salary is greater than this average are returned.
+3. Approach 1 uses a scalar subquery.
+4. Approach 2 uses a window function to compute the average once.
+5. Approach 3 first aggregates salary per employee, then compares against the overall average.
+`
 }
 
 
