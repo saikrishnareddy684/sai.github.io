@@ -997,6 +997,89 @@ LEFT JOIN ➜ INNER JOIN (silently)
 `
 }
 
+,{
+    question: `
+Write a query to print total number of unique hackers who made at least 1 submission each day(starting on the first day of the contest),
+and find the hacker_id and name of the hacker who made maximum number of submissions each day.
+If more than one such hacker has a maximum number of submissions, print the lowest hacker_id.
+The query should print this information for each day of the contest, sorted by the date
+
+Output columns:
+submission_date, hacker_id, unique_count
+`,
+
+    dataset: [
+        {submission_date:"2016-03-01", submission_id:8494,  hacker_id:20703, score:0},
+        {submission_date:"2016-03-01", submission_id:22403, hacker_id:53473, score:15},
+        {submission_date:"2016-03-01", submission_id:23965, hacker_id:79722, score:60},
+        {submission_date:"2016-03-01", submission_id:30173, hacker_id:36396, score:70},
+
+        {submission_date:"2016-03-02", submission_id:34928, hacker_id:20703, score:0},
+        {submission_date:"2016-03-02", submission_id:38740, hacker_id:15758, score:60},
+        {submission_date:"2016-03-02", submission_id:42769, hacker_id:79722, score:25},
+        {submission_date:"2016-03-02", submission_id:44364, hacker_id:79722, score:60},
+
+        {submission_date:"2016-03-03", submission_id:45440, hacker_id:20703, score:0},
+        {submission_date:"2016-03-03", submission_id:49050, hacker_id:36396, score:70},
+        {submission_date:"2016-03-03", submission_id:50273, hacker_id:79722, score:5},
+
+        {submission_date:"2016-03-04", submission_id:50344, hacker_id:20703, score:0},
+        {submission_date:"2016-03-04", submission_id:51360, hacker_id:44065, score:90},
+        {submission_date:"2016-03-04", submission_id:54404, hacker_id:53473, score:65},
+        {submission_date:"2016-03-04", submission_id:61533, hacker_id:79722, score:15},
+
+        {submission_date:"2016-03-05", submission_id:72852, hacker_id:20703, score:0},
+        {submission_date:"2016-03-05", submission_id:74546, hacker_id:38289, score:0},
+        {submission_date:"2016-03-05", submission_id:76487, hacker_id:62529, score:0},
+        {submission_date:"2016-03-05", submission_id:82439, hacker_id:36396, score:10},
+        {submission_date:"2016-03-05", submission_id:90006, hacker_id:36396, score:40},
+
+        {submission_date:"2016-03-06", submission_id:90404, hacker_id:20703, score:0}
+    ],
+
+    output: [
+        {submission_date:"2016-03-01", hacker_id:20703, unique_count:4},
+        {submission_date:"2016-03-02", hacker_id:79722, unique_count:2},
+        {submission_date:"2016-03-03", hacker_id:20703, unique_count:2},
+        {submission_date:"2016-03-04", hacker_id:20703, unique_count:2},
+        {submission_date:"2016-03-05", hacker_id:36396, unique_count:1},
+        {submission_date:"2016-03-06", hacker_id:20703, unique_count:1}
+    ],
+
+    answer: `
+WITH cte AS (
+    SELECT 
+        submission_date,
+        hacker_id,
+        COUNT(*) AS no_of_submissions,
+        DENSE_RANK() OVER (ORDER BY submission_date) AS day_number
+    FROM submissions
+    GROUP BY submission_date, hacker_id
+),
+cte2 AS (
+    SELECT *,
+        COUNT(*) OVER (PARTITION BY hacker_id ORDER BY submission_date) AS till_date_submissions,
+        CASE 
+            WHEN day_number = COUNT(*) OVER (PARTITION BY hacker_id ORDER BY submission_date)
+            THEN 1 ELSE 0 
+        END AS unique_flag
+    FROM cte
+),
+cte3 AS (
+    SELECT *,
+        SUM(unique_flag) OVER (PARTITION BY submission_date) AS unique_count,
+        ROW_NUMBER() OVER (
+            PARTITION BY submission_date 
+            ORDER BY no_of_submissions DESC, hacker_id
+        ) AS rn
+    FROM cte2
+)
+SELECT submission_date, hacker_id, unique_count
+FROM cte3
+WHERE rn = 1
+ORDER BY submission_date;
+`
+}
 
 
 /* End of questions array */
