@@ -1080,7 +1080,45 @@ WHERE rn = 1
 ORDER BY submission_date;
 `
 }
+,
+{
+  question: `
+A table stores a list of integers, but some numbers in the sequence are missing.
 
+Write an SQL query to identify and return all the missing numbers 
+between the minimum and maximum values present in the table.
+
+Output column: Missing_Number
+  `,
+  dataset: [
+    {number: 1},
+    {number: 4},
+    {number: 7},
+    {number: 6},
+    {number: 9}
+  ],
+  output: [
+    {missing_number: 2},
+    {missing_number: 3},
+    {missing_number: 5},
+    {missing_number: 8}
+  ],
+  answer: `
+WITH cte AS (
+    SELECT
+        ROW_NUMBER() OVER (ORDER BY (SELECT NULL)) AS r
+    FROM sys.objects
+)
+SELECT
+    a.r AS missing_number
+FROM cte a
+LEFT JOIN Missing_Numbers b
+    ON a.r = b.number
+WHERE b.number IS NULL
+  AND a.r <= (SELECT MAX(number) FROM Missing_Numbers)
+ORDER BY a.r;
+  `
+}
 
 /* End of questions array */
 ];
