@@ -527,33 +527,28 @@ WHERE running_sales <= total_sales_80_percent;
 `
 },
     {
-  question: "Given two tables PersonScores and PersonFriends, write a query to find each person’s total friend score and number of friends. Return only persons whose friends’ total score is greater than 100.",
+  question: "Given PersonScores and PersonFriends tables, find each person's total friend score and number of friends. Return only those whose friends' total score is greater than 100.",
 
-  dataset_PersonScores: [
-    { PersonID: 1, Name: "Alice", Email: "alice2018@hotmail.com", Score: 88 },
-    { PersonID: 2, Name: "Bob",   Email: "bob2018@hotmail.com",   Score: 11 },
-    { PersonID: 3, Name: "Davis", Email: "davis2018@hotmail.com", Score: 27 },
-    { PersonID: 4, Name: "Tara",  Email: "tara2018@hotmail.com",  Score: 45 },
-    { PersonID: 5, Name: "John",  Email: "john2018@hotmail.com",  Score: 63 }
-  ],
+  dataset: [
+    { PersonID: 1, PersonName: "Alice", FriendID: 2, FriendScore: 11 },
+    { PersonID: 1, PersonName: "Alice", FriendID: 3, FriendScore: 27 },
 
-  dataset_PersonFriends: [
-    { PersonID: 1, FriendID: 2 },
-    { PersonID: 1, FriendID: 3 },
-    { PersonID: 2, FriendID: 1 },
-    { PersonID: 2, FriendID: 3 },
-    { PersonID: 3, FriendID: 5 },
-    { PersonID: 4, FriendID: 2 },
-    { PersonID: 4, FriendID: 3 },
-    { PersonID: 4, FriendID: 5 }
+    { PersonID: 2, PersonName: "Bob",   FriendID: 1, FriendScore: 88 },
+    { PersonID: 2, PersonName: "Bob",   FriendID: 3, FriendScore: 27 },
+
+    { PersonID: 3, PersonName: "Davis", FriendID: 5, FriendScore: 63 },
+
+    { PersonID: 4, PersonName: "Tara",  FriendID: 2, FriendScore: 11 },
+    { PersonID: 4, PersonName: "Tara",  FriendID: 3, FriendScore: 27 },
+    { PersonID: 4, PersonName: "Tara",  FriendID: 5, FriendScore: 63 }
   ],
 
   expected_output: [
-    { PersonID: 2, Total_Friend_Score: 115, No_Of_Friends: 2, Person_Name: "Bob" },
-    { PersonID: 4, Total_Friend_Score: 101, No_Of_Friends: 3, Person_Name: "Tara" }
+    { personid: 2, total_friend_score: 115, no_of_friends: 2, person_name: "Bob" },
+    { personid: 4, total_friend_score: 101, no_of_friends: 3, person_name: "Tara" }
   ],
 
-  answer: "SELECT f.PersonID, SUM(ps.Score) AS Total_Friend_Score, COUNT(*) AS No_Of_Friends, p.Name AS Person_Name FROM PersonFriends f JOIN PersonScores ps ON f.FriendID = ps.PersonID JOIN PersonScores p ON p.PersonID = f.PersonID GROUP BY f.PersonID, p.Name HAVING SUM(ps.Score) > 100;"
+  answer: "SELECT PersonID, SUM(FriendScore) AS total_friend_score, COUNT(FriendID) AS no_of_friends, MAX(PersonName) AS person_name FROM dataset GROUP BY PersonID HAVING SUM(FriendScore) > 100;"
 }
 
 ,
