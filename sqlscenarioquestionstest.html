@@ -1119,6 +1119,27 @@ WHERE b.number IS NULL
 ORDER BY a.r;
   `
 }
+,
+{
+  "question": "A person performs a task every day, and each day the result is either 'success' or 'fail'. Write an SQL query to group consecutive dates with the same state and return the start date, end date, and state for each continuous period.",
+
+  "dataset": [
+    { "date_value": "2019-01-01", "state": "success" },
+    { "date_value": "2019-01-02", "state": "success" },
+    { "date_value": "2019-01-03", "state": "success" },
+    { "date_value": "2019-01-04", "state": "fail" },
+    { "date_value": "2019-01-05", "state": "fail" },
+    { "date_value": "2019-01-06", "state": "success" }
+  ],
+
+  "expected_output": [
+    { "start_date": "2019-01-01", "end_date": "2019-01-03", "state": "success" },
+    { "start_date": "2019-01-04", "end_date": "2019-01-05", "state": "fail" },
+    { "start_date": "2019-01-06", "end_date": "2019-01-06", "state": "success" }
+  ],
+
+  "answer_sql": "WITH cte AS (\n  SELECT *,\n         DATEADD(day, -ROW_NUMBER() OVER (PARTITION BY state ORDER BY date_value), date_value) AS grp\n  FROM tasks\n)\nSELECT\n  MIN(date_value) AS start_date,\n  MAX(date_value) AS end_date,\n  state\nFROM cte\nGROUP BY state, grp\nORDER BY start_date;"
+}
 
 /* End of questions array */
 ];
