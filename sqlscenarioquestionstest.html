@@ -1185,7 +1185,46 @@ ORDER BY a.r;
 
   "answer_sql": "WITH cte AS (\n  SELECT *,\n         DATEADD(day, -ROW_NUMBER() OVER (PARTITION BY state ORDER BY date_value), date_value) AS grp\n  FROM tasks\n)\nSELECT\n  MIN(date_value) AS start_date,\n  MAX(date_value) AS end_date,\n  state\nFROM cte\nGROUP BY state, grp\nORDER BY start_date;"
 }
+,
+    {
+  question: "MARKET ANALYSIS: Write an SQL query to find for each seller whether the brand of the second item (by order date) they sold is their favorite brand. If a seller sold less than two items, return NO.",
 
+  dataset_orders: [
+    { order_id: 1, order_date: "2019-08-01", item_id: 4, buyer_id: 1, seller_id: 2 },
+    { order_id: 2, order_date: "2019-08-02", item_id: 2, buyer_id: 1, seller_id: 3 },
+    { order_id: 3, order_date: "2019-08-03", item_id: 3, buyer_id: 2, seller_id: 3 },
+    { order_id: 4, order_date: "2019-08-04", item_id: 1, buyer_id: 4, seller_id: 2 },
+    { order_id: 5, order_date: "2019-08-04", item_id: 1, buyer_id: 3, seller_id: 4 },
+    { order_id: 6, order_date: "2019-08-05", item_id: 2, buyer_id: 2, seller_id: 4 }
+  ],
+
+  dataset_users: [
+    { user_id: 1, join_date: "2019-01-01", favorite_brand: "Lenovo" },
+    { user_id: 2, join_date: "2019-02-09", favorite_brand: "Samsung" },
+    { user_id: 3, join_date: "2019-01-19", favorite_brand: "LG" },
+    { user_id: 4, join_date: "2019-05-21", favorite_brand: "HP" }
+  ],
+
+  dataset_items: [
+    { item_id: 1, item_brand: "Samsung" },
+    { item_id: 2, item_brand: "Lenovo" },
+    { item_id: 3, item_brand: "LG" },
+    { item_id: 4, item_brand: "HP" }
+  ],
+
+  expected_output: [
+    { seller_id: 1, second_item_fav_brand: "NO" },
+    { seller_id: 2, second_item_fav_brand: "YES" },
+    { seller_id: 3, second_item_fav_brand: "YES" },
+    { seller_id: 4, second_item_fav_brand: "NO" }
+  ],
+
+  answer_1: "WITH ranked_orders AS ( SELECT o.seller_id, i.item_brand, ROW_NUMBER() OVER (PARTITION BY o.seller_id ORDER BY o.order_date) AS rn FROM orders o JOIN items i ON o.item_id = i.item_id ) SELECT u.user_id AS seller_id, CASE WHEN r.item_brand = u.favorite_brand THEN 'YES' ELSE 'NO' END AS second_item_fav_brand FROM users u LEFT JOIN ranked_orders r ON u.user_id = r.seller_id AND r.rn = 2;",
+
+  answer_2: "WITH finding_second_item AS ( SELECT seller_id, item_id FROM ( SELECT seller_id, item_id, ROW_NUMBER() OVER (PARTITION BY seller_id ORDER BY order_date) AS rn FROM orders ) t WHERE rn = 2 ) SELECT u.user_id AS seller_id, CASE WHEN u.favorite_brand = i.item_brand THEN 'YES' ELSE 'NO' END AS second_item_fav_brand FROM users u LEFT JOIN finding_second_item f ON u.user_id = f.seller_id LEFT JOIN items i ON f.item_id = i.item_id;"
+}
+
+    
 /* End of questions array */
 ];
 
