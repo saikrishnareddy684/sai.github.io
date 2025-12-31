@@ -245,7 +245,7 @@ function renderQuestion(index) {
 
     // Dataset3
     const datasetHtml3 = q.dataset3 && q.dataset3.length ? renderTableFromObjects(q.dataset3) : '<p>No dataset for this question.</p>';
-    document.getElementById('datasetBox3').innerHTML = datasetHtml2;
+    document.getElementById('datasetBox3').innerHTML = datasetHtml3;
 
     // Output
     const outputHtml = q.output && q.output.length ? renderTableFromObjects(q.output) : '<p>No output for this question.</p>';
