@@ -92,6 +92,9 @@
     
   <h3>Sample Dataset</h3>
     <div id="datasetBox2" class="box"></div>
+
+    <h3>Sample Dataset</h3>
+    <div id="datasetBox3" class="box"></div>
     
   <h3>Expected Output</h3>
     <div id="outputBox" class="box"></div>
@@ -147,6 +150,7 @@ Output columns: Name, Total Visits, Most Visited Floor, Used Resources.
         {name:"B    ", address:"Bangalore", email:"B1@gmail.com ", floor:"2    ", resources:"DESKTOP "},
         {name:"B    ", address:"Bangalore", email:"B2@gmail.com ", floor:"1    ", resources:"MONITOR "}
     ],
+    dataset3: [ ],
     output: [
         {name:"A    ", total_visits:"3", most_visited_floor:"1    ", resources_used:"CPU,DESKTOP   "},
         {name:"B    ", total_visits:"3", most_visited_floor:"2    ", resources_used:"DESKTOP,MONITOR"}
@@ -235,9 +239,13 @@ function renderQuestion(index) {
     // Dataset
     const datasetHtml = q.dataset && q.dataset.length ? renderTableFromObjects(q.dataset) : '<p>No dataset for this question.</p>';
     document.getElementById('datasetBox').innerHTML = datasetHtml;
-// Dataset
+// Dataset3
     const datasetHtml2 = q.dataset2 && q.dataset2.length ? renderTableFromObjects(q.dataset2) : '<p>No dataset for this question.</p>';
     document.getElementById('datasetBox2').innerHTML = datasetHtml2;
+
+    // Dataset3
+    const datasetHtml3 = q.dataset3 && q.dataset3.length ? renderTableFromObjects(q.dataset3) : '<p>No dataset for this question.</p>';
+    document.getElementById('datasetBox3').innerHTML = datasetHtml2;
 
     // Output
     const outputHtml = q.output && q.output.length ? renderTableFromObjects(q.output) : '<p>No output for this question.</p>';
