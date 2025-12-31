@@ -1218,16 +1218,16 @@ ORDER BY a.r;
     { "item_id": 4, "item_brand": "HP" }
   ],
 
-   output: [
+  output: [
     { "seller_id": 1, "second_item_fav_brand": "NO" },
     { "seller_id": 2, "second_item_fav_brand": "YES" },
     { "seller_id": 3, "second_item_fav_brand": "YES" },
     { "seller_id": 4, "second_item_fav_brand": "NO" }
   ],
 
-answer_1: `WITH ranked_orders AS (\n  SELECT o.seller_id,\n         i.item_brand,\n         ROW_NUMBER() OVER (PARTITION BY o.seller_id ORDER BY o.order_date) AS rn\n  FROM orders o\n  JOIN items i ON o.item_id = i.item_id\n)\nSELECT u.user_id AS seller_id,\n       CASE WHEN r.item_brand = u.favorite_brand THEN 'YES' ELSE 'NO' END AS second_item_fav_brand\nFROM users u\nLEFT JOIN ranked_orders r\n  ON u.user_id = r.seller_id\n AND r.rn = 2; `,
-,
-  answer_1: `WITH finding_second_item AS (\n  SELECT seller_id, item_id\n  FROM (\n    SELECT seller_id, item_id,\n           ROW_NUMBER() OVER (PARTITION BY seller_id ORDER BY order_date) AS rn\n    FROM orders\n  ) t\n  WHERE rn = 2\n)\nSELECT u.user_id AS seller_id,\n       CASE WHEN u.favorite_brand = i.item_brand THEN 'YES' ELSE 'NO' END AS second_item_fav_brand\nFROM users u\nLEFT JOIN finding_second_item f ON u.user_id = f.seller_id\nLEFT JOIN items i ON f.item_id = i.item_id;'
+  "answer": "WITH ranked_orders AS (\n  SELECT o.seller_id,\n         i.item_brand,\n         ROW_NUMBER() OVER (\n           PARTITION BY o.seller_id\n           ORDER BY o.order_date\n         ) AS rn\n  FROM orders o\n  JOIN items i\n    ON o.item_id = i.item_id\n)\nSELECT u.user_id AS seller_id,\n       CASE\n         WHEN r.item_brand = u.favorite_brand THEN 'YES'\n         ELSE 'NO'\n       END AS second_item_fav_brand\nFROM users u\nLEFT JOIN ranked_orders r\n  ON u.user_id = r.seller_id\n AND r.rn = 2;",
+
+  "answer_1": "WITH finding_second_item AS (\n  SELECT seller_id, item_id\n  FROM (\n    SELECT seller_id,\n           item_id,\n           ROW_NUMBER() OVER (\n             PARTITION BY seller_id\n             ORDER BY order_date\n           ) AS rn\n    FROM orders\n  ) t\n  WHERE rn = 2\n)\nSELECT u.user_id AS seller_id,\n       CASE\n         WHEN u.favorite_brand = i.item_brand THEN 'YES'\n         ELSE 'NO'\n       END AS second_item_fav_brand\nFROM users u\nLEFT JOIN finding_second_item f\n  ON u.user_id = f.seller_id\nLEFT JOIN items i\n  ON f.item_id = i.item_id;"
 }
 
 /* End of questions array */
