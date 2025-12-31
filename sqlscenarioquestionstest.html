@@ -1228,7 +1228,58 @@ ORDER BY a.r;
   "answer": "WITH ranked_orders AS (\n  SELECT o.seller_id,\n         i.item_brand,\n         ROW_NUMBER() OVER (\n           PARTITION BY o.seller_id\n           ORDER BY o.order_date\n         ) AS rn\n  FROM orders o\n  JOIN items i\n    ON o.item_id = i.item_id\n)\nSELECT u.user_id AS seller_id,\n       CASE\n         WHEN r.item_brand = u.favorite_brand THEN 'YES'\n         ELSE 'NO'\n       END AS second_item_fav_brand\nFROM users u\nLEFT JOIN ranked_orders r\n  ON u.user_id = r.seller_id\n AND r.rn = 2;",
 
   "answer_1": "WITH finding_second_item AS (\n  SELECT seller_id, item_id\n  FROM (\n    SELECT seller_id,\n           item_id,\n           ROW_NUMBER() OVER (\n             PARTITION BY seller_id\n             ORDER BY order_date\n           ) AS rn\n    FROM orders\n  ) t\n  WHERE rn = 2\n)\nSELECT u.user_id AS seller_id,\n       CASE\n         WHEN u.favorite_brand = i.item_brand THEN 'YES'\n         ELSE 'NO'\n       END AS second_item_fav_brand\nFROM users u\nLEFT JOIN finding_second_item f\n  ON u.user_id = f.seller_id\nLEFT JOIN items i\n  ON f.item_id = i.item_id;"
+},
+    {
+  "question": "TRIP CANCELLATION RATE: Write an SQL query to calculate the daily cancellation rate of trips. Only consider trips where both the client and the driver are not banned. A trip is considered cancelled if its status is either cancelled_by_client or cancelled_by_driver.",
+
+  "dataset": [
+    { "id": 1, "client_id": 1, "driver_id": 10, "city_id": 1, "status": "completed", "request_at": "2013-10-01" },
+    { "id": 2, "client_id": 2, "driver_id": 11, "city_id": 1, "status": "cancelled_by_driver", "request_at": "2013-10-01" },
+    { "id": 3, "client_id": 3, "driver_id": 12, "city_id": 6, "status": "completed", "request_at": "2013-10-01" },
+    { "id": 4, "client_id": 4, "driver_id": 13, "city_id": 6, "status": "cancelled_by_client", "request_at": "2013-10-01" },
+    { "id": 5, "client_id": 1, "driver_id": 10, "city_id": 1, "status": "completed", "request_at": "2013-10-02" },
+    { "id": 6, "client_id": 2, "driver_id": 11, "city_id": 6, "status": "completed", "request_at": "2013-10-02" },
+    { "id": 7, "client_id": 3, "driver_id": 12, "city_id": 6, "status": "completed", "request_at": "2013-10-02" },
+    { "id": 8, "client_id": 2, "driver_id": 12, "city_id": 12, "status": "completed", "request_at": "2013-10-03" },
+    { "id": 9, "client_id": 3, "driver_id": 10, "city_id": 12, "status": "completed", "request_at": "2013-10-03" },
+    { "id": 10, "client_id": 4, "driver_id": 13, "city_id": 12, "status": "cancelled_by_driver", "request_at": "2013-10-03" }
+  ],
+
+  "dataset2": [
+    { "users_id": 1, "banned": "No", "role": "client" },
+    { "users_id": 2, "banned": "Yes", "role": "client" },
+    { "users_id": 3, "banned": "No", "role": "client" },
+    { "users_id": 4, "banned": "No", "role": "client" },
+    { "users_id": 10, "banned": "No", "role": "driver" },
+    { "users_id": 11, "banned": "No", "role": "driver" },
+    { "users_id": 12, "banned": "No", "role": "driver" },
+    { "users_id": 13, "banned": "No", "role": "driver" }
+  ],
+
+  "output": [
+    {
+      "request_at": "2013-10-01",
+      "cancelled_trips": 1,
+      "total_trips": 3,
+      "cancellation_rate": 33.3333333333
+    },
+    {
+      "request_at": "2013-10-02",
+      "cancelled_trips": 0,
+      "total_trips": 2,
+      "cancellation_rate": 0.0
+    },
+    {
+      "request_at": "2013-10-03",
+      "cancelled_trips": 1,
+      "total_trips": 2,
+      "cancellation_rate": 50.0
+    }
+  ],
+
+  "answer": "SELECT\n  a.request_at,\n  COUNT(\n    CASE\n      WHEN a.status IN ('cancelled_by_client', 'cancelled_by_driver') THEN 1\n      ELSE NULL\n    END\n  ) AS cancelled_trips,\n  COUNT(*) AS total_trips,\n  1.0 * COUNT(\n    CASE\n      WHEN a.status IN ('cancelled_by_client', 'cancelled_by_driver') THEN 1\n      ELSE NULL\n    END\n  ) / COUNT(*) * 100 AS cancellation_rate\nFROM trips a\nJOIN users b\n  ON a.driver_id = b.users_id\nJOIN users c\n  ON a.client_id = c.users_id\nWHERE b.banned = 'No'\n  AND c.banned = 'No'\nGROUP BY a.request_at;"
 }
+
 
 /* End of questions array */
 ];
