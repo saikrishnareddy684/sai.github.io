@@ -9477,6 +9477,573 @@ let originalQuestions = [
   "answer": 2,
   "time": 20
 }
+  ,
+  {
+    "q": "What is the key difference between COUNT(CASE WHEN condition THEN 1 END) and SUM(CASE WHEN condition THEN 1 ELSE 0 END)?",
+    "options": [
+      "COUNT counts NULL values but SUM does not",
+      "SUM returns NULL when no rows match, COUNT returns 0",
+      "COUNT ignores NULL values, SUM evaluates all rows",
+      "There is no difference in any scenario"
+    ],
+    "answer": 2,
+    "time": 25
+  },
+  {
+    "q": "Why does COUNT(CASE WHEN id >= 0 THEN 1 END) correctly count only positive rows?",
+    "options": [
+      "COUNT evaluates the CASE expression result",
+      "COUNT ignores rows where CASE returns NULL",
+      "COUNT converts 1 to TRUE internally",
+      "COUNT automatically applies a WHERE filter"
+    ],
+    "answer": 1,
+    "time": 25
+  },
+  {
+    "q": "Which expression would incorrectly count negative rows?",
+    "options": [
+      "COUNT(CASE WHEN id < 0 THEN 1 END)",
+      "SUM(CASE WHEN id < 0 THEN 1 ELSE 0 END)",
+      "COUNT(CASE WHEN id < 0 THEN id END)",
+      "SUM(CASE WHEN id < 0 THEN id ELSE 0 END)"
+    ],
+    "answer": 3,
+    "time": 30
+  },
+  {
+    "q": "What happens if all rows are positive and you run SUM(CASE WHEN id < 0 THEN id END)?",
+    "options": [
+      "Returns 0",
+      "Returns NULL",
+      "Returns empty result",
+      "Throws an error"
+    ],
+    "answer": 1,
+    "time": 25
+  },
+  {
+    "q": "Why is using a unique primary key in DELETE duplicate queries safer?",
+    "options": [
+      "It improves query speed only",
+      "It avoids deleting unintended rows with same business keys",
+      "ROW_NUMBER requires a primary key",
+      "DELETE cannot run without a primary key"
+    ],
+    "answer": 1,
+    "time": 30
+  },
+  {
+    "q": "Which DELETE strategy may fail if duplicate rows share the same id?",
+    "options": [
+      "DELETE FROM cte WHERE rn > 1",
+      "DELETE WHERE id IN (SELECT id FROM cte WHERE rn > 1)",
+      "DELETE using primary key",
+      "DELETE using ROW_NUMBER partitioned by primary key"
+    ],
+    "answer": 1,
+    "time": 30
+  },
+  {
+    "q": "Why can DELETE ... WHERE id IN (subquery) be dangerous in de-duplication?",
+    "options": [
+      "IN is slower than EXISTS",
+      "Subquery executes multiple times",
+      "It may delete all rows sharing the same id",
+      "DELETE does not support IN"
+    ],
+    "answer": 2,
+    "time": 30
+  },
+  {
+    "q": "Which SQL Server feature allows deleting directly from a CTE?",
+    "options": [
+      "ANSI SQL standard",
+      "SQL Server extension",
+      "Window function behavior",
+      "Temporary table optimization"
+    ],
+    "answer": 1,
+    "time": 25
+  },
+  {
+    "q": "What is the biggest risk of CROSS JOIN in production queries?",
+    "options": [
+      "Incorrect data types",
+      "Deadlocks",
+      "Cartesian explosion of rows",
+      "Implicit NULL generation"
+    ],
+    "answer": 2,
+    "time": 20
+  },
+  {
+    "q": "If TableA has 5 rows and TableB has 0 rows, what does CROSS JOIN return?",
+    "options": [
+      "5 rows",
+      "0 rows",
+      "NULL rows",
+      "Error"
+    ],
+    "answer": 1,
+    "time": 25
+  },
+  {
+    "q": "Which JOIN type preserves all rows from both tables regardless of matches?",
+    "options": [
+      "INNER JOIN",
+      "LEFT JOIN",
+      "RIGHT JOIN",
+      "FULL OUTER JOIN"
+    ],
+    "answer": 3,
+    "time": 20
+  },
+  {
+    "q": "Which condition correctly implements a FULL OUTER ANTI-JOIN?",
+    "options": [
+      "WHERE a.col = b.col",
+      "WHERE a.col IS NOT NULL AND b.col IS NOT NULL",
+      "WHERE a.col IS NULL OR b.col IS NULL",
+      "WHERE a.col <> b.col"
+    ],
+    "answer": 2,
+    "time": 25
+  },
+  {
+    "q": "Why does WHERE a.col <> b.col not correctly identify unmatched rows in FULL OUTER JOIN?",
+    "options": [
+      "<> does not work on strings",
+      "NULL comparisons return UNKNOWN",
+      "FULL JOIN removes NULLs automatically",
+      "JOIN condition overrides WHERE clause"
+    ],
+    "answer": 1,
+    "time": 30
+  },
+  {
+    "q": "Which join pattern is best for finding mismatched records between two tables?",
+    "options": [
+      "INNER JOIN",
+      "LEFT JOIN with WHERE b.col IS NULL",
+      "FULL OUTER JOIN with NULL filters",
+      "CROSS JOIN with filters"
+    ],
+    "answer": 2,
+    "time": 25
+  },
+  {
+    "q": "What logical operation does FULL OUTER JOIN excluding matches represent?",
+    "options": [
+      "Intersection",
+      "Union",
+      "Symmetric Difference",
+      "Difference"
+    ],
+    "answer": 2,
+    "time": 30
+  },
+  {
+    "q": "Which JOIN type is functionally equivalent to LEFT JOIN + RIGHT JOIN UNION?",
+    "options": [
+      "INNER JOIN",
+      "CROSS JOIN",
+      "FULL OUTER JOIN",
+      "SELF JOIN"
+    ],
+    "answer": 2,
+    "time": 20
+  },
+  {
+    "q": "Why is COUNT(*) safe in aggregate queries but COUNT(column) may not be?",
+    "options": [
+      "COUNT(column) is slower",
+      "COUNT(column) ignores NULL values",
+      "COUNT(*) includes duplicates",
+      "COUNT(column) requires indexes"
+    ],
+    "answer": 1,
+    "time": 25
+  },
+  {
+    "q": "Which aggregate expression guarantees a zero instead of NULL when no rows match?",
+    "options": [
+      "SUM(column)",
+      "COUNT(column)",
+      "SUM(CASE WHEN condition THEN 1 ELSE 0 END)",
+      "COUNT(CASE WHEN condition THEN NULL END)"
+    ],
+    "answer": 2,
+    "time": 30
+  }
+,
+  {
+    "q": "Which aggregate expression will return an incorrect positive_count if id contains NULL values?",
+    "options": [
+      "COUNT(*)",
+      "COUNT(id)",
+      "COUNT(CASE WHEN id >= 0 THEN 1 END)",
+      "SUM(CASE WHEN id >= 0 THEN 1 ELSE 0 END)"
+    ],
+    "answer": 1,
+    "time": 30
+  },
+  {
+    "q": "Why is SUM(CASE WHEN condition THEN 1 END) considered unsafe for counting?",
+    "options": [
+      "SUM ignores NULL rows",
+      "SUM returns NULL when no rows satisfy the condition",
+      "SUM cannot be used with CASE",
+      "SUM is slower than COUNT"
+    ],
+    "answer": 1,
+    "time": 30
+  },
+  {
+    "q": "Which approach guarantees correct counts even when the column contains NULLs?",
+    "options": [
+      "COUNT(column)",
+      "COUNT(CASE WHEN condition THEN column END)",
+      "SUM(CASE WHEN condition THEN 1 ELSE 0 END)",
+      "COUNT(*)"
+    ],
+    "answer": 2,
+    "time": 25
+  },
+  {
+    "q": "What happens if ROW_NUMBER() ORDER BY clause is non-deterministic while deleting duplicates?",
+    "options": [
+      "Query fails",
+      "Duplicates remain",
+      "Random rows may be deleted",
+      "SQL Server auto-fixes it"
+    ],
+    "answer": 2,
+    "time": 30
+  },
+  {
+    "q": "Which window function is safest when you want to keep exactly one row per duplicate group without caring which one?",
+    "options": [
+      "RANK()",
+      "DENSE_RANK()",
+      "ROW_NUMBER()",
+      "NTILE()"
+    ],
+    "answer": 2,
+    "time": 20
+  },
+  {
+    "q": "Why is DELETE using JOIN often preferred over DELETE using IN for de-duplication?",
+    "options": [
+      "JOIN allows GROUP BY",
+      "JOIN avoids accidental multi-row deletion",
+      "JOIN performs better and avoids logical ambiguity",
+      "IN is not supported in DELETE"
+    ],
+    "answer": 2,
+    "time": 30
+  },
+  {
+    "q": "Which query pattern can silently turn a LEFT JOIN into an INNER JOIN?",
+    "options": [
+      "Using aliases",
+      "Filtering right table columns in WHERE clause",
+      "Using ON instead of USING",
+      "Selecting specific columns"
+    ],
+    "answer": 1,
+    "time": 30
+  },
+  {
+    "q": "Why should conditions filtering the right table be placed inside the ON clause for LEFT JOIN?",
+    "options": [
+      "For better performance only",
+      "To preserve unmatched left rows",
+      "SQL Server requires it",
+      "To avoid NULL values"
+    ],
+    "answer": 1,
+    "time": 25
+  },
+  {
+    "q": "Which join guarantees no row multiplication?",
+    "options": [
+      "INNER JOIN",
+      "LEFT JOIN",
+      "CROSS JOIN",
+      "None of the above"
+    ],
+    "answer": 3,
+    "time": 25
+  },
+  {
+    "q": "Which scenario is the most dangerous use case of CROSS JOIN?",
+    "options": [
+      "Generating a calendar",
+      "Pairing static dimension values",
+      "Joining large fact tables accidentally",
+      "Small lookup table joins"
+    ],
+    "answer": 2,
+    "time": 20
+  },
+  {
+    "q": "Why does FULL OUTER JOIN with WHERE a.col <> b.col fail to detect mismatches?",
+    "options": [
+      "FULL JOIN ignores WHERE clause",
+      "NULL comparisons return UNKNOWN",
+      "The JOIN happens after WHERE",
+      "Indexes are missing"
+    ],
+    "answer": 1,
+    "time": 30
+  },
+  {
+    "q": "Which condition correctly identifies rows present in TableA but not in TableB?",
+    "options": [
+      "a.col <> b.col",
+      "a.col IS NOT NULL AND b.col IS NULL",
+      "a.col IS NULL AND b.col IS NOT NULL",
+      "a.col = b.col"
+    ],
+    "answer": 1,
+    "time": 25
+  },
+  {
+    "q": "Which join pattern represents a symmetric difference between two datasets?",
+    "options": [
+      "INNER JOIN",
+      "LEFT ANTI JOIN",
+      "RIGHT ANTI JOIN",
+      "FULL OUTER JOIN with NULL filtering"
+    ],
+    "answer": 3,
+    "time": 30
+  },
+  {
+    "q": "Why is COUNT(*) preferred over COUNT(column) after OUTER JOINs?",
+    "options": [
+      "COUNT(column) is slower",
+      "COUNT(column) ignores NULLs introduced by joins",
+      "COUNT(*) requires indexes",
+      "COUNT(column) causes duplication"
+    ],
+    "answer": 1,
+    "time": 25
+  },
+  {
+    "q": "Which operation happens first in SQL logical query processing?",
+    "options": [
+      "SELECT",
+      "WHERE",
+      "JOIN / FROM",
+      "ORDER BY"
+    ],
+    "answer": 2,
+    "time": 20
+  }
+,
+
+{
+  "q": "Which query correctly implements a LEFT EXCLUDING JOIN?",
+  "options": [
+    "SELECT * FROM A INNER JOIN B ON A.id = B.id WHERE B.id IS NULL",
+    "SELECT * FROM A LEFT JOIN B ON A.id = B.id WHERE B.id IS NULL",
+    "SELECT * FROM A RIGHT JOIN B ON A.id = B.id WHERE A.id IS NULL",
+    "SELECT * FROM A FULL JOIN B ON A.id <> B.id"
+  ],
+  "answer": 1,
+  "time": 25
+},
+{
+  "q": "Why does a LEFT JOIN with a WHERE condition on the right table act like an INNER JOIN?",
+  "options": [
+    "LEFT JOIN ignores NULL values",
+    "WHERE clause is applied before JOIN",
+    "Filtering right-table columns removes NULL-extended rows",
+    "SQL optimizer rewrites it as INNER JOIN"
+  ],
+  "answer": 2,
+  "time": 30
+},
+{
+  "q": "Which condition identifies rows present only in the right table?",
+  "options": [
+    "LEFT JOIN WHERE B.col IS NULL",
+    "RIGHT JOIN WHERE A.col IS NULL",
+    "FULL JOIN WHERE A.col = B.col",
+    "INNER JOIN WHERE A.col <> B.col"
+  ],
+  "answer": 1,
+  "time": 25
+},
+{
+  "q": "Which join pattern represents 'A minus B'?",
+  "options": [
+    "INNER JOIN",
+    "LEFT EXCLUDING JOIN",
+    "RIGHT EXCLUDING JOIN",
+    "FULL OUTER JOIN"
+  ],
+  "answer": 1,
+  "time": 20
+},
+{
+  "q": "Why is FULL OUTER JOIN with NULL filtering preferred over UNION of LEFT and RIGHT joins?",
+  "options": [
+    "UNION removes duplicates",
+    "FULL JOIN is ANSI standard",
+    "FULL JOIN preserves row origin with NULLs",
+    "LEFT and RIGHT joins are slower"
+  ],
+  "answer": 2,
+  "time": 30
+},
+{
+  "q": "Which statement about subqueries vs JOINs is true in modern SQL engines?",
+  "options": [
+    "JOINs are always faster than subqueries",
+    "Subqueries always execute row by row",
+    "Optimizers can rewrite subqueries as joins",
+    "Subqueries cannot use indexes"
+  ],
+  "answer": 2,
+  "time": 30
+},
+{
+  "q": "Which subquery pattern is most likely to cause performance issues on large datasets?",
+  "options": [
+    "Correlated subquery",
+    "Scalar subquery",
+    "Derived table",
+    "CTE"
+  ],
+  "answer": 0,
+  "time": 30
+},
+{
+  "q": "Why are JOINs generally preferred over subqueries for DELETE operations?",
+  "options": [
+    "DELETE does not support subqueries",
+    "JOINs are more readable",
+    "JOINs allow better execution plans",
+    "Subqueries cannot delete rows"
+  ],
+  "answer": 2,
+  "time": 30
+},
+{
+  "q": "Which DELETE statement is the safest when removing rows based on another table?",
+  "options": [
+    "DELETE FROM A WHERE id IN (SELECT id FROM B)",
+    "DELETE A FROM A JOIN B ON A.id = B.id",
+    "DELETE FROM A WHERE EXISTS (SELECT 1 FROM B)",
+    "DELETE FROM A"
+  ],
+  "answer": 1,
+  "time": 30
+},
+{
+  "q": "Why is ORDER BY not allowed in a DELETE statement?",
+  "options": [
+    "DELETE does not return rows",
+    "ORDER BY requires SELECT",
+    "DELETE is logically unordered",
+    "ORDER BY impacts performance"
+  ],
+  "answer": 2,
+  "time": 25
+},
+{
+  "q": "Which scenario violates First Normal Form (1NF)?",
+  "options": [
+    "Atomic values in each column",
+    "Multiple phone numbers stored in one column",
+    "Primary key present",
+    "Unique rows"
+  ],
+  "answer": 1,
+  "time": 25
+},
+{
+  "q": "Why does storing comma-separated values break 1NF?",
+  "options": [
+    "Indexes cannot be created",
+    "Violates atomicity",
+    "Primary key fails",
+    "Data types mismatch"
+  ],
+  "answer": 1,
+  "time": 25
+},
+{
+  "q": "Which table design satisfies 1NF but still allows data redundancy?",
+  "options": [
+    "Atomic columns with repeating rows",
+    "Comma-separated columns",
+    "No primary key",
+    "Nested tables"
+  ],
+  "answer": 0,
+  "time": 30
+},
+{
+  "q": "Why does a CHECK constraint allow NULL values by default?",
+  "options": [
+    "NULL means invalid data",
+    "CHECK ignores NULL rows",
+    "NULL evaluates to UNKNOWN which passes CHECK",
+    "CHECK only validates inserts"
+  ],
+  "answer": 2,
+  "time": 30
+},
+{
+  "q": "Which CHECK constraint definition will FAIL to create?",
+  "options": [
+    "CHECK (Age >= 18)",
+    "CHECK (Salary > 0 AND Age >= 18)",
+    "CHECK (Age IN (SELECT Age FROM RefTable))",
+    "CHECK (Age BETWEEN 18 AND 60)"
+  ],
+  "answer": 2,
+  "time": 30
+},
+{
+  "q": "Why is naming CHECK constraints considered best practice?",
+  "options": [
+    "Improves query performance",
+    "Mandatory in SQL standard",
+    "Easier to drop or modify later",
+    "Prevents duplicate constraints"
+  ],
+  "answer": 2,
+  "time": 20
+},
+{
+  "q": "Which operation can bypass a CHECK constraint?",
+  "options": [
+    "INSERT",
+    "UPDATE",
+    "Bulk load with constraint disabled",
+    "SELECT"
+  ],
+  "answer": 2,
+  "time": 30
+},
+{
+  "q": "Which statement about CHECK constraints is TRUE?",
+  "options": [
+    "They can reference other tables",
+    "They can use subqueries",
+    "They are evaluated per row",
+    "They enforce referential integrity"
+  ],
+  "answer": 2,
+  "time": 25
+}
+
+
 
  
   // add more questions here...
