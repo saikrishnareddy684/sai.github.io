@@ -10045,1512 +10045,1481 @@ let originalQuestions = [
 
 
   ,
-{
-  "q": "Why does a NOT NULL constraint differ fundamentally from a CHECK constraint?",
-  "options": [
-    "NOT NULL is faster than CHECK",
-    "NOT NULL is evaluated before CHECK",
-    "CHECK allows NULL values unless explicitly restricted",
-    "CHECK constraints cannot be indexed"
-  ],
-  "answer": 2,
-  "time": 30
-},
-{
-  "q": "Why does a CHECK constraint allow NULL values by default?",
-  "options": [
-    "NULL values are ignored by constraints",
-    "CHECK constraints are optional",
-    "NULL evaluates to UNKNOWN, which passes CHECK validation",
-    "CHECK constraints only validate INSERTs"
-  ],
-  "answer": 2,
-  "time": 30
-},
-{
-  "q": "Which operation will immediately fail when adding a NOT NULL constraint to an existing column?",
-  "options": [
-    "Column contains duplicate values",
-    "Column contains NULL values",
-    "Column contains negative values",
-    "Column is indexed"
-  ],
-  "answer": 1,
-  "time": 25
-},
-{
-  "q": "Why is adding a NOT NULL constraint considered a data-breaking change?",
-  "options": [
-    "It requires rebuilding indexes",
-    "It enforces validation on existing and future data",
-    "It changes query execution plans",
-    "It locks the table permanently"
-  ],
-  "answer": 1,
-  "time": 30
-},
-{
-  "q": "Which constraint can exist multiple times on the same table?",
-  "options": [
-    "Primary Key",
-    "Foreign Key",
-    "Unique Constraint",
-    "Identity"
-  ],
-  "answer": 2,
-  "time": 25
-},
-{
-  "q": "Why does a UNIQUE constraint allow one NULL value?",
-  "options": [
-    "NULL is treated as a value",
-    "NULLs are ignored in uniqueness checks",
-    "NULL represents UNKNOWN and is not equal to another NULL",
-    "UNIQUE constraints are optional"
-  ],
-  "answer": 2,
-  "time": 30
-},
-{
-  "q": "Which design requirement forces the use of PRIMARY KEY instead of UNIQUE?",
-  "options": [
-    "Uniqueness only",
-    "Ability to allow NULL",
-    "Logical row identification and referential integrity",
-    "Index creation"
-  ],
-  "answer": 2,
-  "time": 30
-},
-{
-  "q": "What happens if you attempt to add a PRIMARY KEY to a table with duplicate values?",
-  "options": [
-    "Duplicates are automatically removed",
-    "Constraint creation fails",
-    "Only one row is kept",
-    "Duplicates are converted to NULL"
-  ],
-  "answer": 1,
-  "time": 25
-},
-{
-  "q": "Why can a table have only one PRIMARY KEY but multiple UNIQUE constraints?",
-  "options": [
-    "PRIMARY KEY is a physical structure",
-    "PRIMARY KEY identifies the row, UNIQUE only enforces rules",
-    "UNIQUE constraints are optional",
-    "PRIMARY KEY does not create an index"
-  ],
-  "answer": 1,
-  "time": 30
-},
-{
-  "q": "Which constraint implicitly creates a clustered index by default in SQL Server?",
-  "options": [
-    "CHECK",
-    "UNIQUE",
-    "PRIMARY KEY",
-    "FOREIGN KEY"
-  ],
-  "answer": 2,
-  "time": 25
-},
-{
-  "q": "Why is cleaning data before adding constraints a recommended practice in migrations?",
-  "options": [
-    "Constraints automatically fix data",
-    "Constraints validate existing data immediately",
-    "Indexes require clean data",
-    "Triggers depend on constraints"
-  ],
-  "answer": 1,
-  "time": 30
-},
-{
-  "q": "Which constraint is most likely to slow down bulk INSERT operations?",
-  "options": [
-    "NOT NULL",
-    "CHECK",
-    "PRIMARY KEY / UNIQUE",
-    "DEFAULT"
-  ],
-  "answer": 2,
-  "time": 30
-},
-{
-  "q": "Why are constraints considered self-documenting schema elements?",
-  "options": [
-    "They generate ER diagrams automatically",
-    "They describe business rules directly in metadata",
-    "They add comments to columns",
-    "They replace documentation tools"
-  ],
-  "answer": 1,
-  "time": 25
-},
-{
-  "q": "Which approach provides uniqueness enforcement with more flexibility than a UNIQUE constraint?",
-  "options": [
-    "Primary Key",
-    "CHECK constraint",
-    "Unique Index",
-    "NOT NULL"
-  ],
-  "answer": 2,
-  "time": 30
-},
-{
-  "q": "Which statement about NULL comparisons is TRUE?",
-  "options": [
-    "NULL = NULL evaluates to TRUE",
-    "NULL <> NULL evaluates to TRUE",
-    "Any comparison with NULL returns UNKNOWN",
-    "NULL behaves like zero"
-  ],
-  "answer": 2,
-  "time": 25
-},
-{
-  "q": "Why are triggers not preferred over constraints for enforcing simple rules?",
-  "options": [
-    "Triggers are faster",
-    "Triggers are harder to maintain and debug",
-    "Triggers cannot block inserts",
-    "Triggers do not support validation"
-  ],
-  "answer": 1,
-  "time": 30
-},
-{
-  "q": "Which constraint contributes the MOST to data integrity with the LEAST logic complexity?",
-  "options": [
-    "Trigger",
-    "Application validation",
-    "Database constraint",
-    "Stored procedure"
-  ],
-  "answer": 2,
-  "time": 25
-},
-{
-  "q": "Why should constraints usually be enabled AFTER bulk data loads?",
-  "options": [
-    "Constraints are ignored during bulk load",
-    "Bulk load does not support constraints",
-    "Constraint validation adds overhead during load",
-    "Indexes must be rebuilt first"
-  ],
-  "answer": 2,
-  "time": 30
-}
-,
-
-{
-  "q": "Why is sp_executesql preferred over EXEC for dynamic SQL in production systems?",
-  "options": [
-    "It executes faster in all cases",
-    "It supports parameterization and plan reuse",
-    "It allows dynamic table creation",
-    "It suppresses SQL injection automatically"
-  ],
-  "answer": 1,
-  "time": 30
-},
-{
-  "q": "What is the biggest security risk when using EXEC(@sql) with string concatenation?",
-  "options": [
-    "Deadlocks",
-    "Blocking",
-    "SQL Injection",
-    "Plan cache pollution"
-  ],
-  "answer": 2,
-  "time": 25
-},
-{
-  "q": "Which feature of sp_executesql helps reduce plan cache bloat?",
-  "options": [
-    "Deferred compilation",
-    "Parameterization",
-    "Implicit transactions",
-    "Batch execution"
-  ],
-  "answer": 1,
-  "time": 30
-},
-{
-  "q": "Why does dynamic SQL often suffer from parameter sniffing issues?",
-  "options": [
-    "Parameters are evaluated at runtime",
-    "Execution plans are reused with different parameter values",
-    "Dynamic SQL ignores indexes",
-    "SQL Server recompiles every time"
-  ],
-  "answer": 1,
-  "time": 30
-},
-{
-  "q": "Which dynamic SQL scenario CANNOT be replaced with a parameterized query?",
-  "options": [
-    "Dynamic WHERE clause values",
-    "Dynamic column names",
-    "Dynamic filter values",
-    "Dynamic input parameters"
-  ],
-  "answer": 1,
-  "time": 30
-},
-{
-  "q": "What happens if a variable declared outside dynamic SQL is referenced inside EXEC(@sql)?",
-  "options": [
-    "It is automatically resolved",
-    "It throws a compilation error",
-    "It is treated as NULL",
-    "It becomes global"
-  ],
-  "answer": 1,
-  "time": 25
-},
-{
-  "q": "Which error types are NOT caught by TRY...CATCH in SQL Server?",
-  "options": [
-    "Divide by zero",
-    "Conversion errors",
-    "Compile-time errors",
-    "Constraint violations"
-  ],
-  "answer": 2,
-  "time": 30
-},
-{
-  "q": "Why is XACT_STATE() checked inside a CATCH block?",
-  "options": [
-    "To check if transaction exists",
-    "To decide whether COMMIT or ROLLBACK is allowed",
-    "To restart a transaction",
-    "To suppress errors"
-  ],
-  "answer": 1,
-  "time": 30
-},
-{
-  "q": "What does XACT_STATE() = -1 indicate?",
-  "options": [
-    "No active transaction",
-    "Transaction is committable",
-    "Transaction is uncommittable and must be rolled back",
-    "Transaction is suspended"
-  ],
-  "answer": 2,
-  "time": 25
-},
-{
-  "q": "Which statement about TRY...CATCH with transactions is TRUE?",
-  "options": [
-    "COMMIT is automatic if TRY succeeds",
-    "ROLLBACK happens automatically on error",
-    "Transaction must be explicitly committed or rolled back",
-    "CATCH block always commits"
-  ],
-  "answer": 2,
-  "time": 25
-},
-{
-  "q": "Why is THROW preferred over RAISERROR in modern SQL Server?",
-  "options": [
-    "THROW supports formatted messages",
-    "THROW preserves original error information",
-    "RAISERROR is faster",
-    "RAISERROR supports transactions better"
-  ],
-  "answer": 1,
-  "time": 30
-},
-{
-  "q": "What is the main benefit of logging errors into a table instead of printing them?",
-  "options": [
-    "Improves performance",
-    "Allows auditing and post-mortem analysis",
-    "Prevents transaction rollback",
-    "Avoids TRY...CATCH"
-  ],
-  "answer": 1,
-  "time": 25
-},
-{
-  "q": "Why should error logging inside a CATCH block avoid complex logic?",
-  "options": [
-    "CATCH blocks run only once",
-    "Errors inside CATCH can suppress original error",
-    "CATCH blocks cannot contain DML",
-    "CATCH blocks auto-rollback"
-  ],
-  "answer": 1,
-  "time": 30
-},
-{
-  "q": "What is the effect of SET NOCOUNT ON inside a stored procedure?",
-  "options": [
-    "Prevents result sets from returning",
-    "Suppresses row count messages",
-    "Disables transactions",
-    "Improves index usage"
-  ],
-  "answer": 1,
-  "time": 20
-},
-{
-  "q": "Why is SET NOCOUNT ON recommended for procedures executed by applications?",
-  "options": [
-    "It avoids SQL injection",
-    "It reduces network traffic",
-    "It forces recompilation",
-    "It improves locking behavior"
-  ],
-  "answer": 1,
-  "time": 25
-},
-{
-  "q": "Why does SET NOCOUNT ON placed outside a stored procedure not affect it?",
-  "options": [
-    "SET commands are session scoped",
-    "Stored procedures reset session settings",
-    "SET NOCOUNT is batch scoped",
-    "Procedures ignore SET options"
-  ],
-  "answer": 2,
-  "time": 30
-},
-{
-  "q": "Which operation still returns results even when SET NOCOUNT ON is enabled?",
-  "options": [
-    "INSERT",
-    "UPDATE",
-    "SELECT",
-    "MERGE"
-  ],
-  "answer": 2,
-  "time": 20
-},
-{
-  "q": "Which scenario benefits MOST from SET NOCOUNT ON?",
-  "options": [
-    "Single-row SELECT",
-    "Bulk INSERT in stored procedure",
-    "DDL operations",
-    "Ad-hoc queries"
-  ],
-  "answer": 1,
-  "time": 25
-},
-{
-  "q": "What hidden issue can arise if NOCOUNT is OFF in application-driven procedures?",
-  "options": [
-    "Deadlocks",
-    "Extra result sets confusing application logic",
-    "Index fragmentation",
-    "Implicit commits"
-  ],
-  "answer": 1,
-  "time": 30
-}
-,
-
+ {
+    "q": "Why does a NOT NULL constraint differ fundamentally from a CHECK constraint?",
+    "options": [
+      "NOT NULL is faster than CHECK",
+      "NOT NULL is evaluated before CHECK",
+      "CHECK allows NULL values unless explicitly restricted",
+      "CHECK constraints cannot be indexed"
+    ],
+    "answer": 2,
+    "time": 30
+  },
+  {
+    "q": "Why does a CHECK constraint allow NULL values by default?",
+    "options": [
+      "NULL values are ignored by constraints",
+      "CHECK constraints are optional",
+      "NULL evaluates to UNKNOWN, which passes CHECK validation",
+      "CHECK constraints only validate INSERTs"
+    ],
+    "answer": 2,
+    "time": 30
+  },
+  {
+    "q": "Which operation will immediately fail when adding a NOT NULL constraint to an existing column?",
+    "options": [
+      "Column contains duplicate values",
+      "Column contains NULL values",
+      "Column contains negative values",
+      "Column is indexed"
+    ],
+    "answer": 1,
+    "time": 25
+  },
+  {
+    "q": "Why is adding a NOT NULL constraint considered a data-breaking change?",
+    "options": [
+      "It requires rebuilding indexes",
+      "It enforces validation on existing and future data",
+      "It changes query execution plans",
+      "It locks the table permanently"
+    ],
+    "answer": 1,
+    "time": 30
+  },
+  {
+    "q": "Which constraint can exist multiple times on the same table?",
+    "options": [
+      "Primary Key",
+      "Foreign Key",
+      "Unique Constraint",
+      "Identity"
+    ],
+    "answer": 2,
+    "time": 25
+  },
+  {
+    "q": "Why does a UNIQUE constraint allow one NULL value?",
+    "options": [
+      "NULL is treated as a value",
+      "NULLs are ignored in uniqueness checks",
+      "NULL represents UNKNOWN and is not equal to another NULL",
+      "UNIQUE constraints are optional"
+    ],
+    "answer": 2,
+    "time": 30
+  },
+  {
+    "q": "Which design requirement forces the use of PRIMARY KEY instead of UNIQUE?",
+    "options": [
+      "Uniqueness only",
+      "Ability to allow NULL",
+      "Logical row identification and referential integrity",
+      "Index creation"
+    ],
+    "answer": 2,
+    "time": 30
+  },
+  {
+    "q": "What happens if you attempt to add a PRIMARY KEY to a table with duplicate values?",
+    "options": [
+      "Duplicates are automatically removed",
+      "Constraint creation fails",
+      "Only one row is kept",
+      "Duplicates are converted to NULL"
+    ],
+    "answer": 1,
+    "time": 25
+  },
+  {
+    "q": "Why can a table have only one PRIMARY KEY but multiple UNIQUE constraints?",
+    "options": [
+      "PRIMARY KEY is a physical structure",
+      "PRIMARY KEY identifies the row, UNIQUE only enforces rules",
+      "UNIQUE constraints are optional",
+      "PRIMARY KEY does not create an index"
+    ],
+    "answer": 1,
+    "time": 30
+  },
+  {
+    "q": "Which constraint implicitly creates a clustered index by default in SQL Server?",
+    "options": [
+      "CHECK",
+      "UNIQUE",
+      "PRIMARY KEY",
+      "FOREIGN KEY"
+    ],
+    "answer": 2,
+    "time": 25
+  },
+  {
+    "q": "Why is cleaning data before adding constraints a recommended practice in migrations?",
+    "options": [
+      "Constraints automatically fix data",
+      "Constraints validate existing data immediately",
+      "Indexes require clean data",
+      "Triggers depend on constraints"
+    ],
+    "answer": 1,
+    "time": 30
+  },
+  {
+    "q": "Which constraint is most likely to slow down bulk INSERT operations?",
+    "options": [
+      "NOT NULL",
+      "CHECK",
+      "PRIMARY KEY / UNIQUE",
+      "DEFAULT"
+    ],
+    "answer": 2,
+    "time": 30
+  },
+  {
+    "q": "Why are constraints considered self-documenting schema elements?",
+    "options": [
+      "They generate ER diagrams automatically",
+      "They describe business rules directly in metadata",
+      "They add comments to columns",
+      "They replace documentation tools"
+    ],
+    "answer": 1,
+    "time": 25
+  },
+  {
+    "q": "Which approach provides uniqueness enforcement with more flexibility than a UNIQUE constraint?",
+    "options": [
+      "Primary Key",
+      "CHECK constraint",
+      "Unique Index",
+      "NOT NULL"
+    ],
+    "answer": 2,
+    "time": 30
+  },
+  {
+    "q": "Which statement about NULL comparisons is TRUE?",
+    "options": [
+      "NULL = NULL evaluates to TRUE",
+      "NULL <> NULL evaluates to TRUE",
+      "Any comparison with NULL returns UNKNOWN",
+      "NULL behaves like zero"
+    ],
+    "answer": 2,
+    "time": 25
+  },
+  {
+    "q": "Why are triggers not preferred over constraints for enforcing simple rules?",
+    "options": [
+      "Triggers are faster",
+      "Triggers are harder to maintain and debug",
+      "Triggers cannot block inserts",
+      "Triggers do not support validation"
+    ],
+    "answer": 1,
+    "time": 30
+  },
+  {
+    "q": "Which constraint contributes the MOST to data integrity with the LEAST logic complexity?",
+    "options": [
+      "Trigger",
+      "Application validation",
+      "Database constraint",
+      "Stored procedure"
+    ],
+    "answer": 2,
+    "time": 25
+  },
+  {
+    "q": "Why should constraints usually be enabled AFTER bulk data loads?",
+    "options": [
+      "Constraints are ignored during bulk load",
+      "Bulk load does not support constraints",
+      "Constraint validation adds overhead during load",
+      "Indexes must be rebuilt first"
+    ],
+    "answer": 2,
+    "time": 30
+  },
+  {
+    "q": "Why is sp_executesql preferred over EXEC for dynamic SQL in production systems?",
+    "options": [
+      "It executes faster in all cases",
+      "It supports parameterization and plan reuse",
+      "It allows dynamic table creation",
+      "It suppresses SQL injection automatically"
+    ],
+    "answer": 1,
+    "time": 30
+  },
+  {
+    "q": "What is the biggest security risk when using EXEC(@sql) with string concatenation?",
+    "options": [
+      "Deadlocks",
+      "Blocking",
+      "SQL Injection",
+      "Plan cache pollution"
+    ],
+    "answer": 2,
+    "time": 25
+  },
+  {
+    "q": "Which feature of sp_executesql helps reduce plan cache bloat?",
+    "options": [
+      "Deferred compilation",
+      "Parameterization",
+      "Implicit transactions",
+      "Batch execution"
+    ],
+    "answer": 1,
+    "time": 30
+  },
+  {
+    "q": "Why does dynamic SQL often suffer from parameter sniffing issues?",
+    "options": [
+      "Parameters are evaluated at runtime",
+      "Execution plans are reused with different parameter values",
+      "Dynamic SQL ignores indexes",
+      "SQL Server recompiles every time"
+    ],
+    "answer": 1,
+    "time": 30
+  },
+  {
+    "q": "Which dynamic SQL scenario CANNOT be replaced with a parameterized query?",
+    "options": [
+      "Dynamic WHERE clause values",
+      "Dynamic column names",
+      "Dynamic filter values",
+      "Dynamic input parameters"
+    ],
+    "answer": 1,
+    "time": 30
+  },
+  {
+    "q": "What happens if a variable declared outside dynamic SQL is referenced inside EXEC(@sql)?",
+    "options": [
+      "It is automatically resolved",
+      "It throws a compilation error",
+      "It is treated as NULL",
+      "It becomes global"
+    ],
+    "answer": 1,
+    "time": 25
+  },
+  {
+    "q": "Which error types are NOT caught by TRY...CATCH in SQL Server?",
+    "options": [
+      "Divide by zero",
+      "Conversion errors",
+      "Compile-time errors",
+      "Constraint violations"
+    ],
+    "answer": 2,
+    "time": 30
+  },
+  {
+    "q": "Why is XACT_STATE() checked inside a CATCH block?",
+    "options": [
+      "To check if transaction exists",
+      "To decide whether COMMIT or ROLLBACK is allowed",
+      "To restart a transaction",
+      "To suppress errors"
+    ],
+    "answer": 1,
+    "time": 30
+  },
+  {
+    "q": "What does XACT_STATE() = -1 indicate?",
+    "options": [
+      "No active transaction",
+      "Transaction is committable",
+      "Transaction is uncommittable and must be rolled back",
+      "Transaction is suspended"
+    ],
+    "answer": 2,
+    "time": 25
+  },
+  {
+    "q": "Which statement about TRY...CATCH with transactions is TRUE?",
+    "options": [
+      "COMMIT is automatic if TRY succeeds",
+      "ROLLBACK happens automatically on error",
+      "Transaction must be explicitly committed or rolled back",
+      "CATCH block always commits"
+    ],
+    "answer": 2,
+    "time": 25
+  },
+  {
+    "q": "Why is THROW preferred over RAISERROR in modern SQL Server?",
+    "options": [
+      "THROW supports formatted messages",
+      "THROW preserves original error information",
+      "RAISERROR is faster",
+      "RAISERROR supports transactions better"
+    ],
+    "answer": 1,
+    "time": 30
+  },
+  {
+    "q": "What is the main benefit of logging errors into a table instead of printing them?",
+    "options": [
+      "Improves performance",
+      "Allows auditing and post-mortem analysis",
+      "Prevents transaction rollback",
+      "Avoids TRY...CATCH"
+    ],
+    "answer": 1,
+    "time": 25
+  },
+  {
+    "q": "Why should error logging inside a CATCH block avoid complex logic?",
+    "options": [
+      "CATCH blocks run only once",
+      "Errors inside CATCH can suppress original error",
+      "CATCH blocks cannot contain DML",
+      "CATCH blocks auto-rollback"
+    ],
+    "answer": 1,
+    "time": 30
+  },
+  {
+    "q": "What is the effect of SET NOCOUNT ON inside a stored procedure?",
+    "options": [
+      "Prevents result sets from returning",
+      "Suppresses row count messages",
+      "Disables transactions",
+      "Improves index usage"
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "Why is SET NOCOUNT ON recommended for procedures executed by applications?",
+    "options": [
+      "It avoids SQL injection",
+      "It reduces network traffic",
+      "It forces recompilation",
+      "It improves locking behavior"
+    ],
+    "answer": 1,
+    "time": 25
+  },
+  {
+    "q": "Why does SET NOCOUNT ON placed outside a stored procedure not affect it?",
+    "options": [
+      "SET commands are session scoped",
+      "Stored procedures reset session settings",
+      "SET NOCOUNT is batch scoped",
+      "Procedures ignore SET options"
+    ],
+    "answer": 2,
+    "time": 30
+  },
+  {
+    "q": "Which operation still returns results even when SET NOCOUNT ON is enabled?",
+    "options": [
+      "INSERT",
+      "UPDATE",
+      "SELECT",
+      "MERGE"
+    ],
+    "answer": 2,
+    "time": 20
+  },
+  {
+    "q": "Which scenario benefits MOST from SET NOCOUNT ON?",
+    "options": [
+      "Single-row SELECT",
+      "Bulk INSERT in stored procedure",
+      "DDL operations",
+      "Ad-hoc queries"
+    ],
+    "answer": 1,
+    "time": 25
+  },
+  {
+    "q": "What hidden issue can arise if NOCOUNT is OFF in application-driven procedures?",
+    "options": [
+      "Deadlocks",
+      "Extra result sets confusing application logic",
+      "Index fragmentation",
+      "Implicit commits"
+    ],
+    "answer": 1,
+    "time": 30
+  },
   {
     "topic": "NOT NULL and NULL behavior",
     "question": "Which statement about NULL is TRUE in SQL Server?",
-    "options": {
-      "A": "NULL = NULL returns TRUE",
-      "B": "NULL + 10 returns 10",
-      "C": "NULL compared with any value returns UNKNOWN",
-      "D": "NULL is equal to 0"
-    },
+    "options": [
+      "A: NULL = NULL returns TRUE",
+      "B: NULL + 10 returns 10",
+      "C: NULL compared with any value returns UNKNOWN",
+      "D: NULL is equal to 0"
+    ],
     "answer": "C"
   },
   {
     "topic": "NOT NULL and NULL behavior",
     "question": "Which aggregate function ignores NULL values?",
-    "options": {
-      "A": "COUNT(*)",
-      "B": "COUNT(column_name)",
-      "C": "SUM(*)",
-      "D": "GROUP BY"
-    },
+    "options": [
+      "A: COUNT(*)",
+      "B: COUNT(column_name)",
+      "C: SUM(*)",
+      "D: GROUP BY"
+    ],
     "answer": "B"
   },
   {
     "topic": "Constraints on existing tables",
     "question": "Can you add a PRIMARY KEY constraint to a table that already contains data?",
-    "options": {
-      "A": "Yes, always",
-      "B": "Only if no duplicate and no NULL values exist",
-      "C": "Only if the table is empty",
-      "D": "Only using triggers"
-    },
+    "options": [
+      "A: Yes, always",
+      "B: Only if no duplicate and no NULL values exist",
+      "C: Only if the table is empty",
+      "D: Only using triggers"
+    ],
     "answer": "B"
   },
   {
     "topic": "Constraints on existing tables",
     "question": "What happens if you try to add a NOT NULL constraint on a column that contains NULL values?",
-    "options": {
-      "A": "SQL Server replaces NULLs with default values",
-      "B": "Constraint is added and NULLs remain",
-      "C": "Operation fails",
-      "D": "NULL rows are deleted automatically"
-    },
+    "options": [
+      "A: SQL Server replaces NULLs with default values",
+      "B: Constraint is added and NULLs remain",
+      "C: Operation fails",
+      "D: NULL rows are deleted automatically"
+    ],
     "answer": "C"
   },
   {
     "topic": "Primary Key vs Unique Constraint",
     "question": "How many PRIMARY KEY constraints can a table have?",
-    "options": {
-      "A": "Zero",
-      "B": "One",
-      "C": "Two",
-      "D": "Unlimited"
-    },
+    "options": [
+      "A: Zero",
+      "B: One",
+      "C: Two",
+      "D: Unlimited"
+    ],
     "answer": "B"
   },
   {
     "topic": "Primary Key vs Unique Constraint",
     "question": "Which statement is TRUE about UNIQUE constraints in SQL Server?",
-    "options": {
-      "A": "A table can have only one UNIQUE constraint",
-      "B": "UNIQUE constraint does not allow NULL values",
-      "C": "UNIQUE constraint allows one NULL value",
-      "D": "UNIQUE constraint is the same as PRIMARY KEY"
-    },
+    "options": [
+      "A: A table can have only one UNIQUE constraint",
+      "B: UNIQUE constraint does not allow NULL values",
+      "C: UNIQUE constraint allows one NULL value",
+      "D: UNIQUE constraint is the same as PRIMARY KEY"
+    ],
     "answer": "C"
   },
   {
     "topic": "Dynamic SQL",
     "question": "Which method is safer for executing Dynamic SQL in SQL Server?",
-    "options": {
-      "A": "EXEC()",
-      "B": "sp_executesql",
-      "C": "PRINT",
-      "D": "SELECT"
-    },
+    "options": [
+      "A: EXEC()",
+      "B: sp_executesql",
+      "C: PRINT",
+      "D: SELECT"
+    ],
     "answer": "B"
   },
   {
     "topic": "Dynamic SQL",
     "question": "What is the main risk of using EXEC() with string concatenation?",
-    "options": {
-      "A": "Deadlocks",
-      "B": "Index fragmentation",
-      "C": "SQL Injection",
-      "D": "Blocking"
-    },
+    "options": [
+      "A: Deadlocks",
+      "B: Index fragmentation",
+      "C: SQL Injection",
+      "D: Blocking"
+    ],
     "answer": "C"
   },
   {
     "topic": "TRY...CATCH",
     "question": "Which function returns the error message inside a CATCH block?",
-    "options": {
-      "A": "ERROR_LINE()",
-      "B": "ERROR_SEVERITY()",
-      "C": "ERROR_MESSAGE()",
-      "D": "ERROR_STATE()"
-    },
+    "options": [
+      "A: ERROR_LINE()",
+      "B: ERROR_SEVERITY()",
+      "C: ERROR_MESSAGE()",
+      "D: ERROR_STATE()"
+    ],
     "answer": "C"
   },
   {
     "topic": "Transactions",
     "question": "What is the value of @@TRANCOUNT after a ROLLBACK statement?",
-    "options": {
-      "A": "1",
-      "B": "Depends on nesting level",
-      "C": "0",
-      "D": "-1"
-    },
+    "options": [
+      "A: 1",
+      "B: Depends on nesting level",
+      "C: 0",
+      "D: -1"
+    ],
     "answer": "C"
   },
   {
     "topic": "Joins",
     "question": "Which JOIN returns only matching rows from both tables?",
-    "options": {
-      "A": "LEFT OUTER JOIN",
-      "B": "RIGHT OUTER JOIN",
-      "C": "FULL OUTER JOIN",
-      "D": "INNER JOIN"
-    },
+    "options": [
+      "A: LEFT OUTER JOIN",
+      "B: RIGHT OUTER JOIN",
+      "C: FULL OUTER JOIN",
+      "D: INNER JOIN"
+    ],
     "answer": "D"
   },
   {
     "topic": "Performance Monitoring",
     "question": "Which DMV is used to identify slow-running queries in SQL Server?",
-    "options": {
-      "A": "sys.tables",
-      "B": "sys.indexes",
-      "C": "sys.dm_exec_query_stats",
-      "D": "sys.objects"
-    },
+    "options": [
+      "A: sys.tables",
+      "B: sys.indexes",
+      "C: sys.dm_exec_query_stats",
+      "D: sys.objects"
+    ],
     "answer": "C"
   },
   {
     "topic": "SET NOCOUNT",
     "question": "What is the purpose of SET NOCOUNT ON?",
-    "options": {
-      "A": "Stops query execution",
-      "B": "Suppresses row count messages",
-      "C": "Improves indexing",
-      "D": "Prevents deadlocks"
-    },
+    "options": [
+      "A: Stops query execution",
+      "B: Suppresses row count messages",
+      "C: Improves indexing",
+      "D: Prevents deadlocks"
+    ],
     "answer": "B"
   },
+  {
+    "topic": "Numeric Functions",
+    "question": "What does the CEILING() function do in SQL Server?",
+    "options": [
+      "A: Rounds a number to the nearest integer",
+      "B: Returns the smallest integer greater than or equal to the number",
+      "C: Returns the largest integer less than or equal to the number",
+      "D: Removes decimal values"
+    ],
+    "answer": "B"
+  },
+  {
+    "topic": "Numeric Functions",
+    "question": "What is the result of FLOOR(6.6) in SQL Server?",
+    "options": [
+      "A: 7",
+      "B: 6",
+      "C: 6.6",
+      "D: Error"
+    ],
+    "answer": "B"
+  },
+  {
+    "topic": "Numeric Functions",
+    "question": "What is the output of ROUND(6.5, 0) in SQL Server?",
+    "options": [
+      "A: 6",
+      "B: 6.0",
+      "C: 7",
+      "D: 7.0"
+    ],
+    "answer": "C"
+  },
+  {
+    "topic": "Analytical Queries",
+    "question": "Which function is best suited to find the latest record per consumer from a history table?",
+    "options": [
+      "A: RANK()",
+      "B: DENSE_RANK()",
+      "C: ROW_NUMBER() with ORDER BY DESC",
+      "D: NTILE()"
+    ],
+    "answer": "C"
+  },
+  {
+    "topic": "Analytical Queries",
+    "question": "Which clause is used with ROW_NUMBER() to group records before ordering?",
+    "options": [
+      "A: ORDER BY",
+      "B: GROUP BY",
+      "C: PARTITION BY",
+      "D: HAVING"
+    ],
+    "answer": "C"
+  },
+  {
+    "topic": "CASE Expression",
+    "question": "Which SQL construct is used to swap values like 0 to 1 and 1 to 0?",
+    "options": [
+      "A: IF...ELSE",
+      "B: CASE expression",
+      "C: COALESCE",
+      "D: ISNULL"
+    ],
+    "answer": "B"
+  },
+  {
+    "topic": "System Objects",
+    "question": "Which function is commonly used to check if an object exists in SQL Server?",
+    "options": [
+      "A: OBJECT_NAME()",
+      "B: OBJECT_SCHEMA_NAME()",
+      "C: OBJECT_ID()",
+      "D: SCHEMA_ID()"
+    ],
+    "answer": "C"
+  },
+  {
+    "topic": "System Objects",
+    "question": "Which object type code represents a user table in OBJECT_ID checks?",
+    "options": [
+      "A: V",
+      "B: P",
+      "C: U",
+      "D: T"
+    ],
+    "answer": "C"
+  },
+  {
+    "topic": "Temporary Tables",
+    "question": "Where are temporary tables physically stored in SQL Server?",
+    "options": [
+      "A: master database",
+      "B: user database",
+      "C: tempdb database",
+      "D: model database"
+    ],
+    "answer": "C"
+  },
+  {
+    "topic": "Temporary Tables",
+    "question": "Which command is commonly used to describe a temporary table structure?",
+    "options": [
+      "A: DESCRIBE #temp",
+      "B: sp_help '#temp'",
+      "C: SHOW COLUMNS",
+      "D: DBCC INPUTBUFFER"
+    ],
+    "answer": "B"
+  },
+  {
+    "topic": "System Functions",
+    "question": "What does OBJECT_ID() return in SQL Server?",
+    "options": [
+      "A: The schema name of the object",
+      "B: The ID of a schema-scoped object",
+      "C: The row count of a table",
+      "D: The database ID"
+    ],
+    "answer": "B"
+  },
+  {
+    "topic": "System Functions",
+    "question": "What will OBJECT_ID() return if the object does not exist?",
+    "options": [
+      "A: 0",
+      "B: -1",
+      "C: NULL",
+      "D: Error"
+    ],
+    "answer": "C"
+  },
+  {
+    "topic": "System Functions",
+    "question": "Which parameter is used with OBJECT_ID to specify the object type?",
+    "options": [
+      "A: Database ID",
+      "B: Object type code like 'U', 'V', 'P'",
+      "C: Schema name",
+      "D: Collation"
+    ],
+    "answer": "B"
+  },
+  {
+    "topic": "System Functions",
+    "question": "What does OBJECT_NAME(object_id) return?",
+    "options": [
+      "A: The ID of an object",
+      "B: The name of an object from its object_id",
+      "C: The database ID of an object",
+      "D: The owner of the object"
+    ],
+    "answer": "B"
+  },
+  {
+    "topic": "System Functions",
+    "question": "Which function would you use to find a stored procedure containing specific text?",
+    "options": [
+      "A: OBJECT_ID()",
+      "B: OBJECT_NAME()",
+      "C: OBJECT_DEFINITION()",
+      "D: DB_NAME()"
+    ],
+    "answer": "C"
+  },
+  {
+    "topic": "Variables & Datatypes",
+    "question": "Which function is used to identify the datatype and properties of a variable in SQL Server?",
+    "options": [
+      "A: TYPEOF()",
+      "B: SQL_VARIANT_PROPERTY()",
+      "C: ISNUMERIC()",
+      "D: CAST()"
+    ],
+    "answer": "B"
+  },
+  {
+    "topic": "Variables & Datatypes",
+    "question": "Which property of SQL_VARIANT_PROPERTY() gives the number of bytes required to store a variable?",
+    "options": [
+      "A: Precision",
+      "B: Scale",
+      "C: TotalBytes",
+      "D: MaxLength"
+    ],
+    "answer": "C"
+  },
+  {
+    "topic": "Temporary Tables",
+    "question": "What is the main difference between a temporary table (#TempTable) and a global temporary table (##GlobalTempTable)?",
+    "options": [
+      "A: Temporary table exists in master DB, global temp in tempdb",
+      "B: Temporary table is session-specific, global temp is accessible to all sessions",
+      "C: Temporary table requires DROP, global temp is auto-dropped",
+      "D: Temporary table can’t have indexes, global temp can"
+    ],
+    "answer": "B"
+  },
+  {
+    "topic": "Temporary Tables",
+    "question": "Where are temporary and global temporary tables stored physically in SQL Server?",
+    "options": [
+      "A: User database",
+      "B: master database",
+      "C: tempdb",
+      "D: model database"
+    ],
+    "answer": "C"
+  },
+  {
+    "topic": "Debugging & Stored Procedures",
+    "question": "Which catalog view and function combination can be used to search stored procedures containing a specific string?",
+    "options": [
+      "A: sys.tables + OBJECT_ID()",
+      "B: sys.procedures + OBJECT_DEFINITION()",
+      "C: sys.objects + OBJECT_NAME()",
+      "D: sys.columns + OBJECT_DEFINITION()"
+    ],
+    "answer": "B"
+  },
+  {
+    "topic": "SQL Language Categories",
+    "question": "Which SQL statements are considered DDL (Data Definition Language)?",
+    "options": [
+      "A: SELECT, INSERT, UPDATE",
+      "B: CREATE, ALTER, DROP, TRUNCATE",
+      "C: GRANT, REVOKE",
+      "D: COMMIT, ROLLBACK"
+    ],
+    "answer": "B"
+  },
+  {
+    "topic": "SQL Language Categories",
+    "question": "Which SQL statements are considered DML (Data Manipulation Language)?",
+    "options": [
+      "A: SELECT, INSERT, UPDATE, DELETE, MERGE",
+      "B: CREATE, ALTER, DROP",
+      "C: GRANT, REVOKE",
+      "D: COMMIT, ROLLBACK"
+    ],
+    "answer": "A"
+  },
+  {
+    "topic": "SQL Language Categories",
+    "question": "Which SQL statements are considered DCL (Data Control Language)?",
+    "options": [
+      "A: SELECT, INSERT",
+      "B: COMMIT, ROLLBACK",
+      "C: GRANT, REVOKE",
+      "D: CREATE, ALTER, DROP"
+    ],
+    "answer": "C"
+  },
+  {
+    "topic": "SQL Language Categories",
+    "question": "Which SQL statements are considered TCL (Transaction Control Language)?",
+    "options": [
+      "A: COMMIT, ROLLBACK, SAVEPOINT, SET TRANSACTION",
+      "B: SELECT, INSERT",
+      "C: CREATE, ALTER, DROP",
+      "D: GRANT, REVOKE"
+    ],
+    "answer": "A"
+  },
+  {
+    "topic": "SQL Operators",
+    "question": "What does the ALL operator do in SQL?",
+    "options": [
+      "A: Returns TRUE if a value matches at least one value in a subquery",
+      "B: Returns TRUE if a value matches all values in a subquery",
+      "C: Performs an aggregate SUM of all values",
+      "D: Compares values with a fixed constant"
+    ],
+    "answer": "B"
+  },
+  {
+    "topic": "SQL Operators",
+    "question": "Which comparison operators can be used with ALL in SQL?",
+    "options": [
+      "A: =, !=, >, <, >=, <=",
+      "B: LIKE, IN",
+      "C: BETWEEN, ISNULL",
+      "D: JOIN, UNION"
+    ],
+    "answer": "A"
+  },
+  {
+    "topic": "SQL Subqueries",
+    "question": "Why does the query fail: `SELECT Name FROM Employees WHERE Salary > (SELECT AvgSalary FROM Departments)`?",
+    "options": [
+      "A: The subquery is empty",
+      "B: The outer query has no columns",
+      "C: The subquery returns multiple rows",
+      "D: The outer query uses an aggregate function incorrectly"
+    ],
+    "answer": "C"
+  },
+  {
+    "topic": "SQL Subqueries",
+    "question": "How can you fix a subquery that returns multiple rows for comparison in SQL?",
+    "options": [
+      "A: Use an aggregate function like AVG()",
+      "B: Use ALL or ANY operators",
+      "C: Both A and B",
+      "D: Change the table structure"
+    ],
+    "answer": "C"
+  },
+  {
+    "topic": "SQL Terminology",
+    "question": "In SQL, what is a tuple?",
+    "options": [
+      "A: A column in a table",
+      "B: A row in a table",
+      "C: The table schema",
+      "D: A database index"
+    ],
+    "answer": "B"
+  },
+  {
+    "topic": "SQL Terminology",
+    "question": "In relational model terminology, which of the following is equivalent to a tuple in SQL?",
+    "options": [
+      "A: Table",
+      "B: Column",
+      "C: Row",
+      "D: Data type"
+    ],
+    "answer": "C"
+  },
+  {
+    "topic": "SQL ANY Operator",
+    "question": "What does the ANY operator do in SQL?",
+    "options": [
+      "A: Returns TRUE if a value matches all values in a subquery",
+      "B: Returns TRUE if a value matches at least one value in a subquery",
+      "C: Returns all rows from a table",
+      "D: Returns NULL for unmatched rows"
+    ],
+    "answer": "B"
+  },
+  {
+    "topic": "SQL ALL vs ANY",
+    "question": "Which statement is TRUE about ALL and ANY operators in SQL?",
+    "options": [
+      "A: ALL requires the condition to be true for at least one value",
+      "B: ANY requires the condition to be true for all values",
+      "C: ALL requires the condition to be true for all values; ANY requires the condition to be true for at least one value",
+      "D: ALL and ANY are equivalent and interchangeable"
+    ],
+    "answer": "C"
+  },
+  {
+    "topic": "SQL Subqueries",
+    "question": "Why does the query `SELECT Name FROM Employees WHERE Salary > (SELECT AvgSalary FROM Departments)` fail if WHERE clause is removed from subquery?",
+    "options": [
+      "A: Outer query has no columns",
+      "B: Subquery returns multiple rows, which cannot be compared with >",
+      "C: Salary column is NULL",
+      "D: AVG function is missing"
+    ],
+    "answer": "B"
+  },
+  {
+    "topic": "SQL Subqueries",
+    "question": "How can you modify a multi-row subquery to avoid the error when comparing with a scalar?",
+    "options": [
+      "A: Use aggregate function like AVG() to return a single value",
+      "B: Use ALL or ANY operators for multi-row comparison",
+      "C: Both A and B",
+      "D: Change the table structure"
+    ],
+    "answer": "C"
+  },
+  {
+    "topic": "SQL ANY Operator Example",
+    "question": "Find employees whose salaries are equal to the average salary of their department. Which SQL query is correct?",
+    "options": [
+      "A: SELECT first_name FROM employees WHERE salary = ALL (SELECT AVG(salary) FROM employees GROUP BY department_id)",
+      "B: SELECT first_name FROM employees WHERE salary = ANY (SELECT AVG(salary) FROM employees GROUP BY department_id)",
+      "C: SELECT first_name FROM employees WHERE salary > ANY (SELECT MAX(salary) FROM employees GROUP BY department_id)",
+      "D: SELECT first_name FROM employees WHERE salary < ALL (SELECT MIN(salary) FROM employees GROUP BY department_id)"
+    ],
+    "answer": "B"
+  },
+  {
+    "topic": "SQL ALL Operator Example",
+    "question": "Consider the query: `SELECT * FROM (SELECT 1 AS a, 2 AS b) ab WHERE a <= ALL (SELECT 0 AS a UNION SELECT 4)`; what will it return?",
+    "options": [
+      "A: Row (1, 2)",
+      "B: Row (0, 2)",
+      "C: No rows",
+      "D: Error due to UNION"
+    ],
+    "answer": "C"
+  },
+  {
+    "topic": "SQL ANY Operator Example",
+    "question": "Consider the query: `SELECT * FROM (SELECT 1 AS a, 2 AS b) ab WHERE a <= ANY (SELECT 0 AS a UNION SELECT 4)`; what will it return?",
+    "options": [
+      "A: Row (1, 2)",
+      "B: Row (0, 2)",
+      "C: No rows",
+      "D: Error due to ANY operator"
+    ],
+    "answer": "A"
+  },
+  {
+    "topic": "SQL DB_ID",
+    "question": "What does the function DB_ID() return in SQL Server?",
+    "options": [
+      "A: ID of the current user",
+      "B: ID of the current database",
+      "C: Number of tables in the database",
+      "D: Maximum object_id in the database"
+    ],
+    "answer": "B"
+  },
+  {
+    "topic": "SQL DB_ID",
+    "question": "How do you get the ID of a specific database named 'TestDB'?",
+    "options": [
+      "A: SELECT OBJECT_ID('TestDB')",
+      "B: SELECT DB_ID('TestDB')",
+      "C: SELECT DATABASEPROPERTY('TestDB')",
+      "D: SELECT DATABASE_ID('TestDB')"
+    ],
+    "answer": "B"
+  },
+  {
+    "topic": "SQL ANY with Conditions",
+    "question": "Which query returns products ordered at least once with quantity 9?",
+    "options": [
+      "A: SELECT ProductName FROM Products WHERE ProductID = ALL (SELECT ProductID FROM OrderDetails WHERE Quantity = 9)",
+      "B: SELECT ProductName FROM Products WHERE ProductID = ANY (SELECT ProductID FROM OrderDetails WHERE Quantity = 9)",
+      "C: SELECT ProductName FROM Products WHERE Quantity = 9",
+      "D: SELECT ProductName FROM Products WHERE ProductID IN (SELECT ProductID FROM OrderDetails WHERE Quantity = 10)"
+    ],
+    "answer": "B"
+  },
+  {
+    "topic": "SQL ANY vs ALL",
+    "question": "If you want to find employees whose salary is higher than at least one department average salary, which operator should you use?",
+    "options": [
+      "A: ALL",
+      "B: ANY",
+      "C: IN",
+      "D: EXISTS"
+    ],
+    "answer": "B"
+  },
+  {
+    "topic": "SQL DB_NAME()",
+    "question": "What does DB_NAME() without any argument return in SQL Server?",
+    "options": [
+      "A: The ID of the current database",
+      "B: The name of the current database",
+      "C: The default schema name",
+      "D: NULL"
+    ],
+    "answer": "B"
+  },
+  {
+    "topic": "SQL DB_NAME()",
+    "question": "How do you get the name of a database with database_id = 3?",
+    "options": [
+      "A: SELECT DB_NAME(3)",
+      "B: SELECT DATABASE_NAME(3)",
+      "C: SELECT OBJECT_NAME(3)",
+      "D: SELECT DB_ID(3)"
+    ],
+    "answer": "A"
+  },
+  {
+    "topic": "SQL CASE Statement",
+    "question": "Which of the following is TRUE about CASE statements in SQL?",
+    "options": [
+      "A: CASE can only be used in SELECT clause",
+      "B: CASE cannot be nested",
+      "C: CASE can be used in SELECT, ORDER BY, UPDATE, and WHERE clauses",
+      "D: CASE always returns TRUE or FALSE"
+    ],
+    "answer": "C"
+  },
+  {
+    "topic": "SQL CASE with Aggregation",
+    "question": "How can you count male and female employees in each department using CASE?",
+    "options": [
+      "A: COUNT(CASE WHEN gender='M' THEN 1 END)",
+      "B: SUM(CASE WHEN gender='M' THEN 1 ELSE 0 END)",
+      "C: Both A and B",
+      "D: Neither A nor B"
+    ],
+    "answer": "C"
+  },
+  {
+    "topic": "SQL CASE Statement",
+    "question": "What happens if no CASE conditions match and there is no ELSE clause?",
+    "options": [
+      "A: SQL throws an error",
+      "B: SQL returns NULL",
+      "C: SQL returns 0",
+      "D: SQL returns the first value of the column"
+    ],
+    "answer": "B"
+  },
+  {
+    "topic": "SQL Uniqueness Check",
+    "question": "Which query can be used to check whether all employee IDs (`emp_id`) are unique?",
+    "options": [
+      "A: SELECT emp_id, COUNT(*) FROM employees GROUP BY emp_id HAVING COUNT(*) > 1",
+      "B: SELECT DISTINCT emp_id FROM employees",
+      "C: SELECT emp_id FROM employees WHERE emp_id IS UNIQUE",
+      "D: SELECT emp_id FROM employees GROUP BY emp_id"
+    ],
+    "answer": "A"
+  },
+  {
+    "topic": "SQL Uniqueness Check",
+    "question": "How do you quickly confirm total records vs unique employee IDs?",
+    "options": [
+      "A: SELECT COUNT(*) FROM employees",
+      "B: SELECT COUNT(DISTINCT emp_id) FROM employees",
+      "C: SELECT COUNT(*) AS total_records, COUNT(DISTINCT emp_id) AS unique_emp_ids FROM employees",
+      "D: SELECT emp_id, COUNT(*) FROM employees"
+    ],
+    "answer": "C"
+  },
+  {
+    "topic": "SQL DML",
+    "question": "Which of the following statements is NOT a DML command?",
+    "options": [
+      "A: SELECT",
+      "B: INSERT",
+      "C: UPDATE",
+      "D: CREATE TABLE"
+    ],
+    "answer": "D"
+  },
+  {
+    "topic": "SQL DML vs DDL",
+    "question": "What is the main difference between DML and DDL commands?",
+    "options": [
+      "A: DML affects database structure, DDL affects data",
+      "B: DML affects data, DDL affects database structure",
+      "C: DML and DDL are the same",
+      "D: DML affects permissions, DDL affects transactions"
+    ],
+    "answer": "B"
+  },
+  {
+    "topic": "SQL CASE in ORDER BY",
+    "question": "How can you sort employees with job_name 'MANAGER' first, 'ANALYST' second, others last?",
+    "options": [
+      "A: ORDER BY job_name",
+      "B: ORDER BY CASE WHEN job_name='MANAGER' THEN 1 WHEN job_name='ANALYST' THEN 2 ELSE 3 END",
+      "C: ORDER BY CASE job_name END",
+      "D: ORDER BY salary DESC"
+    ],
+    "answer": "B"
+  },
+  {
+    "topic": "SQL CASE in UPDATE",
+    "question": "How would you give a bonus of 500 to IT department employees only using CASE in UPDATE?",
+    "options": [
+      "A: UPDATE employees SET salary = salary + 500 WHERE department='IT'",
+      "B: UPDATE employees SET salary = salary + CASE WHEN department='IT' THEN 500 ELSE 0 END",
+      "C: Both A and B",
+      "D: UPDATE employees SET salary = 500"
+    ],
+    "answer": "C"
+  },
+  {
+    "topic": "Deleting Duplicate Rows",
+    "question": "How can you delete duplicate rows in a table while keeping only one copy?",
+    "options": [
+      "A: DELETE FROM employees",
+      "B: WITH DuplicateCTE AS (SELECT *, ROW_NUMBER() OVER(PARTITION BY emp_id ORDER BY emp_id) AS rn FROM employees) DELETE FROM DuplicateCTE WHERE rn > 1",
+      "C: TRUNCATE TABLE employees",
+      "D: DROP TABLE employees"
+    ],
+    "answer": "B"
+  },
+  {
+    "topic": "Renaming Objects",
+    "question": "How do you rename a column 'emp_name' to 'employee_name' in SQL Server?",
+    "options": [
+      "A: ALTER TABLE Employees RENAME COLUMN emp_name TO employee_name",
+      "B: EXEC sp_rename 'Employees.emp_name', 'employee_name', 'COLUMN'",
+      "C: ALTER COLUMN emp_name RENAME TO employee_name",
+      "D: UPDATE Employees SET emp_name = 'employee_name'"
+    ],
+    "answer": "B"
+  },
+  {
+    "topic": "Renaming Objects",
+    "question": "How do you rename a database 'Test' to 'Test2'?",
+    "options": [
+      "A: ALTER DATABASE [Test] MODIFY NAME = [Test2]",
+      "B: EXEC sp_renamedb 'Test', 'Test2'",
+      "C: Both A and B",
+      "D: DROP DATABASE Test; CREATE DATABASE Test2"
+    ],
+    "answer": "C"
+  },
+  {
+    "topic": "Aggregation with Join",
+    "question": "Write an SQL query to display total units sold by each pizza company.",
+    "options": [
+      "A: SELECT com, SUM(unitssold) FROM Foods GROUP BY com",
+      "B: SELECT f.com, p.companyname, SUM(f.unitssold) AS total_units_sold FROM Foods f JOIN PizzaCompany p ON f.com = p.companyid GROUP BY f.com, p.companyname",
+      "C: SELECT * FROM Foods",
+      "D: SELECT companyname, SUM(unitssold) FROM PizzaCompany JOIN Foods"
+    ],
+    "answer": "B"
+  },
+  {
+    "topic": "Join and Aggregation",
+    "question": "Find department name, grade, and number of employees where at least two employees are SALESMAN.",
+    "options": [
+      "A: SELECT d.dep_name, s.grade, COUNT(*) FROM employees e JOIN department d ON e.dep_id = d.dep_id JOIN salary_grade s ON e.salary BETWEEN s.min_sal AND s.max_sal WHERE e.job_name = 'SALESMAN' GROUP BY d.dep_name, s.grade HAVING COUNT(*) >= 2",
+      "B: SELECT dep_name FROM department",
+      "C: SELECT * FROM employees WHERE job_name='SALESMAN'",
+      "D: SELECT COUNT(*) FROM employees"
+    ],
+    "answer": "A"
+  },
+  {
+    "topic": "Departments with minimum employees",
+    "question": "List departments where at least two employees are working.",
+    "options": [
+      "A: SELECT dep_name FROM dept WHERE dep_id IN (SELECT dep_id FROM emp2 GROUP BY dep_id HAVING COUNT(*) >= 2)",
+      "B: SELECT dep_name FROM dept",
+      "C: SELECT dep_name, COUNT(*) FROM emp2",
+      "D: SELECT * FROM emp2"
+    ],
+    "answer": "A"
+  },
+  {
+    "topic": "SQL ANY operator",
+    "question": "Find product names where any order has quantity = 9.",
+    "options": [
+      "A: SELECT ProductName FROM Products WHERE ProductID = ANY (SELECT ProductID FROM OrderDetails WHERE Quantity = 9)",
+      "B: SELECT ProductName FROM Products WHERE ProductID = ALL (SELECT ProductID FROM OrderDetails WHERE Quantity = 9)",
+      "C: SELECT * FROM Products",
+      "D: SELECT ProductID FROM OrderDetails"
+    ],
+    "answer": "A"
+  },
+  {
+    "topic": "SQL ALL operator",
+    "question": "Find employees whose salary is greater than all department average salaries.",
+    "options": [
+      "A: SELECT Name, Salary FROM Employees WHERE Salary > ALL (SELECT AvgSalary FROM Departments)",
+      "B: SELECT Name, Salary FROM Employees WHERE Salary > ANY (SELECT AvgSalary FROM Departments)",
+      "C: SELECT * FROM Employees",
+      "D: SELECT MAX(Salary) FROM Employees"
+    ],
+    "answer": "A"
+  },
+  {
+    "topic": "ANY vs ALL",
+    "question": "What is the difference between ANY and ALL in SQL?",
+    "options": [
+      "A: ANY returns TRUE if condition matches at least one value; ALL returns TRUE if condition matches all values",
+      "B: ANY and ALL are the same",
+      "C: ANY returns all values; ALL returns a single value",
+      "D: ANY is used for joins; ALL is used for subqueries"
+    ],
+    "answer": "A"
+  },
+  {
+    "topic": "Employee salary comparison",
+    "question": "Find employees whose salaries equal the average salary of their department.",
+    "options": [
+      "A: SELECT first_name, last_name, salary FROM employees WHERE salary = ANY (SELECT AVG(salary) FROM employees GROUP BY department_id)",
+      "B: SELECT * FROM employees WHERE salary = AVG(salary)",
+      "C: SELECT * FROM employees",
+      "D: SELECT salary FROM employees"
+    ],
+    "answer": "A"
+  },
+  {
+    "topic": "DB_ID function",
+    "question": "What does DB_ID() return in SQL Server?",
+    "options": [
+      "A: The ID number of a database",
+      "B: The name of a database",
+      "C: The number of tables in the database",
+      "D: The current user ID"
+    ],
+    "answer": "A"
+  },
+  {
+    "topic": "DB_NAME function",
+    "question": "What does DB_NAME() return when called without arguments?",
+    "options": [
+      "A: The name of the current database",
+      "B: The ID of the current database",
+      "C: All database names",
+      "D: NULL"
+    ],
+    "answer": "A"
+  },
+  {
+    "topic": "Check uniqueness",
+    "question": "Write a query to check whether all employee numbers are unique.",
+    "options": [
+      "A: SELECT emp_id, COUNT(*) FROM employees GROUP BY emp_id HAVING COUNT(*) > 1",
+      "B: SELECT DISTINCT emp_id FROM employees",
+      "C: SELECT * FROM employees",
+      "D: SELECT MAX(emp_id) FROM employees"
+    ],
+    "answer": "A"
+  },
+  {
+    "topic": "CASE in SELECT",
+    "question": "Classify employees' salaries as High (>3000), Medium (2000-3000), Low (<2000) using CASE in SELECT.",
+    "options": [
+      "A: SELECT salary, CASE WHEN salary>3000 THEN 'High' WHEN salary BETWEEN 2000 AND 3000 THEN 'Medium' ELSE 'Low' END AS SalaryLevel FROM employees",
+      "B: SELECT salary FROM employees",
+      "C: SELECT CASE salary END FROM employees",
+      "D: SELECT * FROM employees"
+    ],
+    "answer": "A"
+  },
+  {
+    "topic": "CASE in UPDATE",
+    "question": "How would you give a bonus of 500 to IT department employees only using CASE in UPDATE?",
+    "options": [
+      "A: UPDATE employees SET salary = salary + 500 WHERE department='IT'",
+      "B: UPDATE employees SET salary = salary + CASE WHEN department='IT' THEN 500 ELSE 0 END",
+      "C: Both A and B",
+      "D: UPDATE employees SET salary = 500"
+    ],
+    "answer": "C"
+  },
+  {
+    "topic": "COUNT with CASE",
+    "question": "How do you count male and female employees per department using CASE?",
+    "options": [
+      "A: SELECT department, COUNT(CASE WHEN gender='M' THEN 1 END) AS male_count, COUNT(CASE WHEN gender='F' THEN 1 END) AS female_count FROM employees GROUP BY department",
+      "B: SELECT department, COUNT(gender) FROM employees",
+      "C: SELECT * FROM employees",
+      "D: SELECT gender, COUNT(*) FROM employees"
+    ],
+    "answer": "A"
+  },
+  {
+    "topic": "SUM with CASE",
+    "question": "Find total salary of IT department using SUM with CASE.",
+    "options": [
+      "A: SELECT SUM(CASE WHEN department='IT' THEN salary ELSE 0 END) AS IT_Total_Salary FROM employees",
+      "B: SELECT SUM(salary) FROM employees WHERE department='IT'",
+      "C: SELECT * FROM employees",
+      "D: SELECT SUM(salary) FROM employees"
+    ],
+    "answer": "A"
+  },
+  {
+    "topic": "Delete duplicates (alternative)",
+    "question": "How can you delete duplicates using a subquery?",
+    "options": [
+      "A: DELETE FROM employees WHERE emp_id NOT IN (SELECT MIN(emp_id) FROM employees GROUP BY emp_id)",
+      "B: TRUNCATE TABLE employees",
+      "C: DELETE FROM employees",
+      "D: DROP TABLE employees"
+    ],
+    "answer": "A"
+  },
+  {
+    "topic": "Delete duplicate rows",
+    "question": "How do you delete duplicate employee rows while keeping only one copy using ROW_NUMBER()?",
+    "options": [
+      "A: WITH DuplicateCTE AS (SELECT *, ROW_NUMBER() OVER (PARTITION BY emp_id ORDER BY emp_id) AS rn FROM employees) DELETE FROM DuplicateCTE WHERE rn > 1",
+      "B: DELETE FROM employees WHERE emp_id NOT IN (SELECT MIN(emp_id) FROM employees GROUP BY emp_id)",
+      "C: TRUNCATE TABLE employees",
+      "D: Both A and B"
+    ],
+    "answer": "D"
+  },
+  {
+    "topic": "Window Function",
+    "question": "Get the second highest salary for each department using ROW_NUMBER().",
+    "options": [
+      "A: SELECT * FROM (SELECT emp_id, salary, ROW_NUMBER() OVER(PARTITION BY department_id ORDER BY salary DESC) AS rn FROM employees) t WHERE rn = 2",
+      "B: SELECT MAX(salary) FROM employees",
+      "C: SELECT TOP 2 salary FROM employees",
+      "D: SELECT salary FROM employees WHERE salary = (SELECT MAX(salary) FROM employees)"
+    ],
+    "answer": "A"
+  },
+  {
+    "topic": "CASE in aggregation",
+    "question": "Calculate total salary of IT and HR separately in one query using SUM with CASE.",
+    "options": [
+      "A: SELECT SUM(CASE WHEN department='IT' THEN salary ELSE 0 END) AS IT_Salary, SUM(CASE WHEN department='HR' THEN salary ELSE 0 END) AS HR_Salary FROM employees",
+      "B: SELECT SUM(salary) FROM employees WHERE department='IT' OR department='HR'",
+      "C: SELECT salary FROM employees",
+      "D: SELECT department, SUM(salary) FROM employees"
+    ],
+    "answer": "A"
+  },
+  {
+    "topic": "ALL operator",
+    "question": "Find employees whose salary is greater than all department average salaries.",
+    "options": [
+      "A: SELECT Name, Salary FROM Employees WHERE Salary > ALL (SELECT AVG(Salary) FROM Employees GROUP BY Department_ID)",
+      "B: SELECT Name, Salary FROM Employees WHERE Salary > ANY (SELECT AVG(Salary) FROM Employees GROUP BY Department_ID)",
+      "C: SELECT MAX(Salary) FROM Employees",
+      "D: SELECT * FROM Employees"
+    ],
+    "answer": "A"
+  },
+  {
+    "topic": "ANY operator",
+    "question": "Find employees whose salary is greater than at least one department's average salary.",
+    "options": [
+      "A: SELECT Name, Salary FROM Employees WHERE Salary > ANY (SELECT AVG(Salary) FROM Employees GROUP BY Department_ID)",
+      "B: SELECT Name, Salary FROM Employees WHERE Salary > ALL (SELECT AVG(Salary) FROM Employees GROUP BY Department_ID)",
+      "C: SELECT * FROM Employees",
+      "D: SELECT MAX(Salary) FROM Employees"
+    ],
+    "answer": "A"
+  },
+  {
+    "topic": "CTE with recursive query",
+    "question": "Write a query to generate first 10 Fibonacci numbers using recursive CTE.",
+    "options": [
+      "A: WITH CTE_Fib AS (SELECT 0 AS n, 0 AS fib UNION ALL SELECT 1,1 UNION ALL SELECT n+1, fib+LAG(fib) OVER (ORDER BY n) FROM CTE_Fib) SELECT * FROM CTE_Fib WHERE n<10",
+      "B: SELECT * FROM Fibonacci",
+      "C: SELECT TOP 10 fib FROM Fibonacci",
+      "D: SELECT * FROM CTE_Fib"
+    ],
+    "answer": "A"
+  },
+  {
+    "topic": "Find duplicate rows",
+    "question": "Identify duplicate employee emails but keep the earliest join_date row.",
+    "options": [
+      "A: WITH CTE AS (SELECT *, ROW_NUMBER() OVER(PARTITION BY email ORDER BY join_date ASC) AS rn FROM employees) SELECT * FROM CTE WHERE rn > 1",
+      "B: SELECT email, COUNT(*) FROM employees GROUP BY email HAVING COUNT(*)>1",
+      "C: SELECT DISTINCT email FROM employees",
+      "D: DELETE FROM employees"
+    ],
+    "answer": "B"
+  },
+  {
+    "topic": "Self-join",
+    "question": "Find employees who have the same manager as 'John'.",
+    "options": [
+      "A: SELECT e1.* FROM employees e1 JOIN employees e2 ON e1.manager_id = e2.manager_id WHERE e2.name='John'",
+      "B: SELECT * FROM employees WHERE manager_id=(SELECT manager_id FROM employees WHERE name='John')",
+      "C: Both A and B",
+      "D: SELECT name FROM employees"
+    ],
+    "answer": "C"
+  },
+  {
+    "topic": "Ranking with RANK",
+    "question": "Get the top 3 salaries per department, including ties using RANK().",
+    "options": [
+      "A: SELECT * FROM (SELECT *, RANK() OVER(PARTITION BY department_id ORDER BY salary DESC) AS rnk FROM employees) t WHERE rnk <= 3",
+      "B: SELECT TOP 3 * FROM employees ORDER BY salary DESC",
+      "C: SELECT * FROM employees",
+      "D: SELECT MAX(salary) FROM employees"
+    ],
+    "answer": "A"
+  },
+  {
+    "topic": "CASE in WHERE",
+    "question": "Select employees where department is IT get salary>5000, else salary>3000 using CASE in WHERE.",
+    "options": [
+      "A: SELECT * FROM employees WHERE salary > CASE WHEN department='IT' THEN 5000 ELSE 3000 END",
+      "B: SELECT * FROM employees WHERE salary>5000 OR salary>3000",
+      "C: SELECT * FROM employees",
+      "D: SELECT * FROM employees WHERE salary>3000"
+    ],
+    "answer": "A"
+  },
+  {
+    "topic": "Transaction Control",
+    "question": "How do you rollback changes only to a certain savepoint?",
+    "options": [
+      "A: SAVE TRANSACTION SavePoint1; ... ROLLBACK TRANSACTION SavePoint1",
+      "B: ROLLBACK TRANSACTION",
+      "C: COMMIT TRANSACTION SavePoint1",
+      "D: BEGIN TRANSACTION"
+    ],
+    "answer": "A"
+  },
+  {
+    "topic": "Nested subquery",
+    "question": "Select employees whose salary is greater than the average salary of the department with highest headcount.",
+    "options": [
+      "A: SELECT * FROM employees WHERE salary > (SELECT AVG(salary) FROM employees WHERE department_id=(SELECT TOP 1 department_id FROM employees GROUP BY department_id ORDER BY COUNT(*) DESC))",
+      "B: SELECT * FROM employees",
+      "C: SELECT * FROM employees WHERE salary > AVG(salary)",
+      "D: SELECT * FROM employees WHERE department_id=1"
+    ],
+    "answer": "A"
+  },
+  {
+    "topic": "Dynamic SQL",
+    "question": "Execute a query where table name is dynamic using sp_executesql.",
+    "options": [
+      "A: DECLARE @sql NVARCHAR(MAX) = 'SELECT * FROM ' + QUOTENAME(@TableName); EXEC sp_executesql @sql",
+      "B: SELECT * FROM @TableName",
+      "C: EXEC('SELECT * FROM ' + @TableName)",
+      "D: SELECT * FROM employees"
+    ],
+    "answer": "A"
+  },
+  {
+    "topic": "Find gaps in sequence",
+    "question": "Find missing employee IDs in a continuous sequence using CTE.",
+    "options": [
+      "A: WITH CTE AS (SELECT ROW_NUMBER() OVER(ORDER BY emp_id) AS rn, emp_id FROM employees) SELECT rn+1 AS missing_id FROM CTE WHERE rn+1 <> emp_id",
+      "B: SELECT * FROM employees",
+      "C: SELECT emp_id FROM employees WHERE emp_id IS NULL",
+      "D: SELECT MAX(emp_id) FROM employees"
+    ],
+    "answer": "A"
+  }
 
-
-{
-  "topic": "Numeric Functions",
-  "question": "What does the CEILING() function do in SQL Server?",
-  "options": {
-    "A": "Rounds a number to the nearest integer",
-    "B": "Returns the smallest integer greater than or equal to the number",
-    "C": "Returns the largest integer less than or equal to the number",
-    "D": "Removes decimal values"
-  },
-  "answer": "B"
-},
-{
-  "topic": "Numeric Functions",
-  "question": "What is the result of FLOOR(6.6) in SQL Server?",
-  "options": {
-    "A": "7",
-    "B": "6",
-    "C": "6.6",
-    "D": "Error"
-  },
-  "answer": "B"
-},
-{
-  "topic": "Numeric Functions",
-  "question": "What is the output of ROUND(6.5, 0) in SQL Server?",
-  "options": {
-    "A": "6",
-    "B": "6.0",
-    "C": "7",
-    "D": "7.0"
-  },
-  "answer": "C"
-},
-{
-  "topic": "Analytical Queries",
-  "question": "Which function is best suited to find the latest record per consumer from a history table?",
-  "options": {
-    "A": "RANK()",
-    "B": "DENSE_RANK()",
-    "C": "ROW_NUMBER() with ORDER BY DESC",
-    "D": "NTILE()"
-  },
-  "answer": "C"
-},
-{
-  "topic": "Analytical Queries",
-  "question": "Which clause is used with ROW_NUMBER() to group records before ordering?",
-  "options": {
-    "A": "ORDER BY",
-    "B": "GROUP BY",
-    "C": "PARTITION BY",
-    "D": "HAVING"
-  },
-  "answer": "C"
-},
-{
-  "topic": "CASE Expression",
-  "question": "Which SQL construct is used to swap values like 0 to 1 and 1 to 0?",
-  "options": {
-    "A": "IF...ELSE",
-    "B": "CASE expression",
-    "C": "COALESCE",
-    "D": "ISNULL"
-  },
-  "answer": "B"
-},
-{
-  "topic": "System Objects",
-  "question": "Which function is commonly used to check if an object exists in SQL Server?",
-  "options": {
-    "A": "OBJECT_NAME()",
-    "B": "OBJECT_SCHEMA_NAME()",
-    "C": "OBJECT_ID()",
-    "D": "SCHEMA_ID()"
-  },
-  "answer": "C"
-},
-{
-  "topic": "System Objects",
-  "question": "Which object type code represents a user table in OBJECT_ID checks?",
-  "options": {
-    "A": "V",
-    "B": "P",
-    "C": "U",
-    "D": "T"
-  },
-  "answer": "C"
-},
-{
-  "topic": "Temporary Tables",
-  "question": "Where are temporary tables physically stored in SQL Server?",
-  "options": {
-    "A": "master database",
-    "B": "user database",
-    "C": "tempdb database",
-    "D": "model database"
-  },
-  "answer": "C"
-},
-{
-  "topic": "Temporary Tables",
-  "question": "Which command is commonly used to describe a temporary table structure?",
-  "options": {
-    "A": "DESCRIBE #temp",
-    "B": "sp_help '#temp'",
-    "C": "SHOW COLUMNS",
-    "D": "DBCC INPUTBUFFER"
-  },
-  "answer": "B"
-}
-
-,
-
-
-
-
-
-
-{
-  "topic": "System Functions",
-  "question": "What does OBJECT_ID() return in SQL Server?",
-  "options": {
-    "A": "The schema name of the object",
-    "B": "The ID of a schema-scoped object",
-    "C": "The row count of a table",
-    "D": "The database ID"
-  },
-  "answer": "B"
-},
-{
-  "topic": "System Functions",
-  "question": "What will OBJECT_ID() return if the object does not exist?",
-  "options": {
-    "A": "0",
-    "B": "-1",
-    "C": "NULL",
-    "D": "Error"
-  },
-  "answer": "C"
-},
-{
-  "topic": "System Functions",
-  "question": "Which parameter is used with OBJECT_ID to specify the object type?",
-  "options": {
-    "A": "Database ID",
-    "B": "Object type code like 'U', 'V', 'P'",
-    "C": "Schema name",
-    "D": "Collation"
-  },
-  "answer": "B"
-},
-{
-  "topic": "System Functions",
-  "question": "What does OBJECT_NAME(object_id) return?",
-  "options": {
-    "A": "The ID of an object",
-    "B": "The name of an object from its object_id",
-    "C": "The database ID of an object",
-    "D": "The owner of the object"
-  },
-  "answer": "B"
-},
-{
-  "topic": "System Functions",
-  "question": "Which function would you use to find a stored procedure containing specific text?",
-  "options": {
-    "A": "OBJECT_ID()",
-    "B": "OBJECT_NAME()",
-    "C": "OBJECT_DEFINITION()",
-    "D": "DB_NAME()"
-  },
-  "answer": "C"
-},
-{
-  "topic": "Variables & Datatypes",
-  "question": "Which function is used to identify the datatype and properties of a variable in SQL Server?",
-  "options": {
-    "A": "TYPEOF()",
-    "B": "SQL_VARIANT_PROPERTY()",
-    "C": "ISNUMERIC()",
-    "D": "CAST()"
-  },
-  "answer": "B"
-},
-{
-  "topic": "Variables & Datatypes",
-  "question": "Which property of SQL_VARIANT_PROPERTY() gives the number of bytes required to store a variable?",
-  "options": {
-    "A": "Precision",
-    "B": "Scale",
-    "C": "TotalBytes",
-    "D": "MaxLength"
-  },
-  "answer": "C"
-},
-{
-  "topic": "Temporary Tables",
-  "question": "What is the main difference between a temporary table (#TempTable) and a global temporary table (##GlobalTempTable)?",
-  "options": {
-    "A": "Temporary table exists in master DB, global temp in tempdb",
-    "B": "Temporary table is session-specific, global temp is accessible to all sessions",
-    "C": "Temporary table requires DROP, global temp is auto-dropped",
-    "D": "Temporary table can’t have indexes, global temp can"
-  },
-  "answer": "B"
-},
-{
-  "topic": "Temporary Tables",
-  "question": "Where are temporary and global temporary tables stored physically in SQL Server?",
-  "options": {
-    "A": "User database",
-    "B": "master database",
-    "C": "tempdb",
-    "D": "model database"
-  },
-  "answer": "C"
-},
-{
-  "topic": "Debugging & Stored Procedures",
-  "question": "Which catalog view and function combination can be used to search stored procedures containing a specific string?",
-  "options": {
-    "A": "sys.tables + OBJECT_ID()",
-    "B": "sys.procedures + OBJECT_DEFINITION()",
-    "C": "sys.objects + OBJECT_NAME()",
-    "D": "sys.columns + OBJECT_DEFINITION()"
-  },
-  "answer": "B"
-}
-,
-
-
-
-{
-  "topic": "SQL Language Categories",
-  "question": "Which SQL statements are considered DDL (Data Definition Language)?",
-  "options": {
-    "A": "SELECT, INSERT, UPDATE",
-    "B": "CREATE, ALTER, DROP, TRUNCATE",
-    "C": "GRANT, REVOKE",
-    "D": "COMMIT, ROLLBACK"
-  },
-  "answer": "B"
-},
-{
-  "topic": "SQL Language Categories",
-  "question": "Which SQL statements are considered DML (Data Manipulation Language)?",
-  "options": {
-    "A": "SELECT, INSERT, UPDATE, DELETE, MERGE",
-    "B": "CREATE, ALTER, DROP",
-    "C": "GRANT, REVOKE",
-    "D": "COMMIT, ROLLBACK"
-  },
-  "answer": "A"
-},
-{
-  "topic": "SQL Language Categories",
-  "question": "Which SQL statements are considered DCL (Data Control Language)?",
-  "options": {
-    "A": "SELECT, INSERT",
-    "B": "COMMIT, ROLLBACK",
-    "C": "GRANT, REVOKE",
-    "D": "CREATE, ALTER, DROP"
-  },
-  "answer": "C"
-},
-{
-  "topic": "SQL Language Categories",
-  "question": "Which SQL statements are considered TCL (Transaction Control Language)?",
-  "options": {
-    "A": "COMMIT, ROLLBACK, SAVEPOINT, SET TRANSACTION",
-    "B": "SELECT, INSERT",
-    "C": "CREATE, ALTER, DROP",
-    "D": "GRANT, REVOKE"
-  },
-  "answer": "A"
-},
-{
-  "topic": "SQL Operators",
-  "question": "What does the ALL operator do in SQL?",
-  "options": {
-    "A": "Returns TRUE if a value matches at least one value in a subquery",
-    "B": "Returns TRUE if a value matches all values in a subquery",
-    "C": "Performs an aggregate SUM of all values",
-    "D": "Compares values with a fixed constant"
-  },
-  "answer": "B"
-},
-{
-  "topic": "SQL Operators",
-  "question": "Which comparison operators can be used with ALL in SQL?",
-  "options": {
-    "A": "=, !=, >, <, >=, <=",
-    "B": "LIKE, IN",
-    "C": "BETWEEN, ISNULL",
-    "D": "JOIN, UNION"
-  },
-  "answer": "A"
-},
-{
-  "topic": "SQL Subqueries",
-  "question": "Why does the query fail: `SELECT Name FROM Employees WHERE Salary > (SELECT AvgSalary FROM Departments)`?",
-  "options": {
-    "A": "The subquery is empty",
-    "B": "The outer query has no columns",
-    "C": "The subquery returns multiple rows",
-    "D": "The outer query uses an aggregate function incorrectly"
-  },
-  "answer": "C"
-},
-{
-  "topic": "SQL Subqueries",
-  "question": "How can you fix a subquery that returns multiple rows for comparison in SQL?",
-  "options": {
-    "A": "Use an aggregate function like AVG()",
-    "B": "Use ALL or ANY operators",
-    "C": "Both A and B",
-    "D": "Change the table structure"
-  },
-  "answer": "C"
-},
-{
-  "topic": "SQL Terminology",
-  "question": "In SQL, what is a tuple?",
-  "options": {
-    "A": "A column in a table",
-    "B": "A row in a table",
-    "C": "The table schema",
-    "D": "A database index"
-  },
-  "answer": "B"
-},
-{
-  "topic": "SQL Terminology",
-  "question": "In relational model terminology, which of the following is equivalent to a tuple in SQL?",
-  "options": {
-    "A": "Table",
-    "B": "Column",
-    "C": "Row",
-    "D": "Data type"
-  },
-  "answer": "C"
-}
-,
-
-{
-  "topic": "SQL ANY Operator",
-  "question": "What does the ANY operator do in SQL?",
-  "options": {
-    "A": "Returns TRUE if a value matches all values in a subquery",
-    "B": "Returns TRUE if a value matches at least one value in a subquery",
-    "C": "Returns all rows from a table",
-    "D": "Returns NULL for unmatched rows"
-  },
-  "answer": "B"
-},
-{
-  "topic": "SQL ALL vs ANY",
-  "question": "Which statement is TRUE about ALL and ANY operators in SQL?",
-  "options": {
-    "A": "ALL requires the condition to be true for at least one value",
-    "B": "ANY requires the condition to be true for all values",
-    "C": "ALL requires the condition to be true for all values; ANY requires the condition to be true for at least one value",
-    "D": "ALL and ANY are equivalent and interchangeable"
-  },
-  "answer": "C"
-},
-{
-  "topic": "SQL Subqueries",
-  "question": "Why does the query `SELECT Name FROM Employees WHERE Salary > (SELECT AvgSalary FROM Departments)` fail if WHERE clause is removed from subquery?",
-  "options": {
-    "A": "Outer query has no columns",
-    "B": "Subquery returns multiple rows, which cannot be compared with >",
-    "C": "Salary column is NULL",
-    "D": "AVG function is missing"
-  },
-  "answer": "B"
-},
-{
-  "topic": "SQL Subqueries",
-  "question": "How can you modify a multi-row subquery to avoid the error when comparing with a scalar?",
-  "options": {
-    "A": "Use aggregate function like AVG() to return a single value",
-    "B": "Use ALL or ANY operators for multi-row comparison",
-    "C": "Both A and B",
-    "D": "Change the table structure"
-  },
-  "answer": "C"
-},
-{
-  "topic": "SQL ANY Operator Example",
-  "question": "Find employees whose salaries are equal to the average salary of their department. Which SQL query is correct?",
-  "options": {
-    "A": "SELECT first_name FROM employees WHERE salary = ALL (SELECT AVG(salary) FROM employees GROUP BY department_id)",
-    "B": "SELECT first_name FROM employees WHERE salary = ANY (SELECT AVG(salary) FROM employees GROUP BY department_id)",
-    "C": "SELECT first_name FROM employees WHERE salary > ANY (SELECT MAX(salary) FROM employees GROUP BY department_id)",
-    "D": "SELECT first_name FROM employees WHERE salary < ALL (SELECT MIN(salary) FROM employees GROUP BY department_id)"
-  },
-  "answer": "B"
-},
-{
-  "topic": "SQL ALL Operator Example",
-  "question": "Consider the query: `SELECT * FROM (SELECT 1 AS a, 2 AS b) ab WHERE a <= ALL (SELECT 0 AS a UNION SELECT 4)`; what will it return?",
-  "options": {
-    "A": "Row (1, 2)",
-    "B": "Row (0, 2)",
-    "C": "No rows",
-    "D": "Error due to UNION"
-  },
-  "answer": "C"
-},
-{
-  "topic": "SQL ANY Operator Example",
-  "question": "Consider the query: `SELECT * FROM (SELECT 1 AS a, 2 AS b) ab WHERE a <= ANY (SELECT 0 AS a UNION SELECT 4)`; what will it return?",
-  "options": {
-    "A": "Row (1, 2)",
-    "B": "Row (0, 2)",
-    "C": "No rows",
-    "D": "Error due to ANY operator"
-  },
-  "answer": "A"
-},
-{
-  "topic": "SQL DB_ID",
-  "question": "What does the function DB_ID() return in SQL Server?",
-  "options": {
-    "A": "ID of the current user",
-    "B": "ID of the current database",
-    "C": "Number of tables in the database",
-    "D": "Maximum object_id in the database"
-  },
-  "answer": "B"
-},
-{
-  "topic": "SQL DB_ID",
-  "question": "How do you get the ID of a specific database named 'TestDB'?",
-  "options": {
-    "A": "SELECT OBJECT_ID('TestDB')",
-    "B": "SELECT DB_ID('TestDB')",
-    "C": "SELECT DATABASEPROPERTY('TestDB')",
-    "D": "SELECT DATABASE_ID('TestDB')"
-  },
-  "answer": "B"
-},
-{
-  "topic": "SQL ANY with Conditions",
-  "question": "Which query returns products ordered at least once with quantity 9?",
-  "options": {
-    "A": "SELECT ProductName FROM Products WHERE ProductID = ALL (SELECT ProductID FROM OrderDetails WHERE Quantity = 9)",
-    "B": "SELECT ProductName FROM Products WHERE ProductID = ANY (SELECT ProductID FROM OrderDetails WHERE Quantity = 9)",
-    "C": "SELECT ProductName FROM Products WHERE Quantity = 9",
-    "D": "SELECT ProductName FROM Products WHERE ProductID IN (SELECT ProductID FROM OrderDetails WHERE Quantity = 10)"
-  },
-  "answer": "B"
-},
-{
-  "topic": "SQL ANY vs ALL",
-  "question": "If you want to find employees whose salary is higher than at least one department average salary, which operator should you use?",
-  "options": {
-    "A": "ALL",
-    "B": "ANY",
-    "C": "IN",
-    "D": "EXISTS"
-  },
-  "answer": "B"
-}
-
-,
-{
-  "topic": "SQL DB_NAME()",
-  "question": "What does DB_NAME() without any argument return in SQL Server?",
-  "options": {
-    "A": "The ID of the current database",
-    "B": "The name of the current database",
-    "C": "The default schema name",
-    "D": "NULL"
-  },
-  "answer": "B"
-},
-{
-  "topic": "SQL DB_NAME()",
-  "question": "How do you get the name of a database with database_id = 3?",
-  "options": {
-    "A": "SELECT DB_NAME(3)",
-    "B": "SELECT DATABASE_NAME(3)",
-    "C": "SELECT OBJECT_NAME(3)",
-    "D": "SELECT DB_ID(3)"
-  },
-  "answer": "A"
-},
-{
-  "topic": "SQL CASE Statement",
-  "question": "Which of the following is TRUE about CASE statements in SQL?",
-  "options": {
-    "A": "CASE can only be used in SELECT clause",
-    "B": "CASE cannot be nested",
-    "C": "CASE can be used in SELECT, ORDER BY, UPDATE, and WHERE clauses",
-    "D": "CASE always returns TRUE or FALSE"
-  },
-  "answer": "C"
-},
-{
-  "topic": "SQL CASE with Aggregation",
-  "question": "How can you count male and female employees in each department using CASE?",
-  "options": {
-    "A": "COUNT(CASE WHEN gender='M' THEN 1 END)",
-    "B": "SUM(CASE WHEN gender='M' THEN 1 ELSE 0 END)",
-    "C": "Both A and B",
-    "D": "Neither A nor B"
-  },
-  "answer": "C"
-},
-{
-  "topic": "SQL CASE Statement",
-  "question": "What happens if no CASE conditions match and there is no ELSE clause?",
-  "options": {
-    "A": "SQL throws an error",
-    "B": "SQL returns NULL",
-    "C": "SQL returns 0",
-    "D": "SQL returns the first value of the column"
-  },
-  "answer": "B"
-},
-{
-  "topic": "SQL Uniqueness Check",
-  "question": "Which query can be used to check whether all employee IDs (`emp_id`) are unique?",
-  "options": {
-    "A": "SELECT emp_id, COUNT(*) FROM employees GROUP BY emp_id HAVING COUNT(*) > 1",
-    "B": "SELECT DISTINCT emp_id FROM employees",
-    "C": "SELECT emp_id FROM employees WHERE emp_id IS UNIQUE",
-    "D": "SELECT emp_id FROM employees GROUP BY emp_id"
-  },
-  "answer": "A"
-},
-{
-  "topic": "SQL Uniqueness Check",
-  "question": "How do you quickly confirm total records vs unique employee IDs?",
-  "options": {
-    "A": "SELECT COUNT(*) FROM employees",
-    "B": "SELECT COUNT(DISTINCT emp_id) FROM employees",
-    "C": "SELECT COUNT(*) AS total_records, COUNT(DISTINCT emp_id) AS unique_emp_ids FROM employees",
-    "D": "SELECT emp_id, COUNT(*) FROM employees"
-  },
-  "answer": "C"
-},
-{
-  "topic": "SQL DML",
-  "question": "Which of the following statements is NOT a DML command?",
-  "options": {
-    "A": "SELECT",
-    "B": "INSERT",
-    "C": "UPDATE",
-    "D": "CREATE TABLE"
-  },
-  "answer": "D"
-},
-{
-  "topic": "SQL DML vs DDL",
-  "question": "What is the main difference between DML and DDL commands?",
-  "options": {
-    "A": "DML affects database structure, DDL affects data",
-    "B": "DML affects data, DDL affects database structure",
-    "C": "DML and DDL are the same",
-    "D": "DML affects permissions, DDL affects transactions"
-  },
-  "answer": "B"
-},
-{
-  "topic": "SQL CASE in ORDER BY",
-  "question": "How can you sort employees with job_name 'MANAGER' first, 'ANALYST' second, others last?",
-  "options": {
-    "A": "ORDER BY job_name",
-    "B": "ORDER BY CASE WHEN job_name='MANAGER' THEN 1 WHEN job_name='ANALYST' THEN 2 ELSE 3 END",
-    "C": "ORDER BY CASE job_name END",
-    "D": "ORDER BY salary DESC"
-  },
-  "answer": "B"
-},
-{
-  "topic": "SQL CASE in UPDATE",
-  "question": "How would you give a bonus of 500 to IT department employees only using CASE in UPDATE?",
-  "options": {
-    "A": "UPDATE employees SET salary = salary + 500 WHERE department='IT'",
-    "B": "UPDATE employees SET salary = salary + CASE WHEN department='IT' THEN 500 ELSE 0 END",
-    "C": "Both A and B",
-    "D": "UPDATE employees SET salary = 500"
-  },
-  "answer": "C"
-}
-,
-
-
-
-
-
-
-
-{
-  "topic": "Deleting Duplicate Rows",
-  "question": "How can you delete duplicate rows in a table while keeping only one copy?",
-  "options": {
-    "A": "DELETE FROM employees",
-    "B": "WITH DuplicateCTE AS (SELECT *, ROW_NUMBER() OVER(PARTITION BY emp_id ORDER BY emp_id) AS rn FROM employees) DELETE FROM DuplicateCTE WHERE rn > 1",
-    "C": "TRUNCATE TABLE employees",
-    "D": "DROP TABLE employees"
-  },
-  "answer": "B"
-},
-{
-  "topic": "Renaming Objects",
-  "question": "How do you rename a column 'emp_name' to 'employee_name' in SQL Server?",
-  "options": {
-    "A": "ALTER TABLE Employees RENAME COLUMN emp_name TO employee_name",
-    "B": "EXEC sp_rename 'Employees.emp_name', 'employee_name', 'COLUMN'",
-    "C": "ALTER COLUMN emp_name RENAME TO employee_name",
-    "D": "UPDATE Employees SET emp_name = 'employee_name'"
-  },
-  "answer": "B"
-},
-{
-  "topic": "Renaming Objects",
-  "question": "How do you rename a database 'Test' to 'Test2'?",
-  "options": {
-    "A": "ALTER DATABASE [Test] MODIFY NAME = [Test2]",
-    "B": "EXEC sp_renamedb 'Test', 'Test2'",
-    "C": "Both A and B",
-    "D": "DROP DATABASE Test; CREATE DATABASE Test2"
-  },
-  "answer": "C"
-},
-{
-  "topic": "Aggregation with Join",
-  "question": "Write an SQL query to display total units sold by each pizza company.",
-  "options": {
-    "A": "SELECT com, SUM(unitssold) FROM Foods GROUP BY com",
-    "B": "SELECT f.com, p.companyname, SUM(f.unitssold) AS total_units_sold FROM Foods f JOIN PizzaCompany p ON f.com = p.companyid GROUP BY f.com, p.companyname",
-    "C": "SELECT * FROM Foods",
-    "D": "SELECT companyname, SUM(unitssold) FROM PizzaCompany JOIN Foods"
-  },
-  "answer": "B"
-},
-{
-  "topic": "Join and Aggregation",
-  "question": "Find department name, grade, and number of employees where at least two employees are SALESMAN.",
-  "options": {
-    "A": "SELECT d.dep_name, s.grade, COUNT(*) FROM employees e JOIN department d ON e.dep_id = d.dep_id JOIN salary_grade s ON e.salary BETWEEN s.min_sal AND s.max_sal WHERE e.job_name = 'SALESMAN' GROUP BY d.dep_name, s.grade HAVING COUNT(*) >= 2",
-    "B": "SELECT dep_name FROM department",
-    "C": "SELECT * FROM employees WHERE job_name='SALESMAN'",
-    "D": "SELECT COUNT(*) FROM employees"
-  },
-  "answer": "A"
-},
-{
-  "topic": "Departments with minimum employees",
-  "question": "List departments where at least two employees are working.",
-  "options": {
-    "A": "SELECT dep_name FROM dept WHERE dep_id IN (SELECT dep_id FROM emp2 GROUP BY dep_id HAVING COUNT(*) >= 2)",
-    "B": "SELECT dep_name FROM dept",
-    "C": "SELECT dep_name, COUNT(*) FROM emp2",
-    "D": "SELECT * FROM emp2"
-  },
-  "answer": "A"
-},
-{
-  "topic": "SQL ANY operator",
-  "question": "Find product names where any order has quantity = 9.",
-  "options": {
-    "A": "SELECT ProductName FROM Products WHERE ProductID = ANY (SELECT ProductID FROM OrderDetails WHERE Quantity = 9)",
-    "B": "SELECT ProductName FROM Products WHERE ProductID = ALL (SELECT ProductID FROM OrderDetails WHERE Quantity = 9)",
-    "C": "SELECT * FROM Products",
-    "D": "SELECT ProductID FROM OrderDetails"
-  },
-  "answer": "A"
-},
-{
-  "topic": "SQL ALL operator",
-  "question": "Find employees whose salary is greater than all department average salaries.",
-  "options": {
-    "A": "SELECT Name, Salary FROM Employees WHERE Salary > ALL (SELECT AvgSalary FROM Departments)",
-    "B": "SELECT Name, Salary FROM Employees WHERE Salary > ANY (SELECT AvgSalary FROM Departments)",
-    "C": "SELECT * FROM Employees",
-    "D": "SELECT MAX(Salary) FROM Employees"
-  },
-  "answer": "A"
-},
-{
-  "topic": "ANY vs ALL",
-  "question": "What is the difference between ANY and ALL in SQL?",
-  "options": {
-    "A": "ANY returns TRUE if condition matches at least one value; ALL returns TRUE if condition matches all values",
-    "B": "ANY and ALL are the same",
-    "C": "ANY returns all values; ALL returns a single value",
-    "D": "ANY is used for joins; ALL is used for subqueries"
-  },
-  "answer": "A"
-},
-{
-  "topic": "Employee salary comparison",
-  "question": "Find employees whose salaries equal the average salary of their department.",
-  "options": {
-    "A": "SELECT first_name, last_name, salary FROM employees WHERE salary = ANY (SELECT AVG(salary) FROM employees GROUP BY department_id)",
-    "B": "SELECT * FROM employees WHERE salary = AVG(salary)",
-    "C": "SELECT * FROM employees",
-    "D": "SELECT salary FROM employees"
-  },
-  "answer": "A"
-},
-{
-  "topic": "DB_ID function",
-  "question": "What does DB_ID() return in SQL Server?",
-  "options": {
-    "A": "The ID number of a database",
-    "B": "The name of a database",
-    "C": "The number of tables in the database",
-    "D": "The current user ID"
-  },
-  "answer": "A"
-},
-{
-  "topic": "DB_NAME function",
-  "question": "What does DB_NAME() return when called without arguments?",
-  "options": {
-    "A": "The name of the current database",
-    "B": "The ID of the current database",
-    "C": "All database names",
-    "D": "NULL"
-  },
-  "answer": "A"
-},
-{
-  "topic": "Check uniqueness",
-  "question": "Write a query to check whether all employee numbers are unique.",
-  "options": {
-    "A": "SELECT emp_id, COUNT(*) FROM employees GROUP BY emp_id HAVING COUNT(*) > 1",
-    "B": "SELECT DISTINCT emp_id FROM employees",
-    "C": "SELECT * FROM employees",
-    "D": "SELECT MAX(emp_id) FROM employees"
-  },
-  "answer": "A"
-},
-{
-  "topic": "CASE in SELECT",
-  "question": "Classify employees' salaries as High (>3000), Medium (2000-3000), Low (<2000) using CASE in SELECT.",
-  "options": {
-    "A": "SELECT salary, CASE WHEN salary>3000 THEN 'High' WHEN salary BETWEEN 2000 AND 3000 THEN 'Medium' ELSE 'Low' END AS SalaryLevel FROM employees",
-    "B": "SELECT salary FROM employees",
-    "C": "SELECT CASE salary END FROM employees",
-    "D": "SELECT * FROM employees"
-  },
-  "answer": "A"
-},
-{
-  "topic": "CASE in UPDATE",
-  "question": "How would you give a bonus of 500 to IT department employees only using CASE in UPDATE?",
-  "options": {
-    "A": "UPDATE employees SET salary = salary + 500 WHERE department='IT'",
-    "B": "UPDATE employees SET salary = salary + CASE WHEN department='IT' THEN 500 ELSE 0 END",
-    "C": "Both A and B",
-    "D": "UPDATE employees SET salary = 500"
-  },
-  "answer": "C"
-},
-{
-  "topic": "COUNT with CASE",
-  "question": "How do you count male and female employees per department using CASE?",
-  "options": {
-    "A": "SELECT department, COUNT(CASE WHEN gender='M' THEN 1 END) AS male_count, COUNT(CASE WHEN gender='F' THEN 1 END) AS female_count FROM employees GROUP BY department",
-    "B": "SELECT department, COUNT(gender) FROM employees",
-    "C": "SELECT * FROM employees",
-    "D": "SELECT gender, COUNT(*) FROM employees"
-  },
-  "answer": "A"
-},
-{
-  "topic": "SUM with CASE",
-  "question": "Find total salary of IT department using SUM with CASE.",
-  "options": {
-    "A": "SELECT SUM(CASE WHEN department='IT' THEN salary ELSE 0 END) AS IT_Total_Salary FROM employees",
-    "B": "SELECT SUM(salary) FROM employees WHERE department='IT'",
-    "C": "SELECT * FROM employees",
-    "D": "SELECT SUM(salary) FROM employees"
-  },
-  "answer": "A"
-},
-{
-  "topic": "Delete duplicates (alternative)",
-  "question": "How can you delete duplicates using a subquery?",
-  "options": {
-    "A": "DELETE FROM employees WHERE emp_id NOT IN (SELECT MIN(emp_id) FROM employees GROUP BY emp_id)",
-    "B": "TRUNCATE TABLE employees",
-    "C": "DELETE FROM employees",
-    "D": "DROP TABLE employees"
-  },
-  "answer": "A"
-}
-,
-
-{
-  "topic": "Delete duplicate rows",
-  "question": "How do you delete duplicate employee rows while keeping only one copy using ROW_NUMBER()?",
-  "options": {
-    "A": "WITH DuplicateCTE AS (SELECT *, ROW_NUMBER() OVER (PARTITION BY emp_id ORDER BY emp_id) AS rn FROM employees) DELETE FROM DuplicateCTE WHERE rn > 1",
-    "B": "DELETE FROM employees WHERE emp_id NOT IN (SELECT MIN(emp_id) FROM employees GROUP BY emp_id)",
-    "C": "TRUNCATE TABLE employees",
-    "D": "Both A and B"
-  },
-  "answer": "D"
-},
-{
-  "topic": "Window Function",
-  "question": "Get the second highest salary for each department using ROW_NUMBER().",
-  "options": {
-    "A": "SELECT * FROM (SELECT emp_id, salary, ROW_NUMBER() OVER(PARTITION BY department_id ORDER BY salary DESC) AS rn FROM employees) t WHERE rn = 2",
-    "B": "SELECT MAX(salary) FROM employees",
-    "C": "SELECT TOP 2 salary FROM employees",
-    "D": "SELECT salary FROM employees WHERE salary = (SELECT MAX(salary) FROM employees)"
-  },
-  "answer": "A"
-},
-{
-  "topic": "CASE in aggregation",
-  "question": "Calculate total salary of IT and HR separately in one query using SUM with CASE.",
-  "options": {
-    "A": "SELECT SUM(CASE WHEN department='IT' THEN salary ELSE 0 END) AS IT_Salary, SUM(CASE WHEN department='HR' THEN salary ELSE 0 END) AS HR_Salary FROM employees",
-    "B": "SELECT SUM(salary) FROM employees WHERE department='IT' OR department='HR'",
-    "C": "SELECT salary FROM employees",
-    "D": "SELECT department, SUM(salary) FROM employees"
-  },
-  "answer": "A"
-},
-{
-  "topic": "ALL operator",
-  "question": "Find employees whose salary is greater than all department average salaries.",
-  "options": {
-    "A": "SELECT Name, Salary FROM Employees WHERE Salary > ALL (SELECT AVG(Salary) FROM Employees GROUP BY Department_ID)",
-    "B": "SELECT Name, Salary FROM Employees WHERE Salary > ANY (SELECT AVG(Salary) FROM Employees GROUP BY Department_ID)",
-    "C": "SELECT MAX(Salary) FROM Employees",
-    "D": "SELECT * FROM Employees"
-  },
-  "answer": "A"
-},
-{
-  "topic": "ANY operator",
-  "question": "Find employees whose salary is greater than at least one department's average salary.",
-  "options": {
-    "A": "SELECT Name, Salary FROM Employees WHERE Salary > ANY (SELECT AVG(Salary) FROM Employees GROUP BY Department_ID)",
-    "B": "SELECT Name, Salary FROM Employees WHERE Salary > ALL (SELECT AVG(Salary) FROM Employees GROUP BY Department_ID)",
-    "C": "SELECT * FROM Employees",
-    "D": "SELECT MAX(Salary) FROM Employees"
-  },
-  "answer": "A"
-},
-{
-  "topic": "CTE with recursive query",
-  "question": "Write a query to generate first 10 Fibonacci numbers using recursive CTE.",
-  "options": {
-    "A": "WITH CTE_Fib AS (SELECT 0 AS n, 0 AS fib UNION ALL SELECT 1,1 UNION ALL SELECT n+1, fib+LAG(fib) OVER (ORDER BY n) FROM CTE_Fib) SELECT * FROM CTE_Fib WHERE n<10",
-    "B": "SELECT * FROM Fibonacci",
-    "C": "SELECT TOP 10 fib FROM Fibonacci",
-    "D": "SELECT * FROM CTE_Fib"
-  },
-  "answer": "A"
-},
-{
-  "topic": "Find duplicate rows",
-  "question": "Identify duplicate employee emails but keep the earliest join_date row.",
-  "options": {
-    "A": "WITH CTE AS (SELECT *, ROW_NUMBER() OVER(PARTITION BY email ORDER BY join_date ASC) AS rn FROM employees) SELECT * FROM CTE WHERE rn > 1",
-    "B": "SELECT email, COUNT(*) FROM employees GROUP BY email HAVING COUNT(*)>1",
-    "C": "SELECT DISTINCT email FROM employees",
-    "D": "DELETE FROM employees"
-  },
-  "answer": "B"
-},
-{
-  "topic": "Self-join",
-  "question": "Find employees who have the same manager as 'John'.",
-  "options": {
-    "A": "SELECT e1.* FROM employees e1 JOIN employees e2 ON e1.manager_id = e2.manager_id WHERE e2.name='John'",
-    "B": "SELECT * FROM employees WHERE manager_id=(SELECT manager_id FROM employees WHERE name='John')",
-    "C": "Both A and B",
-    "D": "SELECT name FROM employees"
-  },
-  "answer": "C"
-},
-{
-  "topic": "Ranking with RANK",
-  "question": "Get the top 3 salaries per department, including ties using RANK().",
-  "options": {
-    "A": "SELECT * FROM (SELECT *, RANK() OVER(PARTITION BY department_id ORDER BY salary DESC) AS rnk FROM employees) t WHERE rnk <= 3",
-    "B": "SELECT TOP 3 * FROM employees ORDER BY salary DESC",
-    "C": "SELECT * FROM employees",
-    "D": "SELECT MAX(salary) FROM employees"
-  },
-  "answer": "A"
-},
-{
-  "topic": "CASE in WHERE",
-  "question": "Select employees where department is IT get salary>5000, else salary>3000 using CASE in WHERE.",
-  "options": {
-    "A": "SELECT * FROM employees WHERE salary > CASE WHEN department='IT' THEN 5000 ELSE 3000 END",
-    "B": "SELECT * FROM employees WHERE salary>5000 OR salary>3000",
-    "C": "SELECT * FROM employees",
-    "D": "SELECT * FROM employees WHERE salary>3000"
-  },
-  "answer": "A"
-},
-{
-  "topic": "Transaction Control",
-  "question": "How do you rollback changes only to a certain savepoint?",
-  "options": {
-    "A": "SAVE TRANSACTION SavePoint1; ... ROLLBACK TRANSACTION SavePoint1",
-    "B": "ROLLBACK TRANSACTION",
-    "C": "COMMIT TRANSACTION SavePoint1",
-    "D": "BEGIN TRANSACTION"
-  },
-  "answer": "A"
-},
-{
-  "topic": "Nested subquery",
-  "question": "Select employees whose salary is greater than the average salary of the department with highest headcount.",
-  "options": {
-    "A": "SELECT * FROM employees WHERE salary > (SELECT AVG(salary) FROM employees WHERE department_id=(SELECT TOP 1 department_id FROM employees GROUP BY department_id ORDER BY COUNT(*) DESC))",
-    "B": "SELECT * FROM employees",
-    "C": "SELECT * FROM employees WHERE salary > AVG(salary)",
-    "D": "SELECT * FROM employees WHERE department_id=1"
-  },
-  "answer": "A"
-},
-{
-  "topic": "Dynamic SQL",
-  "question": "Execute a query where table name is dynamic using sp_executesql.",
-  "options": {
-    "A": "DECLARE @sql NVARCHAR(MAX) = 'SELECT * FROM ' + QUOTENAME(@TableName); EXEC sp_executesql @sql",
-    "B": "SELECT * FROM @TableName",
-    "C": "EXEC('SELECT * FROM ' + @TableName)",
-    "D": "SELECT * FROM employees"
-  },
-  "answer": "A"
-},
-{
-  "topic": "Find gaps in sequence",
-  "question": "Find missing employee IDs in a continuous sequence using CTE.",
-  "options": {
-    "A": "WITH CTE AS (SELECT ROW_NUMBER() OVER(ORDER BY emp_id) AS rn, emp_id FROM employees) SELECT rn+1 AS missing_id FROM CTE WHERE rn+1 <> emp_id",
-    "B": "SELECT * FROM employees",
-    "C": "SELECT emp_id FROM employees WHERE emp_id IS NULL",
-    "D": "SELECT MAX(emp_id) FROM employees"
-  },
-  "answer": "A"
-}
 
 
 
