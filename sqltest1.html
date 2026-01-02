@@ -11852,6 +11852,139 @@ let originalQuestions = [
   "answer": 1,
   "time": 20
 }
+  ,{
+  "q": "Which statement about CURRENT_TIMESTAMP in SQL Server is TRUE?",
+  "options": [
+    "It returns the current UTC time",
+    "It is evaluated once per query execution",
+    "It returns datetime2 with nanosecond precision",
+    "It is evaluated once per row"
+  ],
+  "answer": 1,
+  "time": 25
+},
+{
+  "q": "Which data type is returned by CURRENT_TIMESTAMP in SQL Server?",
+  "options": [
+    "datetime2",
+    "smalldatetime",
+    "datetime",
+    "timestamp"
+  ],
+  "answer": 2,
+  "time": 20
+},
+{
+  "q": "Which scenario can cause DATEDIFF() to return misleading results?",
+  "options": [
+    "When calculating differences in years",
+    "When start_date > end_date",
+    "When crossing month or year boundaries",
+    "When using DATEDIFF_BIG"
+  ],
+  "answer": 2,
+  "time": 30
+},
+{
+  "q": "What does DATEDIFF(DAY, '2024-01-01 23:59', '2024-01-02 00:01') return?",
+  "options": [
+    "0",
+    "1",
+    "2",
+    "NULL"
+  ],
+  "answer": 1,
+  "time": 30
+},
+{
+  "q": "Why is DATEDIFF() not suitable for calculating exact age?",
+  "options": [
+    "It ignores leap years",
+    "It truncates fractional date parts",
+    "It always rounds up",
+    "It does not support YEAR"
+  ],
+  "answer": 1,
+  "time": 25
+},
+{
+  "q": "What happens when DATEADD(MONTH, 1, '2024-01-31') is executed?",
+  "options": [
+    "2024-03-02",
+    "2024-02-31",
+    "2024-02-29",
+    "Error is thrown"
+  ],
+  "answer": 2,
+  "time": 30
+},
+{
+  "q": "Which operation in an execution plan usually indicates missing indexes?",
+  "options": [
+    "Index Seek",
+    "Table Scan",
+    "Nested Loop",
+    "Compute Scalar"
+  ],
+  "answer": 1,
+  "time": 25
+},
+{
+  "q": "What does a Key Lookup in an execution plan usually indicate?",
+  "options": [
+    "Corrupted index",
+    "Missing clustered index",
+    "Non-covering nonclustered index",
+    "Statistics mismatch"
+  ],
+  "answer": 2,
+  "time": 30
+},
+{
+  "q": "Which execution plan join is generally most efficient for large unsorted datasets?",
+  "options": [
+    "Nested Loop Join",
+    "Merge Join",
+    "Hash Join",
+    "Cartesian Join"
+  ],
+  "answer": 2,
+  "time": 25
+},
+{
+  "q": "A large difference between estimated rows and actual rows in an execution plan usually indicates:",
+  "options": [
+    "Missing foreign keys",
+    "Outdated or inaccurate statistics",
+    "Improper GROUP BY",
+    "Excessive parallelism"
+  ],
+  "answer": 1,
+  "time": 30
+},
+{
+  "q": "What does the cost percentage in an execution plan represent?",
+  "options": [
+    "Actual execution time",
+    "CPU usage percentage",
+    "Relative estimated cost within the query",
+    "Memory consumption percentage"
+  ],
+  "answer": 2,
+  "time": 25
+},
+{
+  "q": "Which execution plan operator indicates multi-threaded execution?",
+  "options": [
+    "Compute Scalar",
+    "Parallelism",
+    "Bitmap",
+    "Index Scan"
+  ],
+  "answer": 1,
+  "time": 20
+}
+
 
   // add more questions here...
 ];
