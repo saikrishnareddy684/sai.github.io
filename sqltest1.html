@@ -12338,8 +12338,175 @@ let originalQuestions = [
     ],
     "answer": 1,
     "time": 25
-  }
+  },
   
+
+
+  {
+    "q": "In SQL Server, what does a non-clustered index store when created on a heap table?",
+    "options": [
+      "Only the indexed columns without any row locator",
+      "Indexed columns and a Row Identifier (RID)",
+      "Indexed columns and clustered key",
+      "Entire table data duplicated"
+    ],
+    "answer": 1,
+    "time": 30
+  },
+  {
+    "q": "When a non-clustered index is created on a table that already has a clustered index, what acts as the row locator?",
+    "options": [
+      "RID",
+      "Page ID",
+      "Clustered index key",
+      "Primary key always"
+    ],
+    "answer": 2,
+    "time": 30
+  },
+  {
+    "q": "Which operation causes a KEY LOOKUP when using a non-clustered index?",
+    "options": [
+      "Selecting only indexed columns",
+      "Using WHERE clause on non-indexed column",
+      "Selecting non-covered columns from non-clustered index",
+      "Using GROUP BY on indexed column"
+    ],
+    "answer": 2,
+    "time": 30
+  },
+  {
+    "q": "Why is creating both clustered and non-clustered indexes on the same column usually unnecessary?",
+    "options": [
+      "SQL Server does not allow it",
+      "Clustered index already stores sorted data",
+      "Both indexes will always be identical in storage",
+      "Non-clustered index cannot reference clustered index"
+    ],
+    "answer": 1,
+    "time": 25
+  },
+  {
+    "q": "Which statement is TRUE about dropping an index created by a PRIMARY KEY constraint?",
+    "options": [
+      "It can be dropped using DROP INDEX",
+      "It must be dropped using ALTER TABLE DROP CONSTRAINT",
+      "It is dropped automatically after disabling constraint",
+      "It cannot be dropped at all"
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "What happens internally when a clustered index is dropped from a table?",
+    "options": [
+      "Table becomes empty",
+      "Table converts into a heap",
+      "All non-clustered indexes are dropped",
+      "Data pages are deleted"
+    ],
+    "answer": 1,
+    "time": 30
+  },
+  {
+    "q": "Which scenario is MOST likely to cause an Index Scan instead of Index Seek?",
+    "options": [
+      "WHERE EmpID = 100",
+      "WHERE Salary > 50000",
+      "WHERE YEAR(HireDate) = 2022",
+      "JOIN on primary key"
+    ],
+    "answer": 2,
+    "time": 30
+  },
+  {
+    "q": "Why does using a function on an indexed column often prevent Index Seek?",
+    "options": [
+      "SQL Server ignores indexes with functions",
+      "Functions change the stored data",
+      "Predicate becomes non-SARGable",
+      "Index statistics get deleted"
+    ],
+    "answer": 2,
+    "time": 30
+  },
+  {
+    "q": "Which query is more likely to result in an Index Seek?",
+    "options": [
+      "WHERE Salary + 1000 > 50000",
+      "WHERE Salary BETWEEN 40000 AND 50000",
+      "WHERE CAST(HireDate AS DATE) = '2023-01-01'",
+      "WHERE MONTH(HireDate) = 6"
+    ],
+    "answer": 1,
+    "time": 30
+  },
+  {
+    "q": "In an execution plan, what does a Key Lookup indicate?",
+    "options": [
+      "Query optimizer error",
+      "Lookup into non-clustered index",
+      "Fetching missing columns from clustered index",
+      "Table scan operation"
+    ],
+    "answer": 2,
+    "time": 25
+  },
+  {
+    "q": "Which query pattern avoids Key Lookups most effectively?",
+    "options": [
+      "Using SELECT *",
+      "Creating filtered index",
+      "Creating covering non-clustered index",
+      "Using INNER JOIN instead of LEFT JOIN"
+    ],
+    "answer": 2,
+    "time": 25
+  },
+  {
+    "q": "Which index type is BEST for range-based queries such as BETWEEN and ORDER BY?",
+    "options": [
+      "Heap",
+      "Non-clustered index",
+      "Clustered index",
+      "Filtered index"
+    ],
+    "answer": 2,
+    "time": 20
+  },
+  {
+    "q": "Why can a non-clustered index become inefficient on low-selectivity columns?",
+    "options": [
+      "Index size increases",
+      "Too many duplicate key values cause scans",
+      "SQL Server disables the index",
+      "Statistics are ignored"
+    ],
+    "answer": 1,
+    "time": 25
+  },
+  {
+    "q": "Which employee query is MOST expensive without a proper index?",
+    "options": [
+      "Finding employee by primary key",
+      "Finding employees by department",
+      "Finding employees joined after a date",
+      "Counting total employees"
+    ],
+    "answer": 1,
+    "time": 25
+  },
+  {
+    "q": "What is the primary reason SQL Server may choose Index Scan even when an index exists?",
+    "options": [
+      "Index is disabled",
+      "Statistics indicate most rows qualify",
+      "Clustered index missing",
+      "Query uses ORDER BY"
+    ],
+    "answer": 1,
+    "time": 30
+  }
 
 
   // add more questions here...
