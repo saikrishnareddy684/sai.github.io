@@ -12706,6 +12706,205 @@ let originalQuestions = [
     "answer": 2,
     "time": 30
   }
+,
+  {
+    "q": "What does @@ROWCOUNT return immediately after a SELECT statement?",
+    "options": [
+      "Number of rows affected by the last DML statement",
+      "Number of rows returned by the last SELECT statement",
+      "Total rows in the table",
+      "Number of rows modified in the transaction"
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "Which statement can unintentionally overwrite the value of @@ROWCOUNT?",
+    "options": [
+      "PRINT",
+      "DECLARE variable",
+      "SELECT",
+      "SET NOCOUNT ON"
+    ],
+    "answer": 2,
+    "time": 20
+  },
+  {
+    "q": "What effect does SET NOCOUNT ON have on @@ROWCOUNT?",
+    "options": [
+      "Resets @@ROWCOUNT to 0",
+      "Disables @@ROWCOUNT",
+      "Does not affect @@ROWCOUNT",
+      "Returns approximate row count"
+    ],
+    "answer": 2,
+    "time": 20
+  },
+  {
+    "q": "Why is SET NOCOUNT ON commonly used inside stored procedures?",
+    "options": [
+      "To improve index performance",
+      "To suppress row count messages sent to the client",
+      "To avoid transaction locks",
+      "To reset @@ROWCOUNT"
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "Which statement limits the number of rows affected by an UPDATE operation?",
+    "options": [
+      "TOP",
+      "WHERE",
+      "SET ROWCOUNT",
+      "HAVING"
+    ],
+    "answer": 2,
+    "time": 20
+  },
+  {
+    "q": "What is the biggest risk of using SET ROWCOUNT with UPDATE statements?",
+    "options": [
+      "Syntax error",
+      "Deadlocks",
+      "Non-deterministic partial updates",
+      "Index corruption"
+    ],
+    "answer": 2,
+    "time": 20
+  },
+  {
+    "q": "If SET ROWCOUNT 3 and SELECT TOP 5 * FROM emp is executed, how many rows are returned?",
+    "options": [
+      "5",
+      "3",
+      "Depends on table size",
+      "0"
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "In a TRY...CATCH block, what does @@ROWCOUNT return after execution?",
+    "options": [
+      "Rows affected in TRY block only",
+      "Rows affected in CATCH block only",
+      "Rows affected by the last executed statement",
+      "Always returns 0"
+    ],
+    "answer": 2,
+    "time": 20
+  },
+  {
+    "q": "Which index type does NOT change the physical order of data in a table?",
+    "options": [
+      "Clustered Index",
+      "Non-Clustered Index",
+      "Primary Key Index",
+      "Heap Index"
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "What does a non-clustered index store to locate actual table rows?",
+    "options": [
+      "Physical page address",
+      "Row locator (RID or clustered key)",
+      "Foreign key reference",
+      "Hash pointer"
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "Which operation occurs after a non-clustered index seek when requested columns are not covered?",
+    "options": [
+      "Index Scan",
+      "Table Scan",
+      "Key Lookup",
+      "Bitmap Filter"
+    ],
+    "answer": 2,
+    "time": 20
+  },
+  {
+    "q": "Why is an Index Seek generally faster than an Index Scan?",
+    "options": [
+      "Reads all rows sequentially",
+      "Uses hash matching",
+      "Navigates directly to matching rows",
+      "Avoids using indexes"
+    ],
+    "answer": 2,
+    "time": 20
+  },
+  {
+    "q": "Which command must be used to remove an index created by a PRIMARY KEY constraint?",
+    "options": [
+      "DROP INDEX",
+      "DELETE INDEX",
+      "ALTER TABLE DROP CONSTRAINT",
+      "TRUNCATE INDEX"
+    ],
+    "answer": 2,
+    "time": 20
+  },
+  {
+    "q": "Which system catalog view can be used to identify existing indexes on a table?",
+    "options": [
+      "sys.objects",
+      "sys.tables",
+      "sys.indexes",
+      "sys.columns"
+    ],
+    "answer": 2,
+    "time": 20
+  },
+  {
+    "q": "What join type excludes records that do not have matching rows in the joined table?",
+    "options": [
+      "LEFT JOIN",
+      "RIGHT JOIN",
+      "FULL JOIN",
+      "INNER JOIN"
+    ],
+    "answer": 3,
+    "time": 20
+  },
+  {
+    "q": "Which scenario most likely causes an Index Scan instead of an Index Seek?",
+    "options": [
+      "Highly selective predicate",
+      "Filter on indexed column",
+      "Non-selective filter returning most rows",
+      "Equality condition on primary key"
+    ],
+    "answer": 2,
+    "time": 20
+  },
+  {
+    "q": "Which SQL Server feature automatically creates a clustered index by default?",
+    "options": [
+      "UNIQUE constraint",
+      "FOREIGN KEY",
+      "PRIMARY KEY",
+      "CHECK constraint"
+    ],
+    "answer": 2,
+    "time": 20
+  },
+  {
+    "q": "What happens if a non-clustered index exists on a heap table?",
+    "options": [
+      "Uses clustered key lookup",
+      "Uses RID lookup",
+      "Fails to execute",
+      "Converts heap to clustered table"
+    ],
+    "answer": 1,
+    "time": 20
+  }
 
 
   // add more questions here...
