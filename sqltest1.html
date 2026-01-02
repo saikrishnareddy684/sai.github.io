@@ -11653,7 +11653,206 @@ let originalQuestions = [
     "time": 30
   }
 
- 
+ ,
+  {
+  "q": "In a salary-grade mapping table where min_sal and max_sal define grade ranges, which join condition correctly maps an employee to a grade?",
+  "options": [
+    "e.salary = s.min_sal",
+    "e.salary BETWEEN s.min_sal AND s.max_sal",
+    "s.min_sal BETWEEN e.salary AND s.max_sal",
+    "e.salary IN (s.min_sal, s.max_sal)"
+  ],
+  "answer": 1,
+  "time": 20
+},
+{
+  "q": "Why must min_salary always be placed first in a BETWEEN condition when joining salary-grade tables?",
+  "options": [
+    "BETWEEN automatically sorts values",
+    "SQL Server enforces column order",
+    "BETWEEN expects lower bound first to avoid logical errors",
+    "It improves index usage"
+  ],
+  "answer": 2,
+  "time": 20
+},
+{
+  "q": "Which aggregation correctly returns grade, employee count, and highest salary per grade?",
+  "options": [
+    "SELECT grade, COUNT(*), salary FROM emp GROUP BY grade",
+    "SELECT grade, COUNT(*), MAX(salary) FROM emp GROUP BY grade",
+    "SELECT DISTINCT grade, COUNT(*), MAX(salary)",
+    "SELECT grade, MAX(salary) FROM emp"
+  ],
+  "answer": 1,
+  "time": 20
+},
+{
+  "q": "In a self-join used to count employees per manager, which column should be grouped?",
+  "options": [
+    "EmployeeID",
+    "ManagerID from employee table",
+    "ManagerID from manager alias",
+    "Employee name"
+  ],
+  "answer": 2,
+  "time": 20
+},
+{
+  "q": "What does COUNT(*) represent when used after joining employees to their managers?",
+  "options": [
+    "Total rows in the table",
+    "Number of managers",
+    "Number of employees reporting to each manager",
+    "Number of NULL managers"
+  ],
+  "answer": 2,
+  "time": 20
+},
+{
+  "q": "Why is a self-join required to count employees under each manager?",
+  "options": [
+    "Managers and employees are stored in different tables",
+    "Managers are derived using aggregation",
+    "Employees and managers exist in the same table",
+    "COUNT cannot work without joins"
+  ],
+  "answer": 2,
+  "time": 20
+},
+{
+  "q": "Which condition correctly finds employees senior to their own managers?",
+  "options": [
+    "e.HireDate > m.HireDate",
+    "e.HireDate = m.HireDate",
+    "e.HireDate < m.HireDate",
+    "DATEDIFF(day, e.HireDate, m.HireDate) < 0"
+  ],
+  "answer": 2,
+  "time": 20
+},
+{
+  "q": "Why should the seniority condition be placed in the ON clause when using LEFT JOIN?",
+  "options": [
+    "To improve performance",
+    "To preserve employees without managers",
+    "To avoid NULL values",
+    "To force INNER JOIN behavior"
+  ],
+  "answer": 1,
+  "time": 20
+},
+{
+  "q": "Which join type excludes employees who do not have managers?",
+  "options": [
+    "LEFT JOIN",
+    "RIGHT JOIN",
+    "FULL JOIN",
+    "INNER JOIN"
+  ],
+  "answer": 3,
+  "time": 20
+},
+{
+  "q": "What data type does DATEPART() return in SQL Server?",
+  "options": [
+    "VARCHAR",
+    "NVARCHAR",
+    "INT",
+    "DATETIME"
+  ],
+  "answer": 2,
+  "time": 20
+},
+{
+  "q": "Which DATEPART value returns numbers from 1 to 12?",
+  "options": [
+    "day",
+    "month",
+    "quarter",
+    "week"
+  ],
+  "answer": 1,
+  "time": 20
+},
+{
+  "q": "Which function should be used when month names like 'September' are required?",
+  "options": [
+    "DATEPART()",
+    "DATENAME()",
+    "CONVERT()",
+    "FORMAT()"
+  ],
+  "answer": 1,
+  "time": 20
+},
+{
+  "q": "Why is DATEPART preferred over DATENAME in WHERE clause filtering?",
+  "options": [
+    "DATENAME returns NULL",
+    "DATEPART returns numeric values suitable for comparison",
+    "DATENAME is deprecated",
+    "DATEPART improves indexing"
+  ],
+  "answer": 1,
+  "time": 20
+},
+{
+  "q": "Which query correctly filters records from September using DATEPART?",
+  "options": [
+    "WHERE DATENAME(month, order_date) = 9",
+    "WHERE DATEPART(month, order_date) = 'September'",
+    "WHERE DATEPART(month, order_date) = 9",
+    "WHERE MONTHNAME(order_date) = 9"
+  ],
+  "answer": 2,
+  "time": 20
+},
+{
+  "q": "Which DATEPART option extracts hour information from a datetime value?",
+  "options": [
+    "hh",
+    "mi",
+    "ss",
+    "dd"
+  ],
+  "answer": 0,
+  "time": 20
+},
+{
+  "q": "Which scenario MOST requires DATEPART instead of DATENAME?",
+  "options": [
+    "Displaying reports",
+    "String comparison",
+    "Date calculations",
+    "Formatting output"
+  ],
+  "answer": 2,
+  "time": 20
+},
+{
+  "q": "What happens if DATEPART is applied on a NULL date column?",
+  "options": [
+    "Returns 0",
+    "Returns empty string",
+    "Returns NULL",
+    "Throws error"
+  ],
+  "answer": 2,
+  "time": 20
+},
+{
+  "q": "Which SQL concept is demonstrated when emp table is joined to itself?",
+  "options": [
+    "Recursive query",
+    "Self join",
+    "Cross join",
+    "Correlated subquery"
+  ],
+  "answer": 1,
+  "time": 20
+}
+
   // add more questions here...
 ];
 
