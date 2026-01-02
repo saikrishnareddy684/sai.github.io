@@ -12905,6 +12905,174 @@ let originalQuestions = [
     "answer": 1,
     "time": 20
   }
+,
+
+
+  {
+    "q": "What does the error 'The INSERT statement conflicted with the FOREIGN KEY constraint' indicate?",
+    "options": [
+      "Primary key duplication in parent table",
+      "Data type mismatch between tables",
+      "Referenced parent key does not exist",
+      "Foreign key column allows NULL values"
+    ],
+    "answer": 2,
+    "time": 20
+  },
+  {
+    "q": "Which action must be performed first to avoid a foreign key constraint error when inserting related data?",
+    "options": [
+      "Insert child record first",
+      "Disable foreign key constraint",
+      "Insert parent record first",
+      "Use SET IDENTITY_INSERT ON"
+    ],
+    "answer": 2,
+    "time": 20
+  },
+  {
+    "q": "What is the default return value of a stored procedure in SQL Server when no RETURN statement is specified?",
+    "options": [
+      "NULL",
+      "1",
+      "0",
+      "Depends on last SELECT statement"
+    ],
+    "answer": 2,
+    "time": 20
+  },
+  {
+    "q": "Which limitation applies to the RETURN keyword in SQL Server stored procedures?",
+    "options": [
+      "Can return only VARCHAR values",
+      "Can return multiple values",
+      "Can return only INT values",
+      "Cannot be captured by caller"
+    ],
+    "answer": 2,
+    "time": 20
+  },
+  {
+    "q": "When should OUTPUT parameters be preferred over RETURN in stored procedures?",
+    "options": [
+      "When returning status codes",
+      "When returning multiple or non-integer values",
+      "When returning error numbers",
+      "When procedure has no input parameters"
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "What is the main purpose of SET NOCOUNT ON inside a stored procedure?",
+    "options": [
+      "Disable @@ROWCOUNT",
+      "Improve query execution plan",
+      "Suppress row count messages to client",
+      "Rollback transactions automatically"
+    ],
+    "answer": 2,
+    "time": 20
+  },
+  {
+    "q": "Which SQL construct ensures atomicity when multiple tables are modified in a stored procedure?",
+    "options": [
+      "CTE",
+      "Cursor",
+      "Transaction",
+      "Temporary table"
+    ],
+    "answer": 2,
+    "time": 20
+  },
+  {
+    "q": "What happens if an error occurs inside a TRY block without a CATCH block?",
+    "options": [
+      "Transaction is automatically committed",
+      "Transaction is automatically rolled back",
+      "Execution stops and error is thrown",
+      "@@ROWCOUNT is reset to zero"
+    ],
+    "answer": 2,
+    "time": 20
+  },
+  {
+    "q": "Why should @@ROWCOUNT be stored immediately after a DML statement?",
+    "options": [
+      "It resets automatically at transaction end",
+      "It is affected by any subsequent statement",
+      "It only works inside stored procedures",
+      "It becomes NULL after SELECT"
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "Which technique prevents integer division when calculating ratios in SQL?",
+    "options": [
+      "Using ROUND()",
+      "Multiplying numerator by 1.0",
+      "Using COUNT_BIG()",
+      "Using DISTINCT"
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "What does 'share of active users' typically represent in SQL analytics questions?",
+    "options": [
+      "Total users minus inactive users",
+      "Active users divided by total users",
+      "Active users multiplied by total users",
+      "Inactive users divided by active users"
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "Which SQL clause is most appropriate for grouping ratio calculations by country?",
+    "options": [
+      "ORDER BY",
+      "HAVING",
+      "GROUP BY",
+      "PARTITION BY"
+    ],
+    "answer": 2,
+    "time": 20
+  },
+  {
+    "q": "What problem occurs if SET ROWCOUNT is not reset to 0 after usage?",
+    "options": [
+      "Session terminates",
+      "Indexes become invalid",
+      "Subsequent queries return partial results",
+      "Transactions auto-commit"
+    ],
+    "answer": 2,
+    "time": 20
+  },
+  {
+    "q": "Which SQL feature enforces referential integrity between tables?",
+    "options": [
+      "Check constraint",
+      "Unique index",
+      "Foreign key constraint",
+      "Trigger"
+    ],
+    "answer": 2,
+    "time": 20
+  },
+  {
+    "q": "Why is TRY...CATCH recommended in transactional stored procedures?",
+    "options": [
+      "Improves query performance",
+      "Allows dynamic SQL execution",
+      "Ensures controlled rollback on failure",
+      "Prevents deadlocks automatically"
+    ],
+    "answer": 2,
+    "time": 20
+  }
 
 
   // add more questions here...
