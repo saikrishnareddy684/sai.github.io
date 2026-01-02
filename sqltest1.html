@@ -11983,7 +11983,186 @@ let originalQuestions = [
   ],
   "answer": 1,
   "time": 20
-}
+},
+
+  
+  {
+    "q": "In an actual execution plan, what does a large difference between Estimated Rows and Actual Rows usually indicate?",
+    "options": [
+      "Missing clustered index",
+      "Outdated or inaccurate statistics",
+      "Implicit data type conversion",
+      "Query recompilation"
+    ],
+    "answer": 1,
+    "time": 30
+  },
+  {
+    "q": "Why does a Key Lookup become a serious performance issue in SQL Server?",
+    "options": [
+      "Because it forces a table scan",
+      "Because it executes once per row returned from the nonclustered index",
+      "Because it prevents parallelism",
+      "Because it disables index seeks"
+    ],
+    "answer": 1,
+    "time": 30
+  },
+  {
+    "q": "Which operator in an execution plan indicates that SQL Server is combining unsorted large datasets?",
+    "options": [
+      "Nested Loops",
+      "Merge Join",
+      "Hash Match",
+      "Bitmap Filter"
+    ],
+    "answer": 2,
+    "time": 25
+  },
+  {
+    "q": "Why can a Clustered Index Scan be acceptable in some scenarios?",
+    "options": [
+      "When the table is small or most rows are required",
+      "When the query uses GROUP BY",
+      "When a nonclustered index exists",
+      "When statistics are disabled"
+    ],
+    "answer": 0,
+    "time": 25
+  },
+  {
+    "q": "What is the leaf level of a clustered index?",
+    "options": [
+      "Pointers to data rows",
+      "Nonclustered index keys",
+      "Actual table data rows",
+      "Intermediate index pages"
+    ],
+    "answer": 2,
+    "time": 20
+  },
+  {
+    "q": "In a heap table, how does SQL Server locate a specific row after a nonclustered index seek?",
+    "options": [
+      "By scanning all heap pages",
+      "By using a RID lookup",
+      "By converting it to a clustered index",
+      "By using key lookups"
+    ],
+    "answer": 1,
+    "time": 30
+  },
+  {
+    "q": "What causes a page split in a clustered index?",
+    "options": [
+      "Deleting rows from the table",
+      "Inserting a row when the target page has no free space",
+      "Running an index scan",
+      "Updating non-key columns"
+    ],
+    "answer": 1,
+    "time": 25
+  },
+  {
+    "q": "Which execution plan operator indicates SQL Server is writing intermediate results to tempdb?",
+    "options": [
+      "Compute Scalar",
+      "Sort",
+      "Index Seek",
+      "Stream Aggregate"
+    ],
+    "answer": 1,
+    "time": 30
+  },
+  {
+    "q": "Why are heap tables generally slower for range queries?",
+    "options": [
+      "Because heaps do not support parallelism",
+      "Because rows are not stored in any logical order",
+      "Because heaps cannot have nonclustered indexes",
+      "Because heaps force key lookups"
+    ],
+    "answer": 1,
+    "time": 25
+  },
+  {
+    "q": "What does the thickness of arrows between operators in an execution plan represent?",
+    "options": [
+      "CPU usage",
+      "Operator cost percentage",
+      "Number of rows flowing between operators",
+      "Execution order"
+    ],
+    "answer": 2,
+    "time": 20
+  },
+  {
+    "q": "Which join type is usually chosen by SQL Server when both inputs are sorted on join keys?",
+    "options": [
+      "Nested Loops",
+      "Hash Join",
+      "Merge Join",
+      "Adaptive Join"
+    ],
+    "answer": 2,
+    "time": 25
+  },
+  {
+    "q": "Why is a nonclustered index on a heap often less efficient than on a clustered table?",
+    "options": [
+      "Because it points to physical row identifiers instead of ordered keys",
+      "Because heaps cannot be cached",
+      "Because SQL Server avoids heap indexes",
+      "Because heaps disable index seeks"
+    ],
+    "answer": 0,
+    "time": 30
+  },
+  {
+    "q": "What does a Parallelism (Gather Streams) operator indicate?",
+    "options": [
+      "Query execution was forced to single thread",
+      "Results from multiple threads are being combined",
+      "Index rebuild is occurring",
+      "Statistics update is running"
+    ],
+    "answer": 1,
+    "time": 25
+  },
+  {
+    "q": "Which scenario most commonly leads to incorrect cardinality estimation?",
+    "options": [
+      "Using PRIMARY KEY",
+      "Filtered indexes",
+      "Outdated statistics",
+      "Using SET NOCOUNT ON"
+    ],
+    "answer": 2,
+    "time": 25
+  },
+  {
+    "q": "Why does SQL Server sometimes prefer an Index Scan over an Index Seek?",
+    "options": [
+      "Scans are always faster",
+      "When a large percentage of rows are required",
+      "When indexes are fragmented",
+      "When statistics are disabled"
+    ],
+    "answer": 1,
+    "time": 30
+  },
+  {
+    "q": "Which execution plan issue is most likely when a query suddenly becomes slow without code changes?",
+    "options": [
+      "Implicit conversion",
+      "Parameter sniffing",
+      "Missing primary key",
+      "Deadlock"
+    ],
+    "answer": 1,
+    "time": 30
+  }
+
 
 
   // add more questions here...
