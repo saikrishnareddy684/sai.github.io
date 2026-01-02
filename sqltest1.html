@@ -10198,7 +10198,183 @@ let originalQuestions = [
     "answer": 2,
     "time": 30
   }
-
+,,
+  {
+    "q": "Which statement about NULL comparisons is TRUE?",
+    "options": [
+      "NULL = NULL evaluates to TRUE",
+      "NULL <> NULL evaluates to TRUE",
+      "Any comparison with NULL returns UNKNOWN",
+      "NULL behaves like zero"
+    ],
+    "answer": 2,
+    "time": 25
+  },
+  {
+    "q": "Why are triggers not preferred over constraints for enforcing simple rules?",
+    "options": [
+      "Triggers are faster",
+      "Triggers are harder to maintain and debug",
+      "Triggers cannot block inserts",
+      "Triggers do not support validation"
+    ],
+    "answer": 1,
+    "time": 30
+  },
+  {
+    "q": "Which constraint contributes the MOST to data integrity with the LEAST logic complexity?",
+    "options": [
+      "Trigger",
+      "Application validation",
+      "Database constraint",
+      "Stored procedure"
+    ],
+    "answer": 2,
+    "time": 25
+  },
+  {
+    "q": "Why should constraints usually be enabled AFTER bulk data loads?",
+    "options": [
+      "Constraints are ignored during bulk load",
+      "Bulk load does not support constraints",
+      "Constraint validation adds overhead during load",
+      "Indexes must be rebuilt first"
+    ],
+    "answer": 2,
+    "time": 30
+  },
+  {
+    "q": "Why is sp_executesql preferred over EXEC for dynamic SQL in production systems?",
+    "options": [
+      "It executes faster in all cases",
+      "It supports parameterization and plan reuse",
+      "It allows dynamic table creation",
+      "It suppresses SQL injection automatically"
+    ],
+    "answer": 1,
+    "time": 30
+  },
+  {
+    "q": "What is the biggest security risk when using EXEC(@sql) with string concatenation?",
+    "options": [
+      "Deadlocks",
+      "Blocking",
+      "SQL Injection",
+      "Plan cache pollution"
+    ],
+    "answer": 2,
+    "time": 25
+  },
+  {
+    "q": "Which feature of sp_executesql helps reduce plan cache bloat?",
+    "options": [
+      "Deferred compilation",
+      "Parameterization",
+      "Implicit transactions",
+      "Batch execution"
+    ],
+    "answer": 1,
+    "time": 30
+  },
+  {
+    "q": "Why does dynamic SQL often suffer from parameter sniffing issues?",
+    "options": [
+      "Parameters are evaluated at runtime",
+      "Execution plans are reused with different parameter values",
+      "Dynamic SQL ignores indexes",
+      "SQL Server recompiles every time"
+    ],
+    "answer": 1,
+    "time": 30
+  },
+  {
+    "q": "Which dynamic SQL scenario CANNOT be replaced with a parameterized query?",
+    "options": [
+      "Dynamic WHERE clause values",
+      "Dynamic column names",
+      "Dynamic filter values",
+      "Dynamic input parameters"
+    ],
+    "answer": 1,
+    "time": 30
+  },
+  {
+    "q": "What happens if a variable declared outside dynamic SQL is referenced inside EXEC(@sql)?",
+    "options": [
+      "It is automatically resolved",
+      "It throws a compilation error",
+      "It is treated as NULL",
+      "It becomes global"
+    ],
+    "answer": 1,
+    "time": 25
+  },
+  {
+    "q": "Which error types are NOT caught by TRY...CATCH in SQL Server?",
+    "options": [
+      "Divide by zero",
+      "Conversion errors",
+      "Compile-time errors",
+      "Constraint violations"
+    ],
+    "answer": 2,
+    "time": 30
+  },
+  {
+    "q": "Why is XACT_STATE() checked inside a CATCH block?",
+    "options": [
+      "To check if transaction exists",
+      "To decide whether COMMIT or ROLLBACK is allowed",
+      "To restart a transaction",
+      "To suppress errors"
+    ],
+    "answer": 1,
+    "time": 30
+  },
+  {
+    "q": "What does XACT_STATE() = -1 indicate?",
+    "options": [
+      "No active transaction",
+      "Transaction is committable",
+      "Transaction is uncommittable and must be rolled back",
+      "Transaction is suspended"
+    ],
+    "answer": 2,
+    "time": 25
+  },
+  {
+    "q": "Which statement about TRY...CATCH with transactions is TRUE?",
+    "options": [
+      "COMMIT is automatic if TRY succeeds",
+      "ROLLBACK happens automatically on error",
+      "Transaction must be explicitly committed or rolled back",
+      "CATCH block always commits"
+    ],
+    "answer": 2,
+    "time": 25
+  },
+  {
+    "q": "Why is THROW preferred over RAISERROR in modern SQL Server?",
+    "options": [
+      "THROW supports formatted messages",
+      "THROW preserves original error information",
+      "RAISERROR is faster",
+      "RAISERROR supports transactions better"
+    ],
+    "answer": 1,
+    "time": 30
+  },
+  {
+    "q": "What is the main benefit of logging errors into a table instead of printing them?",
+    "options": [
+      "Improves performance",
+      "Allows auditing and post-mortem analysis",
+      "Prevents transaction rollback",
+      "Avoids TRY...CATCH"
+    ],
+    "answer": 1,
+    "time": 25
+  }
 
  
   // add more questions here...
