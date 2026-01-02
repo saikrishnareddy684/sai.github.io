@@ -10042,6 +10042,162 @@ let originalQuestions = [
   "answer": 2,
   "time": 25
 }
+,
+  
+  {
+    "q": "Why does a NOT NULL constraint differ fundamentally from a CHECK constraint?",
+    "options": [
+      "NOT NULL is faster than CHECK",
+      "NOT NULL is evaluated before CHECK",
+      "CHECK allows NULL values unless explicitly restricted",
+      "CHECK constraints cannot be indexed"
+    ],
+    "answer": 2,
+    "time": 30
+  },
+  {
+    "q": "Why does a CHECK constraint allow NULL values by default?",
+    "options": [
+      "NULL values are ignored by constraints",
+      "CHECK constraints are optional",
+      "NULL evaluates to UNKNOWN, which passes CHECK validation",
+      "CHECK constraints only validate INSERTs"
+    ],
+    "answer": 2,
+    "time": 30
+  },
+  {
+    "q": "Which operation will immediately fail when adding a NOT NULL constraint to an existing column?",
+    "options": [
+      "Column contains duplicate values",
+      "Column contains NULL values",
+      "Column contains negative values",
+      "Column is indexed"
+    ],
+    "answer": 1,
+    "time": 25
+  },
+  {
+    "q": "Why is adding a NOT NULL constraint considered a data-breaking change?",
+    "options": [
+      "It requires rebuilding indexes",
+      "It enforces validation on existing and future data",
+      "It changes query execution plans",
+      "It locks the table permanently"
+    ],
+    "answer": 1,
+    "time": 30
+  },
+  {
+    "q": "Which constraint can exist multiple times on the same table?",
+    "options": [
+      "Primary Key",
+      "Foreign Key",
+      "Unique Constraint",
+      "Identity"
+    ],
+    "answer": 2,
+    "time": 25
+  },
+  {
+    "q": "Why does a UNIQUE constraint allow one NULL value?",
+    "options": [
+      "NULL is treated as a value",
+      "NULLs are ignored in uniqueness checks",
+      "NULL represents UNKNOWN and is not equal to another NULL",
+      "UNIQUE constraints are optional"
+    ],
+    "answer": 2,
+    "time": 30
+  },
+  {
+    "q": "Which design requirement forces the use of PRIMARY KEY instead of UNIQUE?",
+    "options": [
+      "Uniqueness only",
+      "Ability to allow NULL",
+      "Logical row identification and referential integrity",
+      "Index creation"
+    ],
+    "answer": 2,
+    "time": 30
+  },
+  {
+    "q": "What happens if you attempt to add a PRIMARY KEY to a table with duplicate values?",
+    "options": [
+      "Duplicates are automatically removed",
+      "Constraint creation fails",
+      "Only one row is kept",
+      "Duplicates are converted to NULL"
+    ],
+    "answer": 1,
+    "time": 25
+  },
+  {
+    "q": "Why can a table have only one PRIMARY KEY but multiple UNIQUE constraints?",
+    "options": [
+      "PRIMARY KEY is a physical structure",
+      "PRIMARY KEY identifies the row, UNIQUE only enforces rules",
+      "UNIQUE constraints are optional",
+      "PRIMARY KEY does not create an index"
+    ],
+    "answer": 1,
+    "time": 30
+  },
+  {
+    "q": "Which constraint implicitly creates a clustered index by default in SQL Server?",
+    "options": [
+      "CHECK",
+      "UNIQUE",
+      "PRIMARY KEY",
+      "FOREIGN KEY"
+    ],
+    "answer": 2,
+    "time": 25
+  },
+  {
+    "q": "Why is cleaning data before adding constraints a recommended practice in migrations?",
+    "options": [
+      "Constraints automatically fix data",
+      "Constraints validate existing data immediately",
+      "Indexes require clean data",
+      "Triggers depend on constraints"
+    ],
+    "answer": 1,
+    "time": 30
+  },
+  {
+    "q": "Which constraint is most likely to slow down bulk INSERT operations?",
+    "options": [
+      "NOT NULL",
+      "CHECK",
+      "PRIMARY KEY / UNIQUE",
+      "DEFAULT"
+    ],
+    "answer": 2,
+    "time": 30
+  },
+  {
+    "q": "Why areBase are constraints considered self-documenting schema elements?",
+    "options": [
+      "They generate ER diagrams automatically",
+      "They describe business rules directly in metadata",
+      "They add comments to columns",
+      "They replace documentation tools"
+    ],
+    "answer": 1,
+    "time": 25
+  },
+  {
+    "q": "Which approach provides uniqueness enforcement with more flexibility than a UNIQUE constraint?",
+    "options": [
+      "Primary Key",
+      "CHECK constraint",
+      "Unique Index",
+      "NOT NULL"
+    ],
+    "answer": 2,
+    "time": 30
+  }
 
 
  
