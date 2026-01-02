@@ -12161,8 +12161,185 @@ let originalQuestions = [
     ],
     "answer": 1,
     "time": 30
-  }
+  },
 
+  {
+    "q": "Why can a non-clustered index on a heap table be less efficient than on a clustered table?",
+    "options": [
+      "Because heaps do not allow non-clustered indexes",
+      "Because it uses RID lookups instead of clustered key lookups",
+      "Because heaps are always scanned fully",
+      "Because non-clustered indexes are ignored on heaps"
+    ],
+    "answer": 1,
+    "time": 30
+  },
+  {
+    "q": "What does a RID lookup reference in a heap table?",
+    "options": [
+      "Clustered index key",
+      "Row number",
+      "File ID, Page ID, and Slot ID",
+      "Primary key value"
+    ],
+    "answer": 2,
+    "time": 30
+  },
+  {
+    "q": "Why can frequent page splits occur in a clustered index?",
+    "options": [
+      "Because non-key columns are updated",
+      "Because new rows are inserted in the middle of the key order",
+      "Because statistics are outdated",
+      "Because heap tables are converted automatically"
+    ],
+    "answer": 1,
+    "time": 25
+  },
+  {
+    "q": "What happens internally when a clustered index is created on a heap table?",
+    "options": [
+      "Only metadata is updated",
+      "The heap remains unchanged",
+      "SQL Server rebuilds and physically reorders the data",
+      "A non-clustered index is created automatically"
+    ],
+    "answer": 2,
+    "time": 30
+  },
+  {
+    "q": "Why can a clustered index on a monotonically increasing key (like IDENTITY) reduce page splits?",
+    "options": [
+      "Because rows are always inserted at the end",
+      "Because SQL Server disables fragmentation",
+      "Because statistics are auto-updated",
+      "Because it forces index seeks"
+    ],
+    "answer": 0,
+    "time": 25
+  },
+  {
+    "q": "Which scenario most likely causes a Key Lookup in a clustered table?",
+    "options": [
+      "Using SELECT *",
+      "Query using nonclustered index without covering required columns",
+      "Heap table access",
+      "Clustered index scan"
+    ],
+    "answer": 1,
+    "time": 30
+  },
+  {
+    "q": "What is stored at the leaf level of a non-clustered index on a clustered table?",
+    "options": [
+      "Entire data row",
+      "Only non-key columns",
+      "Index key plus clustered index key",
+      "RID pointer"
+    ],
+    "answer": 2,
+    "time": 25
+  },
+  {
+    "q": "Why does ISNULL() sometimes cause implicit data type conversion issues?",
+    "options": [
+      "Because ISNULL returns the data type with higher precedence",
+      "Because ISNULL always returns NVARCHAR",
+      "Because ISNULL ignores NULL values",
+      "Because ISNULL cannot be used in SELECT"
+    ],
+    "answer": 0,
+    "time": 30
+  },
+  {
+    "q": "Which behavior is correct when using ISNULL() inside an index key?",
+    "options": [
+      "It always improves index usage",
+      "It can prevent index seeks",
+      "It forces clustered index scan",
+      "It disables statistics"
+    ],
+    "answer": 1,
+    "time": 30
+  },
+  {
+    "q": "Why is IS NULL preferred over ISNULL() in WHERE clauses for filtering?",
+    "options": [
+      "ISNULL() cannot be indexed",
+      "IS NULL is ANSI standard and avoids expression-based filtering",
+      "ISNULL() returns incorrect results",
+      "IS NULL forces table scans"
+    ],
+    "answer": 1,
+    "time": 25
+  },
+  {
+    "q": "How does NULLIF() help prevent divide-by-zero errors?",
+    "options": [
+      "By converting NULL to zero",
+      "By converting zero to NULL",
+      "By skipping rows automatically",
+      "By raising an exception"
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "What is the result data type of ISNULL(expression1, expression2)?",
+    "options": [
+      "Always expression2 data type",
+      "Always expression1 data type",
+      "Highest precedence data type of both",
+      "NVARCHAR by default"
+    ],
+    "answer": 1,
+    "time": 30
+  },
+  {
+    "q": "Which index type is best suited to eliminate Key Lookups completely?",
+    "options": [
+      "Clustered index",
+      "Filtered index",
+      "Covering non-clustered index",
+      "Unique index"
+    ],
+    "answer": 2,
+    "time": 25
+  },
+  {
+    "q": "Why are heap tables risky for frequently updated rows?",
+    "options": [
+      "Because heaps do not allow updates",
+      "Because forwarded records can occur",
+      "Because indexes are dropped automatically",
+      "Because heaps force recompilation"
+    ],
+    "answer": 1,
+    "time": 30
+  },
+  {
+    "q": "What is a forwarded record in a heap table?",
+    "options": [
+      "A deleted row reference",
+      "A row moved due to page split with pointer left behind",
+      "A clustered index pointer",
+      "A nonclustered index entry"
+    ],
+    "answer": 1,
+    "time": 30
+  },
+  {
+    "q": "Why does SQL Server store clustered index keys in all non-clustered indexes?",
+    "options": [
+      "For sorting purposes",
+      "To locate the full data row efficiently",
+      "To reduce index size",
+      "To enforce uniqueness"
+    ],
+    "answer": 1,
+    "time": 25
+  }
+  
 
 
   // add more questions here...
