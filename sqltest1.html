@@ -10374,6 +10374,283 @@ let originalQuestions = [
     ],
     "answer": 1,
     "time": 25
+  },
+   {
+    "q": "Why should error logging inside a CATCH block avoid complex logic?",
+    "options": [
+      "CATCH blocks run only once",
+      "Errors inside CATCH can suppress original error",
+      "CATCH blocks cannot contain DML",
+      "CATCH blocks auto-rollback"
+    ],
+    "answer": 1,
+    "time": 30
+  },
+  {
+    "q": "What is the effect of SET NOCOUNT ON inside a stored procedure?",
+    "options": [
+      "Prevents result sets from returning",
+      "Suppresses row count messages",
+      "Disables transactions",
+      "Improves index usage"
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "Why is SET NOCOUNT ON recommended for procedures executed by applications?",
+    "options": [
+      "It avoids SQL injection",
+      "It reduces network traffic",
+      "It forces recompilation",
+      "It improves locking behavior"
+    ],
+    "answer": 1,
+    "time": 25
+  },
+  {
+    "q": "Why does SET NOCOUNT ON placed outside a stored procedure not affect it?",
+    "options": [
+      "SET commands are session scoped",
+      "Stored procedures reset session settings",
+      "SET NOCOUNT is batch scoped",
+      "Procedures ignore SET options"
+    ],
+    "answer": 2,
+    "time": 30
+  },
+  {
+    "q": "Which operation still returns results even when SET NOCOUNT ON is enabled?",
+    "options": [
+      "INSERT",
+      "UPDATE",
+      "SELECT",
+      "MERGE"
+    ],
+    "answer": 2,
+    "time": 20
+  },
+  {
+    "q": "Which scenario benefits MOST from SET NOCOUNT ON?",
+    "options": [
+      "Single-row SELECT",
+      "Bulk INSERT in stored procedure",
+      "DDL operations",
+      "Ad-hoc queries"
+    ],
+    "answer": 1,
+    "time": 25
+  },
+  {
+    "q": "What hidden issue can arise if NOCOUNT is OFF in application-driven procedures?",
+    "options": [
+      "Deadlocks",
+      "Extra result sets confusing application logic",
+      "Index fragmentation",
+      "Implicit commits"
+    ],
+    "answer": 1,
+    "time": 30
+  },
+  {
+    "question": "Which statement about NULL is TRUE in SQL Server?",
+    "options": [
+      "A: NULL = NULL returns TRUE",
+      "B: NULL + 10 returns 10",
+      "C: NULL compared with any value returns UNKNOWN",
+      "D: NULL is equal to 0"
+    ],
+    "answer": "C"
+  },
+  {
+    "question": "Which aggregate function ignores NULL values?",
+    "options": [
+      "A: COUNT(*)",
+      "B: COUNT(column_name)",
+      "C: SUM(*)",
+      "D: GROUP BY"
+    ],
+    "answer": "B"
+  },
+  {
+    "question": "Can you add a PRIMARY KEY constraint to a table that already contains data?",
+    "options": [
+      "A: Yes, always",
+      "B: Only if no duplicate and no NULL values exist",
+      "C: Only if the table is empty",
+      "D: Only using triggers"
+    ],
+    "answer": "B"
+  },
+  {
+    "question": "What happens if you try to add a NOT NULL constraint on a column that contains NULL values?",
+    "options": [
+      "A: SQL Server replaces NULLs with default values",
+      "B: Constraint is added and NULLs remain",
+      "C: Operation fails",
+      "D: NULL rows are deleted automatically"
+    ],
+    "answer": "C"
+  },
+  {
+    "question": "How many PRIMARY KEY constraints can a table have?",
+    "options": [
+      "A: Zero",
+      "B: One",
+      "C: Two",
+      "D: Unlimited"
+    ],
+    "answer": "B"
+  },
+  {
+    "question": "Which statement is TRUE about UNIQUE constraints in SQL Server?",
+    "options": [
+      "A: A table can have only one UNIQUE constraint",
+      "B: UNIQUE constraint does not allow NULL values",
+      "C: UNIQUE constraint allows one NULL value",
+      "D: UNIQUE constraint is the same as PRIMARY KEY"
+    ],
+    "answer": "C"
+  },
+  {
+    "question": "Which method is safer for executing Dynamic SQL in SQL Server?",
+    "options": [
+      "A: EXEC()",
+      "B: sp_executesql",
+      "C: PRINT",
+      "D: SELECT"
+    ],
+    "answer": "B"
+  },
+  {
+    "question": "What is the main risk of using EXEC() with string concatenation?",
+    "options": [
+      "A: Deadlocks",
+      "B: Index fragmentation",
+      "C: SQL Injection",
+      "D: Blocking"
+    ],
+    "answer": "C"
+  },
+  {
+    "question": "Which function returns the error message inside a CATCH block?",
+    "options": [
+      "A: ERROR_LINE()",
+      "B: ERROR_SEVERITY()",
+      "C: ERROR_MESSAGE()",
+      "D: ERROR_STATE()"
+    ],
+    "answer": "C"
+  },
+  {
+    "question": "What is the value of @@TRANCOUNT after a ROLLBACK statement?",
+    "options": [
+      "A: 1",
+      "B: Depends on nesting level",
+      "C: 0",
+      "D: -1"
+    ],
+    "answer": "C"
+  },
+  {
+    "question": "Which JOIN returns only matching rows from both tables?",
+    "options": [
+      "A: LEFT OUTER JOIN",
+      "B: RIGHT OUTER JOIN",
+      "C: FULL OUTER JOIN",
+      "D: INNER JOIN"
+    ],
+    "answer": "D"
+  },
+  {
+    "question": "Which DMV is used to identify slow-running queries in SQL Server?",
+    "options": [
+      "A: sys.tables",
+      "B: sys.indexes",
+      "C: sys.dm_exec_query_stats",
+      "D: sys.objects"
+    ],
+    "answer": "C"
+  },
+  {
+    "question": "What is the purpose of SET NOCOUNT ON?",
+    "options": [
+      "A: Stops query execution",
+      "B: Suppresses row count messages",
+      "C: Improves indexing",
+      "D: Prevents deadlocks"
+    ],
+    "answer": "B"
+  },
+  {
+    "question": "What does the CEILING() function do in SQL Server?",
+    "options": [
+      "A: Rounds a number to the nearest integer",
+      "B: Returns the smallest integer greater than or equal to the number",
+      "C: Returns the largest integer less than or equal to the number",
+      "D: Removes decimal values"
+    ],
+    "answer": "B"
+  },
+  {
+    "question": "What is the result of FLOOR(6.6) in SQL Server?",
+    "options": [
+      "A: 7",
+      "B: 6",
+      "C: 6.6",
+      "D: Error"
+    ],
+    "answer": "B"
+  },
+  {
+    "question": "What is the output of ROUND(6.5, 0) in SQL Server?",
+    "options": [
+      "A: 6",
+      "B: 6.0",
+      "C: 7",
+      "D: 7.0"
+    ],
+    "answer": "C"
+  },
+  {
+    "question": "Which function is best suited to find the latest record per consumer from a history table?",
+    "options": [
+      "A: RANK()",
+      "B: DENSE_RANK()",
+      "C: ROW_NUMBER() with ORDER BY DESC",
+      "D: NTILE()"
+    ],
+    "answer": "C"
+  },
+  {
+    "question": "Which clause is used with ROW_NUMBER() to group records before ordering?",
+    "options": [
+      "A: ORDER BY",
+      "B: GROUP BY",
+      "C: PARTITION BY",
+      "D: HAVING"
+    ],
+    "answer": "C"
+  },
+  {
+    "question": "Which SQL construct is used to swap values like 0 to 1 and 1 to 0?",
+    "options": [
+      "A: IF...ELSE",
+      "B: CASE expression",
+      "C: COALESCE",
+      "D: ISNULL"
+    ],
+    "answer": "B"
+  },
+  {
+    "question": "Which function is commonly used to check if an object exists in SQL Server?",
+    "options": [
+      "A: OBJECT_NAME()",
+      "B: OBJECT_SCHEMA_NAME()",
+      "C: OBJECT_ID()",
+      "D: SCHEMA_ID()"
+    ],
+    "answer": "C"
   }
 
  
