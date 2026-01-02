@@ -10454,8 +10454,10 @@ let originalQuestions = [
   },
   
 
+
+
  {
-    "question": "Which statement about NULL is TRUE in SQL Server?",
+    "q": "Which statement about NULL is TRUE in SQL Server?",
     "options": [
       "  NULL = NULL returns TRUE",
       "  NULL + 10 returns 10",
@@ -10465,7 +10467,7 @@ let originalQuestions = [
     "answer": "C"
   },
   {
-    "question": "Which aggregate function ignores NULL values?",
+    "q": "Which aggregate function ignores NULL values?",
     "options": [
       "  COUNT(*)",
       "  COUNT(column_name)",
@@ -10475,7 +10477,7 @@ let originalQuestions = [
     "answer": "B"
   },
   {
-    "question": "Can you add a PRIMARY KEY constraint to a table that already contains data?",
+    "q": "Can you add a PRIMARY KEY constraint to a table that already contains data?",
     "options": [
       "  Yes, always",
       "  Only if no duplicate and no NULL values exist",
@@ -10485,7 +10487,7 @@ let originalQuestions = [
     "answer": "B"
   },
   {
-    "question": "What happens if you try to add a NOT NULL constraint on a column that contains NULL values?",
+    "q": "What happens if you try to add a NOT NULL constraint on a column that contains NULL values?",
     "options": [
       "  SQL Server replaces NULLs with default values",
       "  Constraint is added and NULLs remain",
@@ -10495,7 +10497,7 @@ let originalQuestions = [
     "answer": "C"
   },
   {
-    "question": "How many PRIMARY KEY constraints can a table have?",
+    "q": "How many PRIMARY KEY constraints can a table have?",
     "options": [
       "  Zero",
       "  One",
@@ -10505,7 +10507,7 @@ let originalQuestions = [
     "answer": "B"
   },
   {
-    "question": "Which statement is TRUE about UNIQUE constraints in SQL Server?",
+    "q": "Which statement is TRUE about UNIQUE constraints in SQL Server?",
     "options": [
       "  A table can have only one UNIQUE constraint",
       "  UNIQUE constraint does not allow NULL values",
@@ -10515,7 +10517,7 @@ let originalQuestions = [
     "answer": "C"
   },
   {
-    "question": "Which method is safer for executing Dynamic SQL in SQL Server?",
+    "q": "Which method is safer for executing Dynamic SQL in SQL Server?",
     "options": [
       "  EXEC()",
       "  sp_executesql",
@@ -10525,7 +10527,7 @@ let originalQuestions = [
     "answer": "B"
   },
   {
-    "question": "What is the main risk of using EXEC() with string concatenation?",
+    "q": "What is the main risk of using EXEC() with string concatenation?",
     "options": [
       "  Deadlocks",
       "  Index fragmentation",
@@ -10535,7 +10537,7 @@ let originalQuestions = [
     "answer": "C"
   },
   {
-    "question": "Which function returns the error message inside a CATCH block?",
+    "q": "Which function returns the error message inside a CATCH block?",
     "options": [
       "  ERROR_LINE()",
       "  ERROR_SEVERITY()",
@@ -10545,7 +10547,7 @@ let originalQuestions = [
     "answer": "C"
   },
   {
-    "question": "What is the value of @@TRANCOUNT after a ROLLBACK statement?",
+    "q": "What is the value of @@TRANCOUNT after a ROLLBACK statement?",
     "options": [
       "  1",
       "  Depends on nesting level",
@@ -10555,7 +10557,7 @@ let originalQuestions = [
     "answer": "C"
   },
   {
-    "question": "Which JOIN returns only matching rows from both tables?",
+    "q": "Which JOIN returns only matching rows from both tables?",
     "options": [
       "  LEFT OUTER JOIN",
       "  RIGHT OUTER JOIN",
@@ -10565,7 +10567,7 @@ let originalQuestions = [
     "answer": "D"
   },
   {
-    "question": "Which DMV is used to identify slow-running queries in SQL Server?",
+    "q": "Which DMV is used to identify slow-running queries in SQL Server?",
     "options": [
       "  sys.tables",
       "  sys.indexes",
@@ -10575,7 +10577,7 @@ let originalQuestions = [
     "answer": "C"
   },
   {
-    "question": "What is the purpose of SET NOCOUNT ON?",
+    "q": "What is the purpose of SET NOCOUNT ON?",
     "options": [
       "  Stops query execution",
       "  Suppresses row count messages",
@@ -10585,7 +10587,7 @@ let originalQuestions = [
     "answer": "B"
   },
   {
-    "question": "What does the CEILING() function do in SQL Server?",
+    "q": "What does the CEILING() function do in SQL Server?",
     "options": [
       "  Rounds a number to the nearest integer",
       "  Returns the smallest integer greater than or equal to the number",
@@ -10595,7 +10597,7 @@ let originalQuestions = [
     "answer": "B"
   },
   {
-    "question": "What is the result of FLOOR(6.6) in SQL Server?",
+    "q": "What is the result of FLOOR(6.6) in SQL Server?",
     "options": [
       "  7",
       "  6",
@@ -10605,7 +10607,7 @@ let originalQuestions = [
     "answer": "B"
   },
   {
-    "question": "What is the output of ROUND(6.5, 0) in SQL Server?",
+    "q": "What is the output of ROUND(6.5, 0) in SQL Server?",
     "options": [
       "  6",
       "  6.0",
@@ -10615,7 +10617,7 @@ let originalQuestions = [
     "answer": "C"
   },
   {
-    "question": "Which function is best suited to find the latest record per consumer from a history table?",
+    "q": "Which function is best suited to find the latest record per consumer from a history table?",
     "options": [
       "  RANK()",
       "  DENSE_RANK()",
@@ -10625,7 +10627,7 @@ let originalQuestions = [
     "answer": "C"
   },
   {
-    "question": "Which clause is used with ROW_NUMBER() to group records before ordering?",
+    "q": "Which clause is used with ROW_NUMBER() to group records before ordering?",
     "options": [
       "  ORDER BY",
       "  GROUP BY",
@@ -10635,7 +10637,7 @@ let originalQuestions = [
     "answer": "C"
   },
   {
-    "question": "Which SQL construct is used to swap values like 0 to 1 and 1 to 0?",
+    "q": "Which SQL construct is used to swap values like 0 to 1 and 1 to 0?",
     "options": [
       "  IF...ELSE",
       "  CASE expression",
@@ -10645,7 +10647,7 @@ let originalQuestions = [
     "answer": "B"
   },
   {
-    "question": "Which function is commonly used to check if an object exists in SQL Server?",
+    "q": "Which function is commonly used to check if an object exists in SQL Server?",
     "options": [
       "  OBJECT_NAME()",
       "  OBJECT_SCHEMA_NAME()",
@@ -10668,7 +10670,7 @@ let originalQuestions = [
 
 
 {
-    "question": "Which object type code represents a user table in OBJECT_ID checks?",
+    "q": "Which object type code represents a user table in OBJECT_ID checks?",
     "options": [
       "  V",
       "  P",
@@ -10678,7 +10680,7 @@ let originalQuestions = [
     "answer": "C"
   },
   {
-    "question": "Where are temporary tables physically stored in SQL Server?",
+    "q": "Where are temporary tables physically stored in SQL Server?",
     "options": [
       "  master database",
       "  user database",
@@ -10688,7 +10690,7 @@ let originalQuestions = [
     "answer": "C"
   },
   {
-    "question": "Which command is commonly used to describe a temporary table structure?",
+    "q": "Which command is commonly used to describe a temporary table structure?",
     "options": [
       "  DESCRIBE #temp",
       "  sp_help '#temp'",
@@ -10698,7 +10700,7 @@ let originalQuestions = [
     "answer": "B"
   },
   {
-    "question": "What does OBJECT_ID() return in SQL Server?",
+    "q": "What does OBJECT_ID() return in SQL Server?",
     "options": [
       "  The schema name of the object",
       "  The ID of a schema-scoped object",
@@ -10708,7 +10710,7 @@ let originalQuestions = [
     "answer": "B"
   },
   {
-    "question": "What will OBJECT_ID() return if the object does not exist?",
+    "q": "What will OBJECT_ID() return if the object does not exist?",
     "options": [
       "  0",
       "  -1",
@@ -10718,7 +10720,7 @@ let originalQuestions = [
     "answer": "C"
   },
   {
-    "question": "Which parameter is used with OBJECT_ID to specify the object type?",
+    "q": "Which parameter is used with OBJECT_ID to specify the object type?",
     "options": [
       "  Database ID",
       "  Object type code like 'U', 'V', 'P'",
@@ -10728,7 +10730,7 @@ let originalQuestions = [
     "answer": "B"
   },
   {
-    "question": "What does OBJECT_NAME(object_id) return?",
+    "q": "What does OBJECT_NAME(object_id) return?",
     "options": [
       "  The ID of an object",
       "  The name of an object from its object_id",
@@ -10738,7 +10740,7 @@ let originalQuestions = [
     "answer": "B"
   },
   {
-    "question": "Which function would you use to find a stored procedure containing specific text?",
+    "q": "Which function would you use to find a stored procedure containing specific text?",
     "options": [
       "  OBJECT_ID()",
       "  OBJECT_NAME()",
@@ -10748,7 +10750,7 @@ let originalQuestions = [
     "answer": "C"
   },
   {
-    "question": "Which function is used to identify the datatype and properties of a variable in SQL Server?",
+    "q": "Which function is used to identify the datatype and properties of a variable in SQL Server?",
     "options": [
       "  TYPEOF()",
       "  SQL_VARIANT_PROPERTY()",
@@ -10758,7 +10760,7 @@ let originalQuestions = [
     "answer": "B"
   },
   {
-    "question": "Which property of SQL_VARIANT_PROPERTY() gives the number of bytes required to store a variable?",
+    "q": "Which property of SQL_VARIANT_PROPERTY() gives the number of bytes required to store a variable?",
     "options": [
       "  Precision",
       "  Scale",
@@ -10768,7 +10770,7 @@ let originalQuestions = [
     "answer": "C"
   },
   {
-    "question": "What is the main difference between a temporary table (#TempTable) and a global temporary table (##GlobalTempTable)?",
+    "q": "What is the main difference between a temporary table (#TempTable) and a global temporary table (##GlobalTempTable)?",
     "options": [
       "  Temporary table exists in master DB, global temp in tempdb",
       "  Temporary table is session-specific, global temp is accessible to all sessions",
@@ -10778,7 +10780,7 @@ let originalQuestions = [
     "answer": "B"
   },
   {
-    "question": "Where are temporary and global temporary tables stored physically in SQL Server?",
+    "q": "Where are temporary and global temporary tables stored physically in SQL Server?",
     "options": [
       "  User database",
       "  master database",
@@ -10788,7 +10790,7 @@ let originalQuestions = [
     "answer": "C"
   },
   {
-    "question": "Which catalog view and function combination can be used to search stored procedures containing a specific string?",
+    "q": "Which catalog view and function combination can be used to search stored procedures containing a specific string?",
     "options": [
       "  sys.tables + OBJECT_ID()",
       "  sys.procedures + OBJECT_DEFINITION()",
@@ -10798,7 +10800,7 @@ let originalQuestions = [
     "answer": "B"
   },
   {
-    "question": "Which SQL statements are considered DDL (Data Definition Language)?",
+    "q": "Which SQL statements are considered DDL (Data Definition Language)?",
     "options": [
       "  SELECT, INSERT, UPDATE",
       "  CREATE, ALTER, DROP, TRUNCATE",
@@ -10808,7 +10810,7 @@ let originalQuestions = [
     "answer": "B"
   },
   {
-    "question": "Which SQL statements are considered DML (Data Manipulation Language)?",
+    "q": "Which SQL statements are considered DML (Data Manipulation Language)?",
     "options": [
       "  SELECT, INSERT, UPDATE, DELETE, MERGE",
       "  CREATE, ALTER, DROP",
@@ -10818,7 +10820,7 @@ let originalQuestions = [
     "answer": "A"
   },
   {
-    "question": "Which SQL statements are considered DCL (Data Control Language)?",
+    "q": "Which SQL statements are considered DCL (Data Control Language)?",
     "options": [
       "  SELECT, INSERT",
       "  COMMIT, ROLLBACK",
@@ -10828,7 +10830,7 @@ let originalQuestions = [
     "answer": "C"
   },
   {
-    "question": "Which SQL statements are considered TCL (Transaction Control Language)?",
+    "q": "Which SQL statements are considered TCL (Transaction Control Language)?",
     "options": [
       "  COMMIT, ROLLBACK, SAVEPOINT, SET TRANSACTION",
       "  SELECT, INSERT",
@@ -10838,7 +10840,7 @@ let originalQuestions = [
     "answer": "A"
   },
   {
-    "question": "What does the ALL operator do in SQL?",
+    "q": "What does the ALL operator do in SQL?",
     "options": [
       "  Returns TRUE if a value matches at least one value in a subquery",
       "  Returns TRUE if a value matches all values in a subquery",
@@ -10848,7 +10850,7 @@ let originalQuestions = [
     "answer": "B"
   },
   {
-    "question": "Which comparison operators can be used with ALL in SQL?",
+    "q": "Which comparison operators can be used with ALL in SQL?",
     "options": [
       "  =, !=, >, <, >=, <=",
       "  LIKE, IN",
@@ -10858,7 +10860,7 @@ let originalQuestions = [
     "answer": "A"
   },
   {
-    "question": "Why does the query fail: `SELECT Name FROM Employees WHERE Salary > (SELECT AvgSalary FROM Departments)`?",
+    "q": "Why does the query fail: `SELECT Name FROM Employees WHERE Salary > (SELECT AvgSalary FROM Departments)`?",
     "options": [
       "  The subquery is empty",
       "  The outer query has no columns",
@@ -10868,7 +10870,7 @@ let originalQuestions = [
     "answer": "C"
   },
   {
-    "question": "How can you fix a subquery that returns multiple rows for comparison in SQL?",
+    "q": "How can you fix a subquery that returns multiple rows for comparison in SQL?",
     "options": [
       "  Use an aggregate function like AVG()",
       "  Use ALL or ANY operators",
@@ -10878,7 +10880,7 @@ let originalQuestions = [
     "answer": "C"
   },
   {
-    "question": "In SQL, what is a tuple?",
+    "q": "In SQL, what is a tuple?",
     "options": [
       "  A column in a table",
       "  A row in a table",
@@ -10888,7 +10890,7 @@ let originalQuestions = [
     "answer": "B"
   },
   {
-    "question": "In relational model terminology, which of the following is equivalent to a tuple in SQL?",
+    "q": "In relational model terminology, which of the following is equivalent to a tuple in SQL?",
     "options": [
       "  Table",
       "  Column",
@@ -10898,7 +10900,7 @@ let originalQuestions = [
     "answer": "C"
   },
   {
-    "question": "What does the ANY operator do in SQL?",
+    "q": "What does the ANY operator do in SQL?",
     "options": [
       "  Returns TRUE if a value matches all values in a subquery",
       "  Returns TRUE if a value matches at least one value in a subquery",
@@ -10908,7 +10910,7 @@ let originalQuestions = [
     "answer": "B"
   },
   {
-    "question": "Which statement is TRUE about ALL and ANY operators in SQL?",
+    "q": "Which statement is TRUE about ALL and ANY operators in SQL?",
     "options": [
       "  ALL requires the condition to be true for at least one value",
       "  ANY requires the condition to be true for all values",
@@ -10918,7 +10920,7 @@ let originalQuestions = [
     "answer": "C"
   },
   {
-    "question": "Why does the query `SELECT Name FROM Employees WHERE Salary > (SELECT AvgSalary FROM Departments)` fail if WHERE clause is removed from subquery?",
+    "q": "Why does the query `SELECT Name FROM Employees WHERE Salary > (SELECT AvgSalary FROM Departments)` fail if WHERE clause is removed from subquery?",
     "options": [
       "  Outer query has no columns",
       "  Subquery returns multiple rows, which cannot be compared with >",
@@ -10928,7 +10930,7 @@ let originalQuestions = [
     "answer": "B"
   },
   {
-    "question": "How can you modify a multi-row subquery to avoid the error when comparing with a scalar?",
+    "q": "How can you modify a multi-row subquery to avoid the error when comparing with a scalar?",
     "options": [
       "  Use aggregate function like AVG() to return a single value",
       "  Use ALL or ANY operators for multi-row comparison",
@@ -10938,7 +10940,7 @@ let originalQuestions = [
     "answer": "C"
   },
   {
-    "question": "Find employees whose salaries are equal to the average salary of their department. Which SQL query is correct?",
+    "q": "Find employees whose salaries are equal to the average salary of their department. Which SQL query is correct?",
     "options": [
       "  SELECT first_name FROM employees WHERE salary = ALL (SELECT AVG(salary) FROM employees GROUP BY department_id)",
       "  SELECT first_name FROM employees WHERE salary = ANY (SELECT AVG(salary) FROM employees GROUP BY department_id)",
@@ -10948,7 +10950,7 @@ let originalQuestions = [
     "answer": "B"
   },
   {
-    "question": "Consider the query: `SELECT * FROM (SELECT 1 AS a, 2 AS b) ab WHERE a <= ALL (SELECT 0 AS a UNION SELECT 4)`; what will it return?",
+    "q": "Consider the query: `SELECT * FROM (SELECT 1 AS a, 2 AS b) ab WHERE a <= ALL (SELECT 0 AS a UNION SELECT 4)`; what will it return?",
     "options": [
       "  Row (1, 2)",
       "  Row (0, 2)",
@@ -10958,7 +10960,7 @@ let originalQuestions = [
     "answer": "C"
   },
   {
-    "question": "Consider the query: `SELECT * FROM (SELECT 1 AS a, 2 AS b) ab WHERE a <= ANY (SELECT 0 AS a UNION SELECT 4)`; what will it return?",
+    "q": "Consider the query: `SELECT * FROM (SELECT 1 AS a, 2 AS b) ab WHERE a <= ANY (SELECT 0 AS a UNION SELECT 4)`; what will it return?",
     "options": [
       "  Row (1, 2)",
       "  Row (0, 2)",
@@ -10968,7 +10970,7 @@ let originalQuestions = [
     "answer": "A"
   },
   {
-    "question": "What does the function DB_ID() return in SQL Server?",
+    "q": "What does the function DB_ID() return in SQL Server?",
     "options": [
       "  ID of the current user",
       "  ID of the current database",
@@ -10978,7 +10980,7 @@ let originalQuestions = [
     "answer": "B"
   },
   {
-    "question": "How do you get the ID of a specific database named 'TestDB'?",
+    "q": "How do you get the ID of a specific database named 'TestDB'?",
     "options": [
       "  SELECT OBJECT_ID('TestDB')",
       "  SELECT DB_ID('TestDB')",
@@ -10988,7 +10990,7 @@ let originalQuestions = [
     "answer": "B"
   },
   {
-    "question": "Which query returns products ordered at least once with quantity 9?",
+    "q": "Which query returns products ordered at least once with quantity 9?",
     "options": [
       "  SELECT ProductName FROM Products WHERE ProductID = ALL (SELECT ProductID FROM OrderDetails WHERE Quantity = 9)",
       "  SELECT ProductName FROM Products WHERE ProductID = ANY (SELECT ProductID FROM OrderDetails WHERE Quantity = 9)",
@@ -10998,7 +11000,7 @@ let originalQuestions = [
     "answer": "B"
   },
   {
-    "question": "If you want to find employees whose salary is higher than at least one department average salary, which operator should you use?",
+    "q": "If you want to find employees whose salary is higher than at least one department average salary, which operator should you use?",
     "options": [
       "  ALL",
       "  ANY",
@@ -11008,7 +11010,7 @@ let originalQuestions = [
     "answer": "B"
   },
   {
-    "question": "What does DB_NAME() without any argument return in SQL Server?",
+    "q": "What does DB_NAME() without any argument return in SQL Server?",
     "options": [
       "  The ID of the current database",
       "  The name of the current database",
@@ -11018,7 +11020,7 @@ let originalQuestions = [
     "answer": "B"
   },
   {
-    "question": "How do you get the name of a database with database_id = 3?",
+    "q": "How do you get the name of a database with database_id = 3?",
     "options": [
       "  SELECT DB_NAME(3)",
       "  SELECT DATABASE_NAME(3)",
@@ -11028,7 +11030,7 @@ let originalQuestions = [
     "answer": "A"
   },
   {
-    "question": "Which of the following is TRUE about CASE statements in SQL?",
+    "q": "Which of the following is TRUE about CASE statements in SQL?",
     "options": [
       "  CASE can only be used in SELECT clause",
       "  CASE cannot be nested",
@@ -11038,7 +11040,7 @@ let originalQuestions = [
     "answer": "C"
   },
   {
-    "question": "How can you count male and female employees in each department using CASE?",
+    "q": "How can you count male and female employees in each department using CASE?",
     "options": [
       "  COUNT(CASE WHEN gender='M' THEN 1 END)",
       "  SUM(CASE WHEN gender='M' THEN 1 ELSE 0 END)",
@@ -11048,7 +11050,7 @@ let originalQuestions = [
     "answer": "C"
   },
   {
-    "question": "What happens if no CASE conditions match and there is no ELSE clause?",
+    "q": "What happens if no CASE conditions match and there is no ELSE clause?",
     "options": [
       "  SQL throws an error",
       "  SQL returns NULL",
@@ -11058,7 +11060,7 @@ let originalQuestions = [
     "answer": "B"
   },
   {
-    "question": "Which query can be used to check whether all employee IDs (`emp_id`) are unique?",
+    "q": "Which query can be used to check whether all employee IDs (`emp_id`) are unique?",
     "options": [
       "  SELECT emp_id, COUNT(*) FROM employees GROUP BY emp_id HAVING COUNT(*) > 1",
       "  SELECT DISTINCT emp_id FROM employees",
@@ -11068,7 +11070,7 @@ let originalQuestions = [
     "answer": "A"
   },
   {
-    "question": "How do you quickly confirm total records vs unique employee IDs?",
+    "q": "How do you quickly confirm total records vs unique employee IDs?",
     "options": [
       "  SELECT COUNT(*) FROM employees",
       "  SELECT COUNT(DISTINCT emp_id) FROM employees",
@@ -11078,7 +11080,7 @@ let originalQuestions = [
     "answer": "C"
   },
   {
-    "question": "Which of the following statements is NOT a DML command?",
+    "q": "Which of the following statements is NOT a DML command?",
     "options": [
       "  SELECT",
       "  INSERT",
@@ -11088,7 +11090,7 @@ let originalQuestions = [
     "answer": "D"
   },
   {
-    "question": "What is the main difference between DML and DDL commands?",
+    "q": "What is the main difference between DML and DDL commands?",
     "options": [
       "  DML affects database structure, DDL affects data",
       "  DML affects data, DDL affects database structure",
@@ -11098,7 +11100,7 @@ let originalQuestions = [
     "answer": "B"
   },
   {
-    "question": "How can you sort employees with job_name 'MANAGER' first, 'ANALYST' second, others last?",
+    "q": "How can you sort employees with job_name 'MANAGER' first, 'ANALYST' second, others last?",
     "options": [
       "  ORDER BY job_name",
       "  ORDER BY CASE WHEN job_name='MANAGER' THEN 1 WHEN job_name='ANALYST' THEN 2 ELSE 3 END",
@@ -11108,7 +11110,7 @@ let originalQuestions = [
     "answer": "B"
   },
   {
-    "question": "How would you give a bonus of 500 to IT department employees only using CASE in UPDATE?",
+    "q": "How would you give a bonus of 500 to IT department employees only using CASE in UPDATE?",
     "options": [
       "  UPDATE employees SET salary = salary + 500 WHERE department='IT'",
       "  UPDATE employees SET salary = salary + CASE WHEN department='IT' THEN 500 ELSE 0 END",
@@ -11118,7 +11120,7 @@ let originalQuestions = [
     "answer": "C"
   },
   {
-    "question": "How can you delete duplicate rows in a table while keeping only one copy?",
+    "q": "How can you delete duplicate rows in a table while keeping only one copy?",
     "options": [
       "  DELETE FROM employees",
       "  WITH DuplicateCTE AS (SELECT *, ROW_NUMBER() OVER(PARTITION BY emp_id ORDER BY emp_id) AS rn FROM employees) DELETE FROM DuplicateCTE WHERE rn > 1",
@@ -11128,7 +11130,7 @@ let originalQuestions = [
     "answer": "B"
   },
   {
-    "question": "How do you rename a column 'emp_name' to 'employee_name' in SQL Server?",
+    "q": "How do you rename a column 'emp_name' to 'employee_name' in SQL Server?",
     "options": [
       "  ALTER TABLE Employees RENAME COLUMN emp_name TO employee_name",
       "  EXEC sp_rename 'Employees.emp_name', 'employee_name', 'COLUMN'",
@@ -11138,7 +11140,7 @@ let originalQuestions = [
     "answer": "B"
   },
   {
-    "question": "How do you rename a database 'Test' to 'Test2'?",
+    "q": "How do you rename a database 'Test' to 'Test2'?",
     "options": [
       "  ALTER DATABASE [Test] MODIFY NAME = [Test2]",
       "  EXEC sp_renamedb 'Test', 'Test2'",
@@ -11148,7 +11150,7 @@ let originalQuestions = [
     "answer": "C"
   },
   {
-    "question": "Write an SQL query to display total units sold by each pizza company.",
+    "q": "Write an SQL query to display total units sold by each pizza company.",
     "options": [
       "  SELECT com, SUM(unitssold) FROM Foods GROUP BY com",
       "  SELECT f.com, p.companyname, SUM(f.unitssold) AS total_units_sold FROM Foods f JOIN PizzaCompany p ON f.com = p.companyid GROUP BY f.com, p.companyname",
@@ -11158,7 +11160,7 @@ let originalQuestions = [
     "answer": "B"
   },
   {
-    "question": "Find department name, grade, and number of employees where at least two employees are SALESMAN.",
+    "q": "Find department name, grade, and number of employees where at least two employees are SALESMAN.",
     "options": [
       "  SELECT d.dep_name, s.grade, COUNT(*) FROM employees e JOIN department d ON e.dep_id = d.dep_id JOIN salary_grade s ON e.salary BETWEEN s.min_sal AND s.max_sal WHERE e.job_name = 'SALESMAN' GROUP BY d.dep_name, s.grade HAVING COUNT(*) >= 2",
       "  SELECT dep_name FROM department",
@@ -11168,7 +11170,7 @@ let originalQuestions = [
     "answer": "A"
   },
   {
-    "question": "List departments where at least two employees are working.",
+    "q": "List departments where at least two employees are working.",
     "options": [
       "  SELECT dep_name FROM dept WHERE dep_id IN (SELECT dep_id FROM emp2 GROUP BY dep_id HAVING COUNT(*) >= 2)",
       "  SELECT dep_name FROM dept",
@@ -11178,7 +11180,7 @@ let originalQuestions = [
     "answer": "A"
   },
   {
-    "question": "Find product names where any order has quantity = 9.",
+    "q": "Find product names where any order has quantity = 9.",
     "options": [
       "  SELECT ProductName FROM Products WHERE ProductID = ANY (SELECT ProductID FROM OrderDetails WHERE Quantity = 9)",
       "  SELECT ProductName FROM Products WHERE ProductID = ALL (SELECT ProductID FROM OrderDetails WHERE Quantity = 9)",
@@ -11188,7 +11190,7 @@ let originalQuestions = [
     "answer": "A"
   },
   {
-    "question": "Find employees whose salary is greater than all department average salaries.",
+    "q": "Find employees whose salary is greater than all department average salaries.",
     "options": [
       "  SELECT Name, Salary FROM Employees WHERE Salary > ALL (SELECT AvgSalary FROM Departments)",
       "  SELECT Name, Salary FROM Employees WHERE Salary > ANY (SELECT AvgSalary FROM Departments)",
@@ -11198,7 +11200,7 @@ let originalQuestions = [
     "answer": "A"
   },
   {
-    "question": "What is the difference between ANY and ALL in SQL?",
+    "q": "What is the difference between ANY and ALL in SQL?",
     "options": [
       "  ANY returns TRUE if condition matches at least one value; ALL returns TRUE if condition matches all values",
       "  ANY and ALL are the same",
@@ -11208,7 +11210,7 @@ let originalQuestions = [
     "answer": "A"
   },
   {
-    "question": "Find employees whose salaries equal the average salary of their department.",
+    "q": "Find employees whose salaries equal the average salary of their department.",
     "options": [
       "  SELECT first_name, last_name, salary FROM employees WHERE salary = ANY (SELECT AVG(salary) FROM employees GROUP BY department_id)",
       "  SELECT * FROM employees WHERE salary = AVG(salary)",
@@ -11218,7 +11220,7 @@ let originalQuestions = [
     "answer": "A"
   },
   {
-    "question": "What does DB_ID() return in SQL Server?",
+    "q": "What does DB_ID() return in SQL Server?",
     "options": [
       "  The ID number of a database",
       "  The name of a database",
@@ -11228,7 +11230,7 @@ let originalQuestions = [
     "answer": "A"
   },
   {
-    "question": "What does DB_NAME() return when called without arguments?",
+    "q": "What does DB_NAME() return when called without arguments?",
     "options": [
       "  The name of the current database",
       "  The ID of the current database",
@@ -11238,7 +11240,7 @@ let originalQuestions = [
     "answer": "A"
   },
   {
-    "question": "Write a query to check whether all employee numbers are unique.",
+    "q": "Write a query to check whether all employee numbers are unique.",
     "options": [
       "  SELECT emp_id, COUNT(*) FROM employees GROUP BY emp_id HAVING COUNT(*) > 1",
       "  SELECT DISTINCT emp_id FROM employees",
@@ -11248,7 +11250,7 @@ let originalQuestions = [
     "answer": "A"
   },
   {
-    "question": "Classify employees' salaries as High (>3000), Medium (2000-3000), Low (<2000) using CASE in SELECT.",
+    "q": "Classify employees' salaries as High (>3000), Medium (2000-3000), Low (<2000) using CASE in SELECT.",
     "options": [
       "  SELECT salary, CASE WHEN salary>3000 THEN 'High' WHEN salary BETWEEN 2000 AND 3000 THEN 'Medium' ELSE 'Low' END AS SalaryLevel FROM employees",
       "  SELECT salary FROM employees",
@@ -11258,7 +11260,7 @@ let originalQuestions = [
     "answer": "A"
   },
   {
-    "question": "How would you give a bonus of 500 to IT department employees only using CASE in UPDATE?",
+    "q": "How would you give a bonus of 500 to IT department employees only using CASE in UPDATE?",
     "options": [
       "  UPDATE employees SET salary = salary + 500 WHERE department='IT'",
       "  UPDATE employees SET salary = salary + CASE WHEN department='IT' THEN 500 ELSE 0 END",
@@ -11268,7 +11270,7 @@ let originalQuestions = [
     "answer": "C"
   },
   {
-    "question": "How do you count male and female employees per department using CASE?",
+    "q": "How do you count male and female employees per department using CASE?",
     "options": [
       "  SELECT department, COUNT(CASE WHEN gender='M' THEN 1 END) AS male_count, COUNT(CASE WHEN gender='F' THEN 1 END) AS female_count FROM employees GROUP BY department",
       "  SELECT department, COUNT(gender) FROM employees",
@@ -11278,7 +11280,7 @@ let originalQuestions = [
     "answer": "A"
   },
   {
-    "question": "Find total salary of IT department using SUM with CASE.",
+    "q": "Find total salary of IT department using SUM with CASE.",
     "options": [
       "  SELECT SUM(CASE WHEN department='IT' THEN salary ELSE 0 END) AS IT_Total_Salary FROM employees",
       "  SELECT SUM(salary) FROM employees WHERE department='IT'",
@@ -11288,7 +11290,7 @@ let originalQuestions = [
     "answer": "A"
   },
   {
-    "question": "How can you delete duplicates using a subquery?",
+    "q": "How can you delete duplicates using a subquery?",
     "options": [
       "  DELETE FROM employees WHERE emp_id NOT IN (SELECT MIN(emp_id) FROM employees GROUP BY emp_id)",
       "  TRUNCATE TABLE employees",
@@ -11298,7 +11300,7 @@ let originalQuestions = [
     "answer": "A"
   },
   {
-    "question": "How do you delete duplicate employee rows while keeping only one copy using ROW_NUMBER()?",
+    "q": "How do you delete duplicate employee rows while keeping only one copy using ROW_NUMBER()?",
     "options": [
       "  WITH DuplicateCTE AS (SELECT *, ROW_NUMBER() OVER (PARTITION BY emp_id ORDER BY emp_id) AS rn FROM employees) DELETE FROM DuplicateCTE WHERE rn > 1",
       "  DELETE FROM employees WHERE emp_id NOT IN (SELECT MIN(emp_id) FROM employees GROUP BY emp_id)",
@@ -11308,7 +11310,7 @@ let originalQuestions = [
     "answer": "D"
   },
   {
-    "question": "Get the second highest salary for each department using ROW_NUMBER().",
+    "q": "Get the second highest salary for each department using ROW_NUMBER().",
     "options": [
       "  SELECT * FROM (SELECT emp_id, salary, ROW_NUMBER() OVER(PARTITION BY department_id ORDER BY salary DESC) AS rn FROM employees) t WHERE rn = 2",
       "  SELECT MAX(salary) FROM employees",
@@ -11318,7 +11320,7 @@ let originalQuestions = [
     "answer": "A"
   },
   {
-    "question": "Calculate total salary of IT and HR separately in one query using SUM with CASE.",
+    "q": "Calculate total salary of IT and HR separately in one query using SUM with CASE.",
     "options": [
       "  SELECT SUM(CASE WHEN department='IT' THEN salary ELSE 0 END) AS IT_Salary, SUM(CASE WHEN department='HR' THEN salary ELSE 0 END) AS HR_Salary FROM employees",
       "  SELECT SUM(salary) FROM employees WHERE department='IT' OR department='HR'",
@@ -11328,7 +11330,7 @@ let originalQuestions = [
     "answer": "A"
   },
   {
-    "question": "Find employees whose salary is greater than all department average salaries.",
+    "q": "Find employees whose salary is greater than all department average salaries.",
     "options": [
       "  SELECT Name, Salary FROM Employees WHERE Salary > ALL (SELECT AVG(Salary) FROM Employees GROUP BY Department_ID)",
       "  SELECT Name, Salary FROM Employees WHERE Salary > ANY (SELECT AVG(Salary) FROM Employees GROUP BY Department_ID)",
@@ -11338,7 +11340,7 @@ let originalQuestions = [
     "answer": "A"
   },
   {
-    "question": "Find employees whose salary is greater than at least one department's average salary.",
+    "q": "Find employees whose salary is greater than at least one department's average salary.",
     "options": [
       "  SELECT Name, Salary FROM Employees WHERE Salary > ANY (SELECT AVG(Salary) FROM Employees GROUP BY Department_ID)",
       "  SELECT Name, Salary FROM Employees WHERE Salary > ALL (SELECT AVG(Salary) FROM Employees GROUP BY Department_ID)",
@@ -11348,7 +11350,7 @@ let originalQuestions = [
     "answer": "A"
   },
   {
-    "question": "Write a query to generate first 10 Fibonacci numbers using recursive CTE.",
+    "q": "Write a query to generate first 10 Fibonacci numbers using recursive CTE.",
     "options": [
       "  WITH CTE_Fib AS (SELECT 0 AS n, 0 AS fib UNION ALL SELECT 1,1 UNION ALL SELECT n+1, fib+LAG(fib) OVER (ORDER BY n) FROM CTE_Fib) SELECT * FROM CTE_Fib WHERE n<10",
       "  SELECT * FROM Fibonacci",
@@ -11358,7 +11360,7 @@ let originalQuestions = [
     "answer": "A"
   },
   {
-    "question": "Identify duplicate employee emails but keep the earliest join_date row.",
+    "q": "Identify duplicate employee emails but keep the earliest join_date row.",
     "options": [
       "  WITH CTE AS (SELECT *, ROW_NUMBER() OVER(PARTITION BY email ORDER BY join_date ASC) AS rn FROM employees) SELECT * FROM CTE WHERE rn > 1",
       "  SELECT email, COUNT(*) FROM employees GROUP BY email HAVING COUNT(*)>1",
@@ -11368,7 +11370,7 @@ let originalQuestions = [
     "answer": "B"
   },
   {
-    "question": "Find employees who have the same manager as 'John'.",
+    "q": "Find employees who have the same manager as 'John'.",
     "options": [
       "  SELECT e1.* FROM employees e1 JOIN employees e2 ON e1.manager_id = e2.manager_id WHERE e2.name='John'",
       "  SELECT * FROM employees WHERE manager_id=(SELECT manager_id FROM employees WHERE name='John')",
@@ -11378,7 +11380,7 @@ let originalQuestions = [
     "answer": "C"
   },
   {
-    "question": "Get the top 3 salaries per department, including ties using RANK().",
+    "q": "Get the top 3 salaries per department, including ties using RANK().",
     "options": [
       "  SELECT * FROM (SELECT *, RANK() OVER(PARTITION BY department_id ORDER BY salary DESC) AS rnk FROM employees) t WHERE rnk <= 3",
       "  SELECT TOP 3 * FROM employees ORDER BY salary DESC",
@@ -11388,7 +11390,7 @@ let originalQuestions = [
     "answer": "A"
   },
   {
-    "question": "Select employees where department is IT get salary>5000, else salary>3000 using CASE in WHERE.",
+    "q": "Select employees where department is IT get salary>5000, else salary>3000 using CASE in WHERE.",
     "options": [
       "  SELECT * FROM employees WHERE salary > CASE WHEN department='IT' THEN 5000 ELSE 3000 END",
       "  SELECT * FROM employees WHERE salary>5000 OR salary>3000",
@@ -11398,7 +11400,7 @@ let originalQuestions = [
     "answer": "A"
   },
   {
-    "question": "How do you rollback changes only to a certain savepoint?",
+    "q": "How do you rollback changes only to a certain savepoint?",
     "options": [
       "  SAVE TRANSACTION SavePoint1; ... ROLLBACK TRANSACTION SavePoint1",
       "  ROLLBACK TRANSACTION",
@@ -11408,7 +11410,7 @@ let originalQuestions = [
     "answer": "A"
   },
   {
-    "question": "Select employees whose salary is greater than the average salary of the department with highest headcount.",
+    "q": "Select employees whose salary is greater than the average salary of the department with highest headcount.",
     "options": [
       "  SELECT * FROM employees WHERE salary > (SELECT AVG(salary) FROM employees WHERE department_id=(SELECT TOP 1 department_id FROM employees GROUP BY department_id ORDER BY COUNT(*) DESC))",
       "  SELECT * FROM employees",
@@ -11418,7 +11420,7 @@ let originalQuestions = [
     "answer": "A"
   },
   {
-    "question": "Execute a query where table name is dynamic using sp_executesql.",
+    "q": "Execute a query where table name is dynamic using sp_executesql.",
     "options": [
       "  DECLARE @sql NVARCHAR(MAX) = 'SELECT * FROM ' + QUOTENAME(@TableName); EXEC sp_executesql @sql",
       "  SELECT * FROM @TableName",
@@ -11428,7 +11430,7 @@ let originalQuestions = [
     "answer": "A"
   },
   {
-    "question": "Find missing employee IDs in a continuous sequence using CTE.",
+    "q": "Find missing employee IDs in a continuous sequence using CTE.",
     "options": [
       "  WITH CTE AS (SELECT ROW_NUMBER() OVER(ORDER BY emp_id) AS rn, emp_id FROM employees) SELECT rn+1 AS missing_id FROM CTE WHERE rn+1 <> emp_id",
       "  SELECT * FROM employees",
