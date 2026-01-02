@@ -11518,7 +11518,141 @@ let originalQuestions = [
     ],
     "answer": 0,
     "time": 30
+  },
+
+  {
+    "q": "You are performing a JOIN between 'emp' (Salary) and 'sal_grade' (Min_Sal, Max_Sal). If a salary matches multiple grade ranges due to overlapping data, how does the 'BETWEEN' operator behave in the JOIN condition?",
+    "options": [
+      "It throws an error because BETWEEN requires unique ranges.",
+      "It returns only the first matching grade found in the table.",
+      "It creates duplicate rows for the employee, one for each matching grade.",
+      "It automatically selects the grade where the salary is closest to the Min_Sal."
+    ],
+    "answer": 2,
+    "time": 30
+  },
+  {
+    "q": "In a Self-Join query to find employees senior to their managers (e.HireDate < m.HireDate), what happens to the CEO (who has a NULL ManagerID) if an INNER JOIN is used?",
+    "options": [
+      "The CEO is included but shows NULL for manager details.",
+      "The CEO is excluded from the result set entirely.",
+      "The query fails because you cannot compare a date to NULL.",
+      "The CEO is matched with themselves."
+    ],
+    "answer": 1,
+    "time": 25
+  },
+  {
+    "q": "Which of the following statements about DATEPART and DATENAME is TRUE regarding the 'weekday' (dw) date part?",
+    "options": [
+      "DATEPART returns a string like 'Monday', DATENAME returns 1.",
+      "Both return an integer, but DATENAME is formatted as a string.",
+      "DATEPART returns an integer (1-7), while DATENAME returns the name (e.g., 'Monday').",
+      "They are identical and interchangeable in WHERE clauses."
+    ],
+    "answer": 2,
+    "time": 20
+  },
+  {
+    "q": "If you run DATEDIFF(year, '2023-12-31', '2024-01-01'), what is the result?",
+    "options": [
+      "0 (because only 1 day has passed)",
+      "1 (because it counts the number of year boundaries crossed)",
+      "0.0027 (the fractional part of the year)",
+      "Error: Start date and end date must be at least 365 days apart."
+    ],
+    "answer": 1,
+    "time": 25
+  },
+  {
+    "q": "In an Execution Plan, what does a 'Key Lookup' (Clustered) operator specifically indicate about your query?",
+    "options": [
+      "The table has no Primary Key.",
+      "A Non-Clustered index was used, but it did not 'cover' all columns in the SELECT list.",
+      "The query is performing a full table scan.",
+      "The Clustered Index is fragmented and needs rebuilding."
+    ],
+    "answer": 1,
+    "time":30
+  },
+  {
+    "q": "Which Join Operator in an execution plan is typically chosen by the optimizer when both input datasets are large and pre-sorted on the join key?",
+    "options": [
+      "Nested Loops Join",
+      "Hash Match Join",
+      "Merge Join",
+      "Adaptive Join"
+    ],
+    "answer": 2,
+    "time": 25
+  },
+  {
+    "q": "What is the primary difference between an 'Index Scan' and an 'Index Seek' in an execution plan?",
+    "options": [
+      "Scan reads only the header; Seek reads the data.",
+      "Scan traverses the entire index; Seek uses the B-tree to jump to specific rows.",
+      "Scan is always faster than Seek on large tables.",
+      "Seek is used for HEAP tables, while Scan is used for Clustered tables."
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "In a Clustered Index B-tree structure, what is stored at the 'Leaf Level'?",
+    "options": [
+      "Only the Index Key and a pointer to the row.",
+      "Pointers to the Intermediate levels.",
+      "The actual, complete data rows of the table.",
+      "A list of row IDs (RIDs) for the Heap."
+    ],
+    "answer": 2,
+    "time": 25
+  },
+  {
+    "q": "When a new row is inserted into a Clustered Table and the corresponding data page is full, what event occurs to maintain the logical order?",
+    "options": [
+      "The row is placed in an Overflow Bucket.",
+      "A Page Split occurs, moving roughly half the rows to a new page.",
+      "The index is automatically disabled until a REBUILD is run.",
+      "The row is stored at the end of the table (Heap behavior)."
+    ],
+    "answer": 1,
+    "time": 30
+  },
+  {
+    "q": "You are comparing a Heap table and a Clustered table. Which one is generally faster for 'Heavy Insert' workloads where the order doesn't matter?",
+    "options": [
+      "Clustered Table (because it keeps data organized)",
+      "Heap Table (because it avoids the overhead of maintaining B-tree order and page splits)",
+      "Both are identical in insert performance.",
+      "Clustered Table, but only if the ID is a GUID."
+    ],
+    "answer": 1,
+    "time": 25
+  },
+  {
+    "q": "What does the 'Thickness' of an arrow in a graphical Execution Plan represent?",
+    "options": [
+      "The speed of the data transfer.",
+      "The relative cost of the operator it points to.",
+      "The number of rows (volume of data) passing between operators.",
+      "The amount of memory (RAM) being used by that step."
+    ],
+    "answer": 2,
+    "time": 20
+  },
+  {
+    "q": "If DATEADD(month, 1, '2024-01-31') is executed, what is the result (considering 2024 is a leap year)?",
+    "options": [
+      "2024-02-28",
+      "2024-03-01",
+      "2024-02-29",
+      "Error: February does not have 31 days."
+    ],
+    "answer": 2,
+    "time": 30
   }
+
  
   // add more questions here...
 ];
