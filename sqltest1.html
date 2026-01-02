@@ -12507,6 +12507,205 @@ let originalQuestions = [
     "answer": 1,
     "time": 30
   }
+,
+  {
+    "q": "What is the key difference between a UNIQUE constraint and a UNIQUE index in SQL Server?",
+    "options": [
+      "UNIQUE index enforces data integrity but constraint does not",
+      "UNIQUE constraint expresses business rule while UNIQUE index is a physical object",
+      "UNIQUE index cannot prevent duplicate values",
+      "UNIQUE constraint improves query performance"
+    ],
+    "answer": 1,
+    "time": 30
+  },
+  {
+    "q": "When a UNIQUE constraint is created on a column, what does SQL Server create internally by default?",
+    "options": [
+      "A non-unique clustered index",
+      "A unique clustered index",
+      "A unique non-clustered index",
+      "No index is created"
+    ],
+    "answer": 2,
+    "time": 25
+  },
+  {
+    "q": "Which statement about UNIQUE indexes and UNIQUE constraints is TRUE?",
+    "options": [
+      "Query optimizer treats them differently",
+      "UNIQUE constraint does not allow NULL values",
+      "UNIQUE index created manually does not create a constraint",
+      "UNIQUE constraint always creates clustered index"
+    ],
+    "answer": 2,
+    "time": 30
+  },
+  {
+    "q": "Why is it recommended to use UNIQUE constraints for enforcing business rules?",
+    "options": [
+      "They are faster than indexes",
+      "They automatically prevent table scans",
+      "They clearly communicate data integrity intent",
+      "They require less storage"
+    ],
+    "answer": 2,
+    "time": 25
+  },
+  {
+    "q": "Which error severity level is commonly used for user-defined errors raised using RAISERROR?",
+    "options": [
+      "1",
+      "10",
+      "16",
+      "25"
+    ],
+    "answer": 2,
+    "time": 20
+  },
+  {
+    "q": "Which of the following errors CANNOT be caught by TRY...CATCH in SQL Server?",
+    "options": [
+      "Primary key violation",
+      "Divide by zero",
+      "Syntax error",
+      "Foreign key violation"
+    ],
+    "answer": 2,
+    "time": 30
+  },
+  {
+    "q": "What happens if RAISERROR is used with severity level less than 11?",
+    "options": [
+      "Execution stops immediately",
+      "Transaction is rolled back",
+      "Message is treated as informational",
+      "TRY...CATCH block is triggered"
+    ],
+    "answer": 2,
+    "time": 30
+  },
+  {
+    "q": "Which statement about THROW is TRUE compared to RAISERROR?",
+    "options": [
+      "THROW cannot be used inside CATCH",
+      "THROW resets error information",
+      "THROW preserves original error details when rethrowing",
+      "THROW requires severity and state always"
+    ],
+    "answer": 2,
+    "time": 30
+  },
+  {
+    "q": "What is the primary limitation of @@ERROR compared to TRY...CATCH?",
+    "options": [
+      "It returns error message instead of number",
+      "It must be checked immediately after each statement",
+      "It works only inside stored procedures",
+      "It captures compile-time errors"
+    ],
+    "answer": 1,
+    "time": 25
+  },
+  {
+    "q": "Why is @@ERROR considered unsafe in multi-statement batches?",
+    "options": [
+      "It resets after COMMIT",
+      "It is overwritten by any subsequent statement",
+      "It cannot detect constraint violations",
+      "It causes implicit rollbacks"
+    ],
+    "answer": 1,
+    "time": 30
+  },
+  {
+    "q": "What will @@ROWCOUNT return immediately after a TRY...CATCH block finishes execution?",
+    "options": [
+      "Rows affected inside TRY block",
+      "Rows affected inside CATCH block",
+      "Rows affected by last statement inside TRY or CATCH",
+      "Always 0"
+    ],
+    "answer": 3,
+    "time": 30
+  },
+  {
+    "q": "Why should @@ROWCOUNT be stored in a variable when used with TRY...CATCH?",
+    "options": [
+      "TRY...CATCH clears @@ROWCOUNT automatically",
+      "Later statements reset @@ROWCOUNT",
+      "@@ROWCOUNT cannot be used inside CATCH",
+      "It improves performance"
+    ],
+    "answer": 1,
+    "time": 25
+  },
+  {
+    "q": "What does @@ROWCOUNT return when an INSERT fails due to primary key violation?",
+    "options": [
+      "-1",
+      "NULL",
+      "Number of attempted rows",
+      "0"
+    ],
+    "answer": 3,
+    "time": 20
+  },
+  {
+    "q": "Which function helps determine whether a transaction should be rolled back inside a CATCH block?",
+    "options": [
+      "@@TRANCOUNT",
+      "ERROR_STATE()",
+      "XACT_STATE()",
+      "@@ERROR"
+    ],
+    "answer": 2,
+    "time": 30
+  },
+  {
+    "q": "In nested TRY...CATCH blocks, how do you propagate the same error to the outer CATCH?",
+    "options": [
+      "RAISERROR without parameters",
+      "THROW;",
+      "RETURN error_number",
+      "SET @@ERROR = 1"
+    ],
+    "answer": 1,
+    "time": 25
+  },
+  {
+    "q": "Which error numbers commonly represent constraint violations in SQL Server?",
+    "options": [
+      "1205 and 547",
+      "2627 and 547",
+      "208 and 207",
+      "50000 and 60000"
+    ],
+    "answer": 1,
+    "time": 30
+  },
+  {
+    "q": "What is the main reason SET NOCOUNT ON is commonly used in stored procedures?",
+    "options": [
+      "It changes @@ROWCOUNT value",
+      "It improves query optimization",
+      "It suppresses row count messages",
+      "It avoids transaction rollback"
+    ],
+    "answer": 2,
+    "time": 20
+  },
+  {
+    "q": "Which combination provides the MOST reliable modern error-handling pattern in SQL Server?",
+    "options": [
+      "@@ERROR with RETURN codes",
+      "RAISERROR with severity < 10",
+      "TRY...CATCH with THROW and XACT_STATE()",
+      "SET ROWCOUNT with @@ERROR"
+    ],
+    "answer": 2,
+    "time": 30
+  }
 
 
   // add more questions here...
