@@ -98,19 +98,220 @@ const COMPLETED_KEY = 'mcq_completed_batches';
 
 /* ----------------- SAMPLE QUESTIONS (replace with full set later) ----------------- */
 let originalQuestions = [
-{
-    "q": "Which SQL command is used to retrieve data from a database table?",
-    "options": [
-      "GET",
-      "FETCH",
-      "SELECT",
-      "OPEN TABLE"
-    ],
-    "answer": 2,
-    "time": 20
-  ,
+
+  {
+    "q": "What does SSAS stand for?",
+    "options": ["SQL Server Advanced Storage","SQL Server Analysis Services","SQL Server Analytical System","SQL Server Aggregation Service"],
+    "answer": 1,
+    "time": 20,
     "level": "Easy"
+  },
+  {
+    "q": "SSAS is primarily used for which type of processing?",
+    "options": ["OLTP","ETL","OLAP","CDC"],
+    "answer": 2,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "Which SSAS object stores numerical data for analysis?",
+    "options": ["Dimension","Measure","Hierarchy","Attribute"],
+    "answer": 1,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "Which schema is most commonly used for SSAS modeling?",
+    "options": ["Flat","Star","Network","XML"],
+    "answer": 1,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "Which dimension answers the question 'When'?",
+    "options": ["Customer","Product","Time","Geography"],
+    "answer": 2,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "What is a fact table?",
+    "options": ["Stores descriptive data","Stores aggregated data only","Stores measurable business data","Stores hierarchies"],
+    "answer": 2,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "Which SSAS object defines how data is grouped?",
+    "options": ["Measure","Dimension","Partition","Aggregation"],
+    "answer": 1,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "Which key uniquely identifies a dimension record?",
+    "options": ["Foreign key","Surrogate key","Natural key","Alternate key"],
+    "answer": 1,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "Which language is used to query SSAS cubes?",
+    "options": ["SQL","DAX","MDX","Python"],
+    "answer": 2,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "Which tool is commonly used to develop SSAS cubes?",
+    "options": ["SQL Server Management Studio","Visual Studio","Power BI Desktop","Azure Data Studio"],
+    "answer": 1,
+    "time": 20,
+    "level": "Easy"
+  },
+
+  {
+    "q": "What is a measure group in SSAS?",
+    "options": ["Collection of dimensions","Collection of related measures","A calculated column","A hierarchy"],
+    "answer": 1,
+    "time": 30,
+    "level": "Medium"
+  },
+  {
+    "q": "Why are attribute relationships important?",
+    "options": ["Improve cube security","Improve performance","Reduce storage","Enable ETL"],
+    "answer": 1,
+    "time": 30,
+    "level": "Medium"
+  },
+  {
+    "q": "Which storage mode offers best query performance?",
+    "options": ["ROLAP","HOLAP","MOLAP","DirectQuery"],
+    "answer": 2,
+    "time": 30,
+    "level": "Medium"
+  },
+  {
+    "q": "What is a role-playing dimension?",
+    "options": ["Dimension used once","Dimension used in multiple roles","Calculated dimension","Degenerate dimension"],
+    "answer": 1,
+    "time": 30,
+    "level": "Medium"
+  },
+  {
+    "q": "What happens if attribute relationships are not defined?",
+    "options": ["Cube fails","Slow queries","Wrong aggregations","Data loss"],
+    "answer": 1,
+    "time": 30,
+    "level": "Medium"
+  },
+  {
+    "q": "Which object allows incremental data loading?",
+    "options": ["Perspective","Partition","Hierarchy","KPI"],
+    "answer": 1,
+    "time": 30,
+    "level": "Medium"
+  },
+  {
+    "q": "What is a degenerate dimension?",
+    "options": ["Fact without key","Dimension without attributes","Fact attribute stored in fact table","Unused dimension"],
+    "answer": 2,
+    "time": 30,
+    "level": "Medium"
+  },
+  {
+    "q": "Which SSAS object limits user access?",
+    "options": ["Partition","Perspective","Role","Hierarchy"],
+    "answer": 2,
+    "time": 30,
+    "level": "Medium"
+  },
+  {
+    "q": "What is a perspective in SSAS?",
+    "options": ["Security layer","Subset of cube","Aggregation","Processing mode"],
+    "answer": 1,
+    "time": 30,
+    "level": "Medium"
+  },
+  {
+    "q": "Which operation rebuilds aggregations?",
+    "options": ["Process Update","Process Clear","Process Full","Process Index"],
+    "answer": 3,
+    "time": 30,
+    "level": "Medium"
+  },
+
+  {
+    "q": "Which processing option deletes and reloads all data?",
+    "options": ["Process Update","Process Full","Process Index","Process Clear"],
+    "answer": 1,
+    "time": 45,
+    "level": "Hard"
+  },
+  {
+    "q": "Which feature improves query speed by pre-calculating data?",
+    "options": ["Partitions","Aggregations","Perspectives","KPIs"],
+    "answer": 1,
+    "time": 45,
+    "level": "Hard"
+  },
+  {
+    "q": "What is the main use of partitions?",
+    "options": ["Security","Incremental processing","UI simplification","Hierarchy creation"],
+    "answer": 1,
+    "time": 45,
+    "level": "Hard"
+  },
+  {
+    "q": "Which SSAS mode stores data in relational tables?",
+    "options": ["MOLAP","ROLAP","HOLAP","Tabular"],
+    "answer": 1,
+    "time": 45,
+    "level": "Hard"
+  },
+  {
+    "q": "Which MDX function retrieves members?",
+    "options": ["SUM","FILTER","MEMBERS","CALCULATE"],
+    "answer": 2,
+    "time": 45,
+    "level": "Hard"
+  },
+  {
+    "q": "Which scenario best suits HOLAP?",
+    "options": ["Small cubes","Large facts with summaries","Real-time OLTP","Disconnected analysis"],
+    "answer": 1,
+    "time": 45,
+    "level": "Hard"
+  },
+  {
+    "q": "What happens during Process Update of a dimension?",
+    "options": ["Full reload","Only changed data","Only indexes","Only facts"],
+    "answer": 1,
+    "time": 45,
+    "level": "Hard"
+  },
+  {
+    "q": "Which feature hides sensitive measures?",
+    "options": ["Partition","Perspective","Role","Aggregation"],
+    "answer": 2,
+    "time": 45,
+    "level": "Hard"
+  },
+  {
+    "q": "Which attribute controls granularity of fact data?",
+    "options": ["Measure","Dimension key","Hierarchy","Aggregation"],
+    "answer": 1,
+    "time": 45,
+    "level": "Hard"
+  },
+  {
+    "q": "Which SSAS object improves scalability?",
+    "options": ["Hierarchy","Partition","Perspective","Attribute"],
+    "answer": 1,
+    "time": 45,
+    "level": "Hard"
   }
+
 ];
 
 /* ----------------- STATE ----------------- */
