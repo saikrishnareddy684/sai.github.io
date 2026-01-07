@@ -88,7 +88,7 @@
 
   <div id="result" style="margin-top:12px"></div>
 </div>
-
+ 
 <script>
 /* ----------------- CONFIG ----------------- */
 const QUESTIONS_PER_BATCH = 25;
@@ -1252,6 +1252,340 @@ let originalQuestions = [
       "Yes, using DAX",
       "No, unless the user is an admin",
       "Yes, using SQL"
+    ],
+    "answer": 2,
+    "time": 25,
+    "level": "Easy"
+  }
+,
+
+  
+  {
+    "q": "Why is SSAS commonly used along with Power BI in enterprise setups?",
+    "options": [
+      "For ETL processing",
+      "To replace Power BI visuals",
+      "To provide a centralized semantic layer",
+      "To store raw transactional data"
+    ],
+    "answer": 2,
+    "time": 25,
+    "level": "Easy"
+  },
+  {
+    "q": "What is the main architectural role of SSAS when used with Power BI?",
+    "options": [
+      "Visualization layer",
+      "Data ingestion layer",
+      "Enterprise semantic layer",
+      "Backup storage"
+    ],
+    "answer": 2,
+    "time": 25,
+    "level": "Easy"
+  },
+  {
+    "q": "How does SSAS help avoid duplication across Power BI reports?",
+    "options": [
+      "By copying datasets",
+      "By using DirectQuery only",
+      "By sharing a single centralized model",
+      "By disabling local models"
+    ],
+    "answer": 2,
+    "time": 25,
+    "level": "Easy"
+  },
+  {
+    "q": "Which engine provides high performance in SSAS Tabular models?",
+    "options": [
+      "SQL Engine",
+      "VertiPaq (xVelocity) in-memory engine",
+      "PolyBase",
+      "Spark engine"
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Easy"
+  },
+  {
+    "q": "Compared to DirectQuery, SSAS typically provides:",
+    "options": [
+      "Slower performance",
+      "Same performance",
+      "Faster query performance",
+      "No caching support"
+    ],
+    "answer": 2,
+    "time": 25,
+    "level": "Easy"
+  },
+  {
+    "q": "Which reporting tools can reuse the same SSAS model?",
+    "options": [
+      "Only Power BI",
+      "Only Excel",
+      "Power BI, Excel, and Paginated Reports",
+      "Only SSMS"
+    ],
+    "answer": 2,
+    "time": 25,
+    "level": "Easy"
+  },
+  {
+    "q": "Which enterprise security features are supported by SSAS?",
+    "options": [
+      "File encryption only",
+      "Row-Level Security and Object-Level Security",
+      "Network firewall rules",
+      "Disk-level security"
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Easy"
+  },
+  {
+    "q": "Why is SSAS preferred for very large enterprise models?",
+    "options": [
+      "Power BI Desktop has no limits",
+      "SSAS handles larger models more efficiently",
+      "SSAS avoids DAX",
+      "SSAS stores raw data"
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Easy"
+  },
+  {
+    "q": "In a banking architecture, which flow is most common?",
+    "options": [
+      "Power BI → SSAS → Snowflake",
+      "Snowflake → SSAS → Power BI",
+      "SSAS → Snowflake → Power BI",
+      "Excel → Power BI → SSAS"
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Easy"
+  },
+  {
+    "q": "Which statement best summarizes SSAS vs Power BI roles?",
+    "options": [
+      "Both are visualization tools",
+      "Power BI is the semantic layer",
+      "SSAS governs data, Power BI visualizes it",
+      "SSAS replaces Power BI"
+    ],
+    "answer": 2,
+    "time": 25,
+    "level": "Easy"
+  }
+,
+
+
+  {
+    "q": "What is a normal (non-conformed) dimension typically used for?",
+    "options": [
+      "Multiple fact tables",
+      "Single fact table or system",
+      "Enterprise-wide reporting",
+      "Cross-functional analysis"
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Easy"
+  },
+  {
+    "q": "What makes a dimension a conformed dimension?",
+    "options": [
+      "It contains numeric values",
+      "It is normalized",
+      "It is shared across multiple fact tables",
+      "It exists only in one data mart"
+    ],
+    "answer": 2,
+    "time": 25,
+    "level": "Easy"
+  },
+  {
+    "q": "Which characteristic must be identical in a conformed dimension?",
+    "options": [
+      "Table name only",
+      "Business meaning and structure",
+      "Row count only",
+      "Index type"
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Easy"
+  },
+  {
+    "q": "What problem occurs when customer dimensions differ across systems?",
+    "options": [
+      "Improved flexibility",
+      "Faster queries",
+      "Inconsistent reporting",
+      "Better normalization"
+    ],
+    "answer": 2,
+    "time": 25,
+    "level": "Easy"
+  },
+  {
+    "q": "Why are surrogate keys important in conformed dimensions?",
+    "options": [
+      "They reduce storage",
+      "They enforce same keys across facts",
+      "They replace primary keys",
+      "They avoid joins"
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Easy"
+  },
+  {
+    "q": "Which analysis becomes possible with conformed dimensions?",
+    "options": [
+      "Single-report analysis",
+      "Cross-fact and cross-domain analysis",
+      "Row-level security",
+      "ETL validation"
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Easy"
+  },
+  {
+    "q": "Which dimension is most commonly implemented as conformed?",
+    "options": [
+      "Promotion",
+      "Employee",
+      "Time",
+      "Transaction"
+    ],
+    "answer": 2,
+    "time": 25,
+    "level": "Easy"
+  }
+,
+
+
+
+  {
+    "q": "What does KPI stand for?",
+    "options": [
+      "Key Process Indicator",
+      "Key Performance Indicator",
+      "Known Performance Index",
+      "Key Prediction Indicator"
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Easy"
+  },
+  {
+    "q": "What is the primary purpose of a KPI?",
+    "options": [
+      "Store raw data",
+      "Measure performance against a target",
+      "Clean data",
+      "Control ETL workflows"
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Easy"
+  },
+  {
+    "q": "Which component is mandatory for a KPI?",
+    "options": [
+      "Hierarchy",
+      "Target",
+      "Filter",
+      "Relationship"
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Easy"
+  },
+  {
+    "q": "Which of the following is NOT a KPI component?",
+    "options": [
+      "Actual value",
+      "Target",
+      "Status",
+      "Foreign key"
+    ],
+    "answer": 3,
+    "time": 25,
+    "level": "Easy"
+  },
+  {
+    "q": "From what object are KPIs created in SSAS Tabular?",
+    "options": [
+      "Columns",
+      "Tables",
+      "Measures",
+      "Relationships"
+    ],
+    "answer": 2,
+    "time": 25,
+    "level": "Easy"
+  },
+  {
+    "q": "Which value typically represents a 'Green' KPI status?",
+    "options": [
+      "-1",
+      "0",
+      "1",
+      "NULL"
+    ],
+    "answer": 2,
+    "time": 25,
+    "level": "Easy"
+  },
+  {
+    "q": "Which SSAS model uses MDX expressions for KPIs?",
+    "options": [
+      "Tabular",
+      "Relational",
+      "Multidimensional",
+      "Flat model"
+    ],
+    "answer": 2,
+    "time": 25,
+    "level": "Easy"
+  },
+  {
+    "q": "How does a KPI differ from a normal measure?",
+    "options": [
+      "KPIs do not show values",
+      "KPIs include targets and status indicators",
+      "Measures require DAX, KPIs do not",
+      "Measures are visual-only"
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Easy"
+  },
+  {
+    "q": "Where are KPIs typically defined?",
+    "options": [
+      "ETL layer",
+      "Source system",
+      "Semantic layer",
+      "Visualization layer"
+    ],
+    "answer": 2,
+    "time": 25,
+    "level": "Easy"
+  },
+  {
+    "q": "Which banking KPI measures asset quality?",
+    "options": [
+      "Loan Approval TAT",
+      "Revenue vs Target",
+      "NPA Ratio",
+      "Credit Limit"
     ],
     "answer": 2,
     "time": 25,
