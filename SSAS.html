@@ -93,7 +93,7 @@
 /* ----------------- CONFIG ----------------- */
 const QUESTIONS_PER_BATCH = 25;
 const PER_QUESTION_SECONDS = 20;
-const LS_KEY = 'mcq_exam_v2_state';
+const LS_KEY = 'mcq_exam_v2_state'; 
 const COMPLETED_KEY = 'mcq_completed_batches';
 
 /* ----------------- SAMPLE QUESTIONS (replace with full set later) ----------------- */
@@ -676,6 +676,273 @@ let originalQuestions = [
     ],
     "answer": 2,
     "time": 20,
+    "level": "Easy"
+  }
+,
+
+
+  {
+    "q": "What does the error 'A connection cannot be made to redirector' usually indicate in SSAS?",
+    "options": [
+      "Incorrect DAX syntax",
+      "SQL Browser service is not running",
+      "Cube processing failure",
+      "Invalid dimension key"
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Easy"
+  },
+  {
+    "q": "Which service must be running to resolve redirector connection issues in SSAS?",
+    "options": [
+      "SQL Server Agent",
+      "SQL Server Integration Services",
+      "SQL Server Browser",
+      "SQL Server Reporting Services"
+    ],
+    "answer": 2,
+    "time": 25,
+    "level": "Easy"
+  },
+  {
+    "q": "Which tool is commonly used to verify whether SSAS services are running?",
+    "options": [
+      "Task Manager",
+      "SQL Server Configuration Manager",
+      "Event Viewer",
+      "Power BI Desktop"
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Easy"
+  },
+  {
+    "q": "In a Star Schema, how are dimension tables connected to the fact table?",
+    "options": [
+      "Indirectly through bridge tables",
+      "Directly to the fact table",
+      "Through other dimensions",
+      "Via stored procedures"
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Easy"
+  },
+  {
+    "q": "Which schema design is simpler and easier to understand?",
+    "options": [
+      "Snowflake Schema",
+      "Galaxy Schema",
+      "Star Schema",
+      "Normalized Schema"
+    ],
+    "answer": 2,
+    "time": 25,
+    "level": "Easy"
+  },
+  {
+    "q": "Why does a Star Schema generally provide better query performance?",
+    "options": [
+      "Uses indexes only",
+      "Requires fewer joins",
+      "Uses temporary tables",
+      "Avoids dimensions"
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Easy"
+  },
+  {
+    "q": "Which schema is more commonly used in large enterprise data warehouses?",
+    "options": [
+      "Star Schema",
+      "Snowflake Schema",
+      "Flat Schema",
+      "Document Schema"
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Easy"
+  },
+  {
+    "q": "In a Snowflake Schema, dimension tables are:",
+    "options": [
+      "Fully denormalized",
+      "Normalized into sub-dimensions",
+      "Stored in fact tables",
+      "Replaced by views"
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Easy"
+  },
+  {
+    "q": "What is a key drawback of the Snowflake Schema?",
+    "options": [
+      "Consumes more storage",
+      "Hard to implement security",
+      "Slower queries due to more joins",
+      "Cannot support hierarchies"
+    ],
+    "answer": 2,
+    "time": 25,
+    "level": "Easy"
+  },
+  {
+    "q": "How can a Star Schema be converted into a Snowflake Schema?",
+    "options": [
+      "By denormalizing dimension tables",
+      "By normalizing dimension tables",
+      "By removing dimensions",
+      "By merging fact tables"
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Easy"
+  },
+  {
+    "q": "In Adventure Works DW, which table connects directly to Fact Internet Sales in a Star Schema?",
+    "options": [
+      "Dim Product Subcategory",
+      "Dim Product",
+      "Dim Product Category",
+      "Dim Sales Territory"
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Easy"
+  },
+  {
+    "q": "What is a conformed dimension?",
+    "options": [
+      "A dimension used in only one fact table",
+      "A dimension shared across multiple fact tables",
+      "A calculated dimension",
+      "A temporary dimension"
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Easy"
+  },
+  {
+    "q": "Which feature is mandatory for a conformed dimension?",
+    "options": [
+      "Different attributes per fact",
+      "Same structure and meaning",
+      "Separate keys for each fact",
+      "Different granularity"
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Easy"
+  },
+  {
+    "q": "Why are conformed dimensions important in enterprise reporting?",
+    "options": [
+      "Improve ETL speed",
+      "Enable cross-fact analysis",
+      "Reduce cube size",
+      "Avoid dimension processing"
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Easy"
+  },
+  {
+    "q": "Which dimension is most commonly conformed across fact tables?",
+    "options": [
+      "Employee",
+      "Time",
+      "Promotion",
+      "Transaction"
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Easy"
+  },
+  {
+    "q": "In banking, which dimension is often conformed across Loan, Deposit, and Risk facts?",
+    "options": [
+      "Branch",
+      "Customer",
+      "Currency",
+      "Account Type"
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Easy"
+  },
+  {
+    "q": "What is the primary role of a dimension in a data warehouse?",
+    "options": [
+      "Store transactions",
+      "Provide descriptive context",
+      "Perform aggregations",
+      "Manage security"
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Easy"
+  },
+  {
+    "q": "Which key relationship exists between dimension and fact tables?",
+    "options": [
+      "Fact primary key to dimension primary key",
+      "Dimension primary key to fact foreign key",
+      "Fact foreign key to fact primary key",
+      "Dimension foreign key to dimension foreign key"
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Easy"
+  },
+  {
+    "q": "What do hierarchies in dimensions primarily support?",
+    "options": [
+      "Index creation",
+      "Drill-down and roll-up analysis",
+      "Data loading",
+      "Security enforcement"
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Easy"
+  },
+  {
+    "q": "Which Time hierarchy is correctly ordered?",
+    "options": [
+      "Day → Month → Year",
+      "Year → Month → Quarter → Day",
+      "Year → Quarter → Month → Day",
+      "Month → Day → Year"
+    ],
+    "answer": 2,
+    "time": 25,
+    "level": "Easy"
+  },
+  {
+    "q": "Why are hierarchies recommended in SSAS dimensions?",
+    "options": [
+      "They reduce data size",
+      "They improve processing and query performance",
+      "They eliminate fact tables",
+      "They replace measures"
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Easy"
+  },
+  {
+    "q": "Can dimensions contain numeric attributes?",
+    "options": [
+      "No, dimensions are strictly text-based",
+      "Yes, but not used for aggregation",
+      "Yes, and they must be aggregated",
+      "Only in fact tables"
+    ],
+    "answer": 1,
+    "time": 25,
     "level": "Easy"
   }
 
