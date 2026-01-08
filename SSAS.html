@@ -1592,6 +1592,699 @@ let originalQuestions = [
     "level": "Easy"
   }
 
+,
+
+  {
+    "q": "What is the primary purpose of a Semantic Layer in BI architecture?",
+    "options": [
+      "To physically store transactional data",
+      "To translate technical data into business-friendly terms",
+      "To replace the data warehouse",
+      "To execute ETL transformations"
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Easy"
+  },
+  {
+    "q": "Which layer typically sits between the data source and reporting tools?",
+    "options": [
+      "ETL Layer",
+      "Staging Layer",
+      "Semantic Layer",
+      "Presentation Layer"
+    ],
+    "answer": 2,
+    "time": 25,
+    "level": "Easy"
+  },
+  {
+    "q": "Which problem is MOST directly solved by introducing a Semantic Layer?",
+    "options": [
+      "Slow network bandwidth",
+      "Complex SQL joins required by business users",
+      "Hardware storage limitations",
+      "Duplicate records in source tables"
+    ],
+    "answer": 1,
+    "time": 30,
+    "level": "Medium"
+  },
+  {
+    "q": "In the absence of a Semantic Layer, business users usually depend on IT because:",
+    "options": [
+      "They cannot access the database",
+      "They do not understand technical table and column names",
+      "They lack visualization tools",
+      "They cannot export data"
+    ],
+    "answer": 1,
+    "time": 30,
+    "level": "Medium"
+  },
+  {
+    "q": "Which of the following BEST represents a business-friendly object exposed by a Semantic Layer?",
+    "options": [
+      "fact_sales_001.txn_amt",
+      "cust_id",
+      "SUM(txn_amt)",
+      "Total Sales"
+    ],
+    "answer": 3,
+    "time": 30,
+    "level": "Easy"
+  },
+  {
+    "q": "In SSAS Tabular, which object MOST commonly represents the Semantic Layer?",
+    "options": [
+      "SQL View",
+      "Stored Procedure",
+      "Tabular Model",
+      "Snowflake Schema"
+    ],
+    "answer": 2,
+    "time": 30,
+    "level": "Easy"
+  },
+  {
+    "q": "Which Microsoft tool uses a Cube as its Semantic Layer implementation?",
+    "options": [
+      "Power BI",
+      "SSAS Multidimensional",
+      "SSIS",
+      "SQL Server Engine"
+    ],
+    "answer": 1,
+    "time": 30,
+    "level": "Easy"
+  },
+  {
+    "q": "Which object in a Semantic Layer eliminates the need for writing SUM() in SQL?",
+    "options": [
+      "Calculated Column",
+      "Dimension",
+      "Measure",
+      "Hierarchy"
+    ],
+    "answer": 2,
+    "time": 30,
+    "level": "Medium"
+  },
+  {
+    "q": "Why is a hierarchy like Year → Month → Day created in a Semantic Layer?",
+    "options": [
+      "To normalize data",
+      "To improve ETL performance",
+      "To enable drill-down and drill-up analysis",
+      "To store historical data"
+    ],
+    "answer": 2,
+    "time": 30,
+    "level": "Medium"
+  },
+  {
+    "q": "Which language is MOST commonly used to define measures in SSAS Tabular and Power BI?",
+    "options": [
+      "SQL",
+      "MDX",
+      "DAX",
+      "Python"
+    ],
+    "answer": 2,
+    "time": 30,
+    "level": "Easy"
+  },
+  {
+    "q": "Which feature of a Semantic Layer ensures 'Single Version of Truth'?",
+    "options": [
+      "Centralized business logic",
+      "Multiple fact tables",
+      "Ad-hoc SQL queries",
+      "Decentralized calculations"
+    ],
+    "answer": 0,
+    "time": 35,
+    "level": "Medium"
+  },
+  {
+    "q": "Which component is responsible for restricting data access by user role in a Semantic Layer?",
+    "options": [
+      "Indexes",
+      "Row-Level Security",
+      "Partitions",
+      "Aggregations"
+    ],
+    "answer": 1,
+    "time": 35,
+    "level": "Medium"
+  },
+  {
+    "q": "Which statement BEST differentiates a Data Warehouse from a Semantic Layer?",
+    "options": [
+      "Warehouse models data, Semantic Layer stores data",
+      "Warehouse is business-friendly, Semantic Layer is technical",
+      "Warehouse stores data, Semantic Layer models business logic",
+      "Warehouse uses DAX, Semantic Layer uses SQL"
+    ],
+    "answer": 2,
+    "time": 35,
+    "level": "Hard"
+  },
+  {
+    "q": "Why does a Semantic Layer improve reporting performance?",
+    "options": [
+      "It removes fact tables",
+      "It predefines calculations and optimizes queries",
+      "It increases data redundancy",
+      "It bypasses the data warehouse"
+    ],
+    "answer": 1,
+    "time": 35,
+    "level": "Hard"
+  },
+  {
+    "q": "In a banking analytics project, which metric is MOST likely exposed by the Semantic Layer?",
+    "options": [
+      "cust_id",
+      "txn_dt",
+      "Total Exposure",
+      "raw_risk_flag"
+    ],
+    "answer": 2,
+    "time": 35,
+    "level": "Medium"
+  },
+  {
+    "q": "Which action BEST demonstrates self-service analytics enabled by a Semantic Layer?",
+    "options": [
+      "Writing complex SQL joins",
+      "Requesting IT for every report",
+      "Dragging measures and dimensions in Power BI",
+      "Creating staging tables"
+    ],
+    "answer": 2,
+    "time": 35,
+    "level": "Easy"
+  },
+  {
+    "q": "Which of the following is NOT typically part of a Semantic Layer?",
+    "options": [
+      "Measures",
+      "Hierarchies",
+      "ETL workflows",
+      "Relationships"
+    ],
+    "answer": 2,
+    "time": 35,
+    "level": "Hard"
+  },
+  {
+    "q": "Why is calling SSAS the 'Semantic Layer' technically correct?",
+    "options": [
+      "It stores raw transactional data",
+      "It replaces SQL Server",
+      "It exposes business logic and metrics for analysis",
+      "It performs ETL processing"
+    ],
+    "answer": 2,
+    "time": 40,
+    "level": "Hard"
+  }
+
+,
+  {
+    "q": "What is a hierarchy in SSAS primarily used for?",
+    "options": [
+      "Storing transactional data",
+      "Defining ETL workflows",
+      "Organizing dimension attributes into levels for analysis",
+      "Creating calculated measures"
+    ],
+    "answer": 2,
+    "time": 25,
+    "level": "Easy"
+  },
+  {
+    "q": "Which user action is directly enabled by hierarchies in SSAS?",
+    "options": [
+      "Data loading",
+      "Index creation",
+      "Drill-down and roll-up",
+      "Schema normalization"
+    ],
+    "answer": 2,
+    "time": 25,
+    "level": "Easy"
+  },
+  {
+    "q": "Which of the following BEST describes a hierarchy?",
+    "options": [
+      "A single attribute in a dimension",
+      "A logical ordering of multiple related columns",
+      "A calculated column in a fact table",
+      "A storage optimization technique"
+    ],
+    "answer": 1,
+    "time": 30,
+    "level": "Easy"
+  },
+  {
+    "q": "Which example represents a valid Time hierarchy?",
+    "options": [
+      "Date → Month → Year",
+      "Year → Month → Date",
+      "Day → Quarter → Year",
+      "Month → Year → Date"
+    ],
+    "answer": 1,
+    "time": 30,
+    "level": "Medium"
+  },
+  {
+    "q": "In a geography hierarchy Country → State → City, which level represents the highest granularity?",
+    "options": [
+      "Country",
+      "State",
+      "City",
+      "All have equal granularity"
+    ],
+    "answer": 2,
+    "time": 30,
+    "level": "Medium"
+  },
+  {
+    "q": "What defines a Natural Hierarchy in SSAS?",
+    "options": [
+      "Levels are created automatically by SSAS",
+      "Each child level belongs to only one parent",
+      "Levels are based on calculated columns",
+      "Hierarchy exists only in Tabular models"
+    ],
+    "answer": 1,
+    "time": 35,
+    "level": "Medium"
+  },
+  {
+    "q": "Which hierarchy type is preferred by the SSAS engine for performance?",
+    "options": [
+      "Unnatural hierarchy",
+      "Attribute hierarchy",
+      "Natural hierarchy",
+      "User-defined hierarchy only"
+    ],
+    "answer": 2,
+    "time": 35,
+    "level": "Medium"
+  },
+  {
+    "q": "Why are unnatural (attribute) hierarchies less efficient?",
+    "options": [
+      "They contain calculated measures",
+      "Lower levels can map to multiple parents",
+      "They are not supported in SSAS",
+      "They increase data redundancy"
+    ],
+    "answer": 1,
+    "time": 35,
+    "level": "Hard"
+  },
+  {
+    "q": "Which example BEST represents an unnatural hierarchy?",
+    "options": [
+      "Year → Month → Day",
+      "Country → State → City",
+      "Product → Category",
+      "Continent → Country → City"
+    ],
+    "answer": 2,
+    "time": 35,
+    "level": "Hard"
+  },
+  {
+    "q": "Where are hierarchies created in an SSAS Tabular model?",
+    "options": [
+      "Fact tables",
+      "Measure groups",
+      "Dimension tables",
+      "ETL staging tables"
+    ],
+    "answer": 2,
+    "time": 30,
+    "level": "Easy"
+  },
+  {
+    "q": "What is the PRIMARY benefit of hierarchies in SSAS Tabular?",
+    "options": [
+      "Improved query execution speed",
+      "Better VertiPaq compression",
+      "Improved user navigation and analysis experience",
+      "Automatic aggregation creation"
+    ],
+    "answer": 2,
+    "time": 35,
+    "level": "Medium"
+  },
+  {
+    "q": "Which statement about hierarchies in SSAS Tabular is TRUE?",
+    "options": [
+      "They automatically create aggregations",
+      "They significantly improve query performance",
+      "They are optional but recommended",
+      "They replace relationships"
+    ],
+    "answer": 2,
+    "time": 40,
+    "level": "Hard"
+  },
+  {
+    "q": "Why do hierarchies NOT directly improve performance in SSAS Tabular?",
+    "options": [
+      "Tabular does not support hierarchies",
+      "Aggregations are handled by VertiPaq engine",
+      "Hierarchies are ignored during queries",
+      "DAX cannot use hierarchies"
+    ],
+    "answer": 1,
+    "time": 40,
+    "level": "Hard"
+  },
+  {
+    "q": "In which SSAS model do hierarchies play a CRITICAL role in aggregation design?",
+    "options": [
+      "SSAS Tabular",
+      "Power BI Dataset",
+      "SSAS Multidimensional",
+      "SQL Server Engine"
+    ],
+    "answer": 2,
+    "time": 35,
+    "level": "Medium"
+  },
+  {
+    "q": "How do hierarchies improve performance in SSAS Multidimensional?",
+    "options": [
+      "By compressing column data",
+      "By pre-aggregating data at hierarchy levels",
+      "By eliminating fact tables",
+      "By converting MDX to SQL"
+    ],
+    "answer": 1,
+    "time": 40,
+    "level": "Hard"
+  },
+  {
+    "q": "Which feature differentiates a hierarchy from a single attribute?",
+    "options": [
+      "Storage location",
+      "Security enforcement",
+      "Multiple levels of granularity",
+      "Data type support"
+    ],
+    "answer": 2,
+    "time": 30,
+    "level": "Medium"
+  },
+  {
+    "q": "Which column type should generally be AVOIDED when creating hierarchies?",
+    "options": [
+      "Date",
+      "Country",
+      "High-cardinality columns like Transaction ID",
+      "Month"
+    ],
+    "answer": 2,
+    "time": 40,
+    "level": "Hard"
+  },
+  {
+    "q": "What is the correct sequence to create a hierarchy in SSAS Tabular?",
+    "options": [
+      "Create measure → Add columns → Rename",
+      "Open Model.bim → Data View → Create Hierarchy → Add levels",
+      "Create relationship → Create hierarchy → Process model",
+      "Open SQL Server → Create hierarchy"
+    ],
+    "answer": 1,
+    "time": 40,
+    "level": "Medium"
+  },
+  {
+    "q": "Which statement is TRUE regarding drill-up?",
+    "options": [
+      "It moves from detailed to summarized data",
+      "It moves from Year to Month",
+      "It increases data granularity",
+      "It only works in Multidimensional models"
+    ],
+    "answer": 0,
+    "time": 35,
+    "level": "Medium"
+  },
+  {
+    "q": "Which interview statement about hierarchies is MOST accurate?",
+    "options": [
+      "Hierarchies always improve performance in all SSAS models",
+      "Hierarchies are mandatory in Tabular models",
+      "Hierarchies improve usability and aggregation efficiency depending on model type",
+      "Hierarchies replace dimensions"
+    ],
+    "answer": 2,
+    "time": 45,
+    "level": "Hard"
+  }
+,
+
+
+
+  {
+    "q": "In SSAS, what is a dimension primarily used for?",
+    "options": [
+      "Storing transactional measures",
+      "Grouping, filtering, and browsing data",
+      "Performing ETL transformations",
+      "Storing aggregated values only"
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Easy"
+  },
+  {
+    "q": "From where are SSAS dimensions typically created?",
+    "options": [
+      "Fact tables",
+      "Dimension tables in the data warehouse",
+      "Power BI datasets",
+      "Stored procedures"
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Easy"
+  },
+  {
+    "q": "Which component is NOT a core part of an SSAS dimension?",
+    "options": [
+      "Attributes",
+      "Hierarchies",
+      "Attribute relationships",
+      "Measures"
+    ],
+    "answer": 3,
+    "time": 30,
+    "level": "Medium"
+  },
+  {
+    "q": "Why are dimensions processed separately from fact tables in SSAS?",
+    "options": [
+      "To reduce storage cost",
+      "To allow independent optimization and reuse",
+      "To improve ETL performance",
+      "To avoid relationships"
+    ],
+    "answer": 1,
+    "time": 35,
+    "level": "Hard"
+  },
+  {
+    "q": "Which operation is enabled by dimensions in SSAS?",
+    "options": [
+      "Index rebuild",
+      "Drill-down and roll-up",
+      "Data deduplication",
+      "Fact table partitioning"
+    ],
+    "answer": 1,
+    "time": 30,
+    "level": "Easy"
+  },
+  {
+    "q": "Which dimension example BEST represents increasing data granularity?",
+    "options": [
+      "Customer → Country → Region",
+      "Year → Quarter → Month → Day",
+      "City → State → Country",
+      "Month → Year → Quarter"
+    ],
+    "answer": 1,
+    "time": 35,
+    "level": "Medium"
+  },
+  {
+    "q": "Why do hierarchies inside SSAS dimensions improve query performance?",
+    "options": [
+      "They reduce fact table size",
+      "They enable pre-aggregations during cube processing",
+      "They replace attribute relationships",
+      "They increase column compression"
+    ],
+    "answer": 1,
+    "time": 40,
+    "level": "Hard"
+  },
+  {
+    "q": "Which statement about SSAS dimensions is TRUE?",
+    "options": [
+      "They are optional and auto-created",
+      "They are explicitly designed and optimized",
+      "They exist only in Tabular models",
+      "They cannot be reused across cubes"
+    ],
+    "answer": 1,
+    "time": 35,
+    "level": "Medium"
+  },
+  {
+    "q": "In Power BI, what does a dimension typically represent?",
+    "options": [
+      "A cube object",
+      "A lookup table with descriptive attributes",
+      "A calculated measure",
+      "An ETL pipeline"
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Easy"
+  },
+  {
+    "q": "How are dimensions connected to fact tables in Power BI?",
+    "options": [
+      "Using MDX",
+      "Using one-to-many relationships",
+      "Using stored procedures",
+      "Using partitions"
+    ],
+    "answer": 1,
+    "time": 30,
+    "level": "Easy"
+  },
+  {
+    "q": "Which Power BI feature MOST commonly uses dimension columns?",
+    "options": [
+      "Measures pane",
+      "Slicers and filters",
+      "Refresh schedules",
+      "Gateways"
+    ],
+    "answer": 1,
+    "time": 30,
+    "level": "Medium"
+  },
+  {
+    "q": "Which statement BEST describes hierarchy usage in Power BI?",
+    "options": [
+      "Hierarchies are mandatory",
+      "Hierarchies are auto-created and cannot be edited",
+      "Hierarchies are optional and improve navigation",
+      "Hierarchies directly improve performance"
+    ],
+    "answer": 2,
+    "time": 35,
+    "level": "Medium"
+  },
+  {
+    "q": "Which engine handles aggregations in Power BI?",
+    "options": [
+      "SQL Engine",
+      "SSIS Engine",
+      "VertiPaq Engine",
+      "MDX Engine"
+    ],
+    "answer": 2,
+    "time": 30,
+    "level": "Easy"
+  },
+  {
+    "q": "What is the key difference in aggregation handling between SSAS and Power BI?",
+    "options": [
+      "SSAS uses DAX, Power BI uses SQL",
+      "SSAS pre-processes aggregations, Power BI calculates on-the-fly",
+      "Power BI does not support aggregations",
+      "SSAS does not use hierarchies"
+    ],
+    "answer": 1,
+    "time": 40,
+    "level": "Hard"
+  },
+  {
+    "q": "Which aspect of SSAS dimensions is mandatory for optimization but not required in Power BI?",
+    "options": [
+      "Hierarchies",
+      "Attribute relationships",
+      "Measures",
+      "Lookup tables"
+    ],
+    "answer": 1,
+    "time": 40,
+    "level": "Hard"
+  },
+  {
+    "q": "Which comparison between SSAS and Power BI dimensions is CORRECT?",
+    "options": [
+      "SSAS uses lookup tables, Power BI uses cube objects",
+      "SSAS dimensions are implicit, Power BI dimensions are explicit",
+      "SSAS focuses on design-time tuning, Power BI on model & DAX tuning",
+      "Power BI pre-aggregates data like SSAS cubes"
+    ],
+    "answer": 2,
+    "time": 45,
+    "level": "Hard"
+  },
+  {
+    "q": "Which scenario BEST suits SSAS dimensions over Power BI dimensions?",
+    "options": [
+      "Ad-hoc self-service reporting",
+      "Small departmental dashboards",
+      "Large-scale enterprise analytics with complex hierarchies",
+      "Quick prototype reports"
+    ],
+    "answer": 2,
+    "time": 45,
+    "level": "Hard"
+  },
+  {
+    "q": "Why are dimensions called 'descriptive' in analytics models?",
+    "options": [
+      "They store numeric metrics",
+      "They describe business context for facts",
+      "They store aggregated values",
+      "They replace measures"
+    ],
+    "answer": 1,
+    "time": 30,
+    "level": "Medium"
+  },
+  {
+    "q": "Which interview statement is MOST accurate?",
+    "options": [
+      "Power BI dimensions are faster than SSAS in all cases",
+      "SSAS and Power BI dimensions are technically identical",
+      "SSAS excels in complex enterprise analytics, Power BI in self-service BI",
+      "SSAS does not support lookup tables"
+    ],
+    "answer": 2,
+    "time": 50,
+    "level": "Hard"
+  }
+
 
   
 ];
