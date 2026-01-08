@@ -2491,6 +2491,212 @@ let originalQuestions = [
     "time": 40,
     "level": "Medium"
   }
+,
+  
+  {
+    "q": "What is a Data Source View (DSV) in SSAS?",
+    "options": [
+      "A physical copy of database tables",
+      "A logical representation of the underlying database schema",
+      "A storage layer for cube data",
+      "A security configuration object"
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Easy"
+  },
+  {
+    "q": "Which role does the DSV play in SSAS architecture?",
+    "options": [
+      "It connects SSAS to the database",
+      "It acts as an abstraction layer between SSAS and the database",
+      "It stores processed cube data",
+      "It executes DAX calculations"
+    ],
+    "answer": 1,
+    "time": 30,
+    "level": "Medium"
+  },
+  {
+    "q": "From where does SSAS read schema information during modeling?",
+    "options": [
+      "Directly from the physical database",
+      "From the Data Source",
+      "From the Data Source View",
+      "From the Cube object"
+    ],
+    "answer": 2,
+    "time": 30,
+    "level": "Medium"
+  },
+  {
+    "q": "Which of the following is TRUE about data storage in a DSV?",
+    "options": [
+      "DSV stores aggregated data",
+      "DSV stores transactional data",
+      "DSV stores only schema metadata",
+      "DSV stores cube partitions"
+    ],
+    "answer": 2,
+    "time": 30,
+    "level": "Easy"
+  },
+  {
+    "q": "Which objects can be included in a Data Source View?",
+    "options": [
+      "Only tables",
+      "Only views",
+      "Tables, views, named queries, and named calculations",
+      "Measures and KPIs"
+    ],
+    "answer": 2,
+    "time": 35,
+    "level": "Medium"
+  },
+  {
+    "q": "What is a Named Query in a DSV?",
+    "options": [
+      "A calculated column created using DAX",
+      "A pre-aggregated table",
+      "A SQL query that defines a virtual table",
+      "A stored procedure reference"
+    ],
+    "answer": 2,
+    "time": 40,
+    "level": "Hard"
+  },
+  {
+    "q": "What is a Named Calculation in a DSV?",
+    "options": [
+      "A SQL-based derived column added to a table",
+      "A DAX measure",
+      "A cube calculation",
+      "A database trigger"
+    ],
+    "answer": 0,
+    "time": 40,
+    "level": "Hard"
+  },
+  {
+    "q": "Which relationships can be defined inside a DSV?",
+    "options": [
+      "Only physical relationships from the database",
+      "Only logical relationships defined in SSAS",
+      "Both physical and logical relationships",
+      "Only many-to-many relationships"
+    ],
+    "answer": 2,
+    "time": 35,
+    "level": "Medium"
+  },
+  {
+    "q": "Why is the DSV important for SSAS modeling?",
+    "options": [
+      "It stores data faster than the database",
+      "It allows modeling flexibility without changing the source database",
+      "It replaces ETL processes",
+      "It improves report visualization"
+    ],
+    "answer": 1,
+    "time": 35,
+    "level": "Medium"
+  },
+  {
+    "q": "What happens if a table exists in the database but is not added to the DSV?",
+    "options": [
+      "SSAS can still access it dynamically",
+      "SSAS can see it only during processing",
+      "SSAS cannot see or use it",
+      "SSAS creates it automatically"
+    ],
+    "answer": 2,
+    "time": 35,
+    "level": "Medium"
+  },
+  {
+    "q": "Which change made in a DSV affects the physical database?",
+    "options": [
+      "Creating a named query",
+      "Creating a named calculation",
+      "Adding a logical relationship",
+      "None of the above"
+    ],
+    "answer": 3,
+    "time": 40,
+    "level": "Hard"
+  },
+  {
+    "q": "Which metadata is captured by a Data Source View?",
+    "options": [
+      "User access permissions",
+      "Column data types and lengths",
+      "Fact table aggregations",
+      "Partition storage mode"
+    ],
+    "answer": 1,
+    "time": 30,
+    "level": "Easy"
+  },
+  {
+    "q": "In a real-world project, why would you limit a DSV to only a few tables?",
+    "options": [
+      "To reduce database size",
+      "To improve cube processing speed and maintainability",
+      "To restrict database permissions",
+      "To eliminate the need for ETL"
+    ],
+    "answer": 1,
+    "time": 45,
+    "level": "Hard"
+  },
+  {
+    "q": "Which scenario BEST illustrates the use of a Named Query in a DSV?",
+    "options": [
+      "Adding a Year column using DAX",
+      "Joining multiple source tables into a clean fact structure",
+      "Creating a hierarchy",
+      "Defining a measure"
+    ],
+    "answer": 1,
+    "time": 45,
+    "level": "Hard"
+  },
+  {
+    "q": "Which statement BEST differentiates a Data Source from a Data Source View?",
+    "options": [
+      "Data Source defines schema, DSV defines connection",
+      "Data Source defines connection, DSV defines schema",
+      "Both define physical storage",
+      "Both store actual data"
+    ],
+    "answer": 1,
+    "time": 40,
+    "level": "Medium"
+  },
+  {
+    "q": "Why does SSAS rely on the DSV instead of directly reading the database schema?",
+    "options": [
+      "To avoid SQL Server dependencies",
+      "To enable abstraction, flexibility, and controlled modeling",
+      "To store data locally",
+      "To bypass security rules"
+    ],
+    "answer": 1,
+    "time": 45,
+    "level": "Hard"
+  },
+  {
+    "q": "Which interview one-liner BEST defines a DSV?",
+    "options": [
+      "A physical snapshot of database tables",
+      "A logical schema layer defining tables, relationships, and calculations",
+      "A connection string repository",
+      "A cube storage structure"
+    ],
+    "answer": 1,
+    "time": 40,
+    "level": "Medium"
+  }
 
   
 ];
