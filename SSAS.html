@@ -220,6 +220,327 @@ let originalQuestions = [
     "time": 20,
     "level": "Easy"
   },
+
+
+
+
+
+  {
+    "q": "What is the smallest unit of processing in an SSAS Tabular model?",
+    "options": [
+      "Database",
+      "Table",
+      "Partition",
+      "Column"
+    ],
+    "answer": 2,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "Can we process a single column in an SSAS Tabular model?",
+    "options": [
+      "Yes, using Process Recalc",
+      "Yes, using Process Data",
+      "No, column-level processing is not supported",
+      "Yes, using XMLA"
+    ],
+    "answer": 2,
+    "time": 25,
+    "level": "Easy"
+  },
+  {
+    "q": "What happens when a source column logic changes in a Tabular fact table?",
+    "options": [
+      "Only the column is refreshed",
+      "Only measures are recalculated",
+      "The affected partitions must be reprocessed",
+      "No processing is required"
+    ],
+    "answer": 2,
+    "time": 25,
+    "level": "Easy"
+  },
+  {
+    "q": "What does Process Recalc do in SSAS Tabular?",
+    "options": [
+      "Reloads source data",
+      "Reprocesses partitions",
+      "Recalculates DAX expressions only",
+      "Clears table data"
+    ],
+    "answer": 2,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "Are DAX measures affected when a partition is reprocessed?",
+    "options": [
+      "No, measures are never affected",
+      "Yes, measures are recalculated",
+      "Measures are deleted",
+      "Only calculated columns are affected"
+    ],
+    "answer": 1,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "If only one month’s data is impacted by a logic change, what is the best approach?",
+    "options": [
+      "Reprocess the entire model",
+      "Reprocess all tables",
+      "Reprocess only the affected partitions",
+      "Use Process Recalc"
+    ],
+    "answer": 2,
+    "time": 30,
+    "level": "Medium"
+  },
+  {
+    "q": "Why is Process Recalc not sufficient when a source column changes?",
+    "options": [
+      "It only recalculates measures",
+      "It clears partition data",
+      "It reloads source data",
+      "It updates metadata only"
+    ],
+    "answer": 0,
+    "time": 30,
+    "level": "Medium"
+  },
+  {
+    "q": "How do partitions help in SSAS Tabular models?",
+    "options": [
+      "They reduce memory usage only",
+      "They allow column-level processing",
+      "They enable targeted and faster reprocessing",
+      "They store DAX calculations"
+    ],
+    "answer": 2,
+    "time": 25,
+    "level": "Medium"
+  },
+  {
+    "q": "What is a major risk of reprocessing all partitions in production?",
+    "options": [
+      "Loss of metadata",
+      "Data model corruption",
+      "Long downtime and performance impact",
+      "Role security reset"
+    ],
+    "answer": 2,
+    "time": 30,
+    "level": "Medium"
+  },
+  {
+    "q": "How do you identify which partitions need reprocessing?",
+    "options": [
+      "By checking role permissions",
+      "By analyzing which data range is impacted",
+      "By running Process Full",
+      "By checking measure dependencies"
+    ],
+    "answer": 1,
+    "time": 30,
+    "level": "Medium"
+  },
+  {
+    "q": "Business wants to avoid full reprocessing after a column logic change. What should you do?",
+    "options": [
+      "Reject the change",
+      "Use Process Recalc",
+      "Reprocess only impacted partitions",
+      "Create a new cube"
+    ],
+    "answer": 2,
+    "time": 35,
+    "level": "Hard"
+  },
+  {
+    "q": "Can incremental refresh update historical data after a logic change?",
+    "options": [
+      "Yes, automatically",
+      "No, historical partitions must be rebuilt",
+      "Yes, using Process Recalc",
+      "Yes, using calculated columns"
+    ],
+    "answer": 1,
+    "time": 35,
+    "level": "Hard"
+  },
+  {
+    "q": "How do you validate that updated column logic is correct after reprocessing?",
+    "options": [
+      "By checking cube size",
+      "By comparing reports",
+      "By running reconciliations against source",
+      "By checking roles"
+    ],
+    "answer": 2,
+    "time": 35,
+    "level": "Hard"
+  },
+  {
+    "q": "What is the best rollback strategy if reprocessing causes issues?",
+    "options": [
+      "Delete the model",
+      "Restore from backup",
+      "Clear cache",
+      "Rebuild dimensions"
+    ],
+    "answer": 1,
+    "time": 30,
+    "level": "Hard"
+  },
+  {
+    "q": "How should processing impact be communicated to stakeholders?",
+    "options": [
+      "No communication needed",
+      "Only after issues occur",
+      "Before processing with expected impact",
+      "Only via email"
+    ],
+    "answer": 2,
+    "time": 25,
+    "level": "Medium"
+  },
+  {
+    "q": "How does partition granularity affect processing performance?",
+    "options": [
+      "No impact",
+      "Smaller partitions allow faster targeted processing",
+      "Larger partitions always perform better",
+      "It affects only memory"
+    ],
+    "answer": 1,
+    "time": 30,
+    "level": "Medium"
+  },
+  {
+    "q": "What factors influence partition design?",
+    "options": [
+      "User roles",
+      "Data volume and query patterns",
+      "Measure count",
+      "Model name"
+    ],
+    "answer": 1,
+    "time": 30,
+    "level": "Medium"
+  },
+  {
+    "q": "What happens internally during partition processing?",
+    "options": [
+      "Only metadata is updated",
+      "Data is reloaded and compressed",
+      "Measures are deleted",
+      "Roles are reset"
+    ],
+    "answer": 1,
+    "time": 30,
+    "level": "Medium"
+  },
+  {
+    "q": "How do large partitions impact system resources?",
+    "options": [
+      "No impact",
+      "Increase CPU and memory usage",
+      "Only affect disk space",
+      "Only affect security"
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Medium"
+  },
+  {
+    "q": "When should you redesign partitions instead of reprocessing them?",
+    "options": [
+      "When users complain",
+      "When data volume and performance degrade",
+      "When roles change",
+      "When measures change"
+    ],
+    "answer": 1,
+    "time": 30,
+    "level": "Hard"
+  },
+  {
+    "q": "Can calculated columns be refreshed without reprocessing data?",
+    "options": [
+      "Yes, using Process Recalc",
+      "No, they require data processing",
+      "Yes, using XMLA",
+      "Yes, using roles"
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Medium"
+  },
+  {
+    "q": "Can DAX measures be updated without reprocessing data?",
+    "options": [
+      "No, always need Process Full",
+      "Yes, measures do not require data reprocessing",
+      "Only in multidimensional models",
+      "Only with XMLA"
+    ],
+    "answer": 1,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "What happens if a column is removed from the source but exists in the model?",
+    "options": [
+      "Model auto-adjusts",
+      "Processing fails",
+      "Column becomes calculated",
+      "Measure recalculates"
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Medium"
+  },
+  {
+    "q": "Is Process Data faster than Process Full?",
+    "options": [
+      "No difference",
+      "Yes, because it skips recalculation",
+      "Yes, because it skips metadata",
+      "No, it reloads more data"
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Medium"
+  },
+  {
+    "q": "Can XMLA scripts avoid reprocessing partitions?",
+    "options": [
+      "Yes, always",
+      "No, XMLA only controls how processing is executed",
+      "Yes, for columns",
+      "Yes, for measures"
+    ],
+    "answer": 1,
+    "time": 30,
+    "level": "Hard"
+  },
+  {
+    "q": "How do you balance data correctness vs system availability after a logic change?",
+    "options": [
+      "Always prioritize availability",
+      "Always prioritize correctness",
+      "Reprocess selectively with proper communication",
+      "Avoid changes"
+    ],
+    "answer": 2,
+    "time": 40,
+    "level": "Hard"
+  }
+,
+
+
+
   {
     "q": "Which key uniquely identifies a dimension record?",
     "options": ["Foreign key","Surrogate key","Natural key","Alternate key"],
