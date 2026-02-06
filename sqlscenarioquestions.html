@@ -1313,6 +1313,135 @@ ORDER BY a.r;
 
   "answer_2": "WITH all_scores AS (\n  SELECT first_player AS player_id, first_score AS score FROM matches\n  UNION ALL\n  SELECT second_player AS player_id, second_score AS score FROM matches\n),\nplayer_scores AS (\n  SELECT p.group_id,\n         a.player_id,\n         SUM(a.score) AS total_score\n  FROM players p\n  LEFT JOIN all_scores a\n    ON p.player_id = a.player_id\n  GROUP BY p.group_id, a.player_id\n),\nranked_players AS (\n  SELECT *,\n         ROW_NUMBER() OVER (\n           PARTITION BY group_id\n           ORDER BY total_score DESC, player_id ASC\n         ) AS r\n  FROM player_scores\n)\nSELECT group_id,\n       player_id,\n       total_score AS score,\n       r\nFROM ranked_players\nWHERE r = 1;"
 }
+    ,{
+    "question": `
+An online shopping platform records user purchases made using either mobile or desktop.
+
+Each row represents a purchase made by a user on a given date and platform.
+
+Write a SQL query to determine, for each spend_date:
+- Total amount spent by users who used mobile only
+- Total amount spent by users who used desktop only
+- Total amount spent by users who used both mobile and desktop
+- Total number of users in each category
+
+Output columns:
+spend_date, platform (mobile / desktop / both), total_amount, total_users
+`,
+    "dataset": [
+        {"user_id":1,"spend_date":"2019-07-01","platform":"mobile","amount":100},
+        {"user_id":1,"spend_date":"2019-07-01","platform":"desktop","amount":100},
+        {"user_id":2,"spend_date":"2019-07-01","platform":"mobile","amount":100},
+        {"user_id":2,"spend_date":"2019-07-02","platform":"mobile","amount":100},
+        {"user_id":3,"spend_date":"2019-07-01","platform":"desktop","amount":100},
+        {"user_id":3,"spend_date":"2019-07-02","platform":"desktop","amount":100}
+    ],
+    "output": [
+        {"spend_date":"2019-07-01","platform":"mobile","total_amount":100,"total_users":1},
+        {"spend_date":"2019-07-01","platform":"desktop","total_amount":100,"total_users":1},
+        {"spend_date":"2019-07-01","platform":"both","total_amount":200,"total_users":1},
+        {"spend_date":"2019-07-02","platform":"mobile","total_amount":100,"total_users":1},
+        {"spend_date":"2019-07-02","platform":"desktop","total_amount":100,"total_users":1},
+        {"spend_date":"2019-07-02","platform":"both","total_amount":0,"total_users":0}
+    ],
+    "answer_1": `
+-- Approach 1: User-level classification, then aggregation
+
+WITH user_level AS (
+    SELECT
+        spend_date,
+        user_id,
+        SUM(CASE WHEN platform = 'mobile' THEN amount ELSE 0 END) AS mobile_amt,
+        SUM(CASE WHEN platform = 'desktop' THEN amount ELSE 0 END) AS desktop_amt
+    FROM user_purchase_platform
+    GROUP BY spend_date, user_id
+),
+classified AS (
+    SELECT
+        spend_date,
+        user_id,
+        CASE
+            WHEN mobile_amt > 0 AND desktop_amt > 0 THEN 'both'
+            WHEN mobile_amt > 0 THEN 'mobile'
+            WHEN desktop_amt > 0 THEN 'desktop'
+        END AS platform,
+        mobile_amt + desktop_amt AS total_amount
+    FROM user_level
+)
+SELECT
+    spend_date,
+    platform,
+    SUM(total_amount) AS total_amount,
+    COUNT(DISTINCT user_id) AS total_users
+FROM classified
+GROUP BY spend_date, platform
+ORDER BY spend_date, platform;
+`,
+    "answer_2": `
+-- Approach 2: Generate all date-platform combinations to include zero rows
+
+WITH user_level AS (
+    SELECT
+        spend_date,
+        user_id,
+        SUM(CASE WHEN platform = 'mobile' THEN amount ELSE 0 END) AS mobile_amt,
+        SUM(CASE WHEN platform = 'desktop' THEN amount ELSE 0 END) AS desktop_amt
+    FROM user_purchase_platform
+    GROUP BY spend_date, user_id
+),
+classified AS (
+    SELECT
+        spend_date,
+        user_id,
+        CASE
+            WHEN mobile_amt > 0 AND desktop_amt > 0 THEN 'both'
+            WHEN mobile_amt > 0 THEN 'mobile'
+            WHEN desktop_amt > 0 THEN 'desktop'
+        END AS platform,
+        mobile_amt + desktop_amt AS total_amount
+    FROM user_level
+),
+agg AS (
+    SELECT
+        spend_date,
+        platform,
+        SUM(total_amount) AS total_amount,
+        COUNT(DISTINCT user_id) AS total_users
+    FROM classified
+    GROUP BY spend_date, platform
+),
+dates AS (
+    SELECT DISTINCT spend_date FROM user_purchase_platform
+),
+platforms AS (
+    SELECT 'mobile' AS platform
+    UNION ALL SELECT 'desktop'
+    UNION ALL SELECT 'both'
+)
+SELECT
+    d.spend_date,
+    p.platform,
+    COALESCE(a.total_amount, 0) AS total_amount,
+    COALESCE(a.total_users, 0) AS total_users
+FROM dates d
+CROSS JOIN platforms p
+LEFT JOIN agg a
+    ON a.spend_date = d.spend_date
+   AND a.platform = p.platform
+ORDER BY d.spend_date, p.platform;
+`,
+    "explanation": `
+Explanation:
+
+1. Users are first grouped by (user_id, spend_date) to determine which platforms they used.
+2. If a user has both mobile and desktop usage on the same date, they are classified as 'both'.
+3. Aggregation is then performed by spend_date and platform.
+4. In Answer 2, a CROSS JOIN between all dates and all platforms ensures that missing categories
+   (like 'both' on 2019-07-02) appear with 0 amount and 0 users.
+5. COALESCE is used to convert NULLs into zeros for total_amount and total_users.
+`
+}
+
 
 
 /* End of questions array */
