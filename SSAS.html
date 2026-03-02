@@ -3089,7 +3089,241 @@ let originalQuestions = [
     "answer": 1,
     "time": 40,
     "level": "Medium"
+  },
+
+
+
+
+  
+  {
+    "q": "What is the primary purpose of Workspace Server in an SSAS Tabular project?",
+    "options": [
+      "To store source database tables",
+      "To host the development version of the tabular model",
+      "To replace the production SSAS server",
+      "To execute MDX queries only"
+    ],
+    "answer": 1,
+    "time": 30,
+    "level": "Easy"
+  },
+  {
+    "q": "Which environment is automatically managed by Visual Studio without requiring a running SSAS instance?",
+    "options": [
+      "Workspace Server",
+      "Production Server",
+      "Integrated Workspace",
+      "Azure Analysis Services"
+    ],
+    "answer": 2,
+    "time": 30,
+    "level": "Easy"
+  },
+  {
+    "q": "In Workspace Server mode, where is the development model deployed during design-time?",
+    "options": [
+      "Inside Visual Studio memory only",
+      "To a local or remote SSAS instance",
+      "To SQL Server Database Engine",
+      "To Power BI Service"
+    ],
+    "answer": 1,
+    "time": 35,
+    "level": "Medium"
+  },
+  {
+    "q": "What happens if the SSAS service is stopped while using Workspace Server mode?",
+    "options": [
+      "Model continues to process normally",
+      "Deployment and processing will fail",
+      "Visual Studio switches to Integrated mode automatically",
+      "Only DAX measures stop working"
+    ],
+    "answer": 1,
+    "time": 35,
+    "level": "Medium"
+  },
+  {
+    "q": "Which mode is recommended for enterprise-level development with separate Dev, Test, and Prod environments?",
+    "options": [
+      "Integrated Workspace",
+      "Workspace Server",
+      "Local SQL Database Mode",
+      "In-Memory Debug Mode"
+    ],
+    "answer": 1,
+    "time": 30,
+    "level": "Medium"
+  },
+  {
+    "q": "What is the key advantage of Integrated Workspace for beginners?",
+    "options": [
+      "Requires SQL Browser service",
+      "Eliminates need for SSAS installation",
+      "Supports only Multidimensional models",
+      "Automatically creates production partitions"
+    ],
+    "answer": 1,
+    "time": 30,
+    "level": "Easy"
+  },
+  {
+    "q": "Which port is typically used by default SSAS Tabular instance for client connections?",
+    "options": [
+      "1433",
+      "2382",
+      "2383",
+      "8080"
+    ],
+    "answer": 2,
+    "time": 40,
+    "level": "Hard"
+  },
+  {
+    "q": "In Workspace Server mode, changing the Deployment Server property affects which stage?",
+    "options": [
+      "Design-time workspace database",
+      "Source SQL Server database",
+      "Final deployment target server",
+      "Visual Studio cache folder"
+    ],
+    "answer": 2,
+    "time": 35,
+    "level": "Medium"
+  },
+  {
+    "q": "What is created on the SSAS instance when using Workspace Server during development?",
+    "options": [
+      "A temporary workspace database",
+      "A SQL relational database",
+      "An MDX cube file",
+      "A Power BI dataset"
+    ],
+    "answer": 0,
+    "time": 35,
+    "level": "Medium"
+  },
+  {
+    "q": "Why is Integrated Workspace not commonly used in enterprise production pipelines?",
+    "options": [
+      "It does not support DAX",
+      "It cannot connect to SQL Server",
+      "It does not simulate real SSAS server deployment behavior",
+      "It only supports DirectQuery"
+    ],
+    "answer": 2,
+    "time": 40,
+    "level": "Hard"
+  },
+  {
+    "q": "Which scenario best justifies using Workspace Server instead of Integrated Workspace?",
+    "options": [
+      "Learning basic DAX formulas",
+      "Developing model for enterprise deployment with multiple environments",
+      "Testing calculated columns only",
+      "Creating Excel pivot tables"
+    ],
+    "answer": 1,
+    "time": 35,
+    "level": "Medium"
+  },
+  {
+    "q": "What must be running when using Workspace Server mode?",
+    "options": [
+      "SQL Browser Service only",
+      "SQL Database Engine",
+      "SQL Server Analysis Services",
+      "Power BI Gateway"
+    ],
+    "answer": 2,
+    "time": 30,
+    "level": "Easy"
+  },
+  {
+    "q": "What is the main architectural difference between Integrated Workspace and Workspace Server?",
+    "options": [
+      "Integrated runs within Visual Studio process; Workspace Server runs on SSAS instance",
+      "Integrated requires SQL login; Workspace Server requires Windows login",
+      "Integrated supports only DirectQuery",
+      "Workspace Server does not allow processing"
+    ],
+    "answer": 0,
+    "time": 45,
+    "level": "Hard"
+  },
+  {
+    "q": "When deploying a Tabular model to production, which property must be changed from development settings?",
+    "options": [
+      "Compatibility Level",
+      "Workspace Database",
+      "Deployment Server",
+      "Model Culture"
+    ],
+    "answer": 2,
+    "time": 35,
+    "level": "Medium"
+  },
+  {
+    "q": "What is a common error when configuring Workspace Server for the first time?",
+    "options": [
+      "Forgetting to install Git",
+      "Not adding current user as SSAS administrator",
+      "Not creating SQL indexes",
+      "Missing Power BI Desktop"
+    ],
+    "answer": 1,
+    "time": 40,
+    "level": "Hard"
+  },
+  {
+    "q": "In Workspace Server mode, what happens during model processing?",
+    "options": [
+      "Data loads into SQL Server tables",
+      "Data is stored inside SSAS Tabular engine",
+      "Data is saved into Visual Studio cache only",
+      "Data is stored in Git repository"
+    ],
+    "answer": 1,
+    "time": 40,
+    "level": "Medium"
+  },
+  {
+    "q": "Which workspace type is closer to real-world CI/CD deployment practice?",
+    "options": [
+      "Integrated Workspace",
+      "Workspace Server",
+      "Excel Workspace",
+      "Local Storage Mode"
+    ],
+    "answer": 1,
+    "time": 30,
+    "level": "Medium"
+  },
+  {
+    "q": "If Workspace Server is configured to localhost, where is the development database physically hosted?",
+    "options": [
+      "Inside SQL Database Engine",
+      "Inside SSAS service on local machine",
+      "Inside Visual Studio temp folder",
+      "On GitHub repository"
+    ],
+    "answer": 1,
+    "time": 40,
+    "level": "Hard"
+  },
+  {
+    "q": "Which workspace option simplifies setup but reduces environment simulation accuracy?",
+    "options": [
+      "Workspace Server",
+      "Integrated Workspace",
+      "Azure Workspace",
+      "Clustered Workspace"
+    ],
+    "answer": 1,
+    "time": 30,
+    "level": "Medium"
   }
+
 
   
 ];
