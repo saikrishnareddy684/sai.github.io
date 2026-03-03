@@ -3324,6 +3324,248 @@ let originalQuestions = [
     "level": "Medium"
   }
 
+,
+  
+  {
+    "q": "What is the difference between Deploy and Process in SSAS Tabular?",
+    "options": [
+      "Deploy loads data, Process publishes metadata",
+      "Deploy publishes metadata, Process loads data",
+      "Both do the same thing",
+      "Deploy deletes the model"
+    ],
+    "answer": 1,
+    "time": 30,
+    "level": "Medium"
+  },
+  {
+    "q": "What happens during Process operation in Tabular model?",
+    "options": [
+      "Only metadata is updated",
+      "Data is loaded into VertiPaq engine",
+      "Security roles are deleted",
+      "Relationships are removed"
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Easy"
+  },
+  {
+    "q": "What is Integrated Workspace mode used for?",
+    "options": [
+      "Production deployment",
+      "Cloud deployment",
+      "Local model development and testing",
+      "Backup storage"
+    ],
+    "answer": 2,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "Workspace Server in Tabular project refers to:",
+    "options": [
+      "Power BI Service",
+      "Temporary SSAS instance used during development",
+      "Azure SQL Database",
+      "OLTP database"
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Medium"
+  },
+  {
+    "q": "Which impersonation mode uses the currently logged-in Windows user?",
+    "options": [
+      "Impersonate Account",
+      "Impersonate Service Account",
+      "Impersonate Identity",
+      "Impersonate Anonymous"
+    ],
+    "answer": 2,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "When should Impersonate Account be used?",
+    "options": [
+      "During development only",
+      "In production using a dedicated service account",
+      "When no password is available",
+      "When using PIN login"
+    ],
+    "answer": 1,
+    "time": 30,
+    "level": "Medium"
+  },
+  {
+    "q": "Why does Impersonate Account require a real Windows password?",
+    "options": [
+      "Because PIN is not supported by SSAS authentication",
+      "Because SSAS does not allow Windows login",
+      "Because SQL Server blocks it",
+      "Because workspace mode disables it"
+    ],
+    "answer": 0,
+    "time": 30,
+    "level": "Medium"
+  },
+  {
+    "q": "If Deploy is successful but no data is visible in reports, what is most likely missing?",
+    "options": [
+      "Relationships",
+      "Processing",
+      "Security role",
+      "Date table"
+    ],
+    "answer": 1,
+    "time": 30,
+    "level": "Medium"
+  },
+  {
+    "q": "What does 'Mark as Date Table' enable?",
+    "options": [
+      "Data compression",
+      "Time intelligence DAX functions",
+      "Row level security",
+      "Partitioning"
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Easy"
+  },
+  {
+    "q": "What happens if data source credentials are missing?",
+    "options": [
+      "Model auto-corrects",
+      "Deployment succeeds but process fails",
+      "Processing and deployment fail",
+      "Relationships break"
+    ],
+    "answer": 2,
+    "time": 30,
+    "level": "Medium"
+  },
+  {
+    "q": "Workspace Server is mainly required for:",
+    "options": [
+      "Final production access",
+      "Temporary development storage",
+      "SQL joins",
+      "Power BI refresh"
+    ],
+    "answer": 1,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "What engine stores data in Tabular model?",
+    "options": [
+      "SQL Engine",
+      "VertiPaq",
+      "MDX Engine",
+      "SSIS Engine"
+    ],
+    "answer": 1,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "Which operation reloads all data and recalculates indexes?",
+    "options": [
+      "Process Clear",
+      "Process Default",
+      "Process Full",
+      "Process Add"
+    ],
+    "answer": 2,
+    "time": 30,
+    "level": "Medium"
+  },
+  {
+    "q": "What is the purpose of Process Clear?",
+    "options": [
+      "Delete only measures",
+      "Remove data from memory",
+      "Remove relationships",
+      "Delete model permanently"
+    ],
+    "answer": 1,
+    "time": 30,
+    "level": "Medium"
+  },
+  {
+    "q": "Which processing option adds only new data to partitions?",
+    "options": [
+      "Process Full",
+      "Process Default",
+      "Process Add",
+      "Process Clear"
+    ],
+    "answer": 2,
+    "time": 30,
+    "level": "Hard"
+  },
+  {
+    "q": "Why is Single direction relationship preferred in Tabular model?",
+    "options": [
+      "Improves performance and avoids ambiguity",
+      "Reduces memory usage only",
+      "Mandatory requirement",
+      "Allows multiple fact tables"
+    ],
+    "answer": 0,
+    "time": 35,
+    "level": "Hard"
+  },
+  {
+    "q": "If encryption error appears while connecting to SQL Server locally, what is safe to do in development?",
+    "options": [
+      "Cancel connection",
+      "Disable SQL Server",
+      "Allow unencrypted connection",
+      "Uninstall SSAS"
+    ],
+    "answer": 2,
+    "time": 25,
+    "level": "Easy"
+  },
+  {
+    "q": "Integrated Workspace mode stores temporary database in:",
+    "options": [
+      "Azure cloud",
+      "Visual Studio local SSAS instance",
+      "SQL Server",
+      "Power BI service"
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Medium"
+  },
+  {
+    "q": "What is the main purpose of a Workspace Server?",
+    "options": [
+      "Permanent reporting access",
+      "Model testing before deployment",
+      "Backup storage",
+      "OLTP transactions"
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Medium"
+  },
+  {
+    "q": "If tables are imported but relationships are missing, what must be done?",
+    "options": [
+      "Reinstall SQL Server",
+      "Manually create relationships",
+      "Delete database",
+      "Restart workspace"
+    ],
+    "answer": 1,
+    "time": 20,
+    "level": "Easy"
+  }
 
   
 ];
