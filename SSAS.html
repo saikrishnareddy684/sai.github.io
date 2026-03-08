@@ -3992,7 +3992,247 @@ let originalQuestions = [
     "time": 20,
     "level": "Easy"
   }
-
+,
+  {
+    "q": "What will happen if two active relationships create multiple filter paths between the same tables?",
+    "options": [
+      "SSAS automatically chooses one path",
+      "An ambiguous relationship error occurs",
+      "Both paths are merged automatically",
+      "The model deploys but results are random"
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Hard"
+  },
+  {
+    "q": "Which DAX function removes existing filters from a column or table?",
+    "options": [
+      "REMOVEFILTERS",
+      "FILTER",
+      "VALUES",
+      "SUMX"
+    ],
+    "answer": 0,
+    "time": 25,
+    "level": "Hard"
+  },
+  {
+    "q": "Which function is commonly used to override filter context inside CALCULATE?",
+    "options": [
+      "ALL",
+      "DISTINCT",
+      "RELATED",
+      "COUNT"
+    ],
+    "answer": 0,
+    "time": 25,
+    "level": "Hard"
+  },
+  {
+    "q": "What does the ALL() function do in DAX?",
+    "options": [
+      "Returns all rows ignoring existing filters",
+      "Counts all rows",
+      "Creates relationships",
+      "Filters rows dynamically"
+    ],
+    "answer": 0,
+    "time": 25,
+    "level": "Hard"
+  },
+  {
+    "q": "Which DAX function converts row context into filter context?",
+    "options": [
+      "CALCULATE",
+      "FILTER",
+      "VALUES",
+      "SUM"
+    ],
+    "answer": 0,
+    "time": 25,
+    "level": "Hard"
+  },
+  {
+    "q": "Which DAX function is used to retrieve values from a related table when there is no relationship?",
+    "options": [
+      "LOOKUPVALUE",
+      "RELATED",
+      "VALUES",
+      "FILTER"
+    ],
+    "answer": 0,
+    "time": 25,
+    "level": "Hard"
+  },
+  {
+    "q": "Which relationship type can create performance issues in large tabular models?",
+    "options": [
+      "Bi-directional filtering",
+      "Single direction filtering",
+      "Many-to-one relationships",
+      "One-to-many relationships"
+    ],
+    "answer": 0,
+    "time": 25,
+    "level": "Hard"
+  },
+  {
+    "q": "What is the primary storage engine used in SSAS Tabular models?",
+    "options": [
+      "VertiPaq",
+      "DirectQuery",
+      "SQL Engine",
+      "MDX Engine"
+    ],
+    "answer": 0,
+    "time": 25,
+    "level": "Hard"
+  },
+  {
+    "q": "What is VertiPaq primarily designed for?",
+    "options": [
+      "Columnar compression and fast in-memory analytics",
+      "Row-based transaction processing",
+      "Index optimization",
+      "Query rewriting"
+    ],
+    "answer": 0,
+    "time": 25,
+    "level": "Hard"
+  },
+  {
+    "q": "Which DAX function returns a table after applying a condition?",
+    "options": [
+      "FILTER",
+      "SUM",
+      "COUNT",
+      "VALUES"
+    ],
+    "answer": 0,
+    "time": 25,
+    "level": "Hard"
+  },
+  {
+    "q": "Which DAX function returns the number of distinct values in a column?",
+    "options": [
+      "DISTINCTCOUNT",
+      "COUNT",
+      "VALUES",
+      "COUNTX"
+    ],
+    "answer": 0,
+    "time": 25,
+    "level": "Hard"
+  },
+  {
+    "q": "Which DAX function returns a single value when exactly one value exists in the context?",
+    "options": [
+      "SELECTEDVALUE",
+      "VALUES",
+      "DISTINCT",
+      "COUNT"
+    ],
+    "answer": 0,
+    "time": 25,
+    "level": "Hard"
+  },
+  {
+    "q": "What is the purpose of the EARLIER() function in DAX?",
+    "options": [
+      "Access a value from an outer row context",
+      "Remove filters from a table",
+      "Activate inactive relationships",
+      "Create calculated measures"
+    ],
+    "answer": 0,
+    "time": 30,
+    "level": "Hard"
+  },
+  {
+    "q": "Which modeling approach improves compression in VertiPaq?",
+    "options": [
+      "Reducing column cardinality",
+      "Adding more calculated columns",
+      "Using bi-directional filters",
+      "Duplicating tables"
+    ],
+    "answer": 0,
+    "time": 30,
+    "level": "Hard"
+  },
+  {
+    "q": "Which column type generally compresses best in VertiPaq?",
+    "options": [
+      "Low cardinality columns",
+      "High cardinality columns",
+      "Floating point columns",
+      "Binary columns"
+    ],
+    "answer": 0,
+    "time": 30,
+    "level": "Hard"
+  },
+  {
+    "q": "What is a many-to-many relationship typically implemented using in Tabular models?",
+    "options": [
+      "Bridge table",
+      "Duplicate dimension table",
+      "Fact-to-fact relationship",
+      "Nested hierarchies"
+    ],
+    "answer": 0,
+    "time": 30,
+    "level": "Hard"
+  },
+  {
+    "q": "Which object controls row-level security in a Tabular model?",
+    "options": [
+      "Roles",
+      "Perspectives",
+      "Partitions",
+      "Hierarchies"
+    ],
+    "answer": 0,
+    "time": 25,
+    "level": "Hard"
+  },
+  {
+    "q": "Which DAX function checks whether a column has been filtered?",
+    "options": [
+      "ISFILTERED",
+      "HASONEVALUE",
+      "FILTER",
+      "VALUES"
+    ],
+    "answer": 0,
+    "time": 25,
+    "level": "Hard"
+  },
+  {
+    "q": "Which function checks if exactly one value exists in the filter context?",
+    "options": [
+      "HASONEVALUE",
+      "VALUES",
+      "COUNT",
+      "DISTINCT"
+    ],
+    "answer": 0,
+    "time": 25,
+    "level": "Hard"
+  },
+  {
+    "q": "Which technique helps reduce model size in Tabular models?",
+    "options": [
+      "Removing unnecessary columns",
+      "Adding more calculated columns",
+      "Creating more hierarchies",
+      "Increasing partition count"
+    ],
+    "answer": 0,
+    "time": 25,
+    "level": "Hard"
+  }
   
 ];
 
