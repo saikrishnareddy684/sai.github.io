@@ -4382,6 +4382,155 @@ let originalQuestions = [
   }
 
 
+,
+
+
+  
+  {
+    "q": "What happens if VALUES is used on a column from a dimension table that has no matching rows in the related fact table under current filters?",
+    "options": [
+      "It returns all rows from the dimension",
+      "It returns blank",
+      "It returns no rows",
+      "It returns duplicate rows"
+    ],
+    "answer": 1,
+    "time": 30,
+    "level": "Hard"
+  },
+  {
+    "q": "Which DAX function can modify filter context while evaluating an expression?",
+    "options": [
+      "CALCULATE",
+      "VALUES",
+      "DISTINCT",
+      "SUMMARIZE"
+    ],
+    "answer": 0,
+    "time": 25,
+    "level": "Hard"
+  },
+  {
+    "q": "Why might SUMMARIZE produce unexpected results compared to SUMMARIZECOLUMNS?",
+    "options": [
+      "SUMMARIZE ignores relationships",
+      "SUMMARIZE may introduce hidden grouping behavior",
+      "SUMMARIZE cannot perform aggregations",
+      "SUMMARIZE does not support dimensions"
+    ],
+    "answer": 1,
+    "time": 30,
+    "level": "Hard"
+  },
+  {
+    "q": "Which function is typically used to iterate over a table while performing row-by-row calculations?",
+    "options": [
+      "SUMX",
+      "VALUES",
+      "DISTINCT",
+      "ALL"
+    ],
+    "answer": 0,
+    "time": 25,
+    "level": "Hard"
+  },
+  {
+    "q": "In a tabular model, what is the main effect of using USERELATIONSHIP inside CALCULATE?",
+    "options": [
+      "It permanently activates the relationship",
+      "It temporarily activates an inactive relationship during evaluation",
+      "It removes existing relationships",
+      "It duplicates relationship paths"
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Medium"
+  },
+  {
+    "q": "Which DAX function removes filters from a table or column?",
+    "options": [
+      "FILTER",
+      "ALL",
+      "VALUES",
+      "RELATED"
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Hard"
+  },
+  {
+    "q": "What will happen if CALCULATE is used without any filter arguments?",
+    "options": [
+      "It returns an error",
+      "It converts row context into filter context",
+      "It removes filter context",
+      "It creates a new relationship"
+    ],
+    "answer": 1,
+    "time": 30,
+    "level": "Hard"
+  },
+  {
+    "q": "Which function is used to access a column value from a related table in DAX?",
+    "options": [
+      "RELATED",
+      "LOOKUPVALUE",
+      "CALCULATE",
+      "DISTINCT"
+    ],
+    "answer": 0,
+    "time": 20,
+    "level": "Medium"
+  },
+  {
+    "q": "What is the main difference between DISTINCT and VALUES in DAX?",
+    "options": [
+      "DISTINCT returns numeric values only",
+      "VALUES can return a blank row when referential integrity is violated",
+      "VALUES always sorts results",
+      "DISTINCT returns aggregated values"
+    ],
+    "answer": 1,
+    "time": 30,
+    "level": "Hard"
+  },
+  {
+    "q": "Which DAX function is best suited to add calculated columns to an existing table expression?",
+    "options": [
+      "ADDCOLUMNS",
+      "SELECTCOLUMNS",
+      "SUMMARIZE",
+      "DISTINCT"
+    ],
+    "answer": 0,
+    "time": 25,
+    "level": "Hard"
+  },
+  {
+    "q": "What does the FILTER function return?",
+    "options": [
+      "A scalar value",
+      "A filtered table",
+      "A Boolean result",
+      "An aggregated column"
+    ],
+    "answer": 1,
+    "time": 20,
+    "level": "Medium"
+  },
+  {
+    "q": "Which scenario commonly causes ambiguous relationship paths in tabular models?",
+    "options": [
+      "Multiple active relationships between the same tables",
+      "Having only one dimension table",
+      "Using calculated columns",
+      "Using DISTINCT"
+    ],
+    "answer": 0,
+    "time": 30,
+    "level": "Hard"
+  }
+
   
 ];
 
