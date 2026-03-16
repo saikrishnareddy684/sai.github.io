@@ -4760,8 +4760,119 @@ let originalQuestions = [
     "answer": 0,
     "time": 25,
     "level": "Hard"
+  },
+
+
+  {
+    "q": "Your SSAS cube has a fact table with 1 billion rows and processing takes 5 hours. What is the best way to improve processing time?",
+    "options": ["Create partitions and process incrementally", "Increase dimension attributes", "Create more hierarchies", "Convert measures to calculated columns"],
+    "answer": 0,
+    "time": 40,
+    "level": "Hard"
+  },
+  {
+    "q": "A Power BI report connected to SSAS Tabular is very slow. What tool is best to analyze DAX query performance?",
+    "options": ["SQL Profiler", "DAX Studio", "SSMS Object Explorer", "Visual Studio"],
+    "answer": 1,
+    "time": 30,
+    "level": "Medium"
+  },
+  {
+    "q": "Users from US should only see US data while Europe users should see only Europe data in SSAS. What feature should you implement?",
+    "options": ["Perspective", "Partition", "Role with Row Level Security", "Hierarchy"],
+    "answer": 2,
+    "time": 30,
+    "level": "Medium"
+  },
+  {
+    "q": "Your Sales table has OrderDate and ShipDate columns but the Date dimension allows only one active relationship. How can both be used in analysis?",
+    "options": ["Create duplicate date dimension", "Use USERELATIONSHIP in DAX", "Create two cubes", "Create hierarchy"],
+    "answer": 1,
+    "time": 40,
+    "level": "Hard"
+  },
+  {
+    "q": "Cube processing fails with 'Key not found' error in SSAS. What is the most likely reason?",
+    "options": ["Fact table contains keys not present in dimension", "Dimension table is too large", "Measures are missing", "Hierarchy is incorrect"],
+    "answer": 0,
+    "time": 30,
+    "level": "Medium"
+  },
+  {
+    "q": "A table in SSAS Tabular contains 150 columns but only 20 are used in reports. What should be done?",
+    "options": ["Add more hierarchies", "Remove unused columns", "Add calculated measures", "Increase partitions"],
+    "answer": 1,
+    "time": 30,
+    "level": "Medium"
+  },
+  {
+    "q": "An SSAS Tabular model shows an ambiguous relationship error. What is the main cause?",
+    "options": ["Multiple filter paths between tables", "Too many partitions", "Incorrect measure logic", "Large fact table"],
+    "answer": 0,
+    "time": 35,
+    "level": "Hard"
+  },
+  {
+    "q": "A DAX measure returns incorrect totals in SSAS Tabular. What is the most common reason?",
+    "options": ["Missing partitions", "Incorrect filter context", "Too many hierarchies", "Duplicate dimensions"],
+    "answer": 1,
+    "time": 35,
+    "level": "Hard"
+  },
+  {
+    "q": "Your data warehouse loads new data daily. What is the best SSAS strategy to process new data efficiently?",
+    "options": ["Process full cube daily", "Use incremental partition processing", "Delete old partitions", "Rebuild dimensions daily"],
+    "answer": 1,
+    "time": 30,
+    "level": "Medium"
+  },
+  {
+    "q": "When should you use a calculated column instead of a measure in SSAS Tabular?",
+    "options": ["When calculation must be stored during processing", "When calculation should run during query time", "When performance is not important", "When relationships are missing"],
+    "answer": 0,
+    "time": 30,
+    "level": "Medium"
+  },
+  {
+    "q": "Business users want to see only relevant tables and measures but data should not be restricted. What SSAS feature should be used?",
+    "options": ["Role", "Perspective", "Partition", "Relationship"],
+    "answer": 1,
+    "time": 25,
+    "level": "Easy"
+  },
+  {
+    "q": "An SSAS Tabular model fails to process due to memory issues even though the server has 64GB RAM. What could be the reason?",
+    "options": ["Large cardinality columns", "Too many partitions", "Too many hierarchies", "Too few dimensions"],
+    "answer": 0,
+    "time": 35,
+    "level": "Hard"
+  },
+  {
+    "q": "A customer can have multiple accounts and an account can have multiple customers. How should this be modeled in SSAS?",
+    "options": ["One-to-many relationship", "Many-to-many with bridge table", "Single dimension", "Hierarchy"],
+    "answer": 1,
+    "time": 35,
+    "level": "Hard"
+  },
+  {
+    "q": "Your SSAS Tabular model size is 20GB in memory. What is the best optimization technique?",
+    "options": ["Add more partitions", "Remove unused columns and reduce text data", "Add calculated columns", "Increase hierarchies"],
+    "answer": 1,
+    "time": 35,
+    "level": "Hard"
+  },
+  {
+    "q": "Users report that numbers in reports changed after cube processing. What should be checked first?",
+    "options": ["Source data or ETL changes", "Hierarchy order", "Perspective settings", "Partition count"],
+    "answer": 0,
+    "time": 30,
+    "level": "Medium"
   }
 
+
+
+
+  
 ];
 
 /* ----------------- STATE ----------------- */
