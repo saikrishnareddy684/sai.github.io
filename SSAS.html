@@ -5128,6 +5128,152 @@ let originalQuestions = [
     "level": "Easy"
   }
 
+  ,
+  {
+    "q": "In SSAS, what primarily defines the granularity of a measure group?",
+    "options": [
+      "The aggregation design of the cube",
+      "The relationships in Dimension Usage tab",
+      "The foreign keys present in the fact table",
+      "The hierarchy levels in the dimension"
+    ],
+    "answer": 2,
+    "time": 30,
+    "level": "Medium"
+  },
+  {
+    "q": "What is the consequence of defining a higher-level granularity attribute (e.g., Month) when the fact table is at a lower level (e.g., Day)?",
+    "options": [
+      "Data will be filtered incorrectly",
+      "Measures will be under-aggregated",
+      "Data duplication and inflated aggregations",
+      "Cube processing will fail"
+    ],
+    "answer": 2,
+    "time": 45,
+    "level": "Hard"
+  },
+  {
+    "q": "Which SSAS component is used to explicitly define the granularity between a measure group and a dimension?",
+    "options": [
+      "Dimension Designer",
+      "Cube Structure tab",
+      "Dimension Usage tab",
+      "Attribute Relationships tab"
+    ],
+    "answer": 2,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "If a fact table contains ProductID but the dimension is linked using Product Category, what issue may arise?",
+    "options": [
+      "Missing data in reports",
+      "Incorrect joins but correct aggregations",
+      "Data multiplication due to granularity mismatch",
+      "Dimension hierarchy errors"
+    ],
+    "answer": 2,
+    "time": 45,
+    "level": "Hard"
+  },
+  {
+    "q": "In a many-to-many relationship scenario, why is granularity more complex?",
+    "options": [
+      "Because dimensions cannot be reused",
+      "Because fact tables cannot store foreign keys",
+      "Because bridge tables introduce multiple paths for aggregation",
+      "Because SSAS does not support many-to-many relationships"
+    ],
+    "answer": 2,
+    "time": 45,
+    "level": "Hard"
+  },
+  {
+    "q": "What does the granularity attribute represent in SSAS?",
+    "options": [
+      "The highest level of aggregation",
+      "The level at which fact data joins to a dimension",
+      "The default hierarchy of a dimension",
+      "The aggregation function applied to measures"
+    ],
+    "answer": 1,
+    "time": 30,
+    "level": "Medium"
+  },
+  {
+    "q": "Which scenario indicates correct granularity alignment?",
+    "options": [
+      "Fact table at Month level, dimension linked at Day level",
+      "Fact table at Day level, dimension linked at Day level",
+      "Fact table at Product level, dimension linked at Category level",
+      "Fact table without foreign keys"
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Easy"
+  },
+  {
+    "q": "How does fine granularity impact cube performance?",
+    "options": [
+      "Improves performance due to fewer rows",
+      "Has no impact on performance",
+      "Slows down performance but increases flexibility",
+      "Prevents aggregations from working"
+    ],
+    "answer": 2,
+    "time": 30,
+    "level": "Medium"
+  },
+  {
+    "q": "What is the difference between grain and granularity in SSAS?",
+    "options": [
+      "Grain is technical, granularity is business",
+      "Grain is business definition, granularity is technical implementation",
+      "Both are the same",
+      "Granularity only applies to dimensions"
+    ],
+    "answer": 1,
+    "time": 40,
+    "level": "Hard"
+  },
+  {
+    "q": "Which of the following best describes a violation of granularity design?",
+    "options": [
+      "Using surrogate keys in dimensions",
+      "Mixing daily and monthly data in the same fact table without proper handling",
+      "Creating hierarchies in dimensions",
+      "Using calculated measures"
+    ],
+    "answer": 1,
+    "time": 45,
+    "level": "Hard"
+  },
+  {
+    "q": "Why is it important to define granularity before designing a cube?",
+    "options": [
+      "To reduce storage requirements",
+      "To ensure correct joins and accurate aggregations",
+      "To simplify MDX queries",
+      "To avoid dimension creation"
+    ],
+    "answer": 1,
+    "time": 30,
+    "level": "Medium"
+  },
+  {
+    "q": "Which type of fact table has the lowest granularity?",
+    "options": [
+      "Aggregate fact table",
+      "Snapshot fact table",
+      "Transaction fact table",
+      "Factless fact table"
+    ],
+    "answer": 2,
+    "time": 30,
+    "level": "Medium"
+  }
+
 
 
   
