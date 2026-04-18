@@ -1,0 +1,5691 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" /> 
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>SSAS MCQ Exam – Batch + Resume + Timers + Persistence</title>
+  <style>
+    :root{--bg:#f4f4f4;--card:#fff;--accent:#007bff;--good:#28a745;--bad:#dc3545;--muted:#666}
+    body{font-family:Inter,Arial,Helvetica,sans-serif;background:var(--bg);margin:0;padding:20px;color:#222}
+    .container{max-width:1000px;margin:auto;background:var(--card);padding:18px;border-radius:10px;box-shadow:0 8px 30px rgba(0,0,0,0.06)}
+    h1{margin:0 0 12px;color:var(--accent)}
+    .row{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+    button{padding:8px 12px;border-radius:6px;border:0;cursor:pointer}
+    .primary{background:var(--accent);color:#fff}
+    .secondary{background:#6c757d;color:#fff}
+    .warn{background:#ffc107}
+    .danger{background:var(--bad);color:#fff}
+    .menu{margin-bottom:12px}
+    #questionBox{padding:12px;border-radius:8px;background:#fafafa;margin:12px 0}
+    .progress{height:10px;background:#eee;border-radius:6px;overflow:hidden}
+    .progress > div{height:100%;background:var(--accent);width:0%}
+    .small{font-size:0.9rem;color:var(--muted)}
+    .navNums{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+    .navNums button{width:36px;height:36px;border-radius:50%;background:#e9ecef;border:2px solid transparent}
+    .navNums button.answered{background:var(--good);color:#fff}
+    .navNums button.marked{outline:2px dashed #ff9800}
+    .dark{background:#121214;color:#e6eef8}
+    .dark #questionBox{background:#1a1a1f}
+    .controls-left { display:flex; gap:8px; align-items:center; }
+    /* menu extras */
+    .batch-btn { min-width:140px; padding:10px 12px; border-radius:8px; font-weight:600; }
+    .batch-wrap { display:flex; gap:10px; flex-wrap:wrap; margin-top:10px; }
+    .reset-btn { margin-top:16px; display:inline-block; }
+  </style>
+</head>
+<body>
+<div class="container" id="app">
+  <h1>SSAS MCQ Exam — Batch Mode</h1>
+
+  <div id="menu" class="menu">
+<div class="row small" style="margin-bottom:10px;">
+  <strong>Filter by Difficulty:</strong>
+  <button class="secondary" onclick="setLevelFilter('All')">All</button>
+  <button class="secondary" onclick="setLevelFilter('Easy')">Easy</button>
+  <button class="secondary" onclick="setLevelFilter('Medium')">Medium</button>
+  <button class="secondary" onclick="setLevelFilter('Hard')">Hard</button>
+</div>
+</div>
+
+  <div id="controls" style="display:none" class="row">
+    <div class="small">Batch: <strong id="batchTitle"></strong></div>
+    <div class="small">Global Time: <span id="globalTimer"></span></div>
+    <div class="small">Question Time: <span id="questionTimer"></span></div>
+
+    <div style="margin-left:auto" class="controls-left">
+      <button id="homeBtn" class="secondary">Home</button>
+      <button id="prevBatchBtn" class="secondary">Prev Batch</button>
+      <button id="nextBatchBtn" class="secondary">Next Batch</button>
+      <button id="shuffleToggle" class="secondary">Shuffle: ON</button>
+      <button id="darkToggle" class="secondary">Dark</button>
+      <button id="exportBtn" class="secondary">Export</button>
+      <input id="importFile" type="file" accept="application/json" style="display:none">
+      <button id="importBtn" class="secondary">Import</button>
+    </div>
+  </div>
+
+  <div id="exam" style="display:none">
+    <div id="questionBox"></div>
+
+    <div class="row">
+      <button id="prevBtn" class="secondary">Previous</button>
+      <button id="nextBtn" class="primary">Next</button>
+      <button id="answerLaterBtn" class="warn">Answer Later (Mark)</button>
+      <button id="pauseBtn" class="secondary">Pause</button>
+      <button id="resumeBtn" class="primary" style="display:none">Resume</button>
+      <button id="submitBtn" class="danger">Submit Batch</button>
+    </div>
+
+    <div style="margin-top:12px">
+      <div class="progress"><div id="progBar"></div></div>
+      <div class="row small" style="justify-content:space-between;margin-top:6px">
+        <div id="progressText"></div>
+        <div id="marksLegend" class="small"></div>
+      </div>
+      <div class="navNums" id="navNums"></div>
+    </div>
+  </div>
+
+  <div id="result" style="margin-top:12px"></div>
+</div>
+ 
+<script>
+/* ----------------- CONFIG ----------------- */
+const QUESTIONS_PER_BATCH = 25;
+const PER_QUESTION_SECONDS = 20;
+const LS_KEY = 'mcq_exam_v2_state'; 
+const COMPLETED_KEY = 'mcq_completed_batches';
+
+/* ----------------- SAMPLE QUESTIONS (replace with full set later) ----------------- */
+let originalQuestions = [
+
+
+
+  {
+    "q": "Which SSAS object controls user access and security?",
+    "options": ["Partition", "Role", "Perspective", "Hierarchy"],
+    "answer": 1,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "Which SSAS object is used only to simplify the cube view and not for security?",
+    "options": ["Role", "Partition", "Perspective", "Measure"],
+    "answer": 2,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "How do you restrict data visibility for users by region in SSAS?",
+    "options": [
+      "Using Partitions",
+      "Using Dimension Data Security",
+      "Using Perspectives",
+      "Using Calculated Measures"
+    ],
+    "answer": 1,
+    "time": 30,
+    "level": "Medium"
+  },
+  {
+    "q": "Can a user belong to multiple roles in SSAS?",
+    "options": ["Yes", "No", "Only one role is allowed", "Depends on cube type"],
+    "answer": 0,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "What happens if a user is not assigned to any role in SSAS?",
+    "options": [
+      "User gets full access",
+      "User gets read-only access",
+      "User cannot access the cube",
+      "User can access dimensions only"
+    ],
+    "answer": 2,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "Which type of security is used to restrict rows or members in a dimension?",
+    "options": [
+      "Cube Security",
+      "Cell Security",
+      "Dimension Data Security",
+      "Measure Security"
+    ],
+    "answer": 2,
+    "time": 30,
+    "level": "Medium"
+  },
+  {
+    "q": "Which SSAS security feature is used to hide sensitive measures like Profit or Cost?",
+    "options": [
+      "Dimension Security",
+      "Measure Security",
+      "Perspective",
+      "Partition"
+    ],
+    "answer": 1,
+    "time": 30,
+    "level": "Medium"
+  }
+,
+  {
+    "q": "What does SSAS stand for?",
+    "options": ["SQL Server Advanced Storage","SQL Server Analysis Services","SQL Server Analytical System","SQL Server Aggregation Service"],
+    "answer": 1,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "SSAS is primarily used for which type of processing?",
+    "options": ["OLTP","ETL","OLAP","CDC"],
+    "answer": 2,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "Which SSAS object stores numerical data for analysis?",
+    "options": ["Dimension","Measure","Hierarchy","Attribute"],
+    "answer": 1,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "Which schema is most commonly used for SSAS modeling?",
+    "options": ["Flat","Star","Network","XML"],
+    "answer": 1,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "Which dimension answers the question 'When'?",
+    "options": ["Customer","Product","Time","Geography"],
+    "answer": 2,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "What is a fact table?",
+    "options": ["Stores descriptive data","Stores aggregated data only","Stores measurable business data","Stores hierarchies"],
+    "answer": 2,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "Which SSAS object defines how data is grouped?",
+    "options": ["Measure","Dimension","Partition","Aggregation"],
+    "answer": 1,
+    "time": 20,
+    "level": "Easy"
+  },
+
+
+
+
+
+  {
+    "q": "What is the smallest unit of processing in an SSAS Tabular model?",
+    "options": [
+      "Database",
+      "Table",
+      "Partition",
+      "Column"
+    ],
+    "answer": 2,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "Can we process a single column in an SSAS Tabular model?",
+    "options": [
+      "Yes, using Process Recalc",
+      "Yes, using Process Data",
+      "No, column-level processing is not supported",
+      "Yes, using XMLA"
+    ],
+    "answer": 2,
+    "time": 25,
+    "level": "Easy"
+  },
+  {
+    "q": "What happens when a source column logic changes in a Tabular fact table?",
+    "options": [
+      "Only the column is refreshed",
+      "Only measures are recalculated",
+      "The affected partitions must be reprocessed",
+      "No processing is required"
+    ],
+    "answer": 2,
+    "time": 25,
+    "level": "Easy"
+  },
+  {
+    "q": "What does Process Recalc do in SSAS Tabular?",
+    "options": [
+      "Reloads source data",
+      "Reprocesses partitions",
+      "Recalculates DAX expressions only",
+      "Clears table data"
+    ],
+    "answer": 2,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "Are DAX measures affected when a partition is reprocessed?",
+    "options": [
+      "No, measures are never affected",
+      "Yes, measures are recalculated",
+      "Measures are deleted",
+      "Only calculated columns are affected"
+    ],
+    "answer": 1,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "If only one month’s data is impacted by a logic change, what is the best approach?",
+    "options": [
+      "Reprocess the entire model",
+      "Reprocess all tables",
+      "Reprocess only the affected partitions",
+      "Use Process Recalc"
+    ],
+    "answer": 2,
+    "time": 30,
+    "level": "Medium"
+  },
+  {
+    "q": "Why is Process Recalc not sufficient when a source column changes?",
+    "options": [
+      "It only recalculates measures",
+      "It clears partition data",
+      "It reloads source data",
+      "It updates metadata only"
+    ],
+    "answer": 0,
+    "time": 30,
+    "level": "Medium"
+  },
+  {
+    "q": "How do partitions help in SSAS Tabular models?",
+    "options": [
+      "They reduce memory usage only",
+      "They allow column-level processing",
+      "They enable targeted and faster reprocessing",
+      "They store DAX calculations"
+    ],
+    "answer": 2,
+    "time": 25,
+    "level": "Medium"
+  },
+  {
+    "q": "What is a major risk of reprocessing all partitions in production?",
+    "options": [
+      "Loss of metadata",
+      "Data model corruption",
+      "Long downtime and performance impact",
+      "Role security reset"
+    ],
+    "answer": 2,
+    "time": 30,
+    "level": "Medium"
+  },
+  {
+    "q": "How do you identify which partitions need reprocessing?",
+    "options": [
+      "By checking role permissions",
+      "By analyzing which data range is impacted",
+      "By running Process Full",
+      "By checking measure dependencies"
+    ],
+    "answer": 1,
+    "time": 30,
+    "level": "Medium"
+  },
+  {
+    "q": "Business wants to avoid full reprocessing after a column logic change. What should you do?",
+    "options": [
+      "Reject the change",
+      "Use Process Recalc",
+      "Reprocess only impacted partitions",
+      "Create a new cube"
+    ],
+    "answer": 2,
+    "time": 35,
+    "level": "Hard"
+  },
+  {
+    "q": "Can incremental refresh update historical data after a logic change?",
+    "options": [
+      "Yes, automatically",
+      "No, historical partitions must be rebuilt",
+      "Yes, using Process Recalc",
+      "Yes, using calculated columns"
+    ],
+    "answer": 1,
+    "time": 35,
+    "level": "Hard"
+  },
+  {
+    "q": "How do you validate that updated column logic is correct after reprocessing?",
+    "options": [
+      "By checking cube size",
+      "By comparing reports",
+      "By running reconciliations against source",
+      "By checking roles"
+    ],
+    "answer": 2,
+    "time": 35,
+    "level": "Hard"
+  },
+  {
+    "q": "What is the best rollback strategy if reprocessing causes issues?",
+    "options": [
+      "Delete the model",
+      "Restore from backup",
+      "Clear cache",
+      "Rebuild dimensions"
+    ],
+    "answer": 1,
+    "time": 30,
+    "level": "Hard"
+  },
+  {
+    "q": "How should processing impact be communicated to stakeholders?",
+    "options": [
+      "No communication needed",
+      "Only after issues occur",
+      "Before processing with expected impact",
+      "Only via email"
+    ],
+    "answer": 2,
+    "time": 25,
+    "level": "Medium"
+  },
+  {
+    "q": "How does partition granularity affect processing performance?",
+    "options": [
+      "No impact",
+      "Smaller partitions allow faster targeted processing",
+      "Larger partitions always perform better",
+      "It affects only memory"
+    ],
+    "answer": 1,
+    "time": 30,
+    "level": "Medium"
+  },
+  {
+    "q": "What factors influence partition design?",
+    "options": [
+      "User roles",
+      "Data volume and query patterns",
+      "Measure count",
+      "Model name"
+    ],
+    "answer": 1,
+    "time": 30,
+    "level": "Medium"
+  },
+  {
+    "q": "What happens internally during partition processing?",
+    "options": [
+      "Only metadata is updated",
+      "Data is reloaded and compressed",
+      "Measures are deleted",
+      "Roles are reset"
+    ],
+    "answer": 1,
+    "time": 30,
+    "level": "Medium"
+  },
+  {
+    "q": "How do large partitions impact system resources?",
+    "options": [
+      "No impact",
+      "Increase CPU and memory usage",
+      "Only affect disk space",
+      "Only affect security"
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Medium"
+  },
+  {
+    "q": "When should you redesign partitions instead of reprocessing them?",
+    "options": [
+      "When users complain",
+      "When data volume and performance degrade",
+      "When roles change",
+      "When measures change"
+    ],
+    "answer": 1,
+    "time": 30,
+    "level": "Hard"
+  },
+  {
+    "q": "Can calculated columns be refreshed without reprocessing data?",
+    "options": [
+      "Yes, using Process Recalc",
+      "No, they require data processing",
+      "Yes, using XMLA",
+      "Yes, using roles"
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Medium"
+  },
+  {
+    "q": "Can DAX measures be updated without reprocessing data?",
+    "options": [
+      "No, always need Process Full",
+      "Yes, measures do not require data reprocessing",
+      "Only in multidimensional models",
+      "Only with XMLA"
+    ],
+    "answer": 1,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "What happens if a column is removed from the source but exists in the model?",
+    "options": [
+      "Model auto-adjusts",
+      "Processing fails",
+      "Column becomes calculated",
+      "Measure recalculates"
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Medium"
+  },
+  {
+    "q": "Is Process Data faster than Process Full?",
+    "options": [
+      "No difference",
+      "Yes, because it skips recalculation",
+      "Yes, because it skips metadata",
+      "No, it reloads more data"
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Medium"
+  },
+  {
+    "q": "Can XMLA scripts avoid reprocessing partitions?",
+    "options": [
+      "Yes, always",
+      "No, XMLA only controls how processing is executed",
+      "Yes, for columns",
+      "Yes, for measures"
+    ],
+    "answer": 1,
+    "time": 30,
+    "level": "Hard"
+  },
+  {
+    "q": "How do you balance data correctness vs system availability after a logic change?",
+    "options": [
+      "Always prioritize availability",
+      "Always prioritize correctness",
+      "Reprocess selectively with proper communication",
+      "Avoid changes"
+    ],
+    "answer": 2,
+    "time": 40,
+    "level": "Hard"
+  }
+,
+
+
+
+  {
+    "q": "Which key uniquely identifies a dimension record?",
+    "options": ["Foreign key","Surrogate key","Natural key","Alternate key"],
+    "answer": 1,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "Which language is used to query SSAS cubes?",
+    "options": ["SQL","DAX","MDX","Python"],
+    "answer": 2,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "Which tool is commonly used to develop SSAS cubes?",
+    "options": ["SQL Server Management Studio","Visual Studio","Power BI Desktop","Azure Data Studio"],
+    "answer": 1,
+    "time": 20,
+    "level": "Easy"
+  },
+
+  {
+    "q": "What is a measure group in SSAS?",
+    "options": ["Collection of dimensions","Collection of related measures","A calculated column","A hierarchy"],
+    "answer": 1,
+    "time": 30,
+    "level": "Medium"
+  },
+  {
+    "q": "Why are attribute relationships important?",
+    "options": ["Improve cube security","Improve performance","Reduce storage","Enable ETL"],
+    "answer": 1,
+    "time": 30,
+    "level": "Medium"
+  },
+  {
+    "q": "Which storage mode offers best query performance?",
+    "options": ["ROLAP","HOLAP","MOLAP","DirectQuery"],
+    "answer": 2,
+    "time": 30,
+    "level": "Medium"
+  },
+  {
+    "q": "What is a role-playing dimension?",
+    "options": ["Dimension used once","Dimension used in multiple roles","Calculated dimension","Degenerate dimension"],
+    "answer": 1,
+    "time": 30,
+    "level": "Medium"
+  },
+  {
+    "q": "What happens if attribute relationships are not defined?",
+    "options": ["Cube fails","Slow queries","Wrong aggregations","Data loss"],
+    "answer": 1,
+    "time": 30,
+    "level": "Medium"
+  },
+  {
+    "q": "Which object allows incremental data loading?",
+    "options": ["Perspective","Partition","Hierarchy","KPI"],
+    "answer": 1,
+    "time": 30,
+    "level": "Medium"
+  },
+  {
+    "q": "What is a degenerate dimension?",
+    "options": ["Fact without key","Dimension without attributes","Fact attribute stored in fact table","Unused dimension"],
+    "answer": 2,
+    "time": 30,
+    "level": "Medium"
+  },
+  {
+    "q": "Which SSAS object limits user access?",
+    "options": ["Partition","Perspective","Role","Hierarchy"],
+    "answer": 2,
+    "time": 30,
+    "level": "Medium"
+  },
+  {
+    "q": "What is a perspective in SSAS?",
+    "options": ["Security layer","Subset of cube","Aggregation","Processing mode"],
+    "answer": 1,
+    "time": 30,
+    "level": "Medium"
+  },
+  {
+    "q": "Which operation rebuilds aggregations?",
+    "options": ["Process Update","Process Clear","Process Full","Process Index"],
+    "answer": 3,
+    "time": 30,
+    "level": "Medium"
+  },
+
+  {
+    "q": "Which processing option deletes and reloads all data?",
+    "options": ["Process Update","Process Full","Process Index","Process Clear"],
+    "answer": 1,
+    "time": 45,
+    "level": "Hard"
+  },
+  {
+    "q": "Which feature improves query speed by pre-calculating data?",
+    "options": ["Partitions","Aggregations","Perspectives","KPIs"],
+    "answer": 1,
+    "time": 45,
+    "level": "Hard"
+  },
+  {
+    "q": "What is the main use of partitions?",
+    "options": ["Security","Incremental processing","UI simplification","Hierarchy creation"],
+    "answer": 1,
+    "time": 45,
+    "level": "Hard"
+  },
+  {
+    "q": "Which SSAS mode stores data in relational tables?",
+    "options": ["MOLAP","ROLAP","HOLAP","Tabular"],
+    "answer": 1,
+    "time": 45,
+    "level": "Hard"
+  },
+  {
+    "q": "Which MDX function retrieves members?",
+    "options": ["SUM","FILTER","MEMBERS","CALCULATE"],
+    "answer": 2,
+    "time": 45,
+    "level": "Hard"
+  },
+  {
+    "q": "Which scenario best suits HOLAP?",
+    "options": ["Small cubes","Large facts with summaries","Real-time OLTP","Disconnected analysis"],
+    "answer": 1,
+    "time": 45,
+    "level": "Hard"
+  },
+  {
+    "q": "What happens during Process Update of a dimension?",
+    "options": ["Full reload","Only changed data","Only indexes","Only facts"],
+    "answer": 1,
+    "time": 45,
+    "level": "Hard"
+  },
+  {
+    "q": "Which feature hides sensitive measures?",
+    "options": ["Partition","Perspective","Role","Aggregation"],
+    "answer": 2,
+    "time": 45,
+    "level": "Hard"
+  },
+  {
+    "q": "Which attribute controls granularity of fact data?",
+    "options": ["Measure","Dimension key","Hierarchy","Aggregation"],
+    "answer": 1,
+    "time": 45,
+    "level": "Hard"
+  },
+  {
+    "q": "Which SSAS object improves scalability?",
+    "options": ["Hierarchy","Partition","Perspective","Attribute"],
+    "answer": 1,
+    "time": 45,
+    "level": "Hard"
+  }
+
+,
+  {
+    "q": "What does SSAS stand for?",
+    "options": ["SQL Server Automation Services","SQL Server Analysis Services","Structured Storage Analysis System","SQL Server Advanced Services"],
+    "answer": 1,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "SSAS is primarily designed for which type of workload?",
+    "options": ["Transaction processing","Real-time messaging","Analytical processing","File storage"],
+    "answer": 2,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "SSAS focuses on analysis rather than which of the following?",
+    "options": ["Reporting","Visualization","Transaction processing","Aggregation"],
+    "answer": 2,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "Which operation is an example of simple analysis in SSAS?",
+    "options": ["INSERT","DELETE","SUM","MERGE"],
+    "answer": 2,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "Which of the following is an example of a complex calculation in SSAS?",
+    "options": ["COUNT","SUM","YTD","SELECT"],
+    "answer": 2,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "What does 'analysis' in SSAS mainly refer to?",
+    "options": ["Storing raw data","Running transactions","Applying business calculations","Backing up databases"],
+    "answer": 2,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "What is an SSAS Cube?",
+    "options": ["A relational table","A pre-aggregated analytical structure","A flat file","A reporting dashboard"],
+    "answer": 1,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "Why are cubes faster than querying raw tables?",
+    "options": ["They use indexes only","They store data in CSV format","They pre-calculate aggregations","They avoid joins completely"],
+    "answer": 2,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "Which of the following is NOT a core component of an SSAS cube?",
+    "options": ["Measures","Dimensions","Indexes","Measure Groups"],
+    "answer": 2,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "Measures in SSAS represent what kind of data?",
+    "options": ["Text descriptions","Numeric values","Image data","Configuration settings"],
+    "answer": 1,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "Which of the following is an example of a measure?",
+    "options": ["Customer Name","Product Category","Sales Amount","Region"],
+    "answer": 2,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "Measures are typically sourced from which type of table?",
+    "options": ["Dimension table","Fact table","Lookup table","Metadata table"],
+    "answer": 1,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "What is the purpose of dimensions in SSAS?",
+    "options": ["Store numerical values","Perform calculations","Describe and slice data","Execute queries"],
+    "answer": 2,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "Which of the following is a typical dimension?",
+    "options": ["Sales Amount","Transaction Count","Customer","Balance"],
+    "answer": 2,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "Time, Customer, and Product are examples of what in SSAS?",
+    "options": ["Measures","Facts","Dimensions","Indexes"],
+    "answer": 2,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "What is a Measure Group in SSAS?",
+    "options": ["A group of dimensions","A collection of reports","A logical grouping of measures","A security role"],
+    "answer": 2,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "Each measure group in SSAS is usually based on what?",
+    "options": ["A dimension table","A fact table","A view only","An index"],
+    "answer": 1,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "At which stage does pre-calculation happen in SSAS?",
+    "options": ["Data loading","Cube processing","Query execution","Report rendering"],
+    "answer": 1,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "Which of the following tools can query an SSAS cube?",
+    "options": ["Power BI","Excel","MDX/DAX","All of the above"],
+    "answer": 3,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "What is one major benefit of SSAS?",
+    "options": ["Real-time transaction handling","Very fast analytical queries","File compression","Application hosting"],
+    "answer": 1,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "SSAS helps maintain which of the following?",
+    "options": ["Multiple versions of truth","Centralized business logic","Unstructured data","Temporary storage"],
+    "answer": 1,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "Which SSAS model uses cubes and MDX?",
+    "options": ["Tabular Model","Relational Model","Multidimensional Model","Graph Model"],
+    "answer": 2,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "Which SSAS model uses tables and DAX?",
+    "options": ["Multidimensional Model","Tabular Model","Flat Model","Index Model"],
+    "answer": 1,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "Which SSAS model is generally faster to develop?",
+    "options": ["Multidimensional","Tabular","Hierarchical","Normalized"],
+    "answer": 1,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "In a banking scenario, SSAS is mainly used to analyze what?",
+    "options": ["ATM transactions in real time","Customer login activity","Balances, exposure, and risk metrics","Email communications"],
+    "answer": 2,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "Which statement best describes SSAS in one line?",
+    "options": [
+      "A transactional database engine",
+      "A Microsoft tool for ETL processing",
+      "A Microsoft analytical engine for fast reporting",
+      "A file-based reporting system"
+    ],
+    "answer": 2,
+    "time": 20,
+    "level": "Easy"
+  }
+
+,
+
+
+  {
+    "q": "SSAS is mainly used for which type of processing?",
+    "options": ["OLTP","OLAP","ETL","Streaming"],
+    "answer": 1,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "SSAS is part of which Microsoft product suite?",
+    "options": ["Microsoft Azure","Microsoft Power BI","Microsoft SQL Server","Microsoft Office"],
+    "answer": 2,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "Besides OLAP, SSAS also supports which capability?",
+    "options": ["Web hosting","Data mining","File storage","Message queuing"],
+    "answer": 1,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "How many operational modes does SSAS have?",
+    "options": ["One","Two","Three","Four"],
+    "answer": 1,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "Which SSAS mode is considered more traditional?",
+    "options": ["Tabular Mode","Multidimensional Mode","Relational Mode","Hybrid Mode"],
+    "answer": 1,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "Which SSAS mode uses cubes, dimensions, and measures?",
+    "options": ["Tabular Mode","Multidimensional Mode","Flat Mode","Streaming Mode"],
+    "answer": 1,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "Which SSAS mode is known to have a steep learning curve?",
+    "options": ["Tabular Mode","Multidimensional Mode","Power BI Mode","Import Mode"],
+    "answer": 1,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "Which SSAS mode is more modern and widely adopted today?",
+    "options": ["Multidimensional Mode","Tabular Mode","OLTP Mode","Normalized Mode"],
+    "answer": 1,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "The Tabular model in SSAS is conceptually similar to which tool?",
+    "options": ["SSRS","Power BI","Azure Data Factory","SQL Agent"],
+    "answer": 1,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "Which engine powers the SSAS Tabular model?",
+    "options": ["VertiPaq","xVelocity in-memory engine","PolyBase","InnoDB"],
+    "answer": 1,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "Why is the Tabular model easier for Power BI developers?",
+    "options": ["Uses MDX","Uses tables and relationships","Requires XML coding","Uses stored procedures"],
+    "answer": 1,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "What is a Data Source in SSAS?",
+    "options": ["A cube","A report","The origin of the data","A calculation layer"],
+    "answer": 2,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "Which system is most commonly used as a data source for SSAS?",
+    "options": ["MongoDB","SQL Server","Excel only","Flat files only"],
+    "answer": 1,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "What is a Data Source View (DSV) in SSAS?",
+    "options": [
+      "A physical copy of data",
+      "A reporting dashboard",
+      "A logical representation of data",
+      "A security layer"
+    ],
+    "answer": 2,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "Which SSAS object provides descriptive context to measures?",
+    "options": ["Fact table","Dimension","Index","Partition"],
+    "answer": 1,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "What does the final Cube or Model represent in SSAS?",
+    "options": [
+      "Raw transactional data",
+      "Final analytical structure",
+      "Backup storage",
+      "ETL pipeline"
+    ],
+    "answer": 1,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "Which formula language is used in SSAS Tabular models?",
+    "options": ["SQL","MDX","DAX","Python"],
+    "answer": 2,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "DAX stands for:",
+    "options": [
+      "Data Analysis Expressions",
+      "Dynamic Aggregation Syntax",
+      "Data Access Extension",
+      "Distributed Analysis XML"
+    ],
+    "answer": 0,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "Which analytical action allows users to navigate from summary to detailed data?",
+    "options": ["Filtering","Sorting","Drill down","Indexing"],
+    "answer": 2,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "Slice and dice operations in SSAS are mainly enabled by which objects?",
+    "options": ["Measures","Dimensions","Indexes","Partitions"],
+    "answer": 1,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "Which tools are most commonly used to connect to SSAS models?",
+    "options": ["Excel and Power BI","Notepad and Excel","SSMS only","Visual Studio only"],
+    "answer": 0,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "Why do organizations use SSAS for large datasets?",
+    "options": [
+      "To replace OLTP systems",
+      "To simplify transactions",
+      "To analyze massive data efficiently",
+      "To store unstructured data"
+    ],
+    "answer": 2,
+    "time": 20,
+    "level": "Easy"
+  }
+,
+
+
+  {
+    "q": "What does the error 'A connection cannot be made to redirector' usually indicate in SSAS?",
+    "options": [
+      "Incorrect DAX syntax",
+      "SQL Browser service is not running",
+      "Cube processing failure",
+      "Invalid dimension key"
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Easy"
+  },
+  {
+    "q": "Which service must be running to resolve redirector connection issues in SSAS?",
+    "options": [
+      "SQL Server Agent",
+      "SQL Server Integration Services",
+      "SQL Server Browser",
+      "SQL Server Reporting Services"
+    ],
+    "answer": 2,
+    "time": 25,
+    "level": "Easy"
+  },
+  {
+    "q": "Which tool is commonly used to verify whether SSAS services are running?",
+    "options": [
+      "Task Manager",
+      "SQL Server Configuration Manager",
+      "Event Viewer",
+      "Power BI Desktop"
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Easy"
+  },
+  {
+    "q": "In a Star Schema, how are dimension tables connected to the fact table?",
+    "options": [
+      "Indirectly through bridge tables",
+      "Directly to the fact table",
+      "Through other dimensions",
+      "Via stored procedures"
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Easy"
+  },
+  {
+    "q": "Which schema design is simpler and easier to understand?",
+    "options": [
+      "Snowflake Schema",
+      "Galaxy Schema",
+      "Star Schema",
+      "Normalized Schema"
+    ],
+    "answer": 2,
+    "time": 25,
+    "level": "Easy"
+  },
+  {
+    "q": "Why does a Star Schema generally provide better query performance?",
+    "options": [
+      "Uses indexes only",
+      "Requires fewer joins",
+      "Uses temporary tables",
+      "Avoids dimensions"
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Easy"
+  },
+  {
+    "q": "Which schema is more commonly used in large enterprise data warehouses?",
+    "options": [
+      "Star Schema",
+      "Snowflake Schema",
+      "Flat Schema",
+      "Document Schema"
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Easy"
+  },
+  {
+    "q": "In a Snowflake Schema, dimension tables are:",
+    "options": [
+      "Fully denormalized",
+      "Normalized into sub-dimensions",
+      "Stored in fact tables",
+      "Replaced by views"
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Easy"
+  },
+  {
+    "q": "What is a key drawback of the Snowflake Schema?",
+    "options": [
+      "Consumes more storage",
+      "Hard to implement security",
+      "Slower queries due to more joins",
+      "Cannot support hierarchies"
+    ],
+    "answer": 2,
+    "time": 25,
+    "level": "Easy"
+  },
+  {
+    "q": "How can a Star Schema be converted into a Snowflake Schema?",
+    "options": [
+      "By denormalizing dimension tables",
+      "By normalizing dimension tables",
+      "By removing dimensions",
+      "By merging fact tables"
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Easy"
+  },
+  {
+    "q": "In Adventure Works DW, which table connects directly to Fact Internet Sales in a Star Schema?",
+    "options": [
+      "Dim Product Subcategory",
+      "Dim Product",
+      "Dim Product Category",
+      "Dim Sales Territory"
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Easy"
+  },
+  {
+    "q": "What is a conformed dimension?",
+    "options": [
+      "A dimension used in only one fact table",
+      "A dimension shared across multiple fact tables",
+      "A calculated dimension",
+      "A temporary dimension"
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Easy"
+  },
+  {
+    "q": "Which feature is mandatory for a conformed dimension?",
+    "options": [
+      "Different attributes per fact",
+      "Same structure and meaning",
+      "Separate keys for each fact",
+      "Different granularity"
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Easy"
+  },
+  {
+    "q": "Why are conformed dimensions important in enterprise reporting?",
+    "options": [
+      "Improve ETL speed",
+      "Enable cross-fact analysis",
+      "Reduce cube size",
+      "Avoid dimension processing"
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Easy"
+  },
+  {
+    "q": "Which dimension is most commonly conformed across fact tables?",
+    "options": [
+      "Employee",
+      "Time",
+      "Promotion",
+      "Transaction"
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Easy"
+  },
+  {
+    "q": "In banking, which dimension is often conformed across Loan, Deposit, and Risk facts?",
+    "options": [
+      "Branch",
+      "Customer",
+      "Currency",
+      "Account Type"
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Easy"
+  },
+  {
+    "q": "What is the primary role of a dimension in a data warehouse?",
+    "options": [
+      "Store transactions",
+      "Provide descriptive context",
+      "Perform aggregations",
+      "Manage security"
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Easy"
+  },
+  {
+    "q": "Which key relationship exists between dimension and fact tables?",
+    "options": [
+      "Fact primary key to dimension primary key",
+      "Dimension primary key to fact foreign key",
+      "Fact foreign key to fact primary key",
+      "Dimension foreign key to dimension foreign key"
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Easy"
+  },
+  {
+    "q": "What do hierarchies in dimensions primarily support?",
+    "options": [
+      "Index creation",
+      "Drill-down and roll-up analysis",
+      "Data loading",
+      "Security enforcement"
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Easy"
+  },
+  {
+    "q": "Which Time hierarchy is correctly ordered?",
+    "options": [
+      "Day → Month → Year",
+      "Year → Month → Quarter → Day",
+      "Year → Quarter → Month → Day",
+      "Month → Day → Year"
+    ],
+    "answer": 2,
+    "time": 25,
+    "level": "Easy"
+  },
+  {
+    "q": "Why are hierarchies recommended in SSAS dimensions?",
+    "options": [
+      "They reduce data size",
+      "They improve processing and query performance",
+      "They eliminate fact tables",
+      "They replace measures"
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Easy"
+  },
+  {
+    "q": "Can dimensions contain numeric attributes?",
+    "options": [
+      "No, dimensions are strictly text-based",
+      "Yes, but not used for aggregation",
+      "Yes, and they must be aggregated",
+      "Only in fact tables"
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Easy"
+  }
+,
+
+
+  {
+    "q": "What is a Data Mart?",
+    "options": [
+      "A logical abstraction layer",
+      "A subject-oriented physical subset of a data warehouse",
+      "A reporting visualization tool",
+      "A security layer"
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Easy"
+  },
+  {
+    "q": "Which of the following best describes a Semantic Layer?",
+    "options": [
+      "Physical data storage",
+      "ETL processing layer",
+      "Business abstraction layer",
+      "Backup storage"
+    ],
+    "answer": 2,
+    "time": 25,
+    "level": "Easy"
+  },
+  {
+    "q": "Which layer actually stores data?",
+    "options": ["Semantic Layer","Data Mart","Power BI Report","SSAS Model"],
+    "answer": 1,
+    "time": 25,
+    "level": "Easy"
+  },
+  {
+    "q": "Business logic such as KPIs and calculations mainly belongs to which layer?",
+    "options": ["Data Mart","ETL Layer","Semantic Layer","Source System"],
+    "answer": 2,
+    "time": 25,
+    "level": "Easy"
+  },
+  {
+    "q": "Which tools are commonly used to build a Semantic Layer?",
+    "options": ["SQL Server and ETL","SSAS and Power BI","Excel only","File systems"],
+    "answer": 1,
+    "time": 25,
+    "level": "Easy"
+  },
+  {
+    "q": "Who primarily consumes the Semantic Layer?",
+    "options": ["ETL developers","DBAs","Business users","System admins"],
+    "answer": 2,
+    "time": 25,
+    "level": "Easy"
+  },
+  {
+    "q": "Which statement best differentiates Data Mart and Semantic Layer?",
+    "options": [
+      "Data Mart models data, Semantic Layer stores it",
+      "Data Mart stores data, Semantic Layer models it",
+      "Both store physical data",
+      "Both are purely logical"
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Easy"
+  }
+
+,
+
+  {
+    "q": "What is the primary purpose of SQL?",
+    "options": [
+      "Define business KPIs",
+      "Apply row-level security",
+      "Retrieve and prepare data",
+      "Create hierarchies"
+    ],
+    "answer": 2,
+    "time": 25,
+    "level": "Easy"
+  },
+  {
+    "q": "What is the primary purpose of DAX?",
+    "options": [
+      "Data extraction",
+      "Data cleansing",
+      "Business calculations",
+      "Table joins"
+    ],
+    "answer": 2,
+    "time": 25,
+    "level": "Easy"
+  },
+  {
+    "q": "Where is SQL executed?",
+    "options": [
+      "Semantic layer",
+      "Power BI Service",
+      "Database engine",
+      "SSAS processing engine"
+    ],
+    "answer": 2,
+    "time": 25,
+    "level": "Easy"
+  },
+  {
+    "q": "Where is DAX executed?",
+    "options": [
+      "Database engine",
+      "ETL layer",
+      "Semantic layer",
+      "Source system"
+    ],
+    "answer": 2,
+    "time": 25,
+    "level": "Easy"
+  },
+  {
+    "q": "Which context does SQL primarily operate on?",
+    "options": [
+      "Filter context",
+      "Evaluation context",
+      "Row-based context",
+      "Time context"
+    ],
+    "answer": 2,
+    "time": 25,
+    "level": "Easy"
+  },
+  {
+    "q": "Which context is fundamental to DAX calculations?",
+    "options": [
+      "Row context only",
+      "Filter context",
+      "Transaction context",
+      "Cursor context"
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Easy"
+  },
+  {
+    "q": "Which task should be handled using DAX instead of SQL?",
+    "options": [
+      "Joining tables",
+      "Data cleansing",
+      "Time intelligence calculations",
+      "Filtering source rows"
+    ],
+    "answer": 2,
+    "time": 25,
+    "level": "Easy"
+  },
+  {
+    "q": "Which statement best summarizes SQL vs DAX?",
+    "options": [
+      "SQL defines business rules, DAX fetches data",
+      "SQL fetches data, DAX defines business logic",
+      "Both serve the same purpose",
+      "DAX replaces SQL completely"
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Easy"
+  }
+,
+
+  {
+    "q": "What is the main purpose of Row-Level Security (RLS)?",
+    "options": [
+      "Restrict access to reports",
+      "Restrict access to rows of data",
+      "Restrict access to databases",
+      "Restrict access to servers"
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Easy"
+  },
+  {
+    "q": "RLS restricts data visibility based on what?",
+    "options": [
+      "Report design",
+      "User identity or role",
+      "Database size",
+      "Processing mode"
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Easy"
+  },
+  {
+    "q": "When is RLS evaluated in SSAS or Power BI?",
+    "options": [
+      "During data load",
+      "During cube processing",
+      "At query time",
+      "During model deployment"
+    ],
+    "answer": 2,
+    "time": 25,
+    "level": "Easy"
+  },
+  {
+    "q": "Which type of RLS applies the same filter to all users in a role?",
+    "options": [
+      "Dynamic RLS",
+      "Static RLS",
+      "Hierarchical RLS",
+      "Implicit RLS"
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Easy"
+  },
+  {
+    "q": "Which type of RLS uses the logged-in user’s identity?",
+    "options": [
+      "Static RLS",
+      "Manual RLS",
+      "Dynamic RLS",
+      "Object RLS"
+    ],
+    "answer": 2,
+    "time": 25,
+    "level": "Easy"
+  },
+  {
+    "q": "Which DAX function is commonly used in Dynamic RLS?",
+    "options": [
+      "SUM()",
+      "CALCULATE()",
+      "USERPRINCIPALNAME()",
+      "RELATED()"
+    ],
+    "answer": 2,
+    "time": 25,
+    "level": "Easy"
+  },
+  {
+    "q": "Where is RLS defined in Power BI?",
+    "options": [
+      "Power Query Editor",
+      "Manage Roles",
+      "Report View",
+      "Dataset Settings"
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Easy"
+  },
+  {
+    "q": "Which security model is used for RLS in SSAS Multidimensional?",
+    "options": [
+      "DAX roles",
+      "MDX-based roles and dimension security",
+      "Power BI roles",
+      "SQL GRANT statements"
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Easy"
+  },
+  {
+    "q": "What does Object-Level Security (OLS) restrict?",
+    "options": [
+      "Rows of data",
+      "Measures only",
+      "Columns or tables",
+      "Users only"
+    ],
+    "answer": 2,
+    "time": 25,
+    "level": "Easy"
+  },
+  {
+    "q": "Which best practice improves RLS scalability and performance?",
+    "options": [
+      "Hardcoding user names",
+      "Complex nested DAX",
+      "Using mapping tables",
+      "Applying RLS during ETL"
+    ],
+    "answer": 2,
+    "time": 25,
+    "level": "Easy"
+  },
+  {
+    "q": "Does RLS affect aggregations in reports?",
+    "options": [
+      "No, aggregations ignore RLS",
+      "Yes, aggregations respect RLS filters",
+      "Only in SQL Server",
+      "Only during processing"
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Easy"
+  },
+  {
+    "q": "Can RLS be bypassed by regular users?",
+    "options": [
+      "Yes, using filters",
+      "Yes, using DAX",
+      "No, unless the user is an admin",
+      "Yes, using SQL"
+    ],
+    "answer": 2,
+    "time": 25,
+    "level": "Easy"
+  }
+,
+
+  
+  {
+    "q": "Why is SSAS commonly used along with Power BI in enterprise setups?",
+    "options": [
+      "For ETL processing",
+      "To replace Power BI visuals",
+      "To provide a centralized semantic layer",
+      "To store raw transactional data"
+    ],
+    "answer": 2,
+    "time": 25,
+    "level": "Easy"
+  },
+  {
+    "q": "What is the main architectural role of SSAS when used with Power BI?",
+    "options": [
+      "Visualization layer",
+      "Data ingestion layer",
+      "Enterprise semantic layer",
+      "Backup storage"
+    ],
+    "answer": 2,
+    "time": 25,
+    "level": "Easy"
+  },
+  {
+    "q": "How does SSAS help avoid duplication across Power BI reports?",
+    "options": [
+      "By copying datasets",
+      "By using DirectQuery only",
+      "By sharing a single centralized model",
+      "By disabling local models"
+    ],
+    "answer": 2,
+    "time": 25,
+    "level": "Easy"
+  },
+  {
+    "q": "Which engine provides high performance in SSAS Tabular models?",
+    "options": [
+      "SQL Engine",
+      "VertiPaq (xVelocity) in-memory engine",
+      "PolyBase",
+      "Spark engine"
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Easy"
+  },
+  {
+    "q": "Compared to DirectQuery, SSAS typically provides:",
+    "options": [
+      "Slower performance",
+      "Same performance",
+      "Faster query performance",
+      "No caching support"
+    ],
+    "answer": 2,
+    "time": 25,
+    "level": "Easy"
+  },
+  {
+    "q": "Which reporting tools can reuse the same SSAS model?",
+    "options": [
+      "Only Power BI",
+      "Only Excel",
+      "Power BI, Excel, and Paginated Reports",
+      "Only SSMS"
+    ],
+    "answer": 2,
+    "time": 25,
+    "level": "Easy"
+  },
+  {
+    "q": "Which enterprise security features are supported by SSAS?",
+    "options": [
+      "File encryption only",
+      "Row-Level Security and Object-Level Security",
+      "Network firewall rules",
+      "Disk-level security"
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Easy"
+  },
+  {
+    "q": "Why is SSAS preferred for very large enterprise models?",
+    "options": [
+      "Power BI Desktop has no limits",
+      "SSAS handles larger models more efficiently",
+      "SSAS avoids DAX",
+      "SSAS stores raw data"
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Easy"
+  },
+  {
+    "q": "In a banking architecture, which flow is most common?",
+    "options": [
+      "Power BI → SSAS → Snowflake",
+      "Snowflake → SSAS → Power BI",
+      "SSAS → Snowflake → Power BI",
+      "Excel → Power BI → SSAS"
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Easy"
+  },
+  {
+    "q": "Which statement best summarizes SSAS vs Power BI roles?",
+    "options": [
+      "Both are visualization tools",
+      "Power BI is the semantic layer",
+      "SSAS governs data, Power BI visualizes it",
+      "SSAS replaces Power BI"
+    ],
+    "answer": 2,
+    "time": 25,
+    "level": "Easy"
+  }
+,
+
+
+  {
+    "q": "What is a normal (non-conformed) dimension typically used for?",
+    "options": [
+      "Multiple fact tables",
+      "Single fact table or system",
+      "Enterprise-wide reporting",
+      "Cross-functional analysis"
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Easy"
+  },
+  {
+    "q": "What makes a dimension a conformed dimension?",
+    "options": [
+      "It contains numeric values",
+      "It is normalized",
+      "It is shared across multiple fact tables",
+      "It exists only in one data mart"
+    ],
+    "answer": 2,
+    "time": 25,
+    "level": "Easy"
+  },
+  {
+    "q": "Which characteristic must be identical in a conformed dimension?",
+    "options": [
+      "Table name only",
+      "Business meaning and structure",
+      "Row count only",
+      "Index type"
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Easy"
+  },
+  {
+    "q": "What problem occurs when customer dimensions differ across systems?",
+    "options": [
+      "Improved flexibility",
+      "Faster queries",
+      "Inconsistent reporting",
+      "Better normalization"
+    ],
+    "answer": 2,
+    "time": 25,
+    "level": "Easy"
+  },
+  {
+    "q": "Why are surrogate keys important in conformed dimensions?",
+    "options": [
+      "They reduce storage",
+      "They enforce same keys across facts",
+      "They replace primary keys",
+      "They avoid joins"
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Easy"
+  },
+  {
+    "q": "Which analysis becomes possible with conformed dimensions?",
+    "options": [
+      "Single-report analysis",
+      "Cross-fact and cross-domain analysis",
+      "Row-level security",
+      "ETL validation"
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Easy"
+  },
+  {
+    "q": "Which dimension is most commonly implemented as conformed?",
+    "options": [
+      "Promotion",
+      "Employee",
+      "Time",
+      "Transaction"
+    ],
+    "answer": 2,
+    "time": 25,
+    "level": "Easy"
+  }
+,
+
+
+
+  {
+    "q": "What does KPI stand for?",
+    "options": [
+      "Key Process Indicator",
+      "Key Performance Indicator",
+      "Known Performance Index",
+      "Key Prediction Indicator"
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Easy"
+  },
+  {
+    "q": "What is the primary purpose of a KPI?",
+    "options": [
+      "Store raw data",
+      "Measure performance against a target",
+      "Clean data",
+      "Control ETL workflows"
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Easy"
+  },
+  {
+    "q": "Which component is mandatory for a KPI?",
+    "options": [
+      "Hierarchy",
+      "Target",
+      "Filter",
+      "Relationship"
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Easy"
+  },
+  {
+    "q": "Which of the following is NOT a KPI component?",
+    "options": [
+      "Actual value",
+      "Target",
+      "Status",
+      "Foreign key"
+    ],
+    "answer": 3,
+    "time": 25,
+    "level": "Easy"
+  },
+  {
+    "q": "From what object are KPIs created in SSAS Tabular?",
+    "options": [
+      "Columns",
+      "Tables",
+      "Measures",
+      "Relationships"
+    ],
+    "answer": 2,
+    "time": 25,
+    "level": "Easy"
+  },
+  {
+    "q": "Which value typically represents a 'Green' KPI status?",
+    "options": [
+      "-1",
+      "0",
+      "1",
+      "NULL"
+    ],
+    "answer": 2,
+    "time": 25,
+    "level": "Easy"
+  },
+  {
+    "q": "Which SSAS model uses MDX expressions for KPIs?",
+    "options": [
+      "Tabular",
+      "Relational",
+      "Multidimensional",
+      "Flat model"
+    ],
+    "answer": 2,
+    "time": 25,
+    "level": "Easy"
+  },
+  {
+    "q": "How does a KPI differ from a normal measure?",
+    "options": [
+      "KPIs do not show values",
+      "KPIs include targets and status indicators",
+      "Measures require DAX, KPIs do not",
+      "Measures are visual-only"
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Easy"
+  },
+  {
+    "q": "Where are KPIs typically defined?",
+    "options": [
+      "ETL layer",
+      "Source system",
+      "Semantic layer",
+      "Visualization layer"
+    ],
+    "answer": 2,
+    "time": 25,
+    "level": "Easy"
+  },
+  {
+    "q": "Which banking KPI measures asset quality?",
+    "options": [
+      "Loan Approval TAT",
+      "Revenue vs Target",
+      "NPA Ratio",
+      "Credit Limit"
+    ],
+    "answer": 2,
+    "time": 25,
+    "level": "Easy"
+  }
+
+,
+
+  {
+    "q": "What is the primary purpose of a Semantic Layer in BI architecture?",
+    "options": [
+      "To physically store transactional data",
+      "To translate technical data into business-friendly terms",
+      "To replace the data warehouse",
+      "To execute ETL transformations"
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Easy"
+  },
+  {
+    "q": "Which layer typically sits between the data source and reporting tools?",
+    "options": [
+      "ETL Layer",
+      "Staging Layer",
+      "Semantic Layer",
+      "Presentation Layer"
+    ],
+    "answer": 2,
+    "time": 25,
+    "level": "Easy"
+  },
+  {
+    "q": "Which problem is MOST directly solved by introducing a Semantic Layer?",
+    "options": [
+      "Slow network bandwidth",
+      "Complex SQL joins required by business users",
+      "Hardware storage limitations",
+      "Duplicate records in source tables"
+    ],
+    "answer": 1,
+    "time": 30,
+    "level": "Medium"
+  },
+  {
+    "q": "In the absence of a Semantic Layer, business users usually depend on IT because:",
+    "options": [
+      "They cannot access the database",
+      "They do not understand technical table and column names",
+      "They lack visualization tools",
+      "They cannot export data"
+    ],
+    "answer": 1,
+    "time": 30,
+    "level": "Medium"
+  },
+  {
+    "q": "Which of the following BEST represents a business-friendly object exposed by a Semantic Layer?",
+    "options": [
+      "fact_sales_001.txn_amt",
+      "cust_id",
+      "SUM(txn_amt)",
+      "Total Sales"
+    ],
+    "answer": 3,
+    "time": 30,
+    "level": "Easy"
+  },
+  {
+    "q": "In SSAS Tabular, which object MOST commonly represents the Semantic Layer?",
+    "options": [
+      "SQL View",
+      "Stored Procedure",
+      "Tabular Model",
+      "Snowflake Schema"
+    ],
+    "answer": 2,
+    "time": 30,
+    "level": "Easy"
+  },
+  {
+    "q": "Which Microsoft tool uses a Cube as its Semantic Layer implementation?",
+    "options": [
+      "Power BI",
+      "SSAS Multidimensional",
+      "SSIS",
+      "SQL Server Engine"
+    ],
+    "answer": 1,
+    "time": 30,
+    "level": "Easy"
+  },
+  {
+    "q": "Which object in a Semantic Layer eliminates the need for writing SUM() in SQL?",
+    "options": [
+      "Calculated Column",
+      "Dimension",
+      "Measure",
+      "Hierarchy"
+    ],
+    "answer": 2,
+    "time": 30,
+    "level": "Medium"
+  },
+  {
+    "q": "Why is a hierarchy like Year → Month → Day created in a Semantic Layer?",
+    "options": [
+      "To normalize data",
+      "To improve ETL performance",
+      "To enable drill-down and drill-up analysis",
+      "To store historical data"
+    ],
+    "answer": 2,
+    "time": 30,
+    "level": "Medium"
+  },
+  {
+    "q": "Which language is MOST commonly used to define measures in SSAS Tabular and Power BI?",
+    "options": [
+      "SQL",
+      "MDX",
+      "DAX",
+      "Python"
+    ],
+    "answer": 2,
+    "time": 30,
+    "level": "Easy"
+  },
+  {
+    "q": "Which feature of a Semantic Layer ensures 'Single Version of Truth'?",
+    "options": [
+      "Centralized business logic",
+      "Multiple fact tables",
+      "Ad-hoc SQL queries",
+      "Decentralized calculations"
+    ],
+    "answer": 0,
+    "time": 35,
+    "level": "Medium"
+  },
+  {
+    "q": "Which component is responsible for restricting data access by user role in a Semantic Layer?",
+    "options": [
+      "Indexes",
+      "Row-Level Security",
+      "Partitions",
+      "Aggregations"
+    ],
+    "answer": 1,
+    "time": 35,
+    "level": "Medium"
+  },
+  {
+    "q": "Which statement BEST differentiates a Data Warehouse from a Semantic Layer?",
+    "options": [
+      "Warehouse models data, Semantic Layer stores data",
+      "Warehouse is business-friendly, Semantic Layer is technical",
+      "Warehouse stores data, Semantic Layer models business logic",
+      "Warehouse uses DAX, Semantic Layer uses SQL"
+    ],
+    "answer": 2,
+    "time": 35,
+    "level": "Hard"
+  },
+  {
+    "q": "Why does a Semantic Layer improve reporting performance?",
+    "options": [
+      "It removes fact tables",
+      "It predefines calculations and optimizes queries",
+      "It increases data redundancy",
+      "It bypasses the data warehouse"
+    ],
+    "answer": 1,
+    "time": 35,
+    "level": "Hard"
+  },
+  {
+    "q": "In a banking analytics project, which metric is MOST likely exposed by the Semantic Layer?",
+    "options": [
+      "cust_id",
+      "txn_dt",
+      "Total Exposure",
+      "raw_risk_flag"
+    ],
+    "answer": 2,
+    "time": 35,
+    "level": "Medium"
+  },
+  {
+    "q": "Which action BEST demonstrates self-service analytics enabled by a Semantic Layer?",
+    "options": [
+      "Writing complex SQL joins",
+      "Requesting IT for every report",
+      "Dragging measures and dimensions in Power BI",
+      "Creating staging tables"
+    ],
+    "answer": 2,
+    "time": 35,
+    "level": "Easy"
+  },
+  {
+    "q": "Which of the following is NOT typically part of a Semantic Layer?",
+    "options": [
+      "Measures",
+      "Hierarchies",
+      "ETL workflows",
+      "Relationships"
+    ],
+    "answer": 2,
+    "time": 35,
+    "level": "Hard"
+  },
+  {
+    "q": "Why is calling SSAS the 'Semantic Layer' technically correct?",
+    "options": [
+      "It stores raw transactional data",
+      "It replaces SQL Server",
+      "It exposes business logic and metrics for analysis",
+      "It performs ETL processing"
+    ],
+    "answer": 2,
+    "time": 40,
+    "level": "Hard"
+  }
+
+,
+  {
+    "q": "What is a hierarchy in SSAS primarily used for?",
+    "options": [
+      "Storing transactional data",
+      "Defining ETL workflows",
+      "Organizing dimension attributes into levels for analysis",
+      "Creating calculated measures"
+    ],
+    "answer": 2,
+    "time": 25,
+    "level": "Easy"
+  },
+  {
+    "q": "Which user action is directly enabled by hierarchies in SSAS?",
+    "options": [
+      "Data loading",
+      "Index creation",
+      "Drill-down and roll-up",
+      "Schema normalization"
+    ],
+    "answer": 2,
+    "time": 25,
+    "level": "Easy"
+  },
+  {
+    "q": "Which of the following BEST describes a hierarchy?",
+    "options": [
+      "A single attribute in a dimension",
+      "A logical ordering of multiple related columns",
+      "A calculated column in a fact table",
+      "A storage optimization technique"
+    ],
+    "answer": 1,
+    "time": 30,
+    "level": "Easy"
+  },
+  {
+    "q": "Which example represents a valid Time hierarchy?",
+    "options": [
+      "Date → Month → Year",
+      "Year → Month → Date",
+      "Day → Quarter → Year",
+      "Month → Year → Date"
+    ],
+    "answer": 1,
+    "time": 30,
+    "level": "Medium"
+  },
+  {
+    "q": "In a geography hierarchy Country → State → City, which level represents the highest granularity?",
+    "options": [
+      "Country",
+      "State",
+      "City",
+      "All have equal granularity"
+    ],
+    "answer": 2,
+    "time": 30,
+    "level": "Medium"
+  },
+  {
+    "q": "What defines a Natural Hierarchy in SSAS?",
+    "options": [
+      "Levels are created automatically by SSAS",
+      "Each child level belongs to only one parent",
+      "Levels are based on calculated columns",
+      "Hierarchy exists only in Tabular models"
+    ],
+    "answer": 1,
+    "time": 35,
+    "level": "Medium"
+  },
+  {
+    "q": "Which hierarchy type is preferred by the SSAS engine for performance?",
+    "options": [
+      "Unnatural hierarchy",
+      "Attribute hierarchy",
+      "Natural hierarchy",
+      "User-defined hierarchy only"
+    ],
+    "answer": 2,
+    "time": 35,
+    "level": "Medium"
+  },
+  {
+    "q": "Why are unnatural (attribute) hierarchies less efficient?",
+    "options": [
+      "They contain calculated measures",
+      "Lower levels can map to multiple parents",
+      "They are not supported in SSAS",
+      "They increase data redundancy"
+    ],
+    "answer": 1,
+    "time": 35,
+    "level": "Hard"
+  },
+  {
+    "q": "Which example BEST represents an unnatural hierarchy?",
+    "options": [
+      "Year → Month → Day",
+      "Country → State → City",
+      "Product → Category",
+      "Continent → Country → City"
+    ],
+    "answer": 2,
+    "time": 35,
+    "level": "Hard"
+  },
+  {
+    "q": "Where are hierarchies created in an SSAS Tabular model?",
+    "options": [
+      "Fact tables",
+      "Measure groups",
+      "Dimension tables",
+      "ETL staging tables"
+    ],
+    "answer": 2,
+    "time": 30,
+    "level": "Easy"
+  },
+  {
+    "q": "What is the PRIMARY benefit of hierarchies in SSAS Tabular?",
+    "options": [
+      "Improved query execution speed",
+      "Better VertiPaq compression",
+      "Improved user navigation and analysis experience",
+      "Automatic aggregation creation"
+    ],
+    "answer": 2,
+    "time": 35,
+    "level": "Medium"
+  },
+  {
+    "q": "Which statement about hierarchies in SSAS Tabular is TRUE?",
+    "options": [
+      "They automatically create aggregations",
+      "They significantly improve query performance",
+      "They are optional but recommended",
+      "They replace relationships"
+    ],
+    "answer": 2,
+    "time": 40,
+    "level": "Hard"
+  },
+  {
+    "q": "Why do hierarchies NOT directly improve performance in SSAS Tabular?",
+    "options": [
+      "Tabular does not support hierarchies",
+      "Aggregations are handled by VertiPaq engine",
+      "Hierarchies are ignored during queries",
+      "DAX cannot use hierarchies"
+    ],
+    "answer": 1,
+    "time": 40,
+    "level": "Hard"
+  },
+  {
+    "q": "In which SSAS model do hierarchies play a CRITICAL role in aggregation design?",
+    "options": [
+      "SSAS Tabular",
+      "Power BI Dataset",
+      "SSAS Multidimensional",
+      "SQL Server Engine"
+    ],
+    "answer": 2,
+    "time": 35,
+    "level": "Medium"
+  },
+  {
+    "q": "How do hierarchies improve performance in SSAS Multidimensional?",
+    "options": [
+      "By compressing column data",
+      "By pre-aggregating data at hierarchy levels",
+      "By eliminating fact tables",
+      "By converting MDX to SQL"
+    ],
+    "answer": 1,
+    "time": 40,
+    "level": "Hard"
+  },
+  {
+    "q": "Which feature differentiates a hierarchy from a single attribute?",
+    "options": [
+      "Storage location",
+      "Security enforcement",
+      "Multiple levels of granularity",
+      "Data type support"
+    ],
+    "answer": 2,
+    "time": 30,
+    "level": "Medium"
+  },
+  {
+    "q": "Which column type should generally be AVOIDED when creating hierarchies?",
+    "options": [
+      "Date",
+      "Country",
+      "High-cardinality columns like Transaction ID",
+      "Month"
+    ],
+    "answer": 2,
+    "time": 40,
+    "level": "Hard"
+  },
+  {
+    "q": "What is the correct sequence to create a hierarchy in SSAS Tabular?",
+    "options": [
+      "Create measure → Add columns → Rename",
+      "Open Model.bim → Data View → Create Hierarchy → Add levels",
+      "Create relationship → Create hierarchy → Process model",
+      "Open SQL Server → Create hierarchy"
+    ],
+    "answer": 1,
+    "time": 40,
+    "level": "Medium"
+  },
+  {
+    "q": "Which statement is TRUE regarding drill-up?",
+    "options": [
+      "It moves from detailed to summarized data",
+      "It moves from Year to Month",
+      "It increases data granularity",
+      "It only works in Multidimensional models"
+    ],
+    "answer": 0,
+    "time": 35,
+    "level": "Medium"
+  },
+  {
+    "q": "Which interview statement about hierarchies is MOST accurate?",
+    "options": [
+      "Hierarchies always improve performance in all SSAS models",
+      "Hierarchies are mandatory in Tabular models",
+      "Hierarchies improve usability and aggregation efficiency depending on model type",
+      "Hierarchies replace dimensions"
+    ],
+    "answer": 2,
+    "time": 45,
+    "level": "Hard"
+  }
+,
+
+
+
+  {
+    "q": "In SSAS, what is a dimension primarily used for?",
+    "options": [
+      "Storing transactional measures",
+      "Grouping, filtering, and browsing data",
+      "Performing ETL transformations",
+      "Storing aggregated values only"
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Easy"
+  },
+  {
+    "q": "From where are SSAS dimensions typically created?",
+    "options": [
+      "Fact tables",
+      "Dimension tables in the data warehouse",
+      "Power BI datasets",
+      "Stored procedures"
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Easy"
+  },
+  {
+    "q": "Which component is NOT a core part of an SSAS dimension?",
+    "options": [
+      "Attributes",
+      "Hierarchies",
+      "Attribute relationships",
+      "Measures"
+    ],
+    "answer": 3,
+    "time": 30,
+    "level": "Medium"
+  },
+  {
+    "q": "Why are dimensions processed separately from fact tables in SSAS?",
+    "options": [
+      "To reduce storage cost",
+      "To allow independent optimization and reuse",
+      "To improve ETL performance",
+      "To avoid relationships"
+    ],
+    "answer": 1,
+    "time": 35,
+    "level": "Hard"
+  },
+  {
+    "q": "Which operation is enabled by dimensions in SSAS?",
+    "options": [
+      "Index rebuild",
+      "Drill-down and roll-up",
+      "Data deduplication",
+      "Fact table partitioning"
+    ],
+    "answer": 1,
+    "time": 30,
+    "level": "Easy"
+  },
+  {
+    "q": "Which dimension example BEST represents increasing data granularity?",
+    "options": [
+      "Customer → Country → Region",
+      "Year → Quarter → Month → Day",
+      "City → State → Country",
+      "Month → Year → Quarter"
+    ],
+    "answer": 1,
+    "time": 35,
+    "level": "Medium"
+  },
+  {
+    "q": "Why do hierarchies inside SSAS dimensions improve query performance?",
+    "options": [
+      "They reduce fact table size",
+      "They enable pre-aggregations during cube processing",
+      "They replace attribute relationships",
+      "They increase column compression"
+    ],
+    "answer": 1,
+    "time": 40,
+    "level": "Hard"
+  },
+  {
+    "q": "Which statement about SSAS dimensions is TRUE?",
+    "options": [
+      "They are optional and auto-created",
+      "They are explicitly designed and optimized",
+      "They exist only in Tabular models",
+      "They cannot be reused across cubes"
+    ],
+    "answer": 1,
+    "time": 35,
+    "level": "Medium"
+  },
+  {
+    "q": "In Power BI, what does a dimension typically represent?",
+    "options": [
+      "A cube object",
+      "A lookup table with descriptive attributes",
+      "A calculated measure",
+      "An ETL pipeline"
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Easy"
+  },
+  {
+    "q": "How are dimensions connected to fact tables in Power BI?",
+    "options": [
+      "Using MDX",
+      "Using one-to-many relationships",
+      "Using stored procedures",
+      "Using partitions"
+    ],
+    "answer": 1,
+    "time": 30,
+    "level": "Easy"
+  },
+  {
+    "q": "Which Power BI feature MOST commonly uses dimension columns?",
+    "options": [
+      "Measures pane",
+      "Slicers and filters",
+      "Refresh schedules",
+      "Gateways"
+    ],
+    "answer": 1,
+    "time": 30,
+    "level": "Medium"
+  },
+  {
+    "q": "Which statement BEST describes hierarchy usage in Power BI?",
+    "options": [
+      "Hierarchies are mandatory",
+      "Hierarchies are auto-created and cannot be edited",
+      "Hierarchies are optional and improve navigation",
+      "Hierarchies directly improve performance"
+    ],
+    "answer": 2,
+    "time": 35,
+    "level": "Medium"
+  },
+  {
+    "q": "Which engine handles aggregations in Power BI?",
+    "options": [
+      "SQL Engine",
+      "SSIS Engine",
+      "VertiPaq Engine",
+      "MDX Engine"
+    ],
+    "answer": 2,
+    "time": 30,
+    "level": "Easy"
+  },
+  {
+    "q": "What is the key difference in aggregation handling between SSAS and Power BI?",
+    "options": [
+      "SSAS uses DAX, Power BI uses SQL",
+      "SSAS pre-processes aggregations, Power BI calculates on-the-fly",
+      "Power BI does not support aggregations",
+      "SSAS does not use hierarchies"
+    ],
+    "answer": 1,
+    "time": 40,
+    "level": "Hard"
+  },
+  {
+    "q": "Which aspect of SSAS dimensions is mandatory for optimization but not required in Power BI?",
+    "options": [
+      "Hierarchies",
+      "Attribute relationships",
+      "Measures",
+      "Lookup tables"
+    ],
+    "answer": 1,
+    "time": 40,
+    "level": "Hard"
+  },
+  {
+    "q": "Which comparison between SSAS and Power BI dimensions is CORRECT?",
+    "options": [
+      "SSAS uses lookup tables, Power BI uses cube objects",
+      "SSAS dimensions are implicit, Power BI dimensions are explicit",
+      "SSAS focuses on design-time tuning, Power BI on model & DAX tuning",
+      "Power BI pre-aggregates data like SSAS cubes"
+    ],
+    "answer": 2,
+    "time": 45,
+    "level": "Hard"
+  },
+  {
+    "q": "Which scenario BEST suits SSAS dimensions over Power BI dimensions?",
+    "options": [
+      "Ad-hoc self-service reporting",
+      "Small departmental dashboards",
+      "Large-scale enterprise analytics with complex hierarchies",
+      "Quick prototype reports"
+    ],
+    "answer": 2,
+    "time": 45,
+    "level": "Hard"
+  },
+  {
+    "q": "Why are dimensions called 'descriptive' in analytics models?",
+    "options": [
+      "They store numeric metrics",
+      "They describe business context for facts",
+      "They store aggregated values",
+      "They replace measures"
+    ],
+    "answer": 1,
+    "time": 30,
+    "level": "Medium"
+  },
+  {
+    "q": "Which interview statement is MOST accurate?",
+    "options": [
+      "Power BI dimensions are faster than SSAS in all cases",
+      "SSAS and Power BI dimensions are technically identical",
+      "SSAS excels in complex enterprise analytics, Power BI in self-service BI",
+      "SSAS does not support lookup tables"
+    ],
+    "answer": 2,
+    "time": 50,
+    "level": "Hard"
+  }
+
+,
+  
+  {
+    "q": "What is the primary purpose of a Data Source in SSAS?",
+    "options": [
+      "To define cube calculations",
+      "To store dimension attributes",
+      "To define connection details to the underlying database",
+      "To optimize query performance"
+    ],
+    "answer": 2,
+    "time": 25,
+    "level": "Easy"
+  },
+  {
+    "q": "When does SSAS use the Data Source to access data?",
+    "options": [
+      "During report rendering",
+      "During cube or model processing",
+      "During DAX query execution",
+      "During visualization refresh"
+    ],
+    "answer": 1,
+    "time": 30,
+    "level": "Medium"
+  },
+  {
+    "q": "Which question does a Data Source in SSAS NOT answer?",
+    "options": [
+      "Where is the data located?",
+      "How to connect to the database?",
+      "Which tables should be used?",
+      "Under which credentials should SSAS connect?"
+    ],
+    "answer": 2,
+    "time": 35,
+    "level": "Hard"
+  },
+  {
+    "q": "Which information is ALWAYS stored in an SSAS Data Source?",
+    "options": [
+      "Measures and KPIs",
+      "Table relationships",
+      "Server and database connection details",
+      "Fact table partitions"
+    ],
+    "answer": 2,
+    "time": 30,
+    "level": "Easy"
+  },
+  {
+    "q": "What does Impersonation Information in a Data Source control?",
+    "options": [
+      "How users authenticate to Power BI",
+      "How SSAS authenticates to the source database",
+      "How DAX queries are executed",
+      "How aggregations are created"
+    ],
+    "answer": 1,
+    "time": 35,
+    "level": "Medium"
+  },
+  {
+    "q": "Which of the following is an example of impersonation-related configuration?",
+    "options": [
+      "Partitioning strategy",
+      "Query timeout",
+      "Windows user or service account credentials",
+      "Hierarchy definition"
+    ],
+    "answer": 2,
+    "time": 40,
+    "level": "Hard"
+  },
+  {
+    "q": "Which provider types are supported by SSAS Data Sources?",
+    "options": [
+      "Only ODBC",
+      "Only OLE DB",
+      "OLE DB and .NET",
+      "Only native SQL providers"
+    ],
+    "answer": 2,
+    "time": 30,
+    "level": "Easy"
+  },
+  {
+    "q": "Which of the following databases can be used as a Data Source in SSAS?",
+    "options": [
+      "SQL Server only",
+      "SQL Server and Oracle only",
+      "Any relational database with a supported OLE DB provider",
+      "Only Microsoft databases"
+    ],
+    "answer": 2,
+    "time": 35,
+    "level": "Medium"
+  },
+  {
+    "q": "Which property of a Data Source controls how long SSAS waits before failing a query?",
+    "options": [
+      "Isolation level",
+      "Query timeout",
+      "Impersonation mode",
+      "Processing priority"
+    ],
+    "answer": 1,
+    "time": 40,
+    "level": "Hard"
+  },
+  {
+    "q": "What role does the Data Source View (DSV) play in SSAS?",
+    "options": [
+      "Stores physical connection information",
+      "Defines which tables, views, and relationships are used",
+      "Controls authentication to the database",
+      "Executes ETL logic"
+    ],
+    "answer": 1,
+    "time": 35,
+    "level": "Medium"
+  },
+  {
+    "q": "Which statement BEST describes the relationship between Data Source and DSV?",
+    "options": [
+      "DSV replaces the Data Source",
+      "Data Source is built on top of DSV",
+      "DSV is built on top of the Data Source",
+      "They are independent and unrelated"
+    ],
+    "answer": 2,
+    "time": 35,
+    "level": "Medium"
+  },
+  {
+    "q": "Which SSAS object tells the engine *where* the data is stored?",
+    "options": [
+      "Dimension",
+      "Cube",
+      "Data Source",
+      "Partition"
+    ],
+    "answer": 2,
+    "time": 30,
+    "level": "Easy"
+  },
+  {
+    "q": "Which SSAS object determines *which tables* are visible for modeling?",
+    "options": [
+      "Data Source",
+      "Cube",
+      "Data Source View",
+      "Dimension"
+    ],
+    "answer": 2,
+    "time": 35,
+    "level": "Medium"
+  },
+  {
+    "q": "Which scenario BEST explains why Data Source configuration is critical?",
+    "options": [
+      "Incorrect measures calculation",
+      "Failure during cube processing due to authentication issues",
+      "Slow Power BI visuals",
+      "Incorrect DAX syntax"
+    ],
+    "answer": 1,
+    "time": 45,
+    "level": "Hard"
+  },
+  {
+    "q": "Which statement is TRUE regarding Data Sources in SSAS?",
+    "options": [
+      "They store business logic",
+      "They control report-level security",
+      "They define how SSAS connects to underlying databases",
+      "They automatically create dimensions"
+    ],
+    "answer": 2,
+    "time": 30,
+    "level": "Easy"
+  },
+  {
+    "q": "Which of the following is NOT a responsibility of a Data Source?",
+    "options": [
+      "Defining server and database name",
+      "Managing authentication details",
+      "Selecting tables and defining relationships",
+      "Specifying provider type"
+    ],
+    "answer": 2,
+    "time": 45,
+    "level": "Hard"
+  },
+  {
+    "q": "Which interview one-liner BEST defines a Data Source in SSAS?",
+    "options": [
+      "A logical model of business data",
+      "A connection object storing database access details",
+      "A performance optimization feature",
+      "A visualization layer"
+    ],
+    "answer": 1,
+    "time": 40,
+    "level": "Medium"
+  }
+,
+  
+  {
+    "q": "What is a Data Source View (DSV) in SSAS?",
+    "options": [
+      "A physical copy of database tables",
+      "A logical representation of the underlying database schema",
+      "A storage layer for cube data",
+      "A security configuration object"
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Easy"
+  },
+  {
+    "q": "Which role does the DSV play in SSAS architecture?",
+    "options": [
+      "It connects SSAS to the database",
+      "It acts as an abstraction layer between SSAS and the database",
+      "It stores processed cube data",
+      "It executes DAX calculations"
+    ],
+    "answer": 1,
+    "time": 30,
+    "level": "Medium"
+  },
+  {
+    "q": "From where does SSAS read schema information during modeling?",
+    "options": [
+      "Directly from the physical database",
+      "From the Data Source",
+      "From the Data Source View",
+      "From the Cube object"
+    ],
+    "answer": 2,
+    "time": 30,
+    "level": "Medium"
+  },
+  {
+    "q": "Which of the following is TRUE about data storage in a DSV?",
+    "options": [
+      "DSV stores aggregated data",
+      "DSV stores transactional data",
+      "DSV stores only schema metadata",
+      "DSV stores cube partitions"
+    ],
+    "answer": 2,
+    "time": 30,
+    "level": "Easy"
+  },
+  {
+    "q": "Which objects can be included in a Data Source View?",
+    "options": [
+      "Only tables",
+      "Only views",
+      "Tables, views, named queries, and named calculations",
+      "Measures and KPIs"
+    ],
+    "answer": 2,
+    "time": 35,
+    "level": "Medium"
+  },
+  {
+    "q": "What is a Named Query in a DSV?",
+    "options": [
+      "A calculated column created using DAX",
+      "A pre-aggregated table",
+      "A SQL query that defines a virtual table",
+      "A stored procedure reference"
+    ],
+    "answer": 2,
+    "time": 40,
+    "level": "Hard"
+  },
+  {
+    "q": "What is a Named Calculation in a DSV?",
+    "options": [
+      "A SQL-based derived column added to a table",
+      "A DAX measure",
+      "A cube calculation",
+      "A database trigger"
+    ],
+    "answer": 0,
+    "time": 40,
+    "level": "Hard"
+  },
+  {
+    "q": "Which relationships can be defined inside a DSV?",
+    "options": [
+      "Only physical relationships from the database",
+      "Only logical relationships defined in SSAS",
+      "Both physical and logical relationships",
+      "Only many-to-many relationships"
+    ],
+    "answer": 2,
+    "time": 35,
+    "level": "Medium"
+  },
+  {
+    "q": "Why is the DSV important for SSAS modeling?",
+    "options": [
+      "It stores data faster than the database",
+      "It allows modeling flexibility without changing the source database",
+      "It replaces ETL processes",
+      "It improves report visualization"
+    ],
+    "answer": 1,
+    "time": 35,
+    "level": "Medium"
+  },
+  {
+    "q": "What happens if a table exists in the database but is not added to the DSV?",
+    "options": [
+      "SSAS can still access it dynamically",
+      "SSAS can see it only during processing",
+      "SSAS cannot see or use it",
+      "SSAS creates it automatically"
+    ],
+    "answer": 2,
+    "time": 35,
+    "level": "Medium"
+  },
+  {
+    "q": "Which change made in a DSV affects the physical database?",
+    "options": [
+      "Creating a named query",
+      "Creating a named calculation",
+      "Adding a logical relationship",
+      "None of the above"
+    ],
+    "answer": 3,
+    "time": 40,
+    "level": "Hard"
+  },
+  {
+    "q": "Which metadata is captured by a Data Source View?",
+    "options": [
+      "User access permissions",
+      "Column data types and lengths",
+      "Fact table aggregations",
+      "Partition storage mode"
+    ],
+    "answer": 1,
+    "time": 30,
+    "level": "Easy"
+  },
+  {
+    "q": "In a real-world project, why would you limit a DSV to only a few tables?",
+    "options": [
+      "To reduce database size",
+      "To improve cube processing speed and maintainability",
+      "To restrict database permissions",
+      "To eliminate the need for ETL"
+    ],
+    "answer": 1,
+    "time": 45,
+    "level": "Hard"
+  },
+  {
+    "q": "Which scenario BEST illustrates the use of a Named Query in a DSV?",
+    "options": [
+      "Adding a Year column using DAX",
+      "Joining multiple source tables into a clean fact structure",
+      "Creating a hierarchy",
+      "Defining a measure"
+    ],
+    "answer": 1,
+    "time": 45,
+    "level": "Hard"
+  },
+  {
+    "q": "Which statement BEST differentiates a Data Source from a Data Source View?",
+    "options": [
+      "Data Source defines schema, DSV defines connection",
+      "Data Source defines connection, DSV defines schema",
+      "Both define physical storage",
+      "Both store actual data"
+    ],
+    "answer": 1,
+    "time": 40,
+    "level": "Medium"
+  },
+  {
+    "q": "Why does SSAS rely on the DSV instead of directly reading the database schema?",
+    "options": [
+      "To avoid SQL Server dependencies",
+      "To enable abstraction, flexibility, and controlled modeling",
+      "To store data locally",
+      "To bypass security rules"
+    ],
+    "answer": 1,
+    "time": 45,
+    "level": "Hard"
+  },
+  {
+    "q": "Which interview one-liner BEST defines a DSV?",
+    "options": [
+      "A physical snapshot of database tables",
+      "A logical schema layer defining tables, relationships, and calculations",
+      "A connection string repository",
+      "A cube storage structure"
+    ],
+    "answer": 1,
+    "time": 40,
+    "level": "Medium"
+  },
+
+
+
+
+  
+  {
+    "q": "What is the primary purpose of Workspace Server in an SSAS Tabular project?",
+    "options": [
+      "To store source database tables",
+      "To host the development version of the tabular model",
+      "To replace the production SSAS server",
+      "To execute MDX queries only"
+    ],
+    "answer": 1,
+    "time": 30,
+    "level": "Easy"
+  },
+  {
+    "q": "Which environment is automatically managed by Visual Studio without requiring a running SSAS instance?",
+    "options": [
+      "Workspace Server",
+      "Production Server",
+      "Integrated Workspace",
+      "Azure Analysis Services"
+    ],
+    "answer": 2,
+    "time": 30,
+    "level": "Easy"
+  },
+  {
+    "q": "In Workspace Server mode, where is the development model deployed during design-time?",
+    "options": [
+      "Inside Visual Studio memory only",
+      "To a local or remote SSAS instance",
+      "To SQL Server Database Engine",
+      "To Power BI Service"
+    ],
+    "answer": 1,
+    "time": 35,
+    "level": "Medium"
+  },
+  {
+    "q": "What happens if the SSAS service is stopped while using Workspace Server mode?",
+    "options": [
+      "Model continues to process normally",
+      "Deployment and processing will fail",
+      "Visual Studio switches to Integrated mode automatically",
+      "Only DAX measures stop working"
+    ],
+    "answer": 1,
+    "time": 35,
+    "level": "Medium"
+  },
+  {
+    "q": "Which mode is recommended for enterprise-level development with separate Dev, Test, and Prod environments?",
+    "options": [
+      "Integrated Workspace",
+      "Workspace Server",
+      "Local SQL Database Mode",
+      "In-Memory Debug Mode"
+    ],
+    "answer": 1,
+    "time": 30,
+    "level": "Medium"
+  },
+  {
+    "q": "What is the key advantage of Integrated Workspace for beginners?",
+    "options": [
+      "Requires SQL Browser service",
+      "Eliminates need for SSAS installation",
+      "Supports only Multidimensional models",
+      "Automatically creates production partitions"
+    ],
+    "answer": 1,
+    "time": 30,
+    "level": "Easy"
+  },
+  {
+    "q": "Which port is typically used by default SSAS Tabular instance for client connections?",
+    "options": [
+      "1433",
+      "2382",
+      "2383",
+      "8080"
+    ],
+    "answer": 2,
+    "time": 40,
+    "level": "Hard"
+  },
+  {
+    "q": "In Workspace Server mode, changing the Deployment Server property affects which stage?",
+    "options": [
+      "Design-time workspace database",
+      "Source SQL Server database",
+      "Final deployment target server",
+      "Visual Studio cache folder"
+    ],
+    "answer": 2,
+    "time": 35,
+    "level": "Medium"
+  },
+  {
+    "q": "What is created on the SSAS instance when using Workspace Server during development?",
+    "options": [
+      "A temporary workspace database",
+      "A SQL relational database",
+      "An MDX cube file",
+      "A Power BI dataset"
+    ],
+    "answer": 0,
+    "time": 35,
+    "level": "Medium"
+  },
+  {
+    "q": "Why is Integrated Workspace not commonly used in enterprise production pipelines?",
+    "options": [
+      "It does not support DAX",
+      "It cannot connect to SQL Server",
+      "It does not simulate real SSAS server deployment behavior",
+      "It only supports DirectQuery"
+    ],
+    "answer": 2,
+    "time": 40,
+    "level": "Hard"
+  },
+  {
+    "q": "Which scenario best justifies using Workspace Server instead of Integrated Workspace?",
+    "options": [
+      "Learning basic DAX formulas",
+      "Developing model for enterprise deployment with multiple environments",
+      "Testing calculated columns only",
+      "Creating Excel pivot tables"
+    ],
+    "answer": 1,
+    "time": 35,
+    "level": "Medium"
+  },
+  {
+    "q": "What must be running when using Workspace Server mode?",
+    "options": [
+      "SQL Browser Service only",
+      "SQL Database Engine",
+      "SQL Server Analysis Services",
+      "Power BI Gateway"
+    ],
+    "answer": 2,
+    "time": 30,
+    "level": "Easy"
+  },
+  {
+    "q": "What is the main architectural difference between Integrated Workspace and Workspace Server?",
+    "options": [
+      "Integrated runs within Visual Studio process; Workspace Server runs on SSAS instance",
+      "Integrated requires SQL login; Workspace Server requires Windows login",
+      "Integrated supports only DirectQuery",
+      "Workspace Server does not allow processing"
+    ],
+    "answer": 0,
+    "time": 45,
+    "level": "Hard"
+  },
+  {
+    "q": "When deploying a Tabular model to production, which property must be changed from development settings?",
+    "options": [
+      "Compatibility Level",
+      "Workspace Database",
+      "Deployment Server",
+      "Model Culture"
+    ],
+    "answer": 2,
+    "time": 35,
+    "level": "Medium"
+  },
+  {
+    "q": "What is a common error when configuring Workspace Server for the first time?",
+    "options": [
+      "Forgetting to install Git",
+      "Not adding current user as SSAS administrator",
+      "Not creating SQL indexes",
+      "Missing Power BI Desktop"
+    ],
+    "answer": 1,
+    "time": 40,
+    "level": "Hard"
+  },
+  {
+    "q": "In Workspace Server mode, what happens during model processing?",
+    "options": [
+      "Data loads into SQL Server tables",
+      "Data is stored inside SSAS Tabular engine",
+      "Data is saved into Visual Studio cache only",
+      "Data is stored in Git repository"
+    ],
+    "answer": 1,
+    "time": 40,
+    "level": "Medium"
+  },
+  {
+    "q": "Which workspace type is closer to real-world CI/CD deployment practice?",
+    "options": [
+      "Integrated Workspace",
+      "Workspace Server",
+      "Excel Workspace",
+      "Local Storage Mode"
+    ],
+    "answer": 1,
+    "time": 30,
+    "level": "Medium"
+  },
+  {
+    "q": "If Workspace Server is configured to localhost, where is the development database physically hosted?",
+    "options": [
+      "Inside SQL Database Engine",
+      "Inside SSAS service on local machine",
+      "Inside Visual Studio temp folder",
+      "On GitHub repository"
+    ],
+    "answer": 1,
+    "time": 40,
+    "level": "Hard"
+  },
+  {
+    "q": "Which workspace option simplifies setup but reduces environment simulation accuracy?",
+    "options": [
+      "Workspace Server",
+      "Integrated Workspace",
+      "Azure Workspace",
+      "Clustered Workspace"
+    ],
+    "answer": 1,
+    "time": 30,
+    "level": "Medium"
+  }
+
+,
+  
+  {
+    "q": "What is the difference between Deploy and Process in SSAS Tabular?",
+    "options": [
+      "Deploy loads data, Process publishes metadata",
+      "Deploy publishes metadata, Process loads data",
+      "Both do the same thing",
+      "Deploy deletes the model"
+    ],
+    "answer": 1,
+    "time": 30,
+    "level": "Medium"
+  },
+  {
+    "q": "What happens during Process operation in Tabular model?",
+    "options": [
+      "Only metadata is updated",
+      "Data is loaded into VertiPaq engine",
+      "Security roles are deleted",
+      "Relationships are removed"
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Easy"
+  },
+  {
+    "q": "What is Integrated Workspace mode used for?",
+    "options": [
+      "Production deployment",
+      "Cloud deployment",
+      "Local model development and testing",
+      "Backup storage"
+    ],
+    "answer": 2,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "Workspace Server in Tabular project refers to:",
+    "options": [
+      "Power BI Service",
+      "Temporary SSAS instance used during development",
+      "Azure SQL Database",
+      "OLTP database"
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Medium"
+  },
+  {
+    "q": "Which impersonation mode uses the currently logged-in Windows user?",
+    "options": [
+      "Impersonate Account",
+      "Impersonate Service Account",
+      "Impersonate Identity",
+      "Impersonate Anonymous"
+    ],
+    "answer": 2,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "When should Impersonate Account be used?",
+    "options": [
+      "During development only",
+      "In production using a dedicated service account",
+      "When no password is available",
+      "When using PIN login"
+    ],
+    "answer": 1,
+    "time": 30,
+    "level": "Medium"
+  },
+  {
+    "q": "Why does Impersonate Account require a real Windows password?",
+    "options": [
+      "Because PIN is not supported by SSAS authentication",
+      "Because SSAS does not allow Windows login",
+      "Because SQL Server blocks it",
+      "Because workspace mode disables it"
+    ],
+    "answer": 0,
+    "time": 30,
+    "level": "Medium"
+  },
+  {
+    "q": "If Deploy is successful but no data is visible in reports, what is most likely missing?",
+    "options": [
+      "Relationships",
+      "Processing",
+      "Security role",
+      "Date table"
+    ],
+    "answer": 1,
+    "time": 30,
+    "level": "Medium"
+  },
+  {
+    "q": "What does 'Mark as Date Table' enable?",
+    "options": [
+      "Data compression",
+      "Time intelligence DAX functions",
+      "Row level security",
+      "Partitioning"
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Easy"
+  },
+  {
+    "q": "What happens if data source credentials are missing?",
+    "options": [
+      "Model auto-corrects",
+      "Deployment succeeds but process fails",
+      "Processing and deployment fail",
+      "Relationships break"
+    ],
+    "answer": 2,
+    "time": 30,
+    "level": "Medium"
+  },
+  {
+    "q": "Workspace Server is mainly required for:",
+    "options": [
+      "Final production access",
+      "Temporary development storage",
+      "SQL joins",
+      "Power BI refresh"
+    ],
+    "answer": 1,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "What engine stores data in Tabular model?",
+    "options": [
+      "SQL Engine",
+      "VertiPaq",
+      "MDX Engine",
+      "SSIS Engine"
+    ],
+    "answer": 1,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "Which operation reloads all data and recalculates indexes?",
+    "options": [
+      "Process Clear",
+      "Process Default",
+      "Process Full",
+      "Process Add"
+    ],
+    "answer": 2,
+    "time": 30,
+    "level": "Medium"
+  },
+  {
+    "q": "What is the purpose of Process Clear?",
+    "options": [
+      "Delete only measures",
+      "Remove data from memory",
+      "Remove relationships",
+      "Delete model permanently"
+    ],
+    "answer": 1,
+    "time": 30,
+    "level": "Medium"
+  },
+  {
+    "q": "Which processing option adds only new data to partitions?",
+    "options": [
+      "Process Full",
+      "Process Default",
+      "Process Add",
+      "Process Clear"
+    ],
+    "answer": 2,
+    "time": 30,
+    "level": "Hard"
+  },
+  {
+    "q": "Why is Single direction relationship preferred in Tabular model?",
+    "options": [
+      "Improves performance and avoids ambiguity",
+      "Reduces memory usage only",
+      "Mandatory requirement",
+      "Allows multiple fact tables"
+    ],
+    "answer": 0,
+    "time": 35,
+    "level": "Hard"
+  },
+  {
+    "q": "If encryption error appears while connecting to SQL Server locally, what is safe to do in development?",
+    "options": [
+      "Cancel connection",
+      "Disable SQL Server",
+      "Allow unencrypted connection",
+      "Uninstall SSAS"
+    ],
+    "answer": 2,
+    "time": 25,
+    "level": "Easy"
+  },
+  {
+    "q": "Integrated Workspace mode stores temporary database in:",
+    "options": [
+      "Azure cloud",
+      "Visual Studio local SSAS instance",
+      "SQL Server",
+      "Power BI service"
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Medium"
+  },
+  {
+    "q": "What is the main purpose of a Workspace Server?",
+    "options": [
+      "Permanent reporting access",
+      "Model testing before deployment",
+      "Backup storage",
+      "OLTP transactions"
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Medium"
+  },
+  {
+    "q": "If tables are imported but relationships are missing, what must be done?",
+    "options": [
+      "Reinstall SQL Server",
+      "Manually create relationships",
+      "Delete database",
+      "Restart workspace"
+    ],
+    "answer": 1,
+    "time": 20,
+    "level": "Easy"
+  }
+,
+  {
+    "q": "What is a calculated column in SSAS Tabular?",
+    "options": [
+      "A column created using DAX and stored in the model",
+      "A column created only in SQL Server",
+      "A temporary column used only during query execution",
+      "A column created only in Power BI visuals"
+    ],
+    "answer": 0,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "What must every calculated column formula start with in SSAS Tabular?",
+    "options": [
+      "SELECT",
+      "An equal sign (=)",
+      "CALCULATE",
+      "SUM"
+    ],
+    "answer": 1,
+    "time": 15,
+    "level": "Easy"
+  },
+  {
+    "q": "Where do you typically rename a column in SSDT Tabular?",
+    "options": [
+      "Solution Explorer",
+      "Column Properties window",
+      "SQL Server Management Studio",
+      "Deployment Wizard"
+    ],
+    "answer": 1,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "What does a solid line between tables represent in a Tabular model diagram?",
+    "options": [
+      "Inactive relationship",
+      "Broken relationship",
+      "Active relationship",
+      "Calculated relationship"
+    ],
+    "answer": 2,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "What does a dotted line between tables represent in a Tabular model diagram?",
+    "options": [
+      "Inactive relationship",
+      "Bidirectional relationship",
+      "Invalid relationship",
+      "Many-to-many relationship"
+    ],
+    "answer": 0,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "Why are inactive relationships used in SSAS Tabular models?",
+    "options": [
+      "To improve server memory",
+      "To allow alternate filtering paths when needed",
+      "To avoid creating fact tables",
+      "To store calculated measures"
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Medium"
+  },
+  {
+    "q": "Which DAX function activates an inactive relationship inside a measure?",
+    "options": [
+      "FILTER",
+      "USERELATIONSHIP",
+      "RELATED",
+      "VALUES"
+    ],
+    "answer": 1,
+    "time": 20,
+    "level": "Medium"
+  },
+  {
+    "q": "In a Tabular model, how many active relationships can exist between two tables?",
+    "options": [
+      "Unlimited",
+      "Two",
+      "Only one",
+      "Depends on the data type"
+    ],
+    "answer": 2,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "What does filter direction control in a relationship?",
+    "options": [
+      "How data is stored",
+      "How filters propagate between tables",
+      "How measures are calculated",
+      "How columns are indexed"
+    ],
+    "answer": 1,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "Which filter direction is recommended in most star schema models?",
+    "options": [
+      "Both directions",
+      "Fact to Dimension",
+      "Single direction from Dimension to Fact",
+      "No filter direction"
+    ],
+    "answer": 2,
+    "time": 20,
+    "level": "Medium"
+  },
+  {
+    "q": "What is the purpose of the CALCULATE function in DAX?",
+    "options": [
+      "To create tables",
+      "To modify filter context during evaluation",
+      "To deploy models",
+      "To load data from SQL Server"
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Medium"
+  },
+  {
+    "q": "Which tool is used to deploy Tabular models to SSAS?",
+    "options": [
+      "SQL Server Profiler",
+      "SQL Server Data Tools",
+      "Excel",
+      "Power Query"
+    ],
+    "answer": 1,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "What is the typical cardinality between fact and dimension tables?",
+    "options": [
+      "One to One",
+      "Many to Many",
+      "Many to One",
+      "One to Many from fact to dimension"
+    ],
+    "answer": 2,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "Why can't multiple relationships between two tables be active simultaneously?",
+    "options": [
+      "Because it increases storage",
+      "Because it causes ambiguous filtering paths",
+      "Because SSAS doesn't support multiple keys",
+      "Because measures will stop working"
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Medium"
+  },
+  {
+    "q": "Which view in SSDT allows you to visually create relationships between tables?",
+    "options": [
+      "Data View",
+      "Source View",
+      "Diagram View",
+      "Query View"
+    ],
+    "answer": 2,
+    "time": 20,
+    "level": "Easy"
+  }
+
+
+
+
+,
+  {
+    "q": "What is a measure in SSAS Tabular?",
+    "options": [
+      "A dynamic calculation evaluated at query time",
+      "A stored column in a table",
+      "A physical column in SQL Server",
+      "A relationship between tables"
+    ],
+    "answer": 0,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "Which language is used to create calculations in SSAS Tabular models?",
+    "options": [
+      "MDX",
+      "DAX",
+      "T-SQL",
+      "Python"
+    ],
+    "answer": 1,
+    "time": 15,
+    "level": "Easy"
+  },
+  {
+    "q": "Where are measures typically stored in a Tabular model?",
+    "options": [
+      "Inside a table",
+      "Inside a SQL database",
+      "Inside SSMS only",
+      "Inside the cube browser"
+    ],
+    "answer": 0,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "Which function returns the related value from another table using relationships?",
+    "options": [
+      "RELATED",
+      "SUMX",
+      "CALCULATE",
+      "DISTINCT"
+    ],
+    "answer": 0,
+    "time": 20,
+    "level": "Medium"
+  },
+  {
+    "q": "Which DAX function iterates row by row over a table?",
+    "options": [
+      "SUM",
+      "SUMX",
+      "COUNT",
+      "VALUES"
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Medium"
+  },
+  {
+    "q": "What is Row Context in DAX?",
+    "options": [
+      "The current row being evaluated in a table",
+      "A filter applied to multiple tables",
+      "A relationship between tables",
+      "A server configuration"
+    ],
+    "answer": 0,
+    "time": 25,
+    "level": "Medium"
+  },
+  {
+    "q": "What is Filter Context in DAX?",
+    "options": [
+      "The environment that defines which rows are visible during calculation",
+      "The structure of the model",
+      "The process of loading data",
+      "The SQL query used to import data"
+    ],
+    "answer": 0,
+    "time": 25,
+    "level": "Medium"
+  },
+  {
+    "q": "Which DAX function returns unique values from a column?",
+    "options": [
+      "VALUES",
+      "SUM",
+      "FILTER",
+      "COUNTX"
+    ],
+    "answer": 0,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "Which relationship cardinality represents many rows in fact table related to one row in dimension table?",
+    "options": [
+      "One-to-one",
+      "Many-to-one",
+      "Many-to-many",
+      "One-to-many"
+    ],
+    "answer": 1,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "What is a star schema?",
+    "options": [
+      "A model with one central fact table connected to multiple dimension tables",
+      "A model with only dimension tables",
+      "A model with no relationships",
+      "A model containing only measures"
+    ],
+    "answer": 0,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "Which object typically stores transactional data in a data warehouse model?",
+    "options": [
+      "Dimension table",
+      "Fact table",
+      "Bridge table",
+      "Lookup table"
+    ],
+    "answer": 1,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "Which object usually contains descriptive attributes such as customer name or product category?",
+    "options": [
+      "Fact table",
+      "Dimension table",
+      "Bridge table",
+      "Measure group"
+    ],
+    "answer": 1,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "Which SSAS object organizes columns into logical groups for easier navigation?",
+    "options": [
+      "Hierarchy",
+      "Measure",
+      "Relationship",
+      "Fact table"
+    ],
+    "answer": 0,
+    "time": 20,
+    "level": "Medium"
+  },
+  {
+    "q": "What is a hierarchy in a Tabular model?",
+    "options": [
+      "A structured path of attributes used for drill-down analysis",
+      "A SQL index",
+      "A table relationship",
+      "A type of DAX function"
+    ],
+    "answer": 0,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "Which example represents a common hierarchy?",
+    "options": [
+      "Year → Quarter → Month → Day",
+      "Product → Sales",
+      "Customer → Price",
+      "Region → Quantity"
+    ],
+    "answer": 0,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "Which feature in SSAS restricts user access to specific rows of data?",
+    "options": [
+      "Roles",
+      "Measures",
+      "Perspectives",
+      "Partitions"
+    ],
+    "answer": 0,
+    "time": 25,
+    "level": "Medium"
+  },
+  {
+    "q": "What is the purpose of perspectives in a Tabular model?",
+    "options": [
+      "To provide simplified views of the model for different users",
+      "To store measures",
+      "To create relationships",
+      "To import data"
+    ],
+    "answer": 0,
+    "time": 20,
+    "level": "Medium"
+  },
+  {
+    "q": "Which feature improves performance by dividing large tables into smaller segments?",
+    "options": [
+      "Partitions",
+      "Hierarchies",
+      "Measures",
+      "Roles"
+    ],
+    "answer": 0,
+    "time": 25,
+    "level": "Medium"
+  },
+  {
+    "q": "What happens during model deployment in SSAS Tabular?",
+    "options": [
+      "The model is processed and published to the SSAS server",
+      "The SQL database is deleted",
+      "The data warehouse is rebuilt",
+      "The data model is exported to Excel"
+    ],
+    "answer": 0,
+    "time": 25,
+    "level": "Easy"
+  },
+  {
+    "q": "Which tool is commonly used to browse and test deployed Tabular models?",
+    "options": [
+      "SQL Server Management Studio",
+      "Notepad",
+      "PowerShell",
+      "Visual Studio Code"
+    ],
+    "answer": 0,
+    "time": 20,
+    "level": "Easy"
+  }
+,
+  {
+    "q": "What will happen if two active relationships create multiple filter paths between the same tables?",
+    "options": [
+      "SSAS automatically chooses one path",
+      "An ambiguous relationship error occurs",
+      "Both paths are merged automatically",
+      "The model deploys but results are random"
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Hard"
+  },
+  {
+    "q": "Which DAX function removes existing filters from a column or table?",
+    "options": [
+      "REMOVEFILTERS",
+      "FILTER",
+      "VALUES",
+      "SUMX"
+    ],
+    "answer": 0,
+    "time": 25,
+    "level": "Hard"
+  },
+  {
+    "q": "Which function is commonly used to override filter context inside CALCULATE?",
+    "options": [
+      "ALL",
+      "DISTINCT",
+      "RELATED",
+      "COUNT"
+    ],
+    "answer": 0,
+    "time": 25,
+    "level": "Hard"
+  },
+  {
+    "q": "What does the ALL() function do in DAX?",
+    "options": [
+      "Returns all rows ignoring existing filters",
+      "Counts all rows",
+      "Creates relationships",
+      "Filters rows dynamically"
+    ],
+    "answer": 0,
+    "time": 25,
+    "level": "Hard"
+  },
+  {
+    "q": "Which DAX function converts row context into filter context?",
+    "options": [
+      "CALCULATE",
+      "FILTER",
+      "VALUES",
+      "SUM"
+    ],
+    "answer": 0,
+    "time": 25,
+    "level": "Hard"
+  },
+  {
+    "q": "Which DAX function is used to retrieve values from a related table when there is no relationship?",
+    "options": [
+      "LOOKUPVALUE",
+      "RELATED",
+      "VALUES",
+      "FILTER"
+    ],
+    "answer": 0,
+    "time": 25,
+    "level": "Hard"
+  },
+  {
+    "q": "Which relationship type can create performance issues in large tabular models?",
+    "options": [
+      "Bi-directional filtering",
+      "Single direction filtering",
+      "Many-to-one relationships",
+      "One-to-many relationships"
+    ],
+    "answer": 0,
+    "time": 25,
+    "level": "Hard"
+  },
+  {
+    "q": "What is the primary storage engine used in SSAS Tabular models?",
+    "options": [
+      "VertiPaq",
+      "DirectQuery",
+      "SQL Engine",
+      "MDX Engine"
+    ],
+    "answer": 0,
+    "time": 25,
+    "level": "Hard"
+  },
+  {
+    "q": "What is VertiPaq primarily designed for?",
+    "options": [
+      "Columnar compression and fast in-memory analytics",
+      "Row-based transaction processing",
+      "Index optimization",
+      "Query rewriting"
+    ],
+    "answer": 0,
+    "time": 25,
+    "level": "Hard"
+  },
+  {
+    "q": "Which DAX function returns a table after applying a condition?",
+    "options": [
+      "FILTER",
+      "SUM",
+      "COUNT",
+      "VALUES"
+    ],
+    "answer": 0,
+    "time": 25,
+    "level": "Hard"
+  },
+  {
+    "q": "Which DAX function returns the number of distinct values in a column?",
+    "options": [
+      "DISTINCTCOUNT",
+      "COUNT",
+      "VALUES",
+      "COUNTX"
+    ],
+    "answer": 0,
+    "time": 25,
+    "level": "Hard"
+  },
+  {
+    "q": "Which DAX function returns a single value when exactly one value exists in the context?",
+    "options": [
+      "SELECTEDVALUE",
+      "VALUES",
+      "DISTINCT",
+      "COUNT"
+    ],
+    "answer": 0,
+    "time": 25,
+    "level": "Hard"
+  },
+  {
+    "q": "What is the purpose of the EARLIER() function in DAX?",
+    "options": [
+      "Access a value from an outer row context",
+      "Remove filters from a table",
+      "Activate inactive relationships",
+      "Create calculated measures"
+    ],
+    "answer": 0,
+    "time": 30,
+    "level": "Hard"
+  },
+  {
+    "q": "Which modeling approach improves compression in VertiPaq?",
+    "options": [
+      "Reducing column cardinality",
+      "Adding more calculated columns",
+      "Using bi-directional filters",
+      "Duplicating tables"
+    ],
+    "answer": 0,
+    "time": 30,
+    "level": "Hard"
+  },
+  {
+    "q": "Which column type generally compresses best in VertiPaq?",
+    "options": [
+      "Low cardinality columns",
+      "High cardinality columns",
+      "Floating point columns",
+      "Binary columns"
+    ],
+    "answer": 0,
+    "time": 30,
+    "level": "Hard"
+  },
+  {
+    "q": "What is a many-to-many relationship typically implemented using in Tabular models?",
+    "options": [
+      "Bridge table",
+      "Duplicate dimension table",
+      "Fact-to-fact relationship",
+      "Nested hierarchies"
+    ],
+    "answer": 0,
+    "time": 30,
+    "level": "Hard"
+  },
+  {
+    "q": "Which object controls row-level security in a Tabular model?",
+    "options": [
+      "Roles",
+      "Perspectives",
+      "Partitions",
+      "Hierarchies"
+    ],
+    "answer": 0,
+    "time": 25,
+    "level": "Hard"
+  },
+  {
+    "q": "Which DAX function checks whether a column has been filtered?",
+    "options": [
+      "ISFILTERED",
+      "HASONEVALUE",
+      "FILTER",
+      "VALUES"
+    ],
+    "answer": 0,
+    "time": 25,
+    "level": "Hard"
+  },
+  {
+    "q": "Which function checks if exactly one value exists in the filter context?",
+    "options": [
+      "HASONEVALUE",
+      "VALUES",
+      "COUNT",
+      "DISTINCT"
+    ],
+    "answer": 0,
+    "time": 25,
+    "level": "Hard"
+  },
+  {
+    "q": "Which technique helps reduce model size in Tabular models?",
+    "options": [
+      "Removing unnecessary columns",
+      "Adding more calculated columns",
+      "Creating more hierarchies",
+      "Increasing partition count"
+    ],
+    "answer": 0,
+    "time": 25,
+    "level": "Hard"
+  }
+  ,
+
+
+  {
+    "q": "What does the VALUES function return in DAX?",
+    "options": [
+      "All rows including duplicates",
+      "Unique values from a column respecting filter context",
+      "Only numeric values",
+      "Sorted values only"
+    ],
+    "answer": 1,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "Which DAX function is most similar to SQL SELECT DISTINCT?",
+    "options": [
+      "VALUES",
+      "CALCULATE",
+      "RELATED",
+      "FILTER"
+    ],
+    "answer": 0,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "In SUMMARIZE, what does the first parameter represent?",
+    "options": [
+      "Grouping column",
+      "Base table used for grouping",
+      "Aggregation function",
+      "Relationship table"
+    ],
+    "answer": 1,
+    "time": 20,
+    "level": "Medium"
+  },
+  {
+    "q": "Which function allows creating new calculated columns in a table expression?",
+    "options": [
+      "SELECTCOLUMNS",
+      "VALUES",
+      "DISTINCT",
+      "COUNTROWS"
+    ],
+    "answer": 0,
+    "time": 20,
+    "level": "Medium"
+  },
+  {
+    "q": "Why does the error 'A single value for column cannot be determined' occur in DAX?",
+    "options": [
+      "Because a column contains null values",
+      "Because multiple rows exist and no aggregation or row context is specified",
+      "Because relationships are missing",
+      "Because the table is empty"
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Medium"
+  },
+  {
+    "q": "Which function is used to activate an inactive relationship in a measure?",
+    "options": [
+      "RELATED",
+      "CALCULATE",
+      "USERELATIONSHIP",
+      "FILTER"
+    ],
+    "answer": 2,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "USERELATIONSHIP can only be used inside which DAX function?",
+    "options": [
+      "SUMX",
+      "CALCULATE",
+      "VALUES",
+      "DISTINCT"
+    ],
+    "answer": 1,
+    "time": 20,
+    "level": "Medium"
+  },
+  {
+    "q": "Which DAX function creates row context for iterating through a table?",
+    "options": [
+      "FILTER",
+      "VALUES",
+      "SUMMARIZE",
+      "DISTINCT"
+    ],
+    "answer": 0,
+    "time": 25,
+    "level": "Medium"
+  },
+  {
+    "q": "Which DAX function is commonly used to group data similar to SQL GROUP BY?",
+    "options": [
+      "SUMMARIZE",
+      "VALUES",
+      "CALCULATE",
+      "COUNTROWS"
+    ],
+    "answer": 0,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "What does SELECTCOLUMNS return?",
+    "options": [
+      "A single scalar value",
+      "A new table with selected or calculated columns",
+      "Only numeric columns",
+      "Filtered rows only"
+    ],
+    "answer": 1,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "Which context evaluates expressions row by row in DAX?",
+    "options": [
+      "Filter context",
+      "Row context",
+      "Query context",
+      "Storage context"
+    ],
+    "answer": 1,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "Which context filters the data before DAX expressions are evaluated?",
+    "options": [
+      "Row context",
+      "Filter context",
+      "Loop context",
+      "Join context"
+    ],
+    "answer": 1,
+    "time": 20,
+    "level": "Easy"
+  }
+
+
+,
+
+
+  
+  {
+    "q": "What happens if VALUES is used on a column from a dimension table that has no matching rows in the related fact table under current filters?",
+    "options": [
+      "It returns all rows from the dimension",
+      "It returns blank",
+      "It returns no rows",
+      "It returns duplicate rows"
+    ],
+    "answer": 1,
+    "time": 30,
+    "level": "Hard"
+  },
+  {
+    "q": "Which DAX function can modify filter context while evaluating an expression?",
+    "options": [
+      "CALCULATE",
+      "VALUES",
+      "DISTINCT",
+      "SUMMARIZE"
+    ],
+    "answer": 0,
+    "time": 25,
+    "level": "Hard"
+  },
+  {
+    "q": "Why might SUMMARIZE produce unexpected results compared to SUMMARIZECOLUMNS?",
+    "options": [
+      "SUMMARIZE ignores relationships",
+      "SUMMARIZE may introduce hidden grouping behavior",
+      "SUMMARIZE cannot perform aggregations",
+      "SUMMARIZE does not support dimensions"
+    ],
+    "answer": 1,
+    "time": 30,
+    "level": "Hard"
+  },
+  {
+    "q": "Which function is typically used to iterate over a table while performing row-by-row calculations?",
+    "options": [
+      "SUMX",
+      "VALUES",
+      "DISTINCT",
+      "ALL"
+    ],
+    "answer": 0,
+    "time": 25,
+    "level": "Hard"
+  },
+  {
+    "q": "In a tabular model, what is the main effect of using USERELATIONSHIP inside CALCULATE?",
+    "options": [
+      "It permanently activates the relationship",
+      "It temporarily activates an inactive relationship during evaluation",
+      "It removes existing relationships",
+      "It duplicates relationship paths"
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Medium"
+  },
+  {
+    "q": "Which DAX function removes filters from a table or column?",
+    "options": [
+      "FILTER",
+      "ALL",
+      "VALUES",
+      "RELATED"
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Hard"
+  },
+  {
+    "q": "What will happen if CALCULATE is used without any filter arguments?",
+    "options": [
+      "It returns an error",
+      "It converts row context into filter context",
+      "It removes filter context",
+      "It creates a new relationship"
+    ],
+    "answer": 1,
+    "time": 30,
+    "level": "Hard"
+  },
+  {
+    "q": "Which function is used to access a column value from a related table in DAX?",
+    "options": [
+      "RELATED",
+      "LOOKUPVALUE",
+      "CALCULATE",
+      "DISTINCT"
+    ],
+    "answer": 0,
+    "time": 20,
+    "level": "Medium"
+  },
+  {
+    "q": "What is the main difference between DISTINCT and VALUES in DAX?",
+    "options": [
+      "DISTINCT returns numeric values only",
+      "VALUES can return a blank row when referential integrity is violated",
+      "VALUES always sorts results",
+      "DISTINCT returns aggregated values"
+    ],
+    "answer": 1,
+    "time": 30,
+    "level": "Hard"
+  },
+  {
+    "q": "Which DAX function is best suited to add calculated columns to an existing table expression?",
+    "options": [
+      "ADDCOLUMNS",
+      "SELECTCOLUMNS",
+      "SUMMARIZE",
+      "DISTINCT"
+    ],
+    "answer": 0,
+    "time": 25,
+    "level": "Hard"
+  },
+  {
+    "q": "What does the FILTER function return?",
+    "options": [
+      "A scalar value",
+      "A filtered table",
+      "A Boolean result",
+      "An aggregated column"
+    ],
+    "answer": 1,
+    "time": 20,
+    "level": "Medium"
+  },
+  {
+    "q": "Which scenario commonly causes ambiguous relationship paths in tabular models?",
+    "options": [
+      "Multiple active relationships between the same tables",
+      "Having only one dimension table",
+      "Using calculated columns",
+      "Using DISTINCT"
+    ],
+    "answer": 0,
+    "time": 30,
+    "level": "Hard"
+  }
+
+  ,
+  
+  {
+    "q": "In SSAS DAX queries, which statement must be used to return a table result?",
+    "options": ["SELECT","RETURN","EVALUATE","OUTPUT"],
+    "answer": 2,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "Which DAX function is used to convert scalar expressions into a single-row table?",
+    "options": ["SUMMARIZE","ROW","FILTER","VALUES"],
+    "answer": 1,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "What does the DAX function COUNTROWS return?",
+    "options": ["Number of columns","Number of rows in a table","Number of distinct values","Number of measures"],
+    "answer": 1,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "Which DAX function is primarily used to modify filter context?",
+    "options": ["SUMX","CALCULATE","ROW","VALUES"],
+    "answer": 1,
+    "time": 25,
+    "level": "Medium"
+  },
+  {
+    "q": "In SSAS Tabular, what is the main purpose of creating a hierarchy?",
+    "options": ["To improve storage","To create drill-down paths","To create relationships","To define measures"],
+    "answer": 1,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "Which order is correct for a Date hierarchy?",
+    "options": ["Month → Year → Quarter","Year → Quarter → Month → Date","Quarter → Month → Year","Date → Month → Year"],
+    "answer": 1,
+    "time": 25,
+    "level": "Easy"
+  },
+  {
+    "q": "Which option hides a column from client tools in SSAS Tabular?",
+    "options": ["Delete Column","Disable Column","Hide from Client Tools","Archive Column"],
+    "answer": 2,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "Where can you rename a column in an SSAS Tabular model?",
+    "options": ["Only in SQL Server","Only in Power BI","In the Model.bim designer","In SSMS query window"],
+    "answer": 2,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "Which data type is most appropriate for a sales amount column?",
+    "options": ["Text","Currency","Boolean","Date"],
+    "answer": 1,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "After creating a hierarchy in SSAS Tabular, what is the next step to make it available for reporting tools?",
+    "options": ["Export to Excel","Deploy and process the model","Restart SQL Server","Create a stored procedure"],
+    "answer": 1,
+    "time": 25,
+    "level": "Medium"
+  },
+  {
+    "q": "Which tool is commonly used to design SSAS Tabular models?",
+    "options": ["SQL Server Management Studio","Visual Studio (SSDT)","Azure Data Factory","Tableau"],
+    "answer": 1,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "Which reporting tools can directly consume SSAS Tabular hierarchies?",
+    "options": ["Excel Pivot and Power BI","Notepad","PowerShell","SQLCMD"],
+    "answer": 0,
+    "time": 20,
+    "level": "Easy"
+  }
+,
+
+
+  
+  {
+    "q": "Which DAX function can change the filter context of a calculation in SSAS Tabular?",
+    "options": ["FILTER","CALCULATE","VALUES","SUMMARIZE"],
+    "answer": 1,
+    "time": 25,
+    "level": "Hard"
+  },
+  {
+    "q": "Why is CALCULATE considered one of the most powerful functions in DAX?",
+    "options": ["It creates hierarchies","It modifies filter context","It changes relationships","It processes the cube"],
+    "answer": 1,
+    "time": 25,
+    "level": "Hard"
+  },
+  {
+    "q": "What happens when CALCULATE is used without any filter arguments?",
+    "options": ["It throws an error","It removes all filters","It evaluates the expression in the current filter context","It performs row context transition only"],
+    "answer": 2,
+    "time": 25,
+    "level": "Hard"
+  },
+  {
+    "q": "Which DAX function is commonly used to convert row context into filter context?",
+    "options": ["SUM","CALCULATE","VALUES","ROW"],
+    "answer": 1,
+    "time": 30,
+    "level": "Hard"
+  },
+  {
+    "q": "Which function is best suited to return a table with grouped aggregations in DAX queries?",
+    "options": ["ROW","SUMMARIZECOLUMNS","COUNTROWS","CALCULATE"],
+    "answer": 1,
+    "time": 25,
+    "level": "Hard"
+  },
+  {
+    "q": "Why is SUMMARIZECOLUMNS preferred over SUMMARIZE in many SSAS Tabular queries?",
+    "options": ["Better compression","Better performance and predictable behavior","Works only with hierarchies","Required for measures"],
+    "answer": 1,
+    "time": 25,
+    "level": "Hard"
+  },
+  {
+    "q": "Which of the following best describes a hierarchy in SSAS Tabular?",
+    "options": ["A physical storage structure","A logical drill-down structure for attributes","A type of relationship","A type of measure"],
+    "answer": 1,
+    "time": 20,
+    "level": "Hard"
+  },
+  {
+    "q": "What is the main benefit of hiding columns used only for sorting or relationships?",
+    "options": ["Improves query speed","Reduces model size","Improves user experience in reporting tools","Required for deployment"],
+    "answer": 2,
+    "time": 20,
+    "level": "Hard"
+  },
+  {
+    "q": "Which column property is used to ensure months appear in chronological order instead of alphabetical order?",
+    "options": ["Sort Order","Sort by Column","Order Column","Display Order"],
+    "answer": 1,
+    "time": 25,
+    "level": "Hard"
+  },
+  {
+    "q": "Which processing option recalculates dependent objects without reloading data from the source?",
+    "options": ["Process Full","Process Data","Process Recalc","Process Clear"],
+    "answer": 2,
+    "time": 25,
+    "level": "Hard"
+  },
+  {
+    "q": "Which DAX function returns a table of unique values from a column?",
+    "options": ["DISTINCT","VALUES","UNIQUE","GROUPBY"],
+    "answer": 1,
+    "time": 25,
+    "level": "Hard"
+  },
+  {
+    "q": "In SSAS Tabular, what happens when a column is marked as 'Hide from Client Tools'?",
+    "options": ["Column is deleted","Column is hidden from reporting tools but still usable in calculations","Column becomes read-only","Column cannot be processed"],
+    "answer": 1,
+    "time": 20,
+    "level": "Hard"
+  },
+  {
+    "q": "Which type of relationship is supported in SSAS Tabular models?",
+    "options": ["Many-to-many with bridge tables","Circular relationships","Recursive relationships","Unlimited many-to-many"],
+    "answer": 0,
+    "time": 25,
+    "level": "Hard"
+  },
+  {
+    "q": "What is the purpose of the VertiPaq engine in SSAS Tabular?",
+    "options": ["Row-level security","Columnar in-memory storage and compression","Query scheduling","Data integration"],
+    "answer": 1,
+    "time": 25,
+    "level": "Hard"
+  },
+  {
+    "q": "Which tool is primarily used to write and test DAX queries against an SSAS Tabular model?",
+    "options": ["Visual Studio","SQL Server Management Studio","Azure Data Studio","Power BI Desktop"],
+    "answer": 1,
+    "time": 20,
+    "level": "Hard"
+  },
+  {
+    "q": "What does the COUNTROWS function return when applied to an empty table?",
+    "options": ["0","NULL","1","Error"],
+    "answer": 0,
+    "time": 25,
+    "level": "Hard"
+  },
+  {
+    "q": "Which concept ensures that DAX calculations respect the filters applied in reports?",
+    "options": ["Row context","Filter context","Query context","Execution context"],
+    "answer": 1,
+    "time": 25,
+    "level": "Hard"
+  },
+  {
+    "q": "Which SSAS Tabular feature allows restricting data visibility based on user roles?",
+    "options": ["Perspectives","Row-Level Security","Partitions","Hierarchies"],
+    "answer": 1,
+    "time": 25,
+    "level": "Hard"
+  },
+  {
+    "q": "Which DAX function removes all filters from a table or column?",
+    "options": ["REMOVEFILTERS","CLEARFILTER","RESETFILTER","IGNORE"],
+    "answer": 0,
+    "time": 25,
+    "level": "Hard"
+  },
+  {
+    "q": "Which DAX function is commonly used for time intelligence calculations like previous year sales?",
+    "options": ["SAMEPERIODLASTYEAR","PREVIOUSYEARVALUE","YEARSHIFT","TIMESHIFT"],
+    "answer": 0,
+    "time": 25,
+    "level": "Hard"
+  },
+
+
+  {
+    "q": "Your SSAS cube has a fact table with 1 billion rows and processing takes 5 hours. What is the best way to improve processing time?",
+    "options": ["Create partitions and process incrementally", "Increase dimension attributes", "Create more hierarchies", "Convert measures to calculated columns"],
+    "answer": 0,
+    "time": 40,
+    "level": "Hard"
+  },
+  {
+    "q": "A Power BI report connected to SSAS Tabular is very slow. What tool is best to analyze DAX query performance?",
+    "options": ["SQL Profiler", "DAX Studio", "SSMS Object Explorer", "Visual Studio"],
+    "answer": 1,
+    "time": 30,
+    "level": "Medium"
+  },
+  {
+    "q": "Users from US should only see US data while Europe users should see only Europe data in SSAS. What feature should you implement?",
+    "options": ["Perspective", "Partition", "Role with Row Level Security", "Hierarchy"],
+    "answer": 2,
+    "time": 30,
+    "level": "Medium"
+  },
+  {
+    "q": "Your Sales table has OrderDate and ShipDate columns but the Date dimension allows only one active relationship. How can both be used in analysis?",
+    "options": ["Create duplicate date dimension", "Use USERELATIONSHIP in DAX", "Create two cubes", "Create hierarchy"],
+    "answer": 1,
+    "time": 40,
+    "level": "Hard"
+  },
+  {
+    "q": "Cube processing fails with 'Key not found' error in SSAS. What is the most likely reason?",
+    "options": ["Fact table contains keys not present in dimension", "Dimension table is too large", "Measures are missing", "Hierarchy is incorrect"],
+    "answer": 0,
+    "time": 30,
+    "level": "Medium"
+  },
+  {
+    "q": "A table in SSAS Tabular contains 150 columns but only 20 are used in reports. What should be done?",
+    "options": ["Add more hierarchies", "Remove unused columns", "Add calculated measures", "Increase partitions"],
+    "answer": 1,
+    "time": 30,
+    "level": "Medium"
+  },
+  {
+    "q": "An SSAS Tabular model shows an ambiguous relationship error. What is the main cause?",
+    "options": ["Multiple filter paths between tables", "Too many partitions", "Incorrect measure logic", "Large fact table"],
+    "answer": 0,
+    "time": 35,
+    "level": "Hard"
+  },
+  {
+    "q": "A DAX measure returns incorrect totals in SSAS Tabular. What is the most common reason?",
+    "options": ["Missing partitions", "Incorrect filter context", "Too many hierarchies", "Duplicate dimensions"],
+    "answer": 1,
+    "time": 35,
+    "level": "Hard"
+  },
+  {
+    "q": "Your data warehouse loads new data daily. What is the best SSAS strategy to process new data efficiently?",
+    "options": ["Process full cube daily", "Use incremental partition processing", "Delete old partitions", "Rebuild dimensions daily"],
+    "answer": 1,
+    "time": 30,
+    "level": "Medium"
+  },
+  {
+    "q": "When should you use a calculated column instead of a measure in SSAS Tabular?",
+    "options": ["When calculation must be stored during processing", "When calculation should run during query time", "When performance is not important", "When relationships are missing"],
+    "answer": 0,
+    "time": 30,
+    "level": "Medium"
+  },
+  {
+    "q": "Business users want to see only relevant tables and measures but data should not be restricted. What SSAS feature should be used?",
+    "options": ["Role", "Perspective", "Partition", "Relationship"],
+    "answer": 1,
+    "time": 25,
+    "level": "Easy"
+  },
+  {
+    "q": "An SSAS Tabular model fails to process due to memory issues even though the server has 64GB RAM. What could be the reason?",
+    "options": ["Large cardinality columns", "Too many partitions", "Too many hierarchies", "Too few dimensions"],
+    "answer": 0,
+    "time": 35,
+    "level": "Hard"
+  },
+  {
+    "q": "A customer can have multiple accounts and an account can have multiple customers. How should this be modeled in SSAS?",
+    "options": ["One-to-many relationship", "Many-to-many with bridge table", "Single dimension", "Hierarchy"],
+    "answer": 1,
+    "time": 35,
+    "level": "Hard"
+  },
+  {
+    "q": "Your SSAS Tabular model size is 20GB in memory. What is the best optimization technique?",
+    "options": ["Add more partitions", "Remove unused columns and reduce text data", "Add calculated columns", "Increase hierarchies"],
+    "answer": 1,
+    "time": 35,
+    "level": "Hard"
+  },
+  {
+    "q": "Users report that numbers in reports changed after cube processing. What should be checked first?",
+    "options": ["Source data or ETL changes", "Hierarchy order", "Perspective settings", "Partition count"],
+    "answer": 0,
+    "time": 30,
+    "level": "Medium"
+  }
+
+,
+  {
+    "q": "What happens when you perform a Git commit?",
+    "options": [
+      "Code is pushed to GitHub",
+      "Code is deleted",
+      "Changes are saved in local repository",
+      "Changes are sent to other developers"
+    ],
+    "answer": 2,
+    "time": 30,
+    "level": "Easy"
+  },
+  {
+    "q": "What does 'Push' do in Git?",
+    "options": [
+      "Saves code locally",
+      "Uploads local commits to remote repository",
+      "Deletes local changes",
+      "Creates a new branch"
+    ],
+    "answer": 1,
+    "time": 30,
+    "level": "Easy"
+  },
+  {
+    "q": "What does '1 outgoing / 0 incoming' indicate in Git?",
+    "options": [
+      "1 file deleted",
+      "1 commit waiting to be pushed",
+      "1 commit received from remote",
+      "Repository is empty"
+    ],
+    "answer": 1,
+    "time": 30,
+    "level": "Easy"
+  },
+  {
+    "q": "Why does Git require an empty folder for cloning?",
+    "options": [
+      "To improve performance",
+      "To avoid file conflicts with existing content",
+      "To reduce file size",
+      "To enable branching"
+    ],
+    "answer": 1,
+    "time": 30,
+    "level": "Medium"
+  },
+  {
+    "q": "When does a Git conflict occur?",
+    "options": [
+      "When committing changes",
+      "When pushing without internet",
+      "When the same file is modified in multiple places",
+      "When cloning a repository"
+    ],
+    "answer": 2,
+    "time": 30,
+    "level": "Medium"
+  },
+  {
+    "q": "In SSAS Tabular Model.bim file, what does 'int64' represent?",
+    "options": [
+      "Decimal Number",
+      "Text",
+      "Whole Number",
+      "Boolean"
+    ],
+    "answer": 2,
+    "time": 30,
+    "level": "Medium"
+  }
+
+  ,
+
+
+  
+  {
+    "q": "What is a KPI in SSAS Tabular model?",
+    "options": [
+      "A table storing aggregated data",
+      "A calculation comparing actual value against target",
+      "A dimension attribute",
+      "A type of relationship"
+    ],
+    "answer": 1,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "What are the main components of a KPI in SSAS?",
+    "options": [
+      "Column, Table, Relationship",
+      "Value, Target, Status",
+      "Fact, Dimension, Measure",
+      "Row, Column, Filter"
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Easy"
+  },
+  {
+    "q": "In SSAS Tabular, a KPI must be based on which object?",
+    "options": [
+      "Column",
+      "Table",
+      "Measure",
+      "Relationship"
+    ],
+    "answer": 2,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "What is the role of the target value in a KPI?",
+    "options": [
+      "Stores historical data",
+      "Defines dimension hierarchy",
+      "Represents expected performance",
+      "Filters data"
+    ],
+    "answer": 2,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "Where do you typically create a KPI in SSAS Tabular (traditional approach)?",
+    "options": [
+      "KPI Folder",
+      "Right-click on Measure",
+      "Dimension Table",
+      "Relationship View"
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Medium"
+  },
+  {
+    "q": "Why is 'Create KPI' option not visible in SQL Server 2022 Tabular model?",
+    "options": [
+      "KPI feature is removed",
+      "Measures are not supported",
+      "KPIs are created only in Multidimensional",
+      "KPIs are handled in reporting tools like Power BI"
+    ],
+    "answer": 3,
+    "time": 30,
+    "level": "Medium"
+  },
+  {
+    "q": "What is the correct modern approach to implement KPIs in Tabular models?",
+    "options": [
+      "Create KPI in cube structure",
+      "Use MDX expressions",
+      "Use DAX measures and visualize in Power BI",
+      "Store KPI in dimension table"
+    ],
+    "answer": 2,
+    "time": 30,
+    "level": "Medium"
+  },
+  {
+    "q": "How can you identify a measure in SSAS Tabular Model View?",
+    "options": [
+      "By table icon",
+      "By calculator icon",
+      "By relationship line",
+      "By column color"
+    ],
+    "answer": 1,
+    "time": 15,
+    "level": "Easy"
+  },
+  {
+    "q": "Where are measures displayed in Tabular model design?",
+    "options": [
+      "Top pane",
+      "Relationship view",
+      "Measure grid",
+      "Dimension editor"
+    ],
+    "answer": 2,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "What is a measure in SSAS Tabular?",
+    "options": [
+      "Stored data column",
+      "DAX-based calculation evaluated at query time",
+      "Relationship between tables",
+      "Hierarchy definition"
+    ],
+    "answer": 1,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "What is the key difference between Measure and KPI?",
+    "options": [
+      "Measure stores data, KPI stores relationships",
+      "Measure is numeric value, KPI includes target and status",
+      "Measure is dimension, KPI is fact",
+      "Measure is static, KPI is table"
+    ],
+    "answer": 1,
+    "time": 30,
+    "level": "Medium"
+  },
+  {
+    "q": "What does KPI status represent?",
+    "options": [
+      "Data type of measure",
+      "Comparison between actual and target",
+      "Relationship between tables",
+      "Aggregation type"
+    ],
+    "answer": 1,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "In SSAS Tabular, what defines the KPI base value?",
+    "options": [
+      "Column",
+      "Measure",
+      "Table",
+      "Hierarchy"
+    ],
+    "answer": 1,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "Which tool is commonly used to visualize KPIs in modern BI solutions?",
+    "options": [
+      "SSDT only",
+      "SQL Server Management Studio",
+      "Power BI",
+      "Integration Services"
+    ],
+    "answer": 2,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "What happens when you right-click KPI folder in Tabular Model Explorer?",
+    "options": [
+      "Create KPI option appears",
+      "Edit KPI option appears",
+      "Nothing happens",
+      "Measure is created"
+    ],
+    "answer": 2,
+    "time": 20,
+    "level": "Easy"
+  }
+
+  ,
+  {
+    "q": "In SSAS, what primarily defines the granularity of a measure group?",
+    "options": [
+      "The aggregation design of the cube",
+      "The relationships in Dimension Usage tab",
+      "The foreign keys present in the fact table",
+      "The hierarchy levels in the dimension"
+    ],
+    "answer": 2,
+    "time": 30,
+    "level": "Medium"
+  },
+  {
+    "q": "What is the consequence of defining a higher-level granularity attribute (e.g., Month) when the fact table is at a lower level (e.g., Day)?",
+    "options": [
+      "Data will be filtered incorrectly",
+      "Measures will be under-aggregated",
+      "Data duplication and inflated aggregations",
+      "Cube processing will fail"
+    ],
+    "answer": 2,
+    "time": 45,
+    "level": "Hard"
+  },
+  {
+    "q": "Which SSAS component is used to explicitly define the granularity between a measure group and a dimension?",
+    "options": [
+      "Dimension Designer",
+      "Cube Structure tab",
+      "Dimension Usage tab",
+      "Attribute Relationships tab"
+    ],
+    "answer": 2,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "If a fact table contains ProductID but the dimension is linked using Product Category, what issue may arise?",
+    "options": [
+      "Missing data in reports",
+      "Incorrect joins but correct aggregations",
+      "Data multiplication due to granularity mismatch",
+      "Dimension hierarchy errors"
+    ],
+    "answer": 2,
+    "time": 45,
+    "level": "Hard"
+  },
+  {
+    "q": "In a many-to-many relationship scenario, why is granularity more complex?",
+    "options": [
+      "Because dimensions cannot be reused",
+      "Because fact tables cannot store foreign keys",
+      "Because bridge tables introduce multiple paths for aggregation",
+      "Because SSAS does not support many-to-many relationships"
+    ],
+    "answer": 2,
+    "time": 45,
+    "level": "Hard"
+  },
+  {
+    "q": "What does the granularity attribute represent in SSAS?",
+    "options": [
+      "The highest level of aggregation",
+      "The level at which fact data joins to a dimension",
+      "The default hierarchy of a dimension",
+      "The aggregation function applied to measures"
+    ],
+    "answer": 1,
+    "time": 30,
+    "level": "Medium"
+  },
+  {
+    "q": "Which scenario indicates correct granularity alignment?",
+    "options": [
+      "Fact table at Month level, dimension linked at Day level",
+      "Fact table at Day level, dimension linked at Day level",
+      "Fact table at Product level, dimension linked at Category level",
+      "Fact table without foreign keys"
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Easy"
+  },
+  {
+    "q": "How does fine granularity impact cube performance?",
+    "options": [
+      "Improves performance due to fewer rows",
+      "Has no impact on performance",
+      "Slows down performance but increases flexibility",
+      "Prevents aggregations from working"
+    ],
+    "answer": 2,
+    "time": 30,
+    "level": "Medium"
+  },
+  {
+    "q": "What is the difference between grain and granularity in SSAS?",
+    "options": [
+      "Grain is technical, granularity is business",
+      "Grain is business definition, granularity is technical implementation",
+      "Both are the same",
+      "Granularity only applies to dimensions"
+    ],
+    "answer": 1,
+    "time": 40,
+    "level": "Hard"
+  },
+  {
+    "q": "Which of the following best describes a violation of granularity design?",
+    "options": [
+      "Using surrogate keys in dimensions",
+      "Mixing daily and monthly data in the same fact table without proper handling",
+      "Creating hierarchies in dimensions",
+      "Using calculated measures"
+    ],
+    "answer": 1,
+    "time": 45,
+    "level": "Hard"
+  },
+  {
+    "q": "Why is it important to define granularity before designing a cube?",
+    "options": [
+      "To reduce storage requirements",
+      "To ensure correct joins and accurate aggregations",
+      "To simplify MDX queries",
+      "To avoid dimension creation"
+    ],
+    "answer": 1,
+    "time": 30,
+    "level": "Medium"
+  },
+  {
+    "q": "Which type of fact table has the lowest granularity?",
+    "options": [
+      "Aggregate fact table",
+      "Snapshot fact table",
+      "Transaction fact table",
+      "Factless fact table"
+    ],
+    "answer": 2,
+    "time": 30,
+    "level": "Medium"
+  }
+
+
+
+  
+];
+
+/* ----------------- STATE ----------------- */
+let questions = [];
+let userAnswers = []; // integer | null
+let questionRemain = []; // seconds left per question
+let marked = []; // boolean mark for review
+let batchIndex = 0;
+let currentIndex = 0;
+let globalSeconds = 0;
+let paused = false;
+let shuffleEnabled = true;
+let darkMode = false;
+let globalTimerId = null, questionTimerId = null;
+
+// completed batches stored persistently
+let completedBatches = JSON.parse(localStorage.getItem(COMPLETED_KEY) || "[]");
+
+/* ----------------- HELPERS ----------------- */
+function saveState(){
+  const payload = { originalQuestions, questions, userAnswers, questionRemain, marked, batchIndex, currentIndex, globalSeconds, paused, shuffleEnabled, darkMode };
+  localStorage.setItem(LS_KEY, JSON.stringify(payload));
+}
+function loadState(){
+  try{ const s = localStorage.getItem(LS_KEY); return s? JSON.parse(s): null; }catch(e){return null}
+}
+function clearSavedState(){ localStorage.removeItem(LS_KEY); }
+
+function shuffleArray(arr){ for(let i=arr.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [arr[i],arr[j]]=[arr[j],arr[i]]; }}
+function formatTime(sec){ const m=Math.floor(sec/60); const s=sec%60; return `${m}:${String(s).padStart(2,'0')}`; }
+function inProgress(){ return questions && questions.length && userAnswers.some(a=>a!==null); }
+
+/* ----------------- BATCH MENU ----------------- */
+function renderBatchMenu(){
+  const menu = document.getElementById('menu');
+  menu.innerHTML = '';
+  const total = Math.max(1, Math.ceil(originalQuestions.length / QUESTIONS_PER_BATCH));
+  const h = document.createElement('div'); h.innerHTML = `<strong>Select Batch</strong>`; menu.appendChild(h);
+
+  const btnWrap = document.createElement('div');
+  btnWrap.className = 'batch-wrap';
+
+  for(let b=0;b<total;b++){
+    const btn = document.createElement('button');
+    btn.className = 'batch-btn';
+    btn.style.border = '0';
+    // show completed status
+    if (completedBatches.includes(b)){
+      btn.style.background = 'var(--good)';
+      btn.style.color = '#fff';
+      btn.textContent = `Batch ${b+1} ✓ Completed`;
+    } else {
+      btn.classList.add('primary');
+      btn.textContent = `Start Batch ${b+1}`;
+      btn.style.color = '#fff';
+    }
+    btn.onclick = ()=> startBatchWithCheck(b);
+    btnWrap.appendChild(btn);
+  }
+  menu.appendChild(btnWrap);
+
+  // Resume button if saved
+  const st = loadState();
+  if(st && st.questions && st.questions.length){
+    const br = document.createElement('div'); br.style.marginTop='10px';
+    const r = document.createElement('button'); r.className='warn'; r.textContent='Resume Last Attempt'; r.onclick=resumeExam;
+    br.appendChild(r);
+    menu.appendChild(br);
+  }
+
+  // Reset All Batches button
+  const resetWrap = document.createElement('div');
+  resetWrap.style.marginTop = '16px';
+  const resetBtn = document.createElement('button');
+  resetBtn.className = 'reset-btn';
+  resetBtn.style.background = 'var(--bad)';
+  resetBtn.style.color = '#fff';
+  resetBtn.style.padding = '10px 14px';
+  resetBtn.style.borderRadius = '8px';
+  resetBtn.textContent = 'Reset All Batches';
+  resetBtn.onclick = resetAllBatches;
+  resetWrap.appendChild(resetBtn);
+  menu.appendChild(resetWrap);
+
+  // Small note
+  const note = document.createElement('div'); note.className='small'; note.style.marginTop='10px';
+  note.textContent = 'You can submit any batch anytime and switch batches freely. Progress is saved locally. Use Reset to clear completions.';
+  menu.appendChild(note);
+}
+
+// helper: confirm before starting new batch if current in-progress
+function startBatchWithCheck(targetBatch){
+  if(inProgress()){
+    const ok = confirm('You have in-progress answers in the current batch. Starting another batch will discard the current in-memory progress (saved attempts remain). Proceed?');
+    if(!ok) return;
+  }
+  startBatch(targetBatch);
+}
+
+/* ----------------- START / RESUME ----------------- */
+function startBatch(b){
+  batchIndex = b;
+  const start = b * QUESTIONS_PER_BATCH;
+  const end = Math.min(start + QUESTIONS_PER_BATCH, originalQuestions.length);
+  questions = JSON.parse(JSON.stringify(originalQuestions.slice(start, end)));
+  if(shuffleEnabled) shuffleQuestionsAndOptions();
+  userAnswers = new Array(questions.length).fill(null);
+  questionRemain = new Array(questions.length).fill(PER_QUESTION_SECONDS);
+  marked = new Array(questions.length).fill(false);
+  currentIndex = 0;
+  globalSeconds = questions.length * PER_QUESTION_SECONDS;
+  paused = false;
+  saveState();
+  showExam();
+}
+
+function resumeExam(){
+  const st = loadState();
+  if(!st) return alert('No saved attempt');
+  // restore
+  originalQuestions = st.originalQuestions || originalQuestions;
+  questions = st.questions || [];
+  userAnswers = st.userAnswers || new Array(questions.length).fill(null);
+  questionRemain = st.questionRemain || new Array(questions.length).fill(PER_QUESTION_SECONDS);
+  marked = st.marked || new Array(questions.length).fill(false);
+  batchIndex = st.batchIndex || 0;
+  currentIndex = st.currentIndex || 0;
+  globalSeconds = st.globalSeconds || (questions.length * PER_QUESTION_SECONDS);
+  paused = !!st.paused;
+  shuffleEnabled = typeof st.shuffleEnabled === 'boolean' ? st.shuffleEnabled : shuffleEnabled;
+  darkMode = !!st.darkMode;
+  applyUISettings();
+  showExam();
+}
+
+function shuffleQuestionsAndOptions(){
+  shuffleArray(questions);
+  questions.forEach(q=>{
+    const correctText = q.options[q.answer];
+    shuffleArray(q.options);
+    q.answer = q.options.indexOf(correctText);
+  });
+}
+
+/* ----------------- RENDER EXAM ----------------- */
+function showExam(){
+  document.getElementById('menu').style.display = 'none';
+  document.getElementById('controls').style.display = 'flex';
+  document.getElementById('exam').style.display = 'block';
+  document.getElementById('result').innerHTML = '';
+  document.getElementById('batchTitle').textContent = `${batchIndex+1}`;
+  applyUISettings();
+  renderQuestion();
+  renderNavNums();
+  updateProgress();
+  updateTimersDisplay();
+  // ensure timers are running according to paused state
+  clearInterval(globalTimerId); clearInterval(questionTimerId);
+  if(!paused){ startGlobalTimer(); startQuestionTimer(); }
+  // show/hide prev/next batch buttons appropriately
+  updateBatchNavButtons();
+}
+
+function applyUISettings(){
+  document.getElementById('shuffleToggle').textContent = `Shuffle: ${shuffleEnabled? 'ON':'OFF'}`;
+  document.getElementById('darkToggle').textContent = darkMode? 'Light':'Dark';
+  document.body.classList.toggle('dark', darkMode);
+}
+
+function renderQuestion(){
+  if(!questions || questions.length === 0){
+    document.getElementById('questionBox').innerHTML = '<em>No questions in this batch.</em>';
+    return;
+  }
+  const q = questions[currentIndex];
+  let html = `<div style='display:flex;justify-content:space-between;align-items:center'><div><strong>Q${currentIndex+1}.</strong> ${escapeHtml(q.q)}</div><div class='small'>Marked: <strong>${marked[currentIndex]? 'Yes':'No'}</strong></div></div><hr>`;
+  q.options.forEach((opt,i)=>{
+    const checked = (userAnswers[currentIndex]===i)? 'checked': '';
+    html += `<label style='display:block;margin:8px 0;padding:8px;border-radius:6px;border:1px solid #eee;cursor:pointer'><input type='radio' name='opt' value='${i}' ${checked}> ${escapeHtml(opt)}</label>`;
+  });
+  document.getElementById('questionBox').innerHTML = html;
+  document.querySelectorAll("input[name='opt']").forEach(el=>el.onchange = ()=>{
+    userAnswers[currentIndex] = parseInt(el.value);
+    saveState();
+    renderNavNums();
+    updateProgress();
+  });
+}
+
+function renderNavNums(){
+  const wrap = document.getElementById('navNums'); wrap.innerHTML = '';
+  if(!questions) return;
+  questions.forEach((q,i)=>{
+    const b = document.createElement('button');
+    b.textContent = i+1;
+    b.style.minWidth = '36px';
+    b.style.minHeight = '36px';
+    if(userAnswers[i] !== null) b.classList.add('answered');
+    if(marked[i]) b.classList.add('marked');
+    if(i===currentIndex) b.style.boxShadow='0 0 0 4px rgba(0,123,255,0.12)';
+    b.onclick = ()=>{ saveState(); currentIndex = i; renderQuestion(); startQuestionTimer(); updateTimersDisplay(); renderNavNums(); };
+    wrap.appendChild(b);
+  });
+}
+
+function updateProgress(){
+  const answered = userAnswers.filter(x=>x!==null).length;
+  const total = questions.length;
+  const pct = total ? Math.round((answered/total)*100) : 0;
+  document.getElementById('progBar').style.width = pct+'%';
+  document.getElementById('progressText').textContent = `Answered ${answered} / ${total} (${pct}%)`;
+  document.getElementById('marksLegend').innerHTML = `<span style='color:var(--good)'>Answered</span> &nbsp; <span style='border:2px dashed #ff9800;padding:2px;border-radius:4px'>Marked</span>`;
+}
+
+/* ----------------- TIMERS ----------------- */
+function startGlobalTimer(){ clearInterval(globalTimerId); globalTimerId = setInterval(()=>{
+  if(paused) return;
+  globalSeconds--;
+  if(globalSeconds <= 0){ globalSeconds = 0; submitBatch(); }
+  saveState(); updateTimersDisplay();
+}, 1000); }
+
+function startQuestionTimer(){ clearInterval(questionTimerId); questionTimerId = setInterval(()=>{
+  if(paused) return;
+  if(!questionRemain[currentIndex] && questionRemain[currentIndex] !== 0) questionRemain[currentIndex] = PER_QUESTION_SECONDS;
+  questionRemain[currentIndex] = (questionRemain[currentIndex] || PER_QUESTION_SECONDS) - 1;
+  if(questionRemain[currentIndex] <= 0){ questionRemain[currentIndex] = 0; goNext(); }
+  saveState(); updateTimersDisplay();
+}, 1000); }
+
+function updateTimersDisplay(){
+  document.getElementById('globalTimer').textContent = formatTime(globalSeconds || 0);
+  document.getElementById('questionTimer').textContent = (questionRemain[currentIndex] !== undefined ? questionRemain[currentIndex] : PER_QUESTION_SECONDS);
+}
+
+/* ----------------- NAVIGATION ----------------- */
+function goNext(){
+  if(!questions || questions.length===0) return;
+  if(currentIndex < questions.length - 1){
+    currentIndex++;
+    renderQuestion(); renderNavNums(); startQuestionTimer(); saveState();
+  } else {
+    // at end — don't force submit automatically; show a message then let user decide
+    const ok = confirm('You are at the last question. Do you want to submit this batch now?');
+    if(ok) submitBatch();
+  }
+}
+function goPrev(){
+  if(!questions || questions.length===0) return;
+  if(currentIndex > 0){
+    currentIndex--;
+    renderQuestion(); renderNavNums(); startQuestionTimer(); saveState();
+  }
+}
+
+document.getElementById('nextBtn').onclick = ()=>{ saveState(); goNext(); };
+document.getElementById('prevBtn').onclick = ()=>{ saveState(); goPrev(); };
+
+document.getElementById('answerLaterBtn').onclick = ()=>{ if(!questions || !questions.length) return; marked[currentIndex] = true; saveState(); renderNavNums(); goNext(); };
+
+document.getElementById('pauseBtn').onclick = ()=>{ paused = true; saveState(); document.getElementById('pauseBtn').style.display='none'; document.getElementById('resumeBtn').style.display='inline-block'; };
+document.getElementById('resumeBtn').onclick = ()=>{ paused = false; saveState(); document.getElementById('pauseBtn').style.display='inline-block'; document.getElementById('resumeBtn').style.display='none'; startGlobalTimer(); startQuestionTimer(); };
+
+/* ----------------- BATCH NAV BUTTONS & HOME ----------------- */
+document.getElementById('homeBtn').onclick = ()=>{ // go back to menu (keeps saved state)
+  clearInterval(globalTimerId); clearInterval(questionTimerId);
+  document.getElementById('exam').style.display = 'none';
+  document.getElementById('controls').style.display = 'none';
+  document.getElementById('menu').style.display = 'block';
+  document.getElementById('result').innerHTML = '';
+  renderBatchMenu();
+};
+
+document.getElementById('nextBatchBtn').onclick = ()=>{ const total = Math.max(1, Math.ceil(originalQuestions.length / QUESTIONS_PER_BATCH)); if(batchIndex+1 >= total){ alert('No next batch'); return; } startBatchWithCheck(batchIndex+1); };
+document.getElementById('prevBatchBtn').onclick = ()=>{ if(batchIndex-1 < 0){ alert('No previous batch'); return; } startBatchWithCheck(batchIndex-1); };
+
+/* ----------------- SUBMIT & REVIEW ----------------- */
+document.getElementById('submitBtn').onclick = ()=>{ // allow submit at any time
+  const confirmNow = confirm('Submit this batch now? You will see the result and saved attempt will be cleared.');
+  if(confirmNow) submitBatch();
+};
+
+function submitBatch(){
+  clearInterval(globalTimerId); clearInterval(questionTimerId);
+  let correct = 0;
+  const details = (questions || []).map((q,i)=>{
+    const ua = userAnswers[i];
+    const isCorrect = (ua !== null && ua === q.answer);
+    if(isCorrect) correct++;
+    return { q: q.q, options: q.options, ua, correctIndex: q.answer, isCorrect };
+  });
+
+  const total = questions.length || 0;
+  const pct = total ? ((correct/total)*100).toFixed(2) : '0.00';
+
+  // Mark current batch as completed (persist this)
+  if (!completedBatches.includes(batchIndex)) {
+    completedBatches.push(batchIndex);
+    localStorage.setItem(COMPLETED_KEY, JSON.stringify(completedBatches));
+  }
+
+  // clear saved state for this attempt (but keep completed list)
+  clearSavedState();
+
+  document.getElementById('exam').style.display = 'none';
+  document.getElementById('controls').style.display = 'none';
+  document.getElementById('result').innerHTML = `
+    <h2>Batch ${batchIndex+1} Result</h2>
+    <p><strong>Score:</strong> ${correct} / ${total} (${pct}%)</p>
+    <div style="margin-top:12px">
+      <button id='viewDetail' class='primary'>View Detailed Review</button>
+      <button id='backMenu' class='secondary'>Back to Menu</button>
+      <button id='startNext' class='secondary'>Start Next Batch</button>
+    </div>
+  `;
+
+  document.getElementById('viewDetail').onclick = ()=> showDetailedReview(details);
+  document.getElementById('backMenu').onclick = ()=> { location.reload(); }; // simple reload to restore initial UI
+  document.getElementById('startNext').onclick = ()=> {
+    const totalB = Math.max(1, Math.ceil(originalQuestions.length / QUESTIONS_PER_BATCH));
+    if(batchIndex+1 < totalB) startBatch(batchIndex+1);
+    else alert('No next batch available.');
+  };
+}
+
+/* detailed review view */
+function showDetailedReview(details){
+  let html = `<h3>Detailed Review — Batch ${batchIndex+1}</h3><ol>`;
+  details.forEach((d,i)=>{
+    html += `<li style='margin:8px 0'><strong>${escapeHtml(d.q)}</strong><br>Your: ${d.ua !== null ? escapeHtml(d.options[d.ua]) : '<em>Not answered</em>'} ${d.isCorrect? '<span style="color:var(--good)"> (Correct)</span>' : '<span style="color:var(--bad)"> (Wrong)</span>' }<br>Correct: ${escapeHtml(d.options[d.correctIndex])}</li>`;
+  });
+  html += `</ol><div style="margin-top:12px"><button id='detailBack' class='primary'>Back to Menu</button></div>`;
+  document.getElementById('result').innerHTML = html;
+  document.getElementById('detailBack').onclick = ()=> { location.reload(); };
+}
+
+/* ----------------- IMPORT / EXPORT / UI ----------------- */
+document.getElementById('exportBtn').onclick = ()=>{
+  const data = JSON.stringify(originalQuestions, null, 2);
+  const blob = new Blob([data],{type:'application/json'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a'); a.href=url; a.download = 'questions.json'; a.click(); URL.revokeObjectURL(url);
+};
+
+document.getElementById('importBtn').onclick = ()=>{ document.getElementById('importFile').click(); };
+document.getElementById('importFile').onchange = (e)=>{
+  const f = e.target.files[0]; if(!f) return; const reader = new FileReader(); reader.onload = ev=>{
+    try{
+      const arr = JSON.parse(ev.target.result);
+      if(!Array.isArray(arr)) throw 0;
+      originalQuestions = arr;
+      alert('Imported '+arr.length+' questions.'); renderBatchMenu();
+    }catch(err){ alert('Invalid JSON file'); }
+  }; reader.readAsText(f);
+};
+
+/* Shuffle toggle */
+document.getElementById('shuffleToggle').onclick = ()=>{ shuffleEnabled = !shuffleEnabled; document.getElementById('shuffleToggle').textContent = `Shuffle: ${shuffleEnabled? 'ON':'OFF'}`; saveState(); };
+/* Dark toggle */
+document.getElementById('darkToggle').onclick = ()=>{ darkMode = !darkMode; applyUISettings(); saveState(); };
+
+/* ----------------- RESET ALL BATCHES ----------------- */
+function resetAllBatches(){
+  if (!confirm("Are you sure you want to reset all batches? This will clear completed status and saved progress.")) return;
+  // Clear completed batches
+  completedBatches = [];
+  localStorage.setItem(COMPLETED_KEY, JSON.stringify(completedBatches));
+  // Clear saved attempt state
+  clearSavedState();
+  // Re-render menu
+  renderBatchMenu();
+  alert("All batches and saved attempts have been reset.");
+}
+
+/* ----------------- UTIL ----------------- */
+function escapeHtml(str){ return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+/* update prev/next batch button visibility */
+function updateBatchNavButtons(){
+  const total = Math.max(1, Math.ceil(originalQuestions.length / QUESTIONS_PER_BATCH));
+  document.getElementById('nextBatchBtn').disabled = (batchIndex+1 >= total);
+  document.getElementById('prevBatchBtn').disabled = (batchIndex <= 0);
+}
+
+/* ----------------- INIT ----------------- */
+renderBatchMenu();
+applyUISettings();
+
+
+let levelFilter = 'All';
+
+function setLevelFilter(level) {
+  levelFilter = level;
+  startBatch(0);
+}
+
+const _origBuildBatches = buildBatches;
+buildBatches = function () {
+  let filtered = originalQuestions;
+  if (levelFilter !== 'All') {
+    filtered = originalQuestions.filter(q => q.level === levelFilter);
+  }
+  questions = shuffleEnabled ? shuffle([...filtered]) : [...filtered];
+  batches = [];
+  for (let i = 0; i < questions.length; i += QUESTIONS_PER_BATCH) {
+    batches.push(questions.slice(i, i + QUESTIONS_PER_BATCH));
+  }
+};
+
+</script>
+</body>
+</html>
