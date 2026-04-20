@@ -1303,6 +1303,228 @@ let originalQuestions = [
     "time": 40,
     "level": "Hard"
   }
+,
+  
+  {
+    "q": "Why do we create a separate measure table in SSAS Tabular?",
+    "options": [
+      "To store transactional data",
+      "To improve storage performance",
+      "To organize and manage DAX measures separately",
+      "To create relationships"
+    ],
+    "answer": 2,
+    "time": 20
+  },
+  {
+    "q": "Is a measure table created by default in SSAS Tabular?",
+    "options": [
+      "Yes, always",
+      "No, it must be created manually",
+      "Only in Power BI",
+      "Only when importing data"
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "How do you create a measure table in SSAS Tabular?",
+    "options": [
+      "Using SQL query",
+      "Using DAX calculated table",
+      "Using stored procedure",
+      "Using relationship view"
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "Which DAX expression is commonly used to create a dummy measure table?",
+    "options": [
+      "Measures = SELECT * FROM Table",
+      "Measures = SUM(Table[Column])",
+      "Measures = { (1) }",
+      "Measures = COUNTROWS(Table)"
+    ],
+    "answer": 2,
+    "time": 20
+  },
+  {
+    "q": "Why do we use a dummy value like { (1) } when creating a measure table?",
+    "options": [
+      "To create relationships",
+      "To ensure the table has at least one column and row",
+      "To calculate measures",
+      "To load data from source"
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "What should be done after creating a measure table with a dummy column?",
+    "options": [
+      "Delete the column",
+      "Hide the column from client tools",
+      "Create relationship",
+      "Add indexes"
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "Why is the dummy column hidden in a measure table?",
+    "options": [
+      "To improve query speed",
+      "To prevent unnecessary columns from appearing in reporting tools",
+      "To delete data",
+      "To reduce memory usage"
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "Where are measures typically created by default in SSAS Tabular?",
+    "options": [
+      "In a separate measure table",
+      "In dimension tables",
+      "In the table currently selected (often fact table)",
+      "In staging tables"
+    ],
+    "answer": 2,
+    "time": 20
+  },
+  {
+    "q": "What does 'Home Table' represent for a measure?",
+    "options": [
+      "The source system",
+      "The table where the measure is logically assigned",
+      "The table where data is stored",
+      "The staging layer"
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "How can you move a measure from a fact table to a measure table?",
+    "options": [
+      "By deleting and recreating database",
+      "By dragging in diagram view only",
+      "By changing the Home Table using dropdown or model explorer",
+      "By changing relationship"
+    ],
+    "answer": 2,
+    "time": 20
+  },
+  {
+    "q": "Why might dragging a measure in diagram view not work in SSAS Tabular?",
+    "options": [
+      "Because measures cannot be moved",
+      "Because diagram view only changes visual layout and may not update Home Table",
+      "Because measures are locked",
+      "Because relationships are missing"
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "What is the reliable way to move measures between tables in SSAS Tabular?",
+    "options": [
+      "Using SQL script",
+      "Using formula bar dropdown or Tabular Model Explorer",
+      "Using Power BI",
+      "Using Excel"
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "Can a measure exist in multiple tables at the same time?",
+    "options": [
+      "Yes, it gets duplicated",
+      "No, it exists only once and has a single Home Table",
+      "Yes, if copied",
+      "Only in Power BI"
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "Why does deleting a measure from one place remove it everywhere?",
+    "options": [
+      "Because it is stored in multiple tables",
+      "Because it is a single object in the model",
+      "Because of relationships",
+      "Because of DAX error"
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "What is a common mistake when moving measures using copy-paste?",
+    "options": [
+      "Creating too many tables",
+      "Creating duplicate columns",
+      "Thinking a new measure is created while it references the same object",
+      "Breaking relationships"
+    ],
+    "answer": 2,
+    "time": 20
+  },
+  {
+    "q": "What is the best practice for organizing measures in SSAS Tabular?",
+    "options": [
+      "Keep them in fact tables",
+      "Store them in dimension tables",
+      "Use a dedicated measure table",
+      "Avoid using measures"
+    ],
+    "answer": 2,
+    "time": 20
+  },
+  {
+    "q": "What naming convention is recommended for a measure table?",
+    "options": [
+      "FactMeasures",
+      "DimMeasures",
+      "Measures",
+      "Table1"
+    ],
+    "answer": 2,
+    "time": 20
+  },
+  {
+    "q": "What feature helps organize measures inside a measure table?",
+    "options": [
+      "Relationships",
+      "Display Folders",
+      "Indexes",
+      "Partitions"
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "What happens if you do not hide the dummy column in measure table?",
+    "options": [
+      "Model fails",
+      "Column appears in Power BI/Excel unnecessarily",
+      "Relationships break",
+      "Measures stop working"
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "What is the main benefit of using a measure table in large models?",
+    "options": [
+      "Faster ETL",
+      "Better UI organization and maintainability",
+      "Reduced storage",
+      "Automatic indexing"
+    ],
+    "answer": 1,
+    "time": 20
+  }
 
   
 ];
