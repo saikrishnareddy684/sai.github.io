@@ -5521,6 +5521,128 @@ let originalQuestions = [
   "time": 20,
   "level": "Medium"
 }
+,
+  
+  {
+    "q": "How do you add a new table to an SSAS Tabular model from an existing data source?",
+    "options": [
+      "By writing a DAX query",
+      "By right-clicking the data source and selecting 'Import New Table'",
+      "By creating a new measure",
+      "By editing relationships"
+    ],
+    "answer": 1,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "When a new table is imported into SSAS Tabular, are relationships always created automatically?",
+    "options": [
+      "Yes, always",
+      "No, never",
+      "Only when matching keys and compatible data types are detected",
+      "Only for fact tables"
+    ],
+    "answer": 2,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "Which of the following conditions must be met for SSAS Tabular to auto-create relationships?",
+    "options": [
+      "Matching column names and compatible data types",
+      "Same table size",
+      "Same number of rows",
+      "Same database schema name"
+    ],
+    "answer": 0,
+    "time": 20,
+    "level": "Medium"
+  },
+  {
+    "q": "Why is it important to verify relationships after importing a new table in SSAS Tabular?",
+    "options": [
+      "To improve UI performance",
+      "Because relationships may not be created or could be incorrect",
+      "To reduce data size",
+      "To enable DAX functions"
+    ],
+    "answer": 1,
+    "time": 20,
+    "level": "Medium"
+  },
+  {
+    "q": "What happens if SSAS Tabular finds multiple possible relationships between tables?",
+    "options": [
+      "It creates all relationships automatically",
+      "It deletes duplicate columns",
+      "It may not create any relationship due to ambiguity",
+      "It creates a many-to-many relationship automatically"
+    ],
+    "answer": 2,
+    "time": 20,
+    "level": "Hard"
+  },
+  {
+    "q": "Which view is commonly used to verify and manage relationships in SSAS Tabular?",
+    "options": [
+      "Data View",
+      "Diagram View",
+      "Script View",
+      "Query View"
+    ],
+    "answer": 1,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "If two tables have matching column names but different data types, what will SSAS Tabular do?",
+    "options": [
+      "Create relationship automatically",
+      "Convert data types automatically",
+      "Not create a relationship",
+      "Throw an error and stop import"
+    ],
+    "answer": 2,
+    "time": 20,
+    "level": "Medium"
+  },
+  {
+    "q": "What is a best practice after importing a new table into SSAS Tabular?",
+    "options": [
+      "Immediately deploy the model",
+      "Delete unused columns",
+      "Verify and validate relationships manually",
+      "Create measures"
+    ],
+    "answer": 2,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "Which type of relationship is most commonly created in SSAS Tabular models?",
+    "options": [
+      "Many-to-many",
+      "One-to-many",
+      "One-to-one",
+      "No relationship"
+    ],
+    "answer": 1,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "Why should auto-created relationships not be blindly trusted in SSAS Tabular?",
+    "options": [
+      "They reduce performance",
+      "They may have incorrect cardinality or direction",
+      "They delete data",
+      "They prevent deployment"
+    ],
+    "answer": 1,
+    "time": 20,
+    "level": "Medium"
+  }
 
   
 ];
