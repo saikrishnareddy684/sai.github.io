@@ -5679,6 +5679,93 @@ let originalQuestions = [
     "time": 30,
     "level": "Medium"
   }
+,
+  
+  {
+    "q": "What is the primary purpose of the 'Value.NativeQuery' function in a Power Query (M) script?",
+    "options": [
+      "To encrypt the SQL connection string",
+      "To execute a hand-written SQL script directly against the database",
+      "To automatically generate DAX measures",
+      "To delete rows from the source SQL table"
+    ],
+    "answer": 1,
+    "time": 20,
+    "level": "Medium"
+  },
+  {
+    "q": "In the Advanced Editor, where is the SQL script located within the M code structure?",
+    "options": [
+      "Inside the 'let' statement as a variable name",
+      "Inside the 'in' statement at the end of the script",
+      "Inside the [Query=\"...\"] record parameter of the Sql.Database function",
+      "It is stored in a separate .sql file in the project folder"
+    ],
+    "answer": 2,
+    "time": 25,
+    "level": "Hard"
+  },
+  {
+    "q": "What happens to 'Query Folding' when you replace a standard table selection with a custom SQL query?",
+    "options": [
+      "Folding is enhanced for all subsequent steps",
+      "Folding for any additional steps added in the UI is generally broken",
+      "The engine converts the SQL query back into M code automatically",
+      "It has no impact on the engine's ability to fold"
+    ],
+    "answer": 1,
+    "time": 30,
+    "level": "Hard"
+  },
+  {
+    "q": "What is the best way to verify if the SSAS service account has 'SELECT' permissions on the source database?",
+    "options": [
+      "Check the 'Model.bim' file properties",
+      "Try to 'Process' the table and check for a 'Login failed' or 'Permission denied' error",
+      "Open the Windows Task Manager",
+      "Write a DAX measure to test the connection"
+    ],
+    "answer": 1,
+    "time": 20,
+    "level": "Medium"
+  },
+  {
+    "q": "Why is 'SELECT *' discouraged when writing an import query for SSAS Tabular?",
+    "options": [
+      "The asterisk character is reserved for DAX measures only",
+      "It makes the SQL script impossible to read",
+      "It can cause the model to break if columns are added or removed at the source",
+      "It automatically converts all data types to Text"
+    ],
+    "answer": 2,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "Which step in the 'Applied Steps' list is typically modified or replaced when switching to a custom SQL query?",
+    "options": [
+      "Calculated Column",
+      "Navigation",
+      "Relationship",
+      "Measure"
+    ],
+    "answer": 1,
+    "time": 20,
+    "level": "Medium"
+  },
+  
+  {
+    "q": "What is the benefit of using CAST or CONVERT directly in your SQL import script?",
+    "options": [
+      "It makes the SSAS model file larger",
+      "It ensures the Tabular engine correctly identifies the data type at the point of ingestion",
+      "It hides the column names from other developers",
+      "It allows you to bypass the need for a Data Gateway"
+    ],
+    "answer": 1,
+    "time": 20,
+    "level": "Medium"
+  }
 
   
 ];
