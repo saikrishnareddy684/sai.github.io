@@ -6020,6 +6020,93 @@ let originalQuestions = [
     "time": 15,
     "level": "Medium"
   }
+,
+
+  
+  {
+    "q": "When a model is set to 'DirectQuery' mode, where is the data actually stored?",
+    "options": [
+      "In the SSAS Server RAM",
+      "In the original source database (e.g., SQL Server)",
+      "In a compressed .bim file",
+      "In the user's browser cache"
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Medium"
+  },
+  {
+    "q": "Which DAX function is specifically used to activate an 'Inactive' relationship between two tables during a calculation?",
+    "options": [
+      "RELATED()",
+      "CALCULATE()",
+      "USERELATIONSHIP()",
+      "PATH()"
+    ],
+    "answer": 2,
+    "time": 25,
+    "level": "Medium"
+  },
+  {
+    "q": "What is the primary benefit of using 'Calculation Groups' in an SSAS model?",
+    "options": [
+      "They allow you to reuse a single logic (like YTD) across multiple measures",
+      "They make the .bim file smaller",
+      "They allow you to connect to Excel faster",
+      "They automatically fix data type mismatches"
+    ],
+    "answer": 0,
+    "time": 30,
+    "level": "Hard"
+  },
+  {
+    "q": "In Row-Level Security (RLS), which DAX function returns the login ID of the person currently viewing the report?",
+    "options": [
+      "USERNAME()",
+      "LOOKUPVALUE()",
+      "CUSTOMDATA()",
+      "USERPRINCIPALNAME()"
+    ],
+    "answer": 3,
+    "time": 20,
+    "level": "Medium"
+  },
+  {
+    "q": "If you have three relationships between FactSales and DimDate (Order, Ship, Due), how many can be 'Active' at the same time?",
+    "options": [
+      "Three",
+      "Zero",
+      "Two",
+      "One"
+    ],
+    "answer": 3,
+    "time": 15,
+    "level": "Easy"
+  },
+  {
+    "q": "Which tool is most commonly used to create and manage Calculation Groups in an SSAS Tabular model?",
+    "options": [
+      "SQL Server Management Studio (SSMS)",
+      "Tabular Editor",
+      "Excel Power Pivot",
+      "Visual Studio Relationship Wizard"
+    ],
+    "answer": 1,
+    "time": 20,
+    "level": "Medium"
+  },
+  {
+    "q": "In Dynamic RLS, what is the standard practice for connecting a 'Security Mapping' table to your Fact table?",
+    "options": [
+      "A One-to-One relationship",
+      "A Many-to-Many relationship using a bridge",
+      "A One-to-Many relationship from the Security table to the Dimension being filtered",
+      "No relationship is needed; DAX handles it via LOOKUPVALUE"
+    ],
+    "answer": 2,
+    "time": 30,
+    "level": "Hard"
+  }
 
 
 
