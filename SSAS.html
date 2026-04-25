@@ -6107,6 +6107,227 @@ let originalQuestions = [
     "time": 30,
     "level": "Hard"
   }
+,
+  {
+    "q": "In an SSAS model, what is the best description of a 'Single Metric' (Base Measure)?",
+    "options": [
+      "A column that contains text descriptions of products",
+      "A DAX calculation that performs a basic aggregation like SUM or COUNT",
+      "A relationship between two tables",
+      "A partition strategy for large databases"
+    ],
+    "answer": 1,
+    "time": 15,
+    "level": "Easy"
+  },
+  {
+    "q": "If you have 5 core metrics and need to show Current, YTD, and Month-over-Month for each, how many measures would you need to create WITHOUT using Calculation Groups?",
+    "options": [
+      "5",
+      "10",
+      "15",
+      "3"
+    ],
+    "answer": 2,
+    "time": 20,
+    "level": "Medium"
+  },
+  {
+    "q": "Which DAX function is used inside a Calculation Group to represent 'Whatever single metric the user has selected'?",
+    "options": [
+      "CALCULATE()",
+      "TOTALYTD()",
+      "ALL()",
+      "SELECTEDMEASURE()"
+    ],
+    "answer": 3,
+    "time": 20,
+    "level": "Hard"
+  },
+  {
+    "q": "Why is it beneficial to keep 'Single Metrics' separate from 'Time Intelligence' logic in a large model?",
+    "options": [
+      "It reduces the complexity and maintenance of the measure list",
+      "It makes the SQL Server run with less RAM",
+      "It allows the model to bypass Row-Level Security",
+      "It is required for DirectQuery mode to work"
+    ],
+    "answer": 0,
+    "time": 25,
+    "level": "Medium"
+  }
+,
+  {
+    "q": "If a developer adds a 'Year-over-Year' item to an existing Calculation Group, and the model has 50 different base measures, how many new measures must be manually written?",
+    "options": [
+      "50",
+      "0",
+      "1",
+      "25"
+    ],
+    "answer": 1,
+    "time": 20,
+    "level": "Medium"
+  },
+  {
+    "q": "Which of the following is the primary reason 'Measure Explosion' is considered a disadvantage in SSAS?",
+    "options": [
+      "It makes the SQL database run out of space",
+      "It increases the maintenance burden and makes the field list confusing for users",
+      "It prevents the use of Excel",
+      "It forces the model into DirectQuery mode"
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Easy"
+  },
+  {
+    "q": "In the formula 'TOTALYTD([Total Sales], DimDate[Date])', which part is the 'Single Metric'?",
+    "options": [
+      "TOTALYTD",
+      "DimDate[Date]",
+      "[Total Sales]",
+      "The entire expression"
+    ],
+    "answer": 2,
+    "time": 15,
+    "level": "Easy"
+  }
+,
+  {
+    "q": "In an SSAS Tabular project, where can you visually manage all active data source connections?",
+    "options": [
+      "Tabular Model Explorer > Data Sources",
+      "Solution Explorer > Roles",
+      "Properties Window > Partitions",
+      "SQL Server Management Studio (SSMS) Object Explorer"
+    ],
+    "answer": 0,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "What is the primary benefit of using 'Value.NativeQuery' in an SSAS partition expression?",
+    "options": [
+      "It makes the SQL run faster",
+      "It allows the partition to use the connection manager already defined in the model metadata",
+      "It bypasses the need for a gateway",
+      "It automatically formats the date columns"
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Medium"
+  },
+  {
+    "q": "If you change the source server name for your project, which file in a Tabular model typically needs to be updated?",
+    "options": [
+      "Script.xmla",
+      "Model.bim",
+      "View.sql",
+      "Measures.dax"
+    ],
+    "answer": 1,
+    "time": 20,
+    "level": "Medium"
+  },
+  {
+    "q": "In a Multidimensional model project, what is the file extension for a saved Data Source?",
+    "options": [
+      ".dax",
+      ".bim",
+      ".ds",
+      ".xmla"
+    ],
+    "answer": 2,
+    "time": 15,
+    "level": "Easy"
+  }
+,
+  {
+    "q": "If a project has two data sources and only one server name changes, what is the result during a 'Process All' operation?",
+    "options": [
+      "The entire operation fails because SSAS requires all sources to be valid for a full process",
+      "Only the tables from the working server will update, while the others remain empty",
+      "SSAS automatically searches the network for the new server name",
+      "The model will switch to 'DirectQuery' mode automatically"
+    ],
+    "answer": 0,
+    "time": 25,
+    "level": "Hard"
+  },
+  {
+    "q": "Which specific component within the Model.bim file must be edited to point a project to a new SQL instance?",
+    "options": [
+      "The DAX Expression",
+      "The Table Partition",
+      "The Data Source (Connection String)",
+      "The Role-Based Security"
+    ],
+    "answer": 2,
+    "time": 15,
+    "level": "Easy"
+  },
+  {
+    "q": "Is it possible to change a server name for a deployed model without using Visual Studio?",
+    "options": [
+      "No, any change requires a full redeploy from the .sln file",
+      "Yes, by editing the Data Source properties directly in SQL Server Management Studio (SSMS)",
+      "Yes, but only if the model is in 'Import' mode",
+      "No, the server name is permanent once the model is created"
+    ],
+    "answer": 1,
+    "time": 20,
+    "level": "Medium"
+  }
+,
+  {
+    "q": "If you update a server name in SSMS (Management Studio) for a deployed model, what happens to the 'model.bim' file in your Visual Studio project?",
+    "options": [
+      "The Visual Studio file is automatically updated via the cloud",
+      "The Visual Studio file remains unchanged and still points to the old server",
+      "The Visual Studio project will delete itself to prevent errors",
+      "The server name is synchronized only when you click 'Save All'"
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Hard"
+  },
+  {
+    "q": "In which format is the information inside a 'model.bim' file stored?",
+    "options": [
+      "XML",
+      "CSV",
+      "JSON",
+      "Plain Text (Notepad style)"
+    ],
+    "answer": 2,
+    "time": 15,
+    "level": "Easy"
+  },
+  {
+    "q": "When moving from a 'Development' server to a 'Production' server, which action is most efficient?",
+    "options": [
+      "Create a brand new project from scratch",
+      "Hard-code the server name into every single partition",
+      "Update the Data Source in the model metadata to point to the Production instance",
+      "Rename the Production server to match the Development server name"
+    ],
+    "answer": 2,
+    "time": 20,
+    "level": "Medium"
+  },
+  {
+    "q": "What happens if the server name in 'model.bim' is correct, but the 'Initial Catalog' (Database Name) is wrong?",
+    "options": [
+      "The model will connect to the Master database instead",
+      "The 'Process' operation will fail because the specific database cannot be found",
+      "SSAS will create a new database with that name",
+      "The relationships will work but the data will be blank"
+    ],
+    "answer": 1,
+    "time": 20,
+    "level": "Medium"
+  }
 
 
 
