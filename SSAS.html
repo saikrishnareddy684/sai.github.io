@@ -6328,7 +6328,561 @@ let originalQuestions = [
     "time": 20,
     "level": "Medium"
   }
-
+,
+  {
+    "q": "Why might a Calculation Group created in Tabular Editor not be visible in Visual Studio (SSDT)?",
+    "options": [
+      "Because it was not saved correctly",
+      "Because Visual Studio does not fully support displaying Calculation Groups in its UI",
+      "Because Calculation Groups are deleted automatically",
+      "Because relationships are missing"
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Medium"
+  },
+  {
+    "q": "Where is the most reliable place to create and manage Calculation Groups?",
+    "options": [
+      "Visual Studio Diagram View",
+      "SQL Server Management Studio",
+      "Tabular Editor",
+      "Excel"
+    ],
+    "answer": 2,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "If a Calculation Group is not visible in Visual Studio, what should you do to verify its existence?",
+    "options": [
+      "Delete and recreate the model",
+      "Check it in Tabular Editor or after deployment",
+      "Restart SQL Server",
+      "Reinstall Visual Studio"
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Easy"
+  },
+  {
+    "q": "What happens to a Calculation Group after saving changes in Tabular Editor?",
+    "options": [
+      "It is stored only temporarily",
+      "It updates the model metadata (JSON/TMSL)",
+      "It is converted into a table",
+      "It is deleted from the model"
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Hard"
+  },
+  {
+    "q": "Why is Visual Studio not preferred for working with Calculation Groups?",
+    "options": [
+      "It does not support DAX",
+      "It has limited or no UI support for Calculation Groups",
+      "It cannot connect to SSAS",
+      "It does not support measures"
+    ],
+    "answer": 1,
+    "time": 20,
+    "level": "Medium"
+  },
+  {
+    "q": "Which of the following tools fully supports creating and editing Calculation Groups?",
+    "options": [
+      "Visual Studio only",
+      "Power BI only",
+      "Tabular Editor",
+      "Excel"
+    ],
+    "answer": 2,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "What is a common misconception when Calculation Groups are not visible in Visual Studio?",
+    "options": [
+      "They are automatically optimized",
+      "They were not created or saved",
+      "They improve performance",
+      "They convert to measures"
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Medium"
+  },
+  {
+    "q": "After deploying a model with Calculation Groups, where can you confirm their presence?",
+    "options": [
+      "Only in Visual Studio",
+      "Only in Excel",
+      "In SSMS or Power BI",
+      "In Notepad"
+    ],
+    "answer": 2,
+    "time": 20,
+    "level": "Medium"
+  },
+  {
+    "q": "What is the recommended workflow when working with Calculation Groups in SSAS Tabular?",
+    "options": [
+      "Use only Visual Studio",
+      "Use Excel for all changes",
+      "Use Visual Studio for modeling and Tabular Editor for advanced features",
+      "Avoid using Calculation Groups"
+    ],
+    "answer": 2,
+    "time": 25,
+    "level": "Medium"
+  },
+  {
+    "q": "What is the underlying reason Calculation Groups may not appear in Visual Studio UI?",
+    "options": [
+      "They are not part of the model",
+      "They are stored externally",
+      "The designer does not fully render advanced metadata features",
+      "They require SQL queries"
+    ],
+    "answer": 2,
+    "time": 30,
+    "level": "Hard"
+  }
+  ,
+  {
+    "q": "What does the 'SELECTEDMEASURE()' function do within a Calculation Item?",
+    "options": [
+      "It forces the user to select a specific measure from a dropdown",
+      "It acts as a placeholder for whichever measure is currently being evaluated in the report",
+      "It calculates the sum of the entire fact table",
+      "It resets the filter context to the beginning of the year"
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Hard"
+  },
+  {
+    "q": "Which tool is required to create Calculation Groups if the native Visual Studio interface does not support them?",
+    "options": [
+      "SQL Server Management Studio",
+      "Excel Power Pivot",
+      "Tabular Editor",
+      "Notepad++"
+    ],
+    "answer": 2,
+    "time": 15,
+    "level": "Easy"
+  },
+  {
+    "q": "What happens if you drag a Calculation Group 'Name' column into a report slicer?",
+    "options": [
+      "The report will crash",
+      "The slicer will filter the data based on product categories",
+      "The user can toggle between different logic like 'Current', 'YTD', or 'YoY' for all visible measures",
+      "It only works if the model is in DirectQuery mode"
+    ],
+    "answer": 2,
+    "time": 20,
+    "level": "Medium"
+  },
+  {
+    "q": "What is 'Precedence' in a Calculation Group?",
+    "options": [
+      "The order in which the Calculation Group appears in the field list",
+      "A property that determines which Calculation Group is applied first if a measure is affected by multiple groups",
+      "The speed at which the DAX query runs",
+      "The security level assigned to the group"
+    ],
+    "answer": 1,
+    "time": 30,
+    "level": "Hard"
+  }
+,
+  {
+    "q": "What is the primary difference between opening a model 'From File' versus 'From DB' in Tabular Editor?",
+    "options": [
+      "From File is for Excel; From DB is for SQL",
+      "From File edits the offline metadata; From DB edits the live deployed model on the server",
+      "From DB allows you to change the background color of the app",
+      "There is no difference; they both do the same thing"
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Medium"
+  },
+  {
+    "q": "When you open Tabular Editor through the 'Extensions' menu in Visual Studio, which file is it actually reading?",
+    "options": [
+      "The .sln file",
+      "The .csproj file",
+      "The .bim file",
+      "The .txt log file"
+    ],
+    "answer": 2,
+    "time": 15,
+    "level": "Easy"
+  },
+  {
+    "q": "If you make changes in Tabular Editor and want them to show up in Visual Studio, what must you do first?",
+    "options": [
+      "Restart your computer",
+      "Click 'Save' (Ctrl+S) in Tabular Editor",
+      "Delete the Model.bim file",
+      "Change the server name in SSMS"
+    ],
+    "answer": 1,
+    "time": 20,
+    "level": "Medium"
+  }
+,
+  {
+    "q": "What happens in Visual Studio immediately after you click 'Save' in Tabular Editor?",
+    "options": [
+      "The computer restarts to apply changes",
+      "The .bim file is updated and Visual Studio prompts you to reload the model",
+      "The data is automatically processed and deployed to the server",
+      "Nothing happens until you manually import the changes"
+    ],
+    "answer": 1,
+    "time": 20,
+    "level": "Medium"
+  },
+  {
+    "q": "In a Calculation Group, what is the default name given to the column that contains the calculation items?",
+    "options": [
+      "CalculationID",
+      "MeasureName",
+      "Name",
+      "ItemType"
+    ],
+    "answer": 2,
+    "time": 15,
+    "level": "Easy"
+  },
+  {
+    "q": "Why is it important to create a 'Current' item that only contains 'SELECTEDMEASURE()'?",
+    "options": [
+      "It makes the calculation run 50% faster",
+      "It allows users to select the original value of a measure without any time intelligence applied",
+      "It is required by SQL Server to validate the license",
+      "It prevents the model from crashing when using Excel"
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Medium"
+  },
+  {
+    "q": "Which property in Tabular Editor controls which calculation group takes priority if a measure is affected by two different groups?",
+    "options": [
+      "Security Level",
+      "Description",
+      "Precedence",
+      "Ordinal"
+    ],
+    "answer": 2,
+    "time": 25,
+    "level": "Hard"
+  }
+,
+  {
+    "q": "What is the most common reason Visual Studio fails to detect changes made in Tabular Editor?",
+    "options": [
+      "The user forgot to click 'Save' (Ctrl+S) inside Tabular Editor",
+      "The SQL Server service is stopped",
+      "The model is too large for the RAM",
+      "Tabular Editor is not compatible with JSON"
+    ],
+    "answer": 0,
+    "time": 20,
+    "level": "Medium"
+  },
+  {
+    "q": "If the 'Model changed outside of Visual Studio' prompt does not appear, which action forces Visual Studio to reload the metadata?",
+    "options": [
+      "Deleting the project and starting over",
+      "Restarting the entire computer",
+      "Closing and reopening the Model.bim file within Visual Studio",
+      "Changing the computer's clock settings"
+    ],
+    "answer": 2,
+    "time": 25,
+    "level": "Medium"
+  },
+  {
+    "q": "In Tabular Editor, what indicates that there are unsaved changes that Visual Studio cannot see yet?",
+    "options": [
+      "A red 'X' next to the table name",
+      "The Save icon is enabled (not greyed out) and an asterisk (*) might appear in the title bar",
+      "The screen flashes green",
+      "A popup warning appears every 5 minutes"
+    ],
+    "answer": 1,
+    "time": 15,
+    "level": "Easy"
+  }
+,
+  {
+    "q": "If Tabular Editor is connected 'From DB' to a workspace server, what happens to the local Model.bim file when you click save?",
+    "options": [
+      "It is instantly updated and saved to the hard drive",
+      "The local file remains unchanged because you are editing the live server metadata only",
+      "Visual Studio will crash and restart",
+      "The Git repository will automatically create a new branch"
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Hard"
+  },
+  {
+    "q": "Which method ensures that changes made in Tabular Editor are tracked by Visual Studio and Git?",
+    "options": [
+      "Connecting 'From DB' to the production server",
+      "Opening the .bim file directly 'From File' in Tabular Editor",
+      "Exporting the model to a CSV file",
+      "Deleting the .sln file before every edit"
+    ],
+    "answer": 1,
+    "time": 20,
+    "level": "Medium"
+  },
+  {
+    "q": "In Tabular Editor, where can you check if you are editing a local file or a server database?",
+    "options": [
+      "The 'Help' menu",
+      "The 'Location' or 'Connected to' text in the title bar/status bar",
+      "The color of the tables in the explorer",
+      "The number of measures in the model"
+    ],
+    "answer": 1,
+    "time": 15,
+    "level": "Easy"
+  }
+  ,
+  
+  {
+    "q": "Why does a Calculation Group appear as a 'Table' in the Visual Studio Model Explorer?",
+    "options": [
+      "Because it contains rows of raw data from SQL Server",
+      "Because Calculation Groups are technically special tables where each Calculation Item is a row",
+      "It is a bug in the software",
+      "Because it stores the connection string for the database"
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Hard"
+  },
+  {
+    "q": "What happens if you forget to click 'Yes to All' when Visual Studio detects a change from Tabular Editor?",
+    "options": [
+      "The changes are deleted forever",
+      "Visual Studio will continue to show the old version of the model, causing a conflict",
+      "The SQL Server will automatically update the file for you",
+      "The project will be converted to a Multidimensional model"
+    ],
+    "answer": 1,
+    "time": 20,
+    "level": "Medium"
+  },
+  {
+    "q": "Which DAX function acts as the 'placeholder' for any measure used with a Calculation Group?",
+    "options": [
+      "TOTALYTD()",
+      "CALCULATE()",
+      "SELECTEDMEASURE()",
+      "SUM()"
+    ],
+    "answer": 2,
+    "time": 15,
+    "level": "Easy"
+  },
+  {
+    "q": "What is the result of using 'SELECTEDMEASURE()' without any other functions in a Calculation Item?",
+    "options": [
+      "It returns an error",
+      "It returns the value of the measure exactly as it is, with no modifications",
+      "It multiplies the measure by two",
+      "It hides the measure from the user"
+    ],
+    "answer": 1,
+    "time": 20,
+    "level": "Medium"
+  }
+,
+  
+  {
+    "q": "If Visual Studio fails to show the 'Reload' prompt, what is the best manual way to see changes made in the .bim file?",
+    "options": [
+      "Reinstall Visual Studio",
+      "Delete the Tabular Editor app",
+      "Close and reopen the Model.bim tab in Visual Studio",
+      "Wait for 24 hours for the cache to clear"
+    ],
+    "answer": 2,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "Why don't Calculation Groups appear in the standard Data Grid view in Visual Studio?",
+    "options": [
+      "Because they contain no physical rows of data from the SQL source",
+      "Because they are hidden by default to save space",
+      "Because they only work in Excel, not Visual Studio",
+      "Because they are encrypted for security"
+    ],
+    "answer": 0,
+    "time": 25,
+    "level": "Medium"
+  },
+  {
+    "q": "In the Tabular Model Explorer, which icon or folder identifies a Calculation Group compared to a regular table?",
+    "options": [
+      "A red circle icon",
+      "They are listed under the 'Tables' folder but have a unique 'Calculation Items' sub-folder",
+      "They are listed under 'Roles'",
+      "They appear in the 'Expressions' folder"
+    ],
+    "answer": 1,
+    "time": 20,
+    "level": "Medium"
+  }
+,
+  
+  {
+    "q": "What is the most likely reason a change saved in an external tool like Tabular Editor doesn't show up in the IDE?",
+    "options": [
+      "The tool is editing a copy of the file in a different folder (Path Mismatch)",
+      "The file is too large for the computer to read",
+      "The IDE has been disconnected from the internet",
+      "The SQL Server password has expired"
+    ],
+    "answer": 0,
+    "time": 20,
+    "level": "Medium"
+  },
+  {
+    "q": "How can you verify which specific file Visual Studio is currently using for your model?",
+    "options": [
+      "Check the 'Help' menu",
+      "Right-click the Model.bim in Solution Explorer and select 'Open Folder in File Explorer'",
+      "Look at the color of the icon",
+      "Count the number of tables in the grid"
+    ],
+    "answer": 1,
+    "time": 15,
+    "level": "Easy"
+  },
+  {
+    "q": "If you overwrite the .bim file manually while Visual Studio is open, what is the expected behavior of the IDE?",
+    "options": [
+      "It will automatically close the project",
+      "It will ignore the change until the next reboot",
+      "It should prompt the user to reload the file to show the new metadata",
+      "It will delete the database from the SQL Server"
+    ],
+    "answer": 2,
+    "time": 20,
+    "level": "Medium"
+  }
+,
+  {
+    "q": "If 'Open Folder in File Explorer' is missing when right-clicking a file, where else can you find it in the Solution Explorer?",
+    "options": [
+      "By right-clicking the Project name or the Solution name",
+      "In the Edit menu under 'Find'",
+      "By clicking the 'Save All' button",
+      "In the Git Changes window"
+    ],
+    "answer": 0,
+    "time": 15,
+    "level": "Easy"
+  },
+  {
+    "q": "What does 'Cleaning the Solution' do in Visual Studio?",
+    "options": [
+      "It deletes all your DAX formulas",
+      "It removes temporary build files and caches that might be showing old data",
+      "It formats your code to look nicer",
+      "It checks the SQL Server for errors"
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Medium"
+  }
+,
+  {
+    "q": "Where is the only place within the Visual Studio interface to see a Calculation Group after it has been created?",
+    "options": [
+      "In the SQL Server Object Explorer",
+      "In the Tabular Model Explorer under the 'Tables' folder",
+      "In the Properties window of the Fact table",
+      "In the 'Solution Explorer' inside the .sln file"
+    ],
+    "answer": 1,
+    "time": 20,
+    "level": "Medium"
+  },
+  {
+    "q": "Does the Trial version of Tabular Editor 3 prevent you from saving Calculation Groups to a .bim file?",
+    "options": [
+      "Yes, you must pay for a license first",
+      "No, the trial is fully functional for all metadata editing during the evaluation period",
+      "It only allows you to save one group per model",
+      "It only allows saving in 'DirectQuery' mode"
+    ],
+    "answer": 1,
+    "time": 15,
+    "level": "Easy"
+  },
+  {
+    "q": "If you manually overwrite the Model.bim file using 'Save As' in Tabular Editor, what should Visual Studio do?",
+    "options": [
+      "Delete the project automatically",
+      "Ignore the change until you restart the app",
+      "Prompt you to reload the file because the version on the disk has changed",
+      "Convert the project into a Power BI file"
+    ],
+    "answer": 2,
+    "time": 20,
+    "level": "Medium"
+  }
+,
+  {
+    "q": "If a Calculation Group is visible in Excel but not in the Visual Studio grid view, what does this indicate?",
+    "options": [
+      "The deployment failed and needs to be restarted",
+      "The model is working perfectly; Calculation Groups only appear in the Model Explorer tree, not the data grid",
+      "The Excel file is corrupted and showing old data",
+      "The Calculation Group was deleted by the server"
+    ],
+    "answer": 1,
+    "time": 20,
+    "level": "Medium"
+  },
+  {
+    "q": "In the Tabular Model Explorer, what is the specific sub-folder found inside a Calculation Group table?",
+    "options": [
+      "Partitions",
+      "Calculation Items",
+      "Columns",
+      "Hierarchies"
+    ],
+    "answer": 1,
+    "time": 15,
+    "level": "Easy"
+  },
+  {
+    "q": "Which tool provides a better interface for managing Calculation Group logic than the native Visual Studio 'Properties' window?",
+    "options": [
+      "Notepad",
+      "SQL Server Management Studio",
+      "Tabular Editor",
+      "Command Prompt"
+    ],
+    "answer": 2,
+    "time": 15,
+    "level": "Easy"
+  }
 
 
 ];
