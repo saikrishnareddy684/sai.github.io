@@ -6883,7 +6883,219 @@ let originalQuestions = [
     "time": 15,
     "level": "Easy"
   }
+,
+  {
+    "q": "If you add a new measure called 'Total Freight' to your model, do you need to write a new 'Freight YTD' DAX formula now that you have a Calculation Group?",
+    "options": [
+      "Yes, every measure needs its own YTD formula",
+      "No, the Calculation Group will automatically provide YTD for 'Total Freight' because of the SELECTEDMEASURE() function",
+      "Only if the Freight is in a different currency",
+      "Yes, but only in the .bim file"
+    ],
+    "answer": 1,
+    "time": 20,
+    "level": "Medium"
+  },
+  {
+    "q": "What is the primary benefit of Calculation Groups for a report end-user?",
+    "options": [
+      "It makes the Excel file smaller in size",
+      "It allows them to use a single slicer to change the logic of all measures in a report at once",
+      "It allows them to edit the SQL database directly",
+      "It speeds up the internet connection"
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Easy"
+  },
+  {
+    "q": "In the YTD logic, which part tells SSAS to look at the beginning of the year?",
+    "options": [
+      "SELECTEDMEASURE()",
+      "CALCULATE()",
+      "DATESYTD()",
+      "The table name 'DimDate'"
+    ],
+    "answer": 2,
+    "time": 15,
+    "level": "Easy"
+  }
+,
+  {
+    "q": "What happens if you delete a column in Tabular Editor but forget to click 'Save' (Ctrl+S)?",
+    "options": [
+      "The column is deleted from the SQL Server immediately",
+      "Visual Studio will automatically save it for you",
+      "The change stays in Tabular Editor's memory and the .bim file remains unchanged",
+      "The column is renamed to 'Deleted'"
+    ],
+    "answer": 2,
+    "time": 20,
+    "level": "Medium"
+  },
+  {
+    "q": "If 'Total Sales' is a DAX measure calculated as SUM(Sales[Amount]), what happens if you delete the 'Amount' column from the Sales table?",
+    "options": [
+      "The measure will still work using cached data",
+      "The measure will break and show an error because its source column is missing",
+      "SSAS will automatically choose a different column to sum",
+      "The measure is automatically deleted along with the column"
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Hard"
+  },
+  {
+    "q": "Which tool allows you to select multiple columns (using Ctrl+Click) and delete them all at once?",
+    "options": [
+      "SQL Server Management Studio",
+      "Excel Pivot Tables",
+      "Tabular Editor",
+      "The Visual Studio Grid View"
+    ],
+    "answer": 2,
+    "time": 15,
+    "level": "Easy"
+  }
+,
+  {
+    "q": "What does 'TOM' stand for in the Tabular Editor 'TOM Explorer'?",
+    "options": [
+      "Technical Output Manager",
+      "Tabular Object Model",
+      "Total Operation Monitoring",
+      "Table Order Map"
+    ],
+    "answer": 1,
+    "time": 15,
+    "level": "Medium"
+  },
+  {
+    "q": "If you cannot see your tables in Tabular Editor, which menu should you check first?",
+    "options": [
+      "File",
+      "Edit",
+      "View",
+      "Model"
+    ],
+    "answer": 2,
+    "time": 10,
+    "level": "Easy"
+  },
+  {
+    "q": "What happens when you click the 'Pushpin' icon on the TOM Explorer panel?",
+    "options": [
+      "It deletes the selected table",
+      "It docks the panel so it stays visible instead of auto-hiding",
+      "It creates a backup of the model",
+      "It marks a measure as a favorite"
+    ],
+    "answer": 1,
+    "time": 15,
+    "level": "Easy"
+  }
+  ,
+  {
+    "q": "What happens to the 'Undo' history in Tabular Editor if you close the application without saving?",
+    "options": [
+      "It is saved in a temporary cloud file",
+      "The history is lost, but the .bim file remains in its last saved state",
+      "The history is automatically applied to the .bim file",
+      "Visual Studio will recover the history for you"
+    ],
+    "answer": 1,
+    "time": 20,
+    "level": "Medium"
+  },
+  {
+    "q": "Which feature in Tabular Editor 3 allows you to see a chronological list of all your edits?",
+    "options": [
+      "The Measure Grid",
+      "The History Pane",
+      "The DAX Debugger",
+      "The Best Practice Analyzer"
+    ],
+    "answer": 1,
+    "time": 15,
+    "level": "Easy"
+  },
+  {
+    "q": "If you perform a 'Process All' operation in Visual Studio, what is a common side effect regarding the Undo (Ctrl+Z) function?",
+    "options": [
+      "It makes Undo work faster",
+      "It may clear the undo buffer, making it impossible to undo previous metadata changes",
+      "It changes the shortcut to Ctrl+Alt+Z",
+      "It has no effect on the undo history"
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Hard"
+  }
+  ,
+  {
+    "q": "In Tabular Editor 3, what is the most visual way to revert a mistake if you made multiple edits?",
+    "options": [
+      "Using the 'History' pane to jump back to a previous state",
+      "Reinstalling the software",
+      "Deleting the .bim file",
+      "Closing Visual Studio"
+    ],
+    "answer": 0,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "If you save a deletion in Tabular Editor and 'Discard Changes' in Git, what happens?",
+    "options": [
+      "The column is lost forever",
+      "The Model.bim file is restored to its state at the last commit, bringing back the column",
+      "The SQL Server database is deleted",
+      "Your license for Tabular Editor expires"
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Medium"
+  },
+  {
+    "q": "Why is it important to check dependencies before deleting a column?",
+    "options": [
+      "To see if the column is being used in measures or relationships that would break if it's gone",
+      "To check the file size of the column",
+      "To see if the column has a high price in SQL",
+      "To change the color of the column header"
+    ],
+    "answer": 0,
+    "time": 20,
+    "level": "Medium"
+  }
+,
+  {
+    "q": "Why does Visual Studio sometimes disable the 'Undo' button after you save or process a model?",
+    "options": [
+      "To save battery life on the laptop",
+      "Because the 'Undo' buffer is cleared once the model metadata is synced with the workspace server",
+      "Because the software has run out of storage space",
+      "It is a security feature to prevent hacking"
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Hard"
+  },
+  {
+    "q": "What is the primary difference between an 'Undo' in Tabular Editor versus a 'Discard' in Git?",
+    "options": [
+      "There is no difference; they are the same thing",
+      "Undo reverts a single recent action in the app; Discard reverts the entire file to its last saved 'Commit' state",
+      "Undo only works for colors; Discard only works for data",
+      "Undo requires a password; Discard is free"
+    ],
+    "answer": 1,
+    "time": 20,
+    "level": "Medium"
+  }
 
+
+  
 
 ];
 
