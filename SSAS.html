@@ -7217,6 +7217,451 @@ let originalQuestions = [
     "time": 25,
     "level": "Medium"
   }
+,
+  
+  {
+    "q": "Which property must be set to 'True' for a Tabular Model to support Calculation Groups?",
+    "options": [
+      "Allow Multiple Relationships",
+      "Discourage Implicit Measures",
+      "Enable Fast Load",
+      "Include In Report Refresh"
+    ],
+    "answer": 1,
+    "time": 20,
+    "level": "Hard"
+  },
+  {
+    "q": "If Calculation Group A has a precedence of 10 and Calculation Group B has a precedence of 20, which one 'wraps' the other?",
+    "options": [
+      "Group A wraps Group B",
+      "Group B wraps Group A",
+      "They run at the exact same time",
+      "Neither; they will cause a circular dependency error"
+    ],
+    "answer": 1,
+    "time": 30,
+    "level": "Hard"
+  },
+  {
+    "q": "What is the result of the DAX function SELECTEDMEASURENAME()?",
+    "options": [
+      "The numeric value of the measure",
+      "A text string containing the name of the measure being evaluated",
+      "The name of the table the measure belongs to",
+      "The name of the user viewing the report"
+    ],
+    "answer": 1,
+    "time": 15,
+    "level": "Medium"
+  }
+,
+  {
+    "q": "Which property allows a Calculation Group to change a number like 0.05 into '5.0%' without changing the underlying DAX logic?",
+    "options": [
+      "Expression",
+      "Format String Expression",
+      "Precedence",
+      "Ordinal"
+    ],
+    "answer": 1,
+    "time": 20,
+    "level": "Medium"
+  },
+  {
+    "q": "In a 'Currency Conversion' calculation group, why is it better to use a Calculation Group than 50 separate measures?",
+    "options": [
+      "It reduces 'Measure Bloat' by allowing one conversion logic to apply to all existing measures",
+      "It makes the SQL server run faster",
+      "It automatically downloads the latest exchange rates from the internet",
+      "It prevents users from seeing the data in Excel"
+    ],
+    "answer": 0,
+    "time": 25,
+    "level": "Easy"
+  },
+  {
+    "q": "If you want to use a Calculation Group to switch between 'Total Sales' and 'Total Quantity' in a single chart, which DAX function helps identify the placeholder measure?",
+    "options": [
+      "SELECTEDMEASURENAME()",
+      "ISFILTERED()",
+      "USERELATIONSHIP()",
+      "LOOKUPVALUE()"
+    ],
+    "answer": 0,
+    "time": 20,
+    "level": "Hard"
+  }
+,
+  {
+    "q": "What happens if a user applies two calculation items from the same group at once (e.g., in a slicer with multi-select)?",
+    "options": [
+      "The values are added together",
+      "The engine returns an error or unexpected results because only one item per group can be active in a specific context",
+      "It creates a new hidden measure",
+      "The report automatically switches to a Pie Chart"
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Hard"
+  },
+  {
+    "q": "Which DAX function would you use inside a Calculation Item to return the original measure value without any changes?",
+    "options": [
+      "CALCULATE(SUM(Sales))",
+      "SELECTEDMEASURE()",
+      "VALUES(Table[Column])",
+      "LOOKUPVALUE()"
+    ],
+    "answer": 1,
+    "time": 10,
+    "level": "Easy"
+  },
+  {
+    "q": "Why is the property 'Discourage Implicit Measures' important for Calculation Groups?",
+    "options": [
+      "It makes the file smaller",
+      "It ensures that users only use explicit DAX measures, which is a requirement for Calculation Groups to function",
+      "It prevents the model from connecting to SQL",
+      "It hides the DimDate table"
+    ],
+    "answer": 1,
+    "time": 20,
+    "level": "Medium"
+  }
+,
+  {
+    "q": "In the 'Normal' way, if you want to add 'Previous Year' logic to 10 measures, how many new DAX formulas do you need to write?",
+    "options": [
+      "1",
+      "10",
+      "0",
+      "20"
+    ],
+    "answer": 1,
+    "time": 15,
+    "level": "Medium"
+  },
+  {
+    "q": "In the 'Calculation Group' way, how many items do you add to your group to give 'Previous Year' logic to all 10 measures?",
+    "options": [
+      "1",
+      "10",
+      "0",
+      "All of them"
+    ],
+    "answer": 0,
+    "time": 15,
+    "level": "Easy"
+  },
+  {
+    "q": "What is the primary technical reason we use SELECTEDMEASURE() instead of a specific measure name like [Total Sales] in a group?",
+    "options": [
+      "It makes the formula shorter to type",
+      "It allows the logic to be applied dynamically to whatever measure the user chooses in the report",
+      "It is required by the SQL Server license",
+      "It prevents the model from needing to be processed"
+    ],
+    "answer": 1,
+    "time": 20,
+    "level": "Hard"
+  }
+,
+  {
+    "q": "What is the primary reason for slow performance when running SQL Server on a machine with 8 GB RAM and Windows 11?",
+    "options": [
+      "The SQL Server license is expired",
+      "Memory contention between the OS, SQL Engine, and Visual Studio leads to disk swapping",
+      "The laptop screen resolution is too high",
+      "The SQL queries are written in lowercase"
+    ],
+    "answer": 1,
+    "time": 15,
+    "level": "Easy"
+  },
+  {
+    "q": "Where in SSMS can you prevent SQL Server from consuming all the RAM on your laptop?",
+    "options": [
+      "In the Security tab",
+      "In the Server Properties under the 'Memory' page",
+      "In the 'Database Settings' under 'Recovery'",
+      "In the 'Advanced' tab under 'Network'"
+    ],
+    "answer": 1,
+    "time": 15,
+    "level": "Medium"
+  },
+  {
+    "q": "Which processing option is faster when you only want to refresh the rows in a table without rebuilding the metadata?",
+    "options": [
+      "Process Full",
+      "Process Data",
+      "Process Clear",
+      "Process Recalc"
+    ],
+    "answer": 1,
+    "time": 20,
+    "level": "Medium"
+  }
+
+,
+
+  {
+    "q": "In Tabular Editor, what is the keyboard shortcut to create a new measure quickly?",
+    "options": [
+      "Ctrl + N",
+      "Alt + 1",
+      "F5",
+      "Ctrl + S"
+    ],
+    "answer": 1,
+    "time": 10,
+    "level": "Easy"
+  },
+  {
+    "q": "If you write a DAX measure in Tabular Editor and click 'Save', but don't 'Deploy', will you see the measure in an Excel Pivot Table connected to the server?",
+    "options": [
+      "Yes, saving automatically deploys",
+      "No, 'Save' only updates the local .bim file; 'Deploy' is required to update the server",
+      "Only if Visual Studio is closed",
+      "Yes, but only the name of the measure, not the values"
+    ],
+    "answer": 1,
+    "time": 20,
+    "level": "Medium"
+  },
+  {
+    "q": "Which processing option is best for your 8GB RAM laptop when you only want to update the data in one specific table without rebuilding the whole model?",
+    "options": [
+      "Process Full",
+      "Process Data on the specific table",
+      "Process Script",
+      "Process Defragment"
+    ],
+    "answer": 1,
+    "time": 15,
+    "level": "Medium"
+  }
+,
+  {
+    "q": "Why did Tabular Editor throw a 'Token Comma expected' error in the M-Query?",
+    "options": [
+      "Because the SQL query was wrong",
+      "Because in Power Query (M), each step in the 'let' block must be separated by a comma",
+      "Because the table name was too long",
+      "Because 8GB RAM isn't enough for commas"
+    ],
+    "answer": 1,
+    "time": 20,
+    "level": "Medium"
+  },
+  {
+    "q": "What is the difference between 'Saving' and 'Deploying' in Tabular Editor?",
+    "options": [
+      "Saving updates the local file; Deploying updates the server database",
+      "Saving updates the server; Deploying updates the local file",
+      "They are exactly the same thing",
+      "Saving only works in the trial version"
+    ],
+    "answer": 0,
+    "time": 15,
+    "level": "Easy"
+  }
+,
+  {
+    "q": "In Power Query (M), which of the following is true about the 'let' block?",
+    "options": [
+      "All lines must end with a semicolon (;)",
+      "Every step except the one immediately before the 'in' keyword must end with a comma (,)",
+      "You can only have a maximum of two steps",
+      "Case sensitivity does not matter in M-Query"
+    ],
+    "answer": 1,
+    "time": 15,
+    "level": "Medium"
+  },
+  {
+    "q": "What happens if you type 'value.nativequery' instead of 'Value.NativeQuery' in Tabular Editor?",
+    "options": [
+      "It works normally",
+      "It throws a 'Name not found' error because M-Query is case-sensitive",
+      "It automatically corrects the spelling for you",
+      "It makes the SQL query run faster"
+    ],
+    "answer": 1,
+    "time": 10,
+    "level": "Easy"
+  }
+,
+  {
+    "q": "Which tool inside Tabular Editor provides a detailed breakdown of row counts and memory consumption per column?",
+    "options": [
+      "The DAX Debugger",
+      "The VertiPaq Analyzer",
+      "The Expression Editor",
+      "The Deployment Wizard"
+    ],
+    "answer": 1,
+    "time": 15,
+    "level": "Medium"
+  },
+  {
+    "q": "If the Row Count property for a table shows '0' even though you know the SQL table has data, what is the likely reason?",
+    "options": [
+      "The table has not been 'Processed' in the SSAS model yet",
+      "The SQL Server is turned off",
+      "Tabular Editor is in 'Read-Only' mode",
+      "The laptop screen is too small"
+    ],
+    "answer": 0,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "Why is it useful to monitor the 'Rows' count in VertiPaq Analyzer when working with 8 GB of RAM?",
+    "options": [
+      "To ensure the data is accurate",
+      "To identify which large tables might be consuming too much memory and slowing down the system",
+      "To change the color of the table",
+      "To delete the SQL database"
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Hard"
+  }
+
+,
+  {
+    "q": "If a partition's state is 'Ready' but the VertiPaq Analyzer shows 0 rows, what is the most likely cause?",
+    "options": [
+      "The Analysis Services server is crashed",
+      "The SQL query in the partition is correct syntactically, but the filter (WHERE clause) returned no matching rows from the source",
+      "The laptop RAM is too full to count rows",
+      "Tabular Editor is broken"
+    ],
+    "answer": 1,
+    "time": 20,
+    "level": "Medium"
+  },
+  {
+    "q": "Where is the most detailed place to see memory and row statistics in Tabular Editor 3?",
+    "options": [
+      "The File Menu",
+      "The VertiPaq Analyzer tab",
+      "The DAX Expression Editor",
+      "The Windows Task Manager"
+    ],
+    "answer": 1,
+    "time": 10,
+    "level": "Easy"
+  }
+,
+  {
+    "q": "Why does the 'Import' mode make your 8 GB RAM laptop work harder than DirectQuery would?",
+    "options": [
+      "Because it has to store all the processed data rows in the system memory (RAM) for fast access",
+      "Because it requires a faster internet connection",
+      "Because it turns off the laptop's fan",
+      "Because it deletes the SQL source files"
+    ],
+    "answer": 0,
+    "time": 20,
+    "level": "Medium"
+  },
+  {
+    "q": "If you want to switch from 'Import' to 'DirectQuery', where would you change this setting in Tabular Editor?",
+    "options": [
+      "In the File Menu under 'Print'",
+      "In the Model properties under 'Default Mode'",
+      "In the Windows Settings",
+      "In the 'Help' tab"
+    ],
+    "answer": 1,
+    "time": 15,
+    "level": "Hard"
+  }
+,
+  {
+    "q": "If you create a partition in Tabular Editor and click 'Deploy' but NOT 'Save', where will the partition exist?",
+    "options": [
+      "Only in Visual Studio",
+      "Only on the SSAS Server",
+      "Only in the SQL database",
+      "Nowhere, it will be deleted"
+    ],
+    "answer": 1,
+    "time": 20,
+    "level": "Hard"
+  },
+  {
+    "q": "What should you click in Visual Studio when it detects that Tabular Editor has modified the Model.bim file?",
+    "options": [
+      "No",
+      "Yes to All",
+      "Ignore",
+      "Cancel"
+    ],
+    "answer": 1,
+    "time": 10,
+    "level": "Easy"
+  }
+,
+
+  {
+    "q": "If you add a partition in Tabular Editor and click 'Save', which file on your computer is being updated?",
+    "options": [
+      "The SQL Server Database",
+      "The Model.bim file in your project folder",
+      "A temporary internet file",
+      "The Visual Studio application file"
+    ],
+    "answer": 1,
+    "time": 15,
+    "level": "Medium"
+  },
+  {
+    "q": "What is the most likely reason Visual Studio doesn't show a new partition you just created in Tabular Editor?",
+    "options": [
+      "The partition name is too long",
+      "You saved the change to the server but haven't saved the change to the local .bim file yet",
+      "Visual Studio is in 'Read Only' mode",
+      "The SQL Server is offline"
+    ],
+    "answer": 1,
+    "time": 20,
+    "level": "Hard"
+  }
+
+,
+
+  {
+    "q": "Why did closing and reopening the .bim file solve the sync issue?",
+    "options": [
+      "It deleted the old data",
+      "It forced Visual Studio to reload the metadata from the hard drive into its interface",
+      "It restarted the SQL Server engine",
+      "It updated the laptop's RAM"
+    ],
+    "answer": 1,
+    "time": 15,
+    "level": "Medium"
+  },
+  {
+    "q": "Going forward, what is the safest way to ensure your 'Calculation Groups' and 'Partitions' are always saved?",
+    "options": [
+      "Always click Save (Ctrl+S) in Tabular Editor before switching back to Visual Studio",
+      "Never close Visual Studio",
+      "Only use the mouse to click buttons",
+      "Delete the .bim file every morning"
+    ],
+    "answer": 0,
+    "time": 15,
+    "level": "Easy"
+  }
+
+
+
+
 
 
 ];
