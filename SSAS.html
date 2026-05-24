@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!DOCTYPE html> 
 <html lang="en">
 <head>
   <meta charset="utf-8" /> 
@@ -171,20 +171,6 @@ let originalQuestions = [
     "level": "Medium"
   }
 ,
-  {
-    "q": "What does SSAS stand for?",
-    "options": ["SQL Server Advanced Storage","SQL Server Analysis Services","SQL Server Analytical System","SQL Server Aggregation Service"],
-    "answer": 1,
-    "time": 20,
-    "level": "Easy"
-  },
-  {
-    "q": "SSAS is primarily used for which type of processing?",
-    "options": ["OLTP","ETL","OLAP","CDC"],
-    "answer": 2,
-    "time": 20,
-    "level": "Easy"
-  },
   {
     "q": "Which SSAS object stores numerical data for analysis?",
     "options": ["Dimension","Measure","Hierarchy","Attribute"],
@@ -5274,9 +5260,2396 @@ let originalQuestions = [
     "level": "Medium"
   }
 
-
+,
+  
+  {
+    "q": "Why do we create a separate measure table in SSAS Tabular?",
+    "options": [
+      "To store transactional data",
+      "To improve storage performance",
+      "To organize and manage DAX measures separately",
+      "To create relationships"
+    ],
+    "answer": 2,
+    "time": 20
+  },
+  {
+    "q": "Is a measure table created by default in SSAS Tabular?",
+    "options": [
+      "Yes, always",
+      "No, it must be created manually",
+      "Only in Power BI",
+      "Only when importing data"
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "How do you create a measure table in SSAS Tabular?",
+    "options": [
+      "Using SQL query",
+      "Using DAX calculated table",
+      "Using stored procedure",
+      "Using relationship view"
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "Which DAX expression is commonly used to create a dummy measure table?",
+    "options": [
+      "Measures = SELECT * FROM Table",
+      "Measures = SUM(Table[Column])",
+      "Measures = { (1) }",
+      "Measures = COUNTROWS(Table)"
+    ],
+    "answer": 2,
+    "time": 20
+  },
+  {
+    "q": "Why do we use a dummy value like { (1) } when creating a measure table?",
+    "options": [
+      "To create relationships",
+      "To ensure the table has at least one column and row",
+      "To calculate measures",
+      "To load data from source"
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "What should be done after creating a measure table with a dummy column?",
+    "options": [
+      "Delete the column",
+      "Hide the column from client tools",
+      "Create relationship",
+      "Add indexes"
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "Why is the dummy column hidden in a measure table?",
+    "options": [
+      "To improve query speed",
+      "To prevent unnecessary columns from appearing in reporting tools",
+      "To delete data",
+      "To reduce memory usage"
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "Where are measures typically created by default in SSAS Tabular?",
+    "options": [
+      "In a separate measure table",
+      "In dimension tables",
+      "In the table currently selected (often fact table)",
+      "In staging tables"
+    ],
+    "answer": 2,
+    "time": 20
+  },
+  {
+    "q": "What does 'Home Table' represent for a measure?",
+    "options": [
+      "The source system",
+      "The table where the measure is logically assigned",
+      "The table where data is stored",
+      "The staging layer"
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "How can you move a measure from a fact table to a measure table?",
+    "options": [
+      "By deleting and recreating database",
+      "By dragging in diagram view only",
+      "By changing the Home Table using dropdown or model explorer",
+      "By changing relationship"
+    ],
+    "answer": 2,
+    "time": 20
+  },
+  {
+    "q": "Why might dragging a measure in diagram view not work in SSAS Tabular?",
+    "options": [
+      "Because measures cannot be moved",
+      "Because diagram view only changes visual layout and may not update Home Table",
+      "Because measures are locked",
+      "Because relationships are missing"
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "In the M expression '#\"SQL/sai;AdventureWorksDW2019\"', what does the '#' symbol signify?",
+    "options": [
+      "It marks the start of a SQL comment",
+      "It is used to reference a shared variable or quoted identifier",
+      "It tells the engine to use a temporary table",
+      "It indicates the server port number"
+    ],
+    "answer": 1,
+    "time": 20,
+    "level": "Hard"
+  },
+  {
+    "q": "Why is 'Value.NativeQuery' preferred over hard-coding 'Sql.Database' in an SSAS partition?",
+    "options": [
+      "It makes the SQL run 50% faster",
+      "It allows the partition to use the data source already defined in the model metadata",
+      "It is the only way to use the WHERE clause",
+      "It prevents the user from seeing the server name"
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Medium"
+  },
+  {
+    "q": "What is the reliable way to move measures between tables in SSAS Tabular?",
+    "options": [
+      "Using formula bar dropdown or Tabular Model Explorer",
+      "Using SQL script",
+      "Using Power BI",
+      "Using Excel"
+    ],
+    "answer": 0,
+    "time": 20
+  },
+  {
+    "q": "Can a measure exist in multiple tables at the same time?",
+    "options": [
+      "Yes, it gets duplicated",
+      "No, it exists only once and has a single Home Table",
+      "Yes, if copied",
+      "Only in Power BI"
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "Why does deleting a measure from one place remove it everywhere?",
+    "options": [
+      "Because it is stored in multiple tables",
+      "Because it is a single object in the model",
+      "Because of relationships",
+      "Because of DAX error"
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "What is a common mistake when moving measures using copy-paste?",
+    "options": [
+      "Creating too many tables",
+      "Creating duplicate columns",
+      "Thinking a new measure is created while it references the same object",
+      "Breaking relationships"
+    ],
+    "answer": 2,
+    "time": 20
+  },
+  {
+    "q": "What is the best practice for organizing measures in SSAS Tabular?",
+    "options": [
+      "Keep them in fact tables",
+      "Store them in dimension tables",
+      "Use a dedicated measure table",
+      "Avoid using measures"
+    ],
+    "answer": 2,
+    "time": 20
+  },
+  {
+    "q": "What naming convention is recommended for a measure table?",
+    "options": [
+      "FactMeasures",
+      "DimMeasures",
+      "Measures",
+      "Table1"
+    ],
+    "answer": 2,
+    "time": 20
+  },
+  {
+    "q": "What feature helps organize measures inside a measure table?",
+    "options": [
+      "Relationships",
+      "Display Folders",
+      "Indexes",
+      "Partitions"
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "What happens if you do not hide the dummy column in measure table?",
+    "options": [
+      "Model fails",
+      "Column appears in Power BI/Excel unnecessarily",
+      "Relationships break",
+      "Measures stop working"
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "What is the main benefit of using a measure table in large models?",
+    "options": [
+      "Faster ETL",
+      "Better UI organization and maintainability",
+      "Reduced storage",
+      "Automatic indexing"
+    ],
+    "answer": 1,
+    "time": 20
+  }
+,
+  {
+  "q": "In SSAS Tabular, which property specifically enables comma separation (e.g., 1,000) in numeric measures?",
+  "options": [
+    "Format",
+    "Show Thousand Separator",
+    "Display Folder",
+    "Data Category"
+  ],
+  "answer": 1,
+  "time": 20,
+  "level": "Easy"
+},
+  {
+  "q": "In SSAS Tabular, what is required to correctly display a value like 1,000 for a measure?",
+  "options": [
+    "Only setting Format property",
+    "Only enabling Show Thousand Separator",
+    "Setting Format to numeric and enabling Show Thousand Separator",
+    "Using FORMAT() function in DAX"
+  ],
+  "answer": 2,
+  "time": 20,
+  "level": "Medium"
+}
+,
+  
+  {
+    "q": "How do you add a new table to an SSAS Tabular model from an existing data source?",
+    "options": [
+      "By writing a DAX query",
+      "By right-clicking the data source and selecting 'Import New Table'",
+      "By creating a new measure",
+      "By editing relationships"
+    ],
+    "answer": 1,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "When a new table is imported into SSAS Tabular, are relationships always created automatically?",
+    "options": [
+      "Yes, always",
+      "No, never",
+      "Only when matching keys and compatible data types are detected",
+      "Only for fact tables"
+    ],
+    "answer": 2,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "Which of the following conditions must be met for SSAS Tabular to auto-create relationships?",
+    "options": [
+      "Matching column names and compatible data types",
+      "Same table size",
+      "Same number of rows",
+      "Same database schema name"
+    ],
+    "answer": 0,
+    "time": 20,
+    "level": "Medium"
+  },
+  {
+    "q": "Why is it important to verify relationships after importing a new table in SSAS Tabular?",
+    "options": [
+      "To improve UI performance",
+      "Because relationships may not be created or could be incorrect",
+      "To reduce data size",
+      "To enable DAX functions"
+    ],
+    "answer": 1,
+    "time": 20,
+    "level": "Medium"
+  },
+  {
+    "q": "What happens if SSAS Tabular finds multiple possible relationships between tables?",
+    "options": [
+      "It creates all relationships automatically",
+      "It deletes duplicate columns",
+      "It may not create any relationship due to ambiguity",
+      "It creates a many-to-many relationship automatically"
+    ],
+    "answer": 2,
+    "time": 20,
+    "level": "Hard"
+  },
+  {
+    "q": "Which view is commonly used to verify and manage relationships in SSAS Tabular?",
+    "options": [
+      "Data View",
+      "Diagram View",
+      "Script View",
+      "Query View"
+    ],
+    "answer": 1,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "If two tables have matching column names but different data types, what will SSAS Tabular do?",
+    "options": [
+      "Create relationship automatically",
+      "Convert data types automatically",
+      "Not create a relationship",
+      "Throw an error and stop import"
+    ],
+    "answer": 2,
+    "time": 20,
+    "level": "Medium"
+  },
+  {
+    "q": "What is a best practice after importing a new table into SSAS Tabular?",
+    "options": [
+      "Immediately deploy the model",
+      "Delete unused columns",
+      "Verify and validate relationships manually",
+      "Create measures"
+    ],
+    "answer": 2,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "Which type of relationship is most commonly created in SSAS Tabular models?",
+    "options": [
+      "Many-to-many",
+      "One-to-many",
+      "One-to-one",
+      "No relationship"
+    ],
+    "answer": 1,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "Why should auto-created relationships not be blindly trusted in SSAS Tabular?",
+    "options": [
+      "They reduce performance",
+      "They may have incorrect cardinality or direction",
+      "They delete data",
+      "They prevent deployment"
+    ],
+    "answer": 1,
+    "time": 20,
+    "level": "Medium"
+  }
+,
+  {
+    "q": "Which compatibility level introduced the 'Modern' Power Query (M) data source experience in SSAS Tabular?",
+    "options": ["1103", "1200", "1400", "1100"],
+    "answer": 2,
+    "time": 20,
+    "level": "Medium"
+  },
+  {
+    "q": "In SSAS 1600, where is the specific SQL 'SELECT' statement stored for a table?",
+    "options": ["In the Connection Manager", "In the Table Partition", "In the Model.bim Global Properties", "In the SSMS Agent"],
+    "answer": 1,
+    "time": 25,
+    "level": "Hard"
+  },
+  {
+    "q": "Which Power Query (M) function is used to pass a 'Normal' SQL query directly to the database?",
+    "options": ["Sql.Databases", "Value.NativeQuery", "Table.SelectRows", "Sql.Execute"],
+    "answer": 1,
+    "time": 20,
+    "level": "Medium"
+  },
+  {
+    "q": "If you see the error 'Invalid object name', what is the most likely cause in your SQL import script?",
+    "options": ["Wrong Server Name", "Wrong Column Name", "Wrong Table or View Name", "Data Type Mismatch"],
+    "answer": 2,
+    "time": 15,
+    "level": "Easy"
+  },
+  {
+    "q": "Why is it often better to use a 'GROUP BY' in your SQL import script rather than importing raw data and aggregating in DAX?",
+    "options": ["DAX cannot handle groups", "It reduces the row count and memory footprint of the model", "SQL Server does not support DAX", "SSAS cannot process more than 1000 rows"],
+    "answer": 1,
+    "time": 30,
+    "level": "Medium"
+  }
+,
+  
+  {
+    "q": "What is the primary purpose of the 'Value.NativeQuery' function in a Power Query (M) script?",
+    "options": [
+      "To encrypt the SQL connection string",
+      "To execute a hand-written SQL script directly against the database",
+      "To automatically generate DAX measures",
+      "To delete rows from the source SQL table"
+    ],
+    "answer": 1,
+    "time": 20,
+    "level": "Medium"
+  },
+  {
+    "q": "In the Advanced Editor, where is the SQL script located within the M code structure?",
+    "options": [
+      "Inside the 'let' statement as a variable name",
+      "Inside the 'in' statement at the end of the script",
+      "Inside the [Query=\"...\"] record parameter of the Sql.Database function",
+      "It is stored in a separate .sql file in the project folder"
+    ],
+    "answer": 2,
+    "time": 25,
+    "level": "Hard"
+  },
+  {
+    "q": "What happens to 'Query Folding' when you replace a standard table selection with a custom SQL query?",
+    "options": [
+      "Folding is enhanced for all subsequent steps",
+      "Folding for any additional steps added in the UI is generally broken",
+      "The engine converts the SQL query back into M code automatically",
+      "It has no impact on the engine's ability to fold"
+    ],
+    "answer": 1,
+    "time": 30,
+    "level": "Hard"
+  },
+  {
+    "q": "What is the best way to verify if the SSAS service account has 'SELECT' permissions on the source database?",
+    "options": [
+      "Check the 'Model.bim' file properties",
+      "Try to 'Process' the table and check for a 'Login failed' or 'Permission denied' error",
+      "Open the Windows Task Manager",
+      "Write a DAX measure to test the connection"
+    ],
+    "answer": 1,
+    "time": 20,
+    "level": "Medium"
+  },
+  {
+    "q": "Why is 'SELECT *' discouraged when writing an import query for SSAS Tabular?",
+    "options": [
+      "The asterisk character is reserved for DAX measures only",
+      "It makes the SQL script impossible to read",
+      "It can cause the model to break if columns are added or removed at the source",
+      "It automatically converts all data types to Text"
+    ],
+    "answer": 2,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "Which step in the 'Applied Steps' list is typically modified or replaced when switching to a custom SQL query?",
+    "options": [
+      "Calculated Column",
+      "Navigation",
+      "Relationship",
+      "Measure"
+    ],
+    "answer": 1,
+    "time": 20,
+    "level": "Medium"
+  },
+  
+  {
+    "q": "What is the benefit of using CAST or CONVERT directly in your SQL import script?",
+    "options": [
+      "It makes the SSAS model file larger",
+      "It ensures the Tabular engine correctly identifies the data type at the point of ingestion",
+      "It hides the column names from other developers",
+      "It allows you to bypass the need for a Data Gateway"
+    ],
+    "answer": 1,
+    "time": 20,
+    "level": "Medium"
+  }
+  ,
 
   
+  {
+    "q": "What happens in SSAS Tabular if you try to create a relationship between an INT column and a VARCHAR column?",
+    "options": [
+      "SSAS automatically converts the VARCHAR to INT",
+      "The relationship is created but shows a warning",
+      "The relationship fails to create because data types must match exactly",
+      "SSAS converts both columns to Decimal"
+    ],
+    "answer": 2,
+    "time": 25,
+    "level": "Hard"
+  },
+  {
+    "q": "In your SQL import script, if you use CAST(ProductKey AS VARCHAR), which SSAS Data Type will be assigned to that column?",
+    "options": [
+      "Whole Number",
+      "Text",
+      "Decimal Number",
+      "Variant"
+    ],
+    "answer": 1,
+    "time": 20,
+    "level": "Medium"
+  }
+,
+
+  {
+  "q": "If the 'Edit Relationship' dialog allows you to link an INT to a STRING without an immediate error, when will the failure typically occur?",
+  "options": [
+    "When you save the .sln file",
+    "During the 'Process' or 'Deployment' phase of the model",
+    "Only when the server restarts",
+    "Never, SSAS will fix it automatically"
+  ],
+  "answer": 1,
+  "time": 25,
+  "level": "Hard"
+}
+  ,
+  {
+  "q": "What does the error 'M partition uses a data function which results in access to a data source different from those defined' usually mean?",
+  "options": [
+    "The SQL Server is offline",
+    "The SQL query has a syntax error",
+    "The M code is trying to create a new connection instead of using the one defined in 'Existing Connections'",
+    "The user does not have permission to use the Advanced Editor"
+  ],
+  "answer": 2,
+  "time": 30,
+  "level": "Hard"
+}
+,
+    
+  {
+    "q": "Why does a failure in one dimension table often cause the entire SSAS 'Process All' operation to fail?",
+    "options": [
+      "SSAS can only process one table per day",
+      "Processing is transactional; a single failure triggers a rollback to ensure data consistency",
+      "Dimensions must always be processed in alphabetical order",
+      "The SQL Server shuts down if it detects a T-SQL error"
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Medium"
+  },
+  {
+    "q": "If you want to update the data for 'DimDate' without being blocked by an error in 'DimProduct', which command should you use?",
+    "options": [
+      "Process Database",
+      "Process Table",
+      "Process Default",
+      "Clear Cache"
+    ],
+    "answer": 1,
+    "time": 15,
+    "level": "Easy"
+  }
+,
+    {
+    "q": "If a relationship is defined between mismatched data types and the model processes successfully, what is the most likely result in a report?",
+    "options": [
+      "The report will crash with a memory error",
+      "The measures will show incorrect or identical values for all dimension members (Broken Join)",
+      "SSAS will automatically fix the data types during the report execution",
+      "The report will run faster because of the mismatch"
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Hard"
+  },
+  {
+    "q": "True or False: A successful 'Process Full' operation guarantees that all table relationships are functioning correctly.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer": 1,
+    "time": 15,
+    "level": "Medium"
+  }
+  ,
+    {
+    "q": "Which feature in Visual Studio is the primary way to browse and test Tabular model relationships using a pivot-table interface?",
+    "options": [
+      "Table Properties",
+      "Analyze in Excel",
+      "Solution Explorer",
+      "SQL Server Management Studio"
+    ],
+    "answer": 1,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "Where is the 'Analyze in Excel' option located in the Visual Studio interface?",
+    "options": [
+      "In the 'Extensions' or 'Model' menu",
+      "In the 'Build' menu",
+      "Inside the 'App.config' file",
+      "Under the 'Git' menu"
+    ],
+    "answer": 0,
+    "time": 20,
+    "level": "Medium"
+  }
+    ,
+    
+  {
+    "q": "Why might the 'Model' or 'Table' menus be missing from the top ribbon in Visual Studio?",
+    "options": [
+      "The user is not logged in to Windows",
+      "The focus is not on the Model Designer window (Diagram/Grid view)",
+      "The SQL Server is paused",
+      "The trial version of Visual Studio has expired"
+    ],
+    "answer": 1,
+    "time": 20,
+    "level": "Medium"
+  },
+  {
+    "q": "In which top-level menu do modern versions of Visual Studio often hide SSAS-specific commands like 'Analyze in Excel'?",
+    "options": [
+      "Project",
+      "Extensions",
+      "Git",
+      "Debug"
+    ],
+    "answer": 1,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "What does the 'Analyze in Excel' feature actually do behind the scenes?",
+    "options": [
+      "It exports the data to a static .CSV file",
+      "It creates a temporary connection between Excel and the SSAS Workspace database",
+      "It converts the model into a Power BI Desktop file",
+      "It opens a web browser to the SQL Server portal"
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Hard"
+  }
+    ,
+    
+  {
+    "q": "When using 'Analyze in Excel', if every row in a Pivot Table shows the same Grand Total value, what does this usually indicate?",
+    "options": [
+      "The SQL Server is out of memory",
+      "There is a broken or inactive relationship between the tables",
+      "The Excel version is incompatible with SSAS",
+      "The data has not been saved yet"
+    ],
+    "answer": 1,
+    "time": 20,
+    "level": "Medium"
+  },
+  {
+    "q": "What is the specific benefit of using Excel to browse the model instead of just looking at the 'Data View' in Visual Studio?",
+    "options": [
+      "Excel allows you to test how relationships and measures interact together",
+      "Excel can handle more rows than Visual Studio",
+      "Visual Studio cannot show text columns",
+      "Excel is required to write M code"
+    ],
+    "answer": 0,
+    "time": 20,
+    "level": "Easy"
+  }
+,
+    
+  {
+    "q": "If you change the SQL Source to VARCHAR but the SSAS Column Property remains 'Whole Number', what does the engine do during processing?",
+    "options": [
+      "It fails immediately",
+      "It imports the data and attempts to convert it back to a Whole Number to match the property",
+      "It deletes the column",
+      "It ignores the SQL CAST entirely"
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Hard"
+  },
+  {
+    "q": "Which property defines how SSAS stores and compares data: the SQL source type or the Model Column Data Type property?",
+    "options": [
+      "The SQL source type",
+      "The Model Column Data Type property",
+      "Both are ignored in favor of DAX",
+      "The Excel formatting property"
+    ],
+    "answer": 1,
+    "time": 20,
+    "level": "Medium"
+  },
+  {
+    "q": "In SSAS Tabular, '101' (Text) and 101 (Whole Number) are considered:",
+    "options": [
+      "Equivalent",
+      "Distinct/Non-matching values",
+      "Compatible only in measures",
+      "Identical after processing"
+    ],
+    "answer": 1,
+    "time": 15,
+    "level": "Medium"
+  }
+,
+
+  
+  {
+    "q": "When a model is set to 'DirectQuery' mode, where is the data actually stored?",
+    "options": [
+      "In the SSAS Server RAM",
+      "In the original source database (e.g., SQL Server)",
+      "In a compressed .bim file",
+      "In the user's browser cache"
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Medium"
+  },
+  {
+    "q": "Which DAX function is specifically used to activate an 'Inactive' relationship between two tables during a calculation?",
+    "options": [
+      "RELATED()",
+      "CALCULATE()",
+      "USERELATIONSHIP()",
+      "PATH()"
+    ],
+    "answer": 2,
+    "time": 25,
+    "level": "Medium"
+  },
+  {
+    "q": "What is the primary benefit of using 'Calculation Groups' in an SSAS model?",
+    "options": [
+      "They allow you to reuse a single logic (like YTD) across multiple measures",
+      "They make the .bim file smaller",
+      "They allow you to connect to Excel faster",
+      "They automatically fix data type mismatches"
+    ],
+    "answer": 0,
+    "time": 30,
+    "level": "Hard"
+  },
+  {
+    "q": "In Row-Level Security (RLS), which DAX function returns the login ID of the person currently viewing the report?",
+    "options": [
+      "USERNAME()",
+      "LOOKUPVALUE()",
+      "CUSTOMDATA()",
+      "USERPRINCIPALNAME()"
+    ],
+    "answer": 3,
+    "time": 20,
+    "level": "Medium"
+  },
+  {
+    "q": "If you have three relationships between FactSales and DimDate (Order, Ship, Due), how many can be 'Active' at the same time?",
+    "options": [
+      "Three",
+      "Zero",
+      "Two",
+      "One"
+    ],
+    "answer": 3,
+    "time": 15,
+    "level": "Easy"
+  },
+  {
+    "q": "Which tool is most commonly used to create and manage Calculation Groups in an SSAS Tabular model?",
+    "options": [
+      "SQL Server Management Studio (SSMS)",
+      "Tabular Editor",
+      "Excel Power Pivot",
+      "Visual Studio Relationship Wizard"
+    ],
+    "answer": 1,
+    "time": 20,
+    "level": "Medium"
+  },
+  {
+    "q": "In Dynamic RLS, what is the standard practice for connecting a 'Security Mapping' table to your Fact table?",
+    "options": [
+      "A One-to-One relationship",
+      "A Many-to-Many relationship using a bridge",
+      "A One-to-Many relationship from the Security table to the Dimension being filtered",
+      "No relationship is needed; DAX handles it via LOOKUPVALUE"
+    ],
+    "answer": 2,
+    "time": 30,
+    "level": "Hard"
+  }
+,
+  {
+    "q": "In an SSAS model, what is the best description of a 'Single Metric' (Base Measure)?",
+    "options": [
+      "A column that contains text descriptions of products",
+      "A DAX calculation that performs a basic aggregation like SUM or COUNT",
+      "A relationship between two tables",
+      "A partition strategy for large databases"
+    ],
+    "answer": 1,
+    "time": 15,
+    "level": "Easy"
+  },
+  {
+    "q": "If you have 5 core metrics and need to show Current, YTD, and Month-over-Month for each, how many measures would you need to create WITHOUT using Calculation Groups?",
+    "options": [
+      "5",
+      "10",
+      "15",
+      "3"
+    ],
+    "answer": 2,
+    "time": 20,
+    "level": "Medium"
+  },
+  {
+    "q": "Which DAX function is used inside a Calculation Group to represent 'Whatever single metric the user has selected'?",
+    "options": [
+      "CALCULATE()",
+      "TOTALYTD()",
+      "ALL()",
+      "SELECTEDMEASURE()"
+    ],
+    "answer": 3,
+    "time": 20,
+    "level": "Hard"
+  },
+  {
+    "q": "Why is it beneficial to keep 'Single Metrics' separate from 'Time Intelligence' logic in a large model?",
+    "options": [
+      "It reduces the complexity and maintenance of the measure list",
+      "It makes the SQL Server run with less RAM",
+      "It allows the model to bypass Row-Level Security",
+      "It is required for DirectQuery mode to work"
+    ],
+    "answer": 0,
+    "time": 25,
+    "level": "Medium"
+  }
+,
+  {
+    "q": "If a developer adds a 'Year-over-Year' item to an existing Calculation Group, and the model has 50 different base measures, how many new measures must be manually written?",
+    "options": [
+      "50",
+      "0",
+      "1",
+      "25"
+    ],
+    "answer": 1,
+    "time": 20,
+    "level": "Medium"
+  },
+  {
+    "q": "Which of the following is the primary reason 'Measure Explosion' is considered a disadvantage in SSAS?",
+    "options": [
+      "It makes the SQL database run out of space",
+      "It increases the maintenance burden and makes the field list confusing for users",
+      "It prevents the use of Excel",
+      "It forces the model into DirectQuery mode"
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Easy"
+  },
+  {
+    "q": "In the formula 'TOTALYTD([Total Sales], DimDate[Date])', which part is the 'Single Metric'?",
+    "options": [
+      "TOTALYTD",
+      "DimDate[Date]",
+      "[Total Sales]",
+      "The entire expression"
+    ],
+    "answer": 2,
+    "time": 15,
+    "level": "Easy"
+  }
+,
+  {
+    "q": "In an SSAS Tabular project, where can you visually manage all active data source connections?",
+    "options": [
+      "Tabular Model Explorer > Data Sources",
+      "Solution Explorer > Roles",
+      "Properties Window > Partitions",
+      "SQL Server Management Studio (SSMS) Object Explorer"
+    ],
+    "answer": 0,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "What is the primary benefit of using 'Value.NativeQuery' in an SSAS partition expression?",
+    "options": [
+      "It makes the SQL run faster",
+      "It allows the partition to use the connection manager already defined in the model metadata",
+      "It bypasses the need for a gateway",
+      "It automatically formats the date columns"
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Medium"
+  },
+  {
+    "q": "If you change the source server name for your project, which file in a Tabular model typically needs to be updated?",
+    "options": [
+      "Script.xmla",
+      "Model.bim",
+      "View.sql",
+      "Measures.dax"
+    ],
+    "answer": 1,
+    "time": 20,
+    "level": "Medium"
+  },
+  {
+    "q": "In a Multidimensional model project, what is the file extension for a saved Data Source?",
+    "options": [
+      ".dax",
+      ".bim",
+      ".ds",
+      ".xmla"
+    ],
+    "answer": 2,
+    "time": 15,
+    "level": "Easy"
+  }
+,
+  {
+    "q": "If a project has two data sources and only one server name changes, what is the result during a 'Process All' operation?",
+    "options": [
+      "The entire operation fails because SSAS requires all sources to be valid for a full process",
+      "Only the tables from the working server will update, while the others remain empty",
+      "SSAS automatically searches the network for the new server name",
+      "The model will switch to 'DirectQuery' mode automatically"
+    ],
+    "answer": 0,
+    "time": 25,
+    "level": "Hard"
+  },
+  {
+    "q": "Which specific component within the Model.bim file must be edited to point a project to a new SQL instance?",
+    "options": [
+      "The DAX Expression",
+      "The Table Partition",
+      "The Data Source (Connection String)",
+      "The Role-Based Security"
+    ],
+    "answer": 2,
+    "time": 15,
+    "level": "Easy"
+  },
+  {
+    "q": "Is it possible to change a server name for a deployed model without using Visual Studio?",
+    "options": [
+      "No, any change requires a full redeploy from the .sln file",
+      "Yes, by editing the Data Source properties directly in SQL Server Management Studio (SSMS)",
+      "Yes, but only if the model is in 'Import' mode",
+      "No, the server name is permanent once the model is created"
+    ],
+    "answer": 1,
+    "time": 20,
+    "level": "Medium"
+  }
+,
+  {
+    "q": "If you update a server name in SSMS (Management Studio) for a deployed model, what happens to the 'model.bim' file in your Visual Studio project?",
+    "options": [
+      "The Visual Studio file is automatically updated via the cloud",
+      "The Visual Studio file remains unchanged and still points to the old server",
+      "The Visual Studio project will delete itself to prevent errors",
+      "The server name is synchronized only when you click 'Save All'"
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Hard"
+  },
+  {
+    "q": "In which format is the information inside a 'model.bim' file stored?",
+    "options": [
+      "XML",
+      "CSV",
+      "JSON",
+      "Plain Text (Notepad style)"
+    ],
+    "answer": 2,
+    "time": 15,
+    "level": "Easy"
+  },
+  {
+    "q": "When moving from a 'Development' server to a 'Production' server, which action is most efficient?",
+    "options": [
+      "Create a brand new project from scratch",
+      "Hard-code the server name into every single partition",
+      "Update the Data Source in the model metadata to point to the Production instance",
+      "Rename the Production server to match the Development server name"
+    ],
+    "answer": 2,
+    "time": 20,
+    "level": "Medium"
+  },
+  {
+    "q": "What happens if the server name in 'model.bim' is correct, but the 'Initial Catalog' (Database Name) is wrong?",
+    "options": [
+      "The model will connect to the Master database instead",
+      "The 'Process' operation will fail because the specific database cannot be found",
+      "SSAS will create a new database with that name",
+      "The relationships will work but the data will be blank"
+    ],
+    "answer": 1,
+    "time": 20,
+    "level": "Medium"
+  }
+,
+  {
+    "q": "Why might a Calculation Group created in Tabular Editor not be visible in Visual Studio (SSDT)?",
+    "options": [
+      "Because it was not saved correctly",
+      "Because Visual Studio does not fully support displaying Calculation Groups in its UI",
+      "Because Calculation Groups are deleted automatically",
+      "Because relationships are missing"
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Medium"
+  },
+  {
+    "q": "Where is the most reliable place to create and manage Calculation Groups?",
+    "options": [
+      "Visual Studio Diagram View",
+      "SQL Server Management Studio",
+      "Tabular Editor",
+      "Excel"
+    ],
+    "answer": 2,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "If a Calculation Group is not visible in Visual Studio, what should you do to verify its existence?",
+    "options": [
+      "Delete and recreate the model",
+      "Check it in Tabular Editor or after deployment",
+      "Restart SQL Server",
+      "Reinstall Visual Studio"
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Easy"
+  },
+  {
+    "q": "What happens to a Calculation Group after saving changes in Tabular Editor?",
+    "options": [
+      "It is stored only temporarily",
+      "It updates the model metadata (JSON/TMSL)",
+      "It is converted into a table",
+      "It is deleted from the model"
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Hard"
+  },
+  {
+    "q": "Why is Visual Studio not preferred for working with Calculation Groups?",
+    "options": [
+      "It does not support DAX",
+      "It has limited or no UI support for Calculation Groups",
+      "It cannot connect to SSAS",
+      "It does not support measures"
+    ],
+    "answer": 1,
+    "time": 20,
+    "level": "Medium"
+  },
+  {
+    "q": "Which of the following tools fully supports creating and editing Calculation Groups?",
+    "options": [
+      "Visual Studio only",
+      "Power BI only",
+      "Tabular Editor",
+      "Excel"
+    ],
+    "answer": 2,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "What is a common misconception when Calculation Groups are not visible in Visual Studio?",
+    "options": [
+      "They are automatically optimized",
+      "They were not created or saved",
+      "They improve performance",
+      "They convert to measures"
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Medium"
+  },
+  {
+    "q": "After deploying a model with Calculation Groups, where can you confirm their presence?",
+    "options": [
+      "Only in Visual Studio",
+      "Only in Excel",
+      "In SSMS or Power BI",
+      "In Notepad"
+    ],
+    "answer": 2,
+    "time": 20,
+    "level": "Medium"
+  },
+  {
+    "q": "What is the recommended workflow when working with Calculation Groups in SSAS Tabular?",
+    "options": [
+      "Use only Visual Studio",
+      "Use Excel for all changes",
+      "Use Visual Studio for modeling and Tabular Editor for advanced features",
+      "Avoid using Calculation Groups"
+    ],
+    "answer": 2,
+    "time": 25,
+    "level": "Medium"
+  },
+  {
+    "q": "What is the underlying reason Calculation Groups may not appear in Visual Studio UI?",
+    "options": [
+      "They are not part of the model",
+      "They are stored externally",
+      "The designer does not fully render advanced metadata features",
+      "They require SQL queries"
+    ],
+    "answer": 2,
+    "time": 30,
+    "level": "Hard"
+  }
+  ,
+  {
+    "q": "What does the 'SELECTEDMEASURE()' function do within a Calculation Item?",
+    "options": [
+      "It forces the user to select a specific measure from a dropdown",
+      "It acts as a placeholder for whichever measure is currently being evaluated in the report",
+      "It calculates the sum of the entire fact table",
+      "It resets the filter context to the beginning of the year"
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Hard"
+  },
+  {
+    "q": "Which tool is required to create Calculation Groups if the native Visual Studio interface does not support them?",
+    "options": [
+      "SQL Server Management Studio",
+      "Excel Power Pivot",
+      "Tabular Editor",
+      "Notepad++"
+    ],
+    "answer": 2,
+    "time": 15,
+    "level": "Easy"
+  },
+  {
+    "q": "What happens if you drag a Calculation Group 'Name' column into a report slicer?",
+    "options": [
+      "The report will crash",
+      "The slicer will filter the data based on product categories",
+      "The user can toggle between different logic like 'Current', 'YTD', or 'YoY' for all visible measures",
+      "It only works if the model is in DirectQuery mode"
+    ],
+    "answer": 2,
+    "time": 20,
+    "level": "Medium"
+  },
+  {
+    "q": "What is 'Precedence' in a Calculation Group?",
+    "options": [
+      "The order in which the Calculation Group appears in the field list",
+      "A property that determines which Calculation Group is applied first if a measure is affected by multiple groups",
+      "The speed at which the DAX query runs",
+      "The security level assigned to the group"
+    ],
+    "answer": 1,
+    "time": 30,
+    "level": "Hard"
+  }
+,
+  {
+    "q": "What is the primary difference between opening a model 'From File' versus 'From DB' in Tabular Editor?",
+    "options": [
+      "From File is for Excel; From DB is for SQL",
+      "From File edits the offline metadata; From DB edits the live deployed model on the server",
+      "From DB allows you to change the background color of the app",
+      "There is no difference; they both do the same thing"
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Medium"
+  },
+  {
+    "q": "When you open Tabular Editor through the 'Extensions' menu in Visual Studio, which file is it actually reading?",
+    "options": [
+      "The .sln file",
+      "The .csproj file",
+      "The .bim file",
+      "The .txt log file"
+    ],
+    "answer": 2,
+    "time": 15,
+    "level": "Easy"
+  },
+  {
+    "q": "If you make changes in Tabular Editor and want them to show up in Visual Studio, what must you do first?",
+    "options": [
+      "Restart your computer",
+      "Click 'Save' (Ctrl+S) in Tabular Editor",
+      "Delete the Model.bim file",
+      "Change the server name in SSMS"
+    ],
+    "answer": 1,
+    "time": 20,
+    "level": "Medium"
+  }
+,
+  {
+    "q": "What happens in Visual Studio immediately after you click 'Save' in Tabular Editor?",
+    "options": [
+      "The computer restarts to apply changes",
+      "The .bim file is updated and Visual Studio prompts you to reload the model",
+      "The data is automatically processed and deployed to the server",
+      "Nothing happens until you manually import the changes"
+    ],
+    "answer": 1,
+    "time": 20,
+    "level": "Medium"
+  },
+  {
+    "q": "In a Calculation Group, what is the default name given to the column that contains the calculation items?",
+    "options": [
+      "CalculationID",
+      "MeasureName",
+      "Name",
+      "ItemType"
+    ],
+    "answer": 2,
+    "time": 15,
+    "level": "Easy"
+  },
+  {
+    "q": "Why is it important to create a 'Current' item that only contains 'SELECTEDMEASURE()'?",
+    "options": [
+      "It makes the calculation run 50% faster",
+      "It allows users to select the original value of a measure without any time intelligence applied",
+      "It is required by SQL Server to validate the license",
+      "It prevents the model from crashing when using Excel"
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Medium"
+  },
+  {
+    "q": "Which property in Tabular Editor controls which calculation group takes priority if a measure is affected by two different groups?",
+    "options": [
+      "Security Level",
+      "Description",
+      "Precedence",
+      "Ordinal"
+    ],
+    "answer": 2,
+    "time": 25,
+    "level": "Hard"
+  }
+,
+  {
+    "q": "What is the most common reason Visual Studio fails to detect changes made in Tabular Editor?",
+    "options": [
+      "The user forgot to click 'Save' (Ctrl+S) inside Tabular Editor",
+      "The SQL Server service is stopped",
+      "The model is too large for the RAM",
+      "Tabular Editor is not compatible with JSON"
+    ],
+    "answer": 0,
+    "time": 20,
+    "level": "Medium"
+  },
+  {
+    "q": "If the 'Model changed outside of Visual Studio' prompt does not appear, which action forces Visual Studio to reload the metadata?",
+    "options": [
+      "Deleting the project and starting over",
+      "Restarting the entire computer",
+      "Closing and reopening the Model.bim file within Visual Studio",
+      "Changing the computer's clock settings"
+    ],
+    "answer": 2,
+    "time": 25,
+    "level": "Medium"
+  },
+  {
+    "q": "In Tabular Editor, what indicates that there are unsaved changes that Visual Studio cannot see yet?",
+    "options": [
+      "A red 'X' next to the table name",
+      "The Save icon is enabled (not greyed out) and an asterisk (*) might appear in the title bar",
+      "The screen flashes green",
+      "A popup warning appears every 5 minutes"
+    ],
+    "answer": 1,
+    "time": 15,
+    "level": "Easy"
+  }
+,
+  {
+    "q": "If Tabular Editor is connected 'From DB' to a workspace server, what happens to the local Model.bim file when you click save?",
+    "options": [
+      "It is instantly updated and saved to the hard drive",
+      "The local file remains unchanged because you are editing the live server metadata only",
+      "Visual Studio will crash and restart",
+      "The Git repository will automatically create a new branch"
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Hard"
+  },
+  {
+    "q": "Which method ensures that changes made in Tabular Editor are tracked by Visual Studio and Git?",
+    "options": [
+      "Connecting 'From DB' to the production server",
+      "Opening the .bim file directly 'From File' in Tabular Editor",
+      "Exporting the model to a CSV file",
+      "Deleting the .sln file before every edit"
+    ],
+    "answer": 1,
+    "time": 20,
+    "level": "Medium"
+  },
+  {
+    "q": "In Tabular Editor, where can you check if you are editing a local file or a server database?",
+    "options": [
+      "The 'Help' menu",
+      "The 'Location' or 'Connected to' text in the title bar/status bar",
+      "The color of the tables in the explorer",
+      "The number of measures in the model"
+    ],
+    "answer": 1,
+    "time": 15,
+    "level": "Easy"
+  }
+  ,
+  
+  {
+    "q": "Why does a Calculation Group appear as a 'Table' in the Visual Studio Model Explorer?",
+    "options": [
+      "Because it contains rows of raw data from SQL Server",
+      "Because Calculation Groups are technically special tables where each Calculation Item is a row",
+      "It is a bug in the software",
+      "Because it stores the connection string for the database"
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Hard"
+  },
+  {
+    "q": "What happens if you forget to click 'Yes to All' when Visual Studio detects a change from Tabular Editor?",
+    "options": [
+      "The changes are deleted forever",
+      "Visual Studio will continue to show the old version of the model, causing a conflict",
+      "The SQL Server will automatically update the file for you",
+      "The project will be converted to a Multidimensional model"
+    ],
+    "answer": 1,
+    "time": 20,
+    "level": "Medium"
+  },
+  {
+    "q": "Which DAX function acts as the 'placeholder' for any measure used with a Calculation Group?",
+    "options": [
+      "TOTALYTD()",
+      "CALCULATE()",
+      "SELECTEDMEASURE()",
+      "SUM()"
+    ],
+    "answer": 2,
+    "time": 15,
+    "level": "Easy"
+  },
+  {
+    "q": "What is the result of using 'SELECTEDMEASURE()' without any other functions in a Calculation Item?",
+    "options": [
+      "It returns an error",
+      "It returns the value of the measure exactly as it is, with no modifications",
+      "It multiplies the measure by two",
+      "It hides the measure from the user"
+    ],
+    "answer": 1,
+    "time": 20,
+    "level": "Medium"
+  }
+,
+  
+  {
+    "q": "If Visual Studio fails to show the 'Reload' prompt, what is the best manual way to see changes made in the .bim file?",
+    "options": [
+      "Reinstall Visual Studio",
+      "Delete the Tabular Editor app",
+      "Close and reopen the Model.bim tab in Visual Studio",
+      "Wait for 24 hours for the cache to clear"
+    ],
+    "answer": 2,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "Why don't Calculation Groups appear in the standard Data Grid view in Visual Studio?",
+    "options": [
+      "Because they contain no physical rows of data from the SQL source",
+      "Because they are hidden by default to save space",
+      "Because they only work in Excel, not Visual Studio",
+      "Because they are encrypted for security"
+    ],
+    "answer": 0,
+    "time": 25,
+    "level": "Medium"
+  },
+  {
+    "q": "In the Tabular Model Explorer, which icon or folder identifies a Calculation Group compared to a regular table?",
+    "options": [
+      "A red circle icon",
+      "They are listed under the 'Tables' folder but have a unique 'Calculation Items' sub-folder",
+      "They are listed under 'Roles'",
+      "They appear in the 'Expressions' folder"
+    ],
+    "answer": 1,
+    "time": 20,
+    "level": "Medium"
+  }
+,
+  
+  {
+    "q": "What is the most likely reason a change saved in an external tool like Tabular Editor doesn't show up in the IDE?",
+    "options": [
+      "The tool is editing a copy of the file in a different folder (Path Mismatch)",
+      "The file is too large for the computer to read",
+      "The IDE has been disconnected from the internet",
+      "The SQL Server password has expired"
+    ],
+    "answer": 0,
+    "time": 20,
+    "level": "Medium"
+  },
+  {
+    "q": "How can you verify which specific file Visual Studio is currently using for your model?",
+    "options": [
+      "Check the 'Help' menu",
+      "Right-click the Model.bim in Solution Explorer and select 'Open Folder in File Explorer'",
+      "Look at the color of the icon",
+      "Count the number of tables in the grid"
+    ],
+    "answer": 1,
+    "time": 15,
+    "level": "Easy"
+  },
+  {
+    "q": "If you overwrite the .bim file manually while Visual Studio is open, what is the expected behavior of the IDE?",
+    "options": [
+      "It will automatically close the project",
+      "It will ignore the change until the next reboot",
+      "It should prompt the user to reload the file to show the new metadata",
+      "It will delete the database from the SQL Server"
+    ],
+    "answer": 2,
+    "time": 20,
+    "level": "Medium"
+  }
+,
+  {
+    "q": "If 'Open Folder in File Explorer' is missing when right-clicking a file, where else can you find it in the Solution Explorer?",
+    "options": [
+      "By right-clicking the Project name or the Solution name",
+      "In the Edit menu under 'Find'",
+      "By clicking the 'Save All' button",
+      "In the Git Changes window"
+    ],
+    "answer": 0,
+    "time": 15,
+    "level": "Easy"
+  },
+  {
+    "q": "What does 'Cleaning the Solution' do in Visual Studio?",
+    "options": [
+      "It deletes all your DAX formulas",
+      "It removes temporary build files and caches that might be showing old data",
+      "It formats your code to look nicer",
+      "It checks the SQL Server for errors"
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Medium"
+  }
+,
+  {
+    "q": "Where is the only place within the Visual Studio interface to see a Calculation Group after it has been created?",
+    "options": [
+      "In the SQL Server Object Explorer",
+      "In the Tabular Model Explorer under the 'Tables' folder",
+      "In the Properties window of the Fact table",
+      "In the 'Solution Explorer' inside the .sln file"
+    ],
+    "answer": 1,
+    "time": 20,
+    "level": "Medium"
+  },
+  {
+    "q": "Does the Trial version of Tabular Editor 3 prevent you from saving Calculation Groups to a .bim file?",
+    "options": [
+      "Yes, you must pay for a license first",
+      "No, the trial is fully functional for all metadata editing during the evaluation period",
+      "It only allows you to save one group per model",
+      "It only allows saving in 'DirectQuery' mode"
+    ],
+    "answer": 1,
+    "time": 15,
+    "level": "Easy"
+  },
+  {
+    "q": "If you manually overwrite the Model.bim file using 'Save As' in Tabular Editor, what should Visual Studio do?",
+    "options": [
+      "Delete the project automatically",
+      "Ignore the change until you restart the app",
+      "Prompt you to reload the file because the version on the disk has changed",
+      "Convert the project into a Power BI file"
+    ],
+    "answer": 2,
+    "time": 20,
+    "level": "Medium"
+  }
+,
+  {
+    "q": "If a Calculation Group is visible in Excel but not in the Visual Studio grid view, what does this indicate?",
+    "options": [
+      "The deployment failed and needs to be restarted",
+      "The model is working perfectly; Calculation Groups only appear in the Model Explorer tree, not the data grid",
+      "The Excel file is corrupted and showing old data",
+      "The Calculation Group was deleted by the server"
+    ],
+    "answer": 1,
+    "time": 20,
+    "level": "Medium"
+  },
+  {
+    "q": "In the Tabular Model Explorer, what is the specific sub-folder found inside a Calculation Group table?",
+    "options": [
+      "Partitions",
+      "Calculation Items",
+      "Columns",
+      "Hierarchies"
+    ],
+    "answer": 1,
+    "time": 15,
+    "level": "Easy"
+  },
+  {
+    "q": "Which tool provides a better interface for managing Calculation Group logic than the native Visual Studio 'Properties' window?",
+    "options": [
+      "Notepad",
+      "SQL Server Management Studio",
+      "Tabular Editor",
+      "Command Prompt"
+    ],
+    "answer": 2,
+    "time": 15,
+    "level": "Easy"
+  }
+,
+  {
+    "q": "If you add a new measure called 'Total Freight' to your model, do you need to write a new 'Freight YTD' DAX formula now that you have a Calculation Group?",
+    "options": [
+      "Yes, every measure needs its own YTD formula",
+      "No, the Calculation Group will automatically provide YTD for 'Total Freight' because of the SELECTEDMEASURE() function",
+      "Only if the Freight is in a different currency",
+      "Yes, but only in the .bim file"
+    ],
+    "answer": 1,
+    "time": 20,
+    "level": "Medium"
+  },
+  {
+    "q": "What is the primary benefit of Calculation Groups for a report end-user?",
+    "options": [
+      "It makes the Excel file smaller in size",
+      "It allows them to use a single slicer to change the logic of all measures in a report at once",
+      "It allows them to edit the SQL database directly",
+      "It speeds up the internet connection"
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Easy"
+  },
+  {
+    "q": "In the YTD logic, which part tells SSAS to look at the beginning of the year?",
+    "options": [
+      "SELECTEDMEASURE()",
+      "CALCULATE()",
+      "DATESYTD()",
+      "The table name 'DimDate'"
+    ],
+    "answer": 2,
+    "time": 15,
+    "level": "Easy"
+  }
+,
+  {
+    "q": "What happens if you delete a column in Tabular Editor but forget to click 'Save' (Ctrl+S)?",
+    "options": [
+      "The column is deleted from the SQL Server immediately",
+      "Visual Studio will automatically save it for you",
+      "The change stays in Tabular Editor's memory and the .bim file remains unchanged",
+      "The column is renamed to 'Deleted'"
+    ],
+    "answer": 2,
+    "time": 20,
+    "level": "Medium"
+  },
+  {
+    "q": "If 'Total Sales' is a DAX measure calculated as SUM(Sales[Amount]), what happens if you delete the 'Amount' column from the Sales table?",
+    "options": [
+      "The measure will still work using cached data",
+      "The measure will break and show an error because its source column is missing",
+      "SSAS will automatically choose a different column to sum",
+      "The measure is automatically deleted along with the column"
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Hard"
+  },
+  {
+    "q": "Which tool allows you to select multiple columns (using Ctrl+Click) and delete them all at once?",
+    "options": [
+      "SQL Server Management Studio",
+      "Excel Pivot Tables",
+      "Tabular Editor",
+      "The Visual Studio Grid View"
+    ],
+    "answer": 2,
+    "time": 15,
+    "level": "Easy"
+  }
+,
+  {
+    "q": "What does 'TOM' stand for in the Tabular Editor 'TOM Explorer'?",
+    "options": [
+      "Technical Output Manager",
+      "Tabular Object Model",
+      "Total Operation Monitoring",
+      "Table Order Map"
+    ],
+    "answer": 1,
+    "time": 15,
+    "level": "Medium"
+  },
+  {
+    "q": "If you cannot see your tables in Tabular Editor, which menu should you check first?",
+    "options": [
+      "File",
+      "Edit",
+      "View",
+      "Model"
+    ],
+    "answer": 2,
+    "time": 10,
+    "level": "Easy"
+  },
+  {
+    "q": "What happens when you click the 'Pushpin' icon on the TOM Explorer panel?",
+    "options": [
+      "It deletes the selected table",
+      "It docks the panel so it stays visible instead of auto-hiding",
+      "It creates a backup of the model",
+      "It marks a measure as a favorite"
+    ],
+    "answer": 1,
+    "time": 15,
+    "level": "Easy"
+  }
+  ,
+  {
+    "q": "What happens to the 'Undo' history in Tabular Editor if you close the application without saving?",
+    "options": [
+      "It is saved in a temporary cloud file",
+      "The history is lost, but the .bim file remains in its last saved state",
+      "The history is automatically applied to the .bim file",
+      "Visual Studio will recover the history for you"
+    ],
+    "answer": 1,
+    "time": 20,
+    "level": "Medium"
+  },
+  {
+    "q": "Which feature in Tabular Editor 3 allows you to see a chronological list of all your edits?",
+    "options": [
+      "The Measure Grid",
+      "The History Pane",
+      "The DAX Debugger",
+      "The Best Practice Analyzer"
+    ],
+    "answer": 1,
+    "time": 15,
+    "level": "Easy"
+  },
+  {
+    "q": "If you perform a 'Process All' operation in Visual Studio, what is a common side effect regarding the Undo (Ctrl+Z) function?",
+    "options": [
+      "It makes Undo work faster",
+      "It may clear the undo buffer, making it impossible to undo previous metadata changes",
+      "It changes the shortcut to Ctrl+Alt+Z",
+      "It has no effect on the undo history"
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Hard"
+  }
+  ,
+  {
+    "q": "In Tabular Editor 3, what is the most visual way to revert a mistake if you made multiple edits?",
+    "options": [
+      "Using the 'History' pane to jump back to a previous state",
+      "Reinstalling the software",
+      "Deleting the .bim file",
+      "Closing Visual Studio"
+    ],
+    "answer": 0,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "If you save a deletion in Tabular Editor and 'Discard Changes' in Git, what happens?",
+    "options": [
+      "The column is lost forever",
+      "The Model.bim file is restored to its state at the last commit, bringing back the column",
+      "The SQL Server database is deleted",
+      "Your license for Tabular Editor expires"
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Medium"
+  },
+  {
+    "q": "Why is it important to check dependencies before deleting a column?",
+    "options": [
+      "To see if the column is being used in measures or relationships that would break if it's gone",
+      "To check the file size of the column",
+      "To see if the column has a high price in SQL",
+      "To change the color of the column header"
+    ],
+    "answer": 0,
+    "time": 20,
+    "level": "Medium"
+  }
+,
+  {
+    "q": "Why does Visual Studio sometimes disable the 'Undo' button after you save or process a model?",
+    "options": [
+      "To save battery life on the laptop",
+      "Because the 'Undo' buffer is cleared once the model metadata is synced with the workspace server",
+      "Because the software has run out of storage space",
+      "It is a security feature to prevent hacking"
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Hard"
+  },
+  {
+    "q": "What is the primary difference between an 'Undo' in Tabular Editor versus a 'Discard' in Git?",
+    "options": [
+      "There is no difference; they are the same thing",
+      "Undo reverts a single recent action in the app; Discard reverts the entire file to its last saved 'Commit' state",
+      "Undo only works for colors; Discard only works for data",
+      "Undo requires a password; Discard is free"
+    ],
+    "answer": 1,
+    "time": 20,
+    "level": "Medium"
+  }
+
+
+  ,
+
+  {
+    "q": "Why does a PivotTable show 'Row Labels' instead of the actual column name?",
+    "options": [
+      "Because the column name is missing in source data",
+      "Because PivotTable is in Compact Form layout",
+      "Because of incorrect data type",
+      "Because filters are applied"
+    ],
+    "answer": 1,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "Which PivotTable layout displays actual column names instead of 'Row Labels'?",
+    "options": [
+      "Compact Form",
+      "Outline Form",
+      "Tabular Form",
+      "Summary Form"
+    ],
+    "answer": 2,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "Where can you change the PivotTable layout to show column names?",
+    "options": [
+      "Insert tab",
+      "Home tab",
+      "Design tab → Report Layout",
+      "Data tab"
+    ],
+    "answer": 2,
+    "time": 25,
+    "level": "Easy"
+  },
+  {
+    "q": "What happens when you switch PivotTable from Compact Form to Tabular Form?",
+    "options": [
+      "Data gets deleted",
+      "Row Labels change to actual field names",
+      "Columns become rows",
+      "Filters are removed"
+    ],
+    "answer": 1,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "In which scenario will you still see 'Row Labels' even after creating a PivotTable?",
+    "options": [
+      "When using Tabular Form",
+      "When using Outline Form",
+      "When using Compact Form",
+      "When using Flat Table"
+    ],
+    "answer": 2,
+    "time": 20,
+    "level": "Medium"
+  },
+  {
+    "q": "What is the default layout of a PivotTable in Excel?",
+    "options": [
+      "Tabular Form",
+      "Outline Form",
+      "Compact Form",
+      "Grid Form"
+    ],
+    "answer": 2,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "Which option helps in repeating field names for better readability in PivotTable?",
+    "options": [
+      "Show Details",
+      "Repeat All Item Labels",
+      "Refresh Data",
+      "Group Fields"
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Medium"
+  },
+  {
+    "q": "Why is Tabular Form preferred in data reconciliation tasks?",
+    "options": [
+      "It hides duplicate values",
+      "It shows cleaner SQL-like table format",
+      "It removes null values",
+      "It sorts data automatically"
+    ],
+    "answer": 1,
+    "time": 30,
+    "level": "Medium"
+  },
+  {
+    "q": "Which layout is best if you want PivotTable output similar to a SQL result set?",
+    "options": [
+      "Compact Form",
+      "Outline Form",
+      "Tabular Form",
+      "Pivot Chart"
+    ],
+    "answer": 2,
+    "time": 25,
+    "level": "Medium"
+  },
+  {
+    "q": "What is the main disadvantage of Compact Form in PivotTables?",
+    "options": [
+      "Consumes more memory",
+      "Shows generic labels like 'Row Labels'",
+      "Does not support filters",
+      "Cannot handle large data"
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Medium"
+  }
+,
+  
+  {
+    "q": "Which property must be set to 'True' for a Tabular Model to support Calculation Groups?",
+    "options": [
+      "Allow Multiple Relationships",
+      "Discourage Implicit Measures",
+      "Enable Fast Load",
+      "Include In Report Refresh"
+    ],
+    "answer": 1,
+    "time": 20,
+    "level": "Hard"
+  },
+  {
+    "q": "If Calculation Group A has a precedence of 10 and Calculation Group B has a precedence of 20, which one 'wraps' the other?",
+    "options": [
+      "Group A wraps Group B",
+      "Group B wraps Group A",
+      "They run at the exact same time",
+      "Neither; they will cause a circular dependency error"
+    ],
+    "answer": 1,
+    "time": 30,
+    "level": "Hard"
+  },
+  {
+    "q": "What is the result of the DAX function SELECTEDMEASURENAME()?",
+    "options": [
+      "The numeric value of the measure",
+      "A text string containing the name of the measure being evaluated",
+      "The name of the table the measure belongs to",
+      "The name of the user viewing the report"
+    ],
+    "answer": 1,
+    "time": 15,
+    "level": "Medium"
+  }
+,
+  {
+    "q": "Which property allows a Calculation Group to change a number like 0.05 into '5.0%' without changing the underlying DAX logic?",
+    "options": [
+      "Expression",
+      "Format String Expression",
+      "Precedence",
+      "Ordinal"
+    ],
+    "answer": 1,
+    "time": 20,
+    "level": "Medium"
+  },
+  {
+    "q": "In a 'Currency Conversion' calculation group, why is it better to use a Calculation Group than 50 separate measures?",
+    "options": [
+      "It reduces 'Measure Bloat' by allowing one conversion logic to apply to all existing measures",
+      "It makes the SQL server run faster",
+      "It automatically downloads the latest exchange rates from the internet",
+      "It prevents users from seeing the data in Excel"
+    ],
+    "answer": 0,
+    "time": 25,
+    "level": "Easy"
+  },
+  {
+    "q": "If you want to use a Calculation Group to switch between 'Total Sales' and 'Total Quantity' in a single chart, which DAX function helps identify the placeholder measure?",
+    "options": [
+      "SELECTEDMEASURENAME()",
+      "ISFILTERED()",
+      "USERELATIONSHIP()",
+      "LOOKUPVALUE()"
+    ],
+    "answer": 0,
+    "time": 20,
+    "level": "Hard"
+  }
+,
+  {
+    "q": "What happens if a user applies two calculation items from the same group at once (e.g., in a slicer with multi-select)?",
+    "options": [
+      "The values are added together",
+      "The engine returns an error or unexpected results because only one item per group can be active in a specific context",
+      "It creates a new hidden measure",
+      "The report automatically switches to a Pie Chart"
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Hard"
+  },
+  {
+    "q": "Which DAX function would you use inside a Calculation Item to return the original measure value without any changes?",
+    "options": [
+      "CALCULATE(SUM(Sales))",
+      "SELECTEDMEASURE()",
+      "VALUES(Table[Column])",
+      "LOOKUPVALUE()"
+    ],
+    "answer": 1,
+    "time": 10,
+    "level": "Easy"
+  },
+  {
+    "q": "Why is the property 'Discourage Implicit Measures' important for Calculation Groups?",
+    "options": [
+      "It makes the file smaller",
+      "It ensures that users only use explicit DAX measures, which is a requirement for Calculation Groups to function",
+      "It prevents the model from connecting to SQL",
+      "It hides the DimDate table"
+    ],
+    "answer": 1,
+    "time": 20,
+    "level": "Medium"
+  }
+,
+  {
+    "q": "In the 'Normal' way, if you want to add 'Previous Year' logic to 10 measures, how many new DAX formulas do you need to write?",
+    "options": [
+      "1",
+      "10",
+      "0",
+      "20"
+    ],
+    "answer": 1,
+    "time": 15,
+    "level": "Medium"
+  },
+  {
+    "q": "In the 'Calculation Group' way, how many items do you add to your group to give 'Previous Year' logic to all 10 measures?",
+    "options": [
+      "1",
+      "10",
+      "0",
+      "All of them"
+    ],
+    "answer": 0,
+    "time": 15,
+    "level": "Easy"
+  },
+  {
+    "q": "What is the primary technical reason we use SELECTEDMEASURE() instead of a specific measure name like [Total Sales] in a group?",
+    "options": [
+      "It makes the formula shorter to type",
+      "It allows the logic to be applied dynamically to whatever measure the user chooses in the report",
+      "It is required by the SQL Server license",
+      "It prevents the model from needing to be processed"
+    ],
+    "answer": 1,
+    "time": 20,
+    "level": "Hard"
+  }
+,
+  {
+    "q": "What is the primary reason for slow performance when running SQL Server on a machine with 8 GB RAM and Windows 11?",
+    "options": [
+      "The SQL Server license is expired",
+      "Memory contention between the OS, SQL Engine, and Visual Studio leads to disk swapping",
+      "The laptop screen resolution is too high",
+      "The SQL queries are written in lowercase"
+    ],
+    "answer": 1,
+    "time": 15,
+    "level": "Easy"
+  },
+  {
+    "q": "Where in SSMS can you prevent SQL Server from consuming all the RAM on your laptop?",
+    "options": [
+      "In the Security tab",
+      "In the Server Properties under the 'Memory' page",
+      "In the 'Database Settings' under 'Recovery'",
+      "In the 'Advanced' tab under 'Network'"
+    ],
+    "answer": 1,
+    "time": 15,
+    "level": "Medium"
+  },
+  {
+    "q": "Which processing option is faster when you only want to refresh the rows in a table without rebuilding the metadata?",
+    "options": [
+      "Process Full",
+      "Process Data",
+      "Process Clear",
+      "Process Recalc"
+    ],
+    "answer": 1,
+    "time": 20,
+    "level": "Medium"
+  }
+
+,
+
+  {
+    "q": "In Tabular Editor, what is the keyboard shortcut to create a new measure quickly?",
+    "options": [
+      "Ctrl + N",
+      "Alt + 1",
+      "F5",
+      "Ctrl + S"
+    ],
+    "answer": 1,
+    "time": 10,
+    "level": "Easy"
+  },
+  {
+    "q": "If you write a DAX measure in Tabular Editor and click 'Save', but don't 'Deploy', will you see the measure in an Excel Pivot Table connected to the server?",
+    "options": [
+      "Yes, saving automatically deploys",
+      "No, 'Save' only updates the local .bim file; 'Deploy' is required to update the server",
+      "Only if Visual Studio is closed",
+      "Yes, but only the name of the measure, not the values"
+    ],
+    "answer": 1,
+    "time": 20,
+    "level": "Medium"
+  },
+  {
+    "q": "Which processing option is best for your 8GB RAM laptop when you only want to update the data in one specific table without rebuilding the whole model?",
+    "options": [
+      "Process Full",
+      "Process Data on the specific table",
+      "Process Script",
+      "Process Defragment"
+    ],
+    "answer": 1,
+    "time": 15,
+    "level": "Medium"
+  }
+,
+  {
+    "q": "Why did Tabular Editor throw a 'Token Comma expected' error in the M-Query?",
+    "options": [
+      "Because the SQL query was wrong",
+      "Because in Power Query (M), each step in the 'let' block must be separated by a comma",
+      "Because the table name was too long",
+      "Because 8GB RAM isn't enough for commas"
+    ],
+    "answer": 1,
+    "time": 20,
+    "level": "Medium"
+  },
+  {
+    "q": "What is the difference between 'Saving' and 'Deploying' in Tabular Editor?",
+    "options": [
+      "Saving updates the local file; Deploying updates the server database",
+      "Saving updates the server; Deploying updates the local file",
+      "They are exactly the same thing",
+      "Saving only works in the trial version"
+    ],
+    "answer": 0,
+    "time": 15,
+    "level": "Easy"
+  }
+,
+  {
+    "q": "In Power Query (M), which of the following is true about the 'let' block?",
+    "options": [
+      "All lines must end with a semicolon (;)",
+      "Every step except the one immediately before the 'in' keyword must end with a comma (,)",
+      "You can only have a maximum of two steps",
+      "Case sensitivity does not matter in M-Query"
+    ],
+    "answer": 1,
+    "time": 15,
+    "level": "Medium"
+  },
+  {
+    "q": "What happens if you type 'value.nativequery' instead of 'Value.NativeQuery' in Tabular Editor?",
+    "options": [
+      "It works normally",
+      "It throws a 'Name not found' error because M-Query is case-sensitive",
+      "It automatically corrects the spelling for you",
+      "It makes the SQL query run faster"
+    ],
+    "answer": 1,
+    "time": 10,
+    "level": "Easy"
+  }
+,
+  {
+    "q": "Which tool inside Tabular Editor provides a detailed breakdown of row counts and memory consumption per column?",
+    "options": [
+      "The DAX Debugger",
+      "The VertiPaq Analyzer",
+      "The Expression Editor",
+      "The Deployment Wizard"
+    ],
+    "answer": 1,
+    "time": 15,
+    "level": "Medium"
+  },
+  {
+    "q": "If the Row Count property for a table shows '0' even though you know the SQL table has data, what is the likely reason?",
+    "options": [
+      "The table has not been 'Processed' in the SSAS model yet",
+      "The SQL Server is turned off",
+      "Tabular Editor is in 'Read-Only' mode",
+      "The laptop screen is too small"
+    ],
+    "answer": 0,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "Why is it useful to monitor the 'Rows' count in VertiPaq Analyzer when working with 8 GB of RAM?",
+    "options": [
+      "To ensure the data is accurate",
+      "To identify which large tables might be consuming too much memory and slowing down the system",
+      "To change the color of the table",
+      "To delete the SQL database"
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Hard"
+  }
+
+,
+  {
+    "q": "If a partition's state is 'Ready' but the VertiPaq Analyzer shows 0 rows, what is the most likely cause?",
+    "options": [
+      "The Analysis Services server is crashed",
+      "The SQL query in the partition is correct syntactically, but the filter (WHERE clause) returned no matching rows from the source",
+      "The laptop RAM is too full to count rows",
+      "Tabular Editor is broken"
+    ],
+    "answer": 1,
+    "time": 20,
+    "level": "Medium"
+  },
+  {
+    "q": "Where is the most detailed place to see memory and row statistics in Tabular Editor 3?",
+    "options": [
+      "The File Menu",
+      "The VertiPaq Analyzer tab",
+      "The DAX Expression Editor",
+      "The Windows Task Manager"
+    ],
+    "answer": 1,
+    "time": 10,
+    "level": "Easy"
+  }
+,
+  {
+    "q": "Why does the 'Import' mode make your 8 GB RAM laptop work harder than DirectQuery would?",
+    "options": [
+      "Because it has to store all the processed data rows in the system memory (RAM) for fast access",
+      "Because it requires a faster internet connection",
+      "Because it turns off the laptop's fan",
+      "Because it deletes the SQL source files"
+    ],
+    "answer": 0,
+    "time": 20,
+    "level": "Medium"
+  },
+  {
+    "q": "If you want to switch from 'Import' to 'DirectQuery', where would you change this setting in Tabular Editor?",
+    "options": [
+      "In the File Menu under 'Print'",
+      "In the Model properties under 'Default Mode'",
+      "In the Windows Settings",
+      "In the 'Help' tab"
+    ],
+    "answer": 1,
+    "time": 15,
+    "level": "Hard"
+  }
+,
+  {
+    "q": "If you create a partition in Tabular Editor and click 'Deploy' but NOT 'Save', where will the partition exist?",
+    "options": [
+      "Only in Visual Studio",
+      "Only on the SSAS Server",
+      "Only in the SQL database",
+      "Nowhere, it will be deleted"
+    ],
+    "answer": 1,
+    "time": 20,
+    "level": "Hard"
+  },
+  {
+    "q": "What should you click in Visual Studio when it detects that Tabular Editor has modified the Model.bim file?",
+    "options": [
+      "No",
+      "Yes to All",
+      "Ignore",
+      "Cancel"
+    ],
+    "answer": 1,
+    "time": 10,
+    "level": "Easy"
+  }
+,
+
+  {
+    "q": "If you add a partition in Tabular Editor and click 'Save', which file on your computer is being updated?",
+    "options": [
+      "The SQL Server Database",
+      "The Model.bim file in your project folder",
+      "A temporary internet file",
+      "The Visual Studio application file"
+    ],
+    "answer": 1,
+    "time": 15,
+    "level": "Medium"
+  },
+  {
+    "q": "What is the most likely reason Visual Studio doesn't show a new partition you just created in Tabular Editor?",
+    "options": [
+      "The partition name is too long",
+      "You saved the change to the server but haven't saved the change to the local .bim file yet",
+      "Visual Studio is in 'Read Only' mode",
+      "The SQL Server is offline"
+    ],
+    "answer": 1,
+    "time": 20,
+    "level": "Hard"
+  }
+
+,
+
+  {
+    "q": "Why did closing and reopening the .bim file solve the sync issue?",
+    "options": [
+      "It deleted the old data",
+      "It forced Visual Studio to reload the metadata from the hard drive into its interface",
+      "It restarted the SQL Server engine",
+      "It updated the laptop's RAM"
+    ],
+    "answer": 1,
+    "time": 15,
+    "level": "Medium"
+  },
+  {
+    "q": "Going forward, what is the safest way to ensure your 'Calculation Groups' and 'Partitions' are always saved?",
+    "options": [
+      "Always click Save (Ctrl+S) in Tabular Editor before switching back to Visual Studio",
+      "Never close Visual Studio",
+      "Only use the mouse to click buttons",
+      "Delete the .bim file every morning"
+    ],
+    "answer": 0,
+    "time": 15,
+    "level": "Easy"
+  }
+
+
+
+
+
+
 ];
 
 /* ----------------- STATE ----------------- */
