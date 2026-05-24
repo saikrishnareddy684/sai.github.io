@@ -160,6 +160,155 @@ let originalQuestions = [
     "time": 25,
     "level": "Medium"
   }
+  ,
+  
+  {
+    "q": "From an architectural perspective, what is the fundamental difference between Snowflake and a traditional SQL Server Data Warehouse?",
+    "options": [
+      "Snowflake utilizes a traditional infrastructure-dependent framework where compute and storage are tightly coupled, whereas SQL Server DW separates them entirely.",
+      "Snowflake requires intensive manual server tuning and physical hardware provisioning, whereas SQL Server DW automates hardware allocation completely.",
+      "Snowflake is a cloud-native platform that separates compute and storage for independent scaling, whereas SQL Server DW traditionally couples compute and storage together.",
+      "Snowflake relies entirely on localized indexing structures for performance optimization, whereas SQL Server DW processes queries without requiring any index maintenance."
+    ],
+    "answer": 2,
+    "time": 30,
+    "level": "Medium"
+  },
+  {
+    "q": "How do Snowflake and SQL Server Data Warehouse differ regarding workload isolation and handling high concurrency for reporting?",
+    "options": [
+      "Snowflake provides built-in workload isolation using independent virtual warehouses to handle high concurrency, whereas SQL Server DW shares resources and has limited concurrency.",
+      "Snowflake restricts multi-user access to prevent query conflicts during peak hours, whereas SQL Server DW native multi-clustering allows infinite concurrent reports.",
+      "Snowflake relies on localized database indexes to process overlapping user workloads, whereas SQL Server DW completely isolates workloads through physical hardware partitioning.",
+      "Snowflake experiences high idle costs when handling concurrent business intelligence tools, whereas SQL Server DW automatically suspends itself to eliminate idle costs."
+    ],
+    "answer": 0,
+    "time": 25,
+    "level": "Medium"
+  },
+  {
+    "q": "When managing semi-structured data formats like JSON, what advantage does Snowflake offer over a traditional SQL Server DW environment?",
+    "options": [
+      "Snowflake requires external SQL Server Integration Services (SSIS) packages to parse flat files, whereas SQL Server DW converts files natively via BULK INSERT protocols.",
+      "Snowflake completely blocks the ingestion of raw semi-structured text files, whereas SQL Server DW relies on dynamic physical clusters to store unstructured blobs.",
+      "Snowflake translates semi-structured schemas into rigid relational tables before ingestion, whereas SQL Server DW utilizes native VARIANT data types for storage.",
+      "Snowflake provides native support and query capabilities for semi-structured data using types like VARIANT, whereas SQL Server DW offers limited native flexibility."
+    ],
+    "answer": 3,
+    "time": 25,
+    "level": "Medium"
+  },
+  {
+    "q": "Which of the following scenarios best justifies selecting SQL Server DW over Snowflake for an enterprise data architecture?",
+    "options": [
+      "The organization has an on-premises or legacy infrastructure and requires tight integration with the existing SQL Server and native SSAS cube ecosystem.",
+      "The organization is executing a cloud-first migration strategy that demands dynamic, auto-scaling data warehouses across AWS, Azure, and GCP.",
+      "The organization must support thousands of concurrent business intelligence users running real-time reports without experiencing performance bottlenecks.",
+      "The organization wants a pay-per-use financial model that automatically eliminates idle infrastructure costs when the system is not actively queried."
+    ],
+    "answer": 0,
+    "time": 30,
+    "level": "Easy"
+  },
+  {
+    "q": "In terms of administration, maintenance, and system upkeep, how do the two data warehouse platforms compare?",
+    "options": [
+      "Snowflake requires extensive physical server management and manual OS patching, whereas SQL Server DW provides fully automated backups and hands-off indexing.",
+      "Snowflake features automatic patching, automated backups, and minimal tuning overhead, whereas SQL Server DW demands manual server management and heavier tuning.",
+      "Snowflake leaves data encryption and masking to be manually configured by administrators, whereas SQL Server DW enforces default end-to-end encryption by design.",
+      "Snowflake relies on manual hardware upgrades to scale its storage capacity, whereas SQL Server DW leverages native cloud-native automation to scale without infrastructure."
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Medium"
+  },
+  {
+    "q": "In a large-scale banking environment or reporting architecture (such as a Nordea-style setup), what are the typical roles assigned to Snowflake versus SQL Server DW?",
+    "options": [
+      "Snowflake handles localized spreadsheet caching for desktop clients, while SQL Server DW manages the primary cloud-native analytics pipeline.",
+      "Snowflake acts as an offline archive for physical tape backups, while SQL Server DW drives real-time machine learning applications and data sharing.",
+      "Snowflake is utilized for scalable enterprise reporting, cloud analytics, and modern migrations, while SQL Server DW typically manages legacy OLAP and historical SSAS cubes.",
+      "Snowflake manages single-user transactional updates (OLTP), while SQL Server DW handles multi-cluster global data warehousing with separated storage layers."
+    ],
+    "answer": 2,
+    "time": 30,
+    "level": "Hard"
+  }
+
+  ,
+  {
+    "q": "What is the primary underlying architectural difference between Snowflake and Google BigQuery regarding how they handle compute infrastructure?",
+    "options": [
+      "Snowflake requires users to configure and spin up explicit, isolated virtual warehouses (compute clusters), whereas BigQuery operates as a completely serverless platform that dynamically allocates slots per query.",
+      "Snowflake operates as an entirely serverless engine with zero configuration or warehouse sizing, whereas BigQuery requires users to manually provision, patch, and manage physical virtual machine instances.",
+      "Snowflake couples its compute nodes directly to fixed local physical storage disks, whereas BigQuery isolates its compute layers using third-party network attached storage arrays.",
+      "Snowflake relies on localized database indexes to scale processing power horizontally, whereas BigQuery completely eliminates parallel processing to enforce single-node transactional integrity."
+    ],
+    "answer": 0,
+    "time": 30,
+    "level": "Hard"
+  },
+  {
+    "q": "From a cloud deployment and platform flexibility perspective, what major advantage does Snowflake hold over native tools like Amazon Redshift, Google BigQuery, or Azure Synapse?",
+    "options": [
+      "Snowflake is built natively into a single hardware architecture and cannot be deployed outside of local on-premises physical data center environments.",
+      "Snowflake is a cross-platform, multi-cloud data warehouse that can run seamlessly across AWS, Azure, and GCP, whereas the others are tied tightly to their respective cloud ecosystems.",
+      "Snowflake requires deep, manual infrastructure integration with native cloud operating systems before any basic SQL analytics query can be executed safely.",
+      "Snowflake forces organizations to maintain separate software licensing agreements with hardware manufacturers to scale its storage layer independently of the cloud provider."
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Easy"
+  },
+  {
+    "q": "How does Amazon Redshift's traditional operational model differ from Snowflake's architecture regarding compute and storage resources?",
+    "options": [
+      "Amazon Redshift operates entirely as a decentralized data lakehouse with zero data replication, whereas Snowflake relies on rigid, coupled hardware nodes.",
+      "Amazon Redshift completely automates all database index tuning and data vacuuming natively, whereas Snowflake demands heavy manual DBA intervention to structure tables.",
+      "Amazon Redshift traditionally provisions compute and storage together in a cluster format (though Redshift Serverless exists), whereas Snowflake natively separates compute and storage by design.",
+      "Amazon Redshift charges users exclusively based on active query execution time down to the millisecond, whereas Snowflake bills users based on fixed annual hardware capacity."
+    ],
+    "answer": 2,
+    "time": 25,
+    "level": "Medium"
+  },
+  {
+    "q": "When evaluating Azure Synapse Analytics alongside Snowflake, what unique ecosystem integration capability does Azure Synapse emphasize?",
+    "options": [
+      "Azure Synapse restricts data ingestion exclusively to local flat text files, preventing integration with broader enterprise streaming applications.",
+      "Azure Synapse provides a unified workspace that combines SQL data warehousing, big data analytics via Apache Spark, and data integration pipelines within a single platform.",
+      "Azure Synapse requires third-party ETL tools like Snowflake Snowpipe to move data into its native relational storage pools.",
+      "Azure Synapse relies entirely on open-source command line tools, eliminating the use of visual web-based management consoles or monitoring dashboards."
+    ],
+    "answer": 1,
+    "time": 30,
+    "level": "Medium"
+  },
+  {
+    "q": "Regarding the cost models of Google BigQuery and Snowflake, how do their primary billing mechanisms differ for analytical processing?",
+    "options": [
+      "BigQuery charges users based on a flat hardware allocation model regardless of database size, whereas Snowflake charges only for the volume of data stored in external object pools.",
+      "BigQuery bills users based on the number of concurrent client connections established, whereas Snowflake bills users strictly for the volume of network data transferred.",
+      "BigQuery requires a dedicated up-front infrastructure licensing fee, whereas Snowflake scales its pricing dynamically using a flat-rate monthly subscription format.",
+      "BigQuery typically charges based on the volume of data scanned by each individual query, whereas Snowflake bills based on the uptime and size of the virtual warehouses used."
+    ],
+    "answer": 3,
+    "time": 25,
+    "level": "Hard"
+  },
+  {
+    "q": "Which of the following scenarios would lead an enterprise data architect to choose a native cloud data warehouse (like BigQuery, Redshift, or Synapse) over Snowflake?",
+    "options": [
+      "The organization wants to avoid vendor lock-in and demands a multi-cloud data strategy that spans across AWS, GCP, and Azure simultaneously.",
+      "The organization seeks a zero-maintenance, serverless analytics platform that handles unpredictable, bursty workloads without configuring virtual warehouse sizes.",
+      "The organization is heavily committed to a specific cloud vendor's ecosystem and wants deep, out-of-the-box integration with that vendor's native security, IAM, and machine learning tools.",
+      "The organization requires a traditional on-premises database deployment that runs completely detached from public cloud infrastructure and external networks."
+    ],
+    "answer": 2,
+    "time": 30,
+    "level": "Medium"
+  }
+
 
 
 
