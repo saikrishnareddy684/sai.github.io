@@ -308,8 +308,196 @@ let originalQuestions = [
     "time": 30,
     "level": "Medium"
   }
+,
+  
+  {
+    "q": "Which of the following statements best describes how Snowflake handles unstructured data?",
+    "options": [
+      "Snowflake strictly prohibits the storage of any unstructured data formats.",
+      "Snowflake allows users to load unstructured data, supported by specific architectural features.",
+      "Snowflake automatically converts all unstructured data into basic integer types upon loading.",
+      "Snowflake only supports unstructured data if it is first converted into a physical server assembly guideline."
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Easy"
+  },
+  {
+    "q": "What is the primary difference between explicit casting and implicit casting in Snowflake?",
+    "options": [
+      "Explicit casting is done automatically by the system, while implicit casting requires a user-defined function.",
+      "Explicit casting is only used for unstructured data, whereas implicit casting is reserved for basic SQL data types.",
+      "Explicit casting requires the user to specify the desired data conversion, while implicit casting happens automatically whenever necessary and possible.",
+      "Explicit casting always results in a complete loss of data, while implicit casting is guaranteed to be lossless."
+    ],
+    "answer": 2,
+    "time": 30,
+    "level": "Medium"
+  },
+  {
+    "q": "What can happen when converting a data value from a FLOAT type to an INTEGER type in Snowflake?",
+    "options": [
+      "The operation will always fail and throw a system error because FLOAT cannot be converted.",
+      "The conversion is completely lossless and preserves all digits after the decimal place.",
+      "Information is lost because the value is rounded to the nearest integer, removing the digits after the decimal place.",
+      "The data type is automatically converted into a VARCHAR string format to prevent any information loss."
+    ],
+    "answer": 2,
+    "time": 25,
+    "level": "Medium"
+  },
+  {
+    "q": "When passing a VARCHAR value to the TIME_SLICE function (which expects a TIMESTAMP or DATE), what action must a user take?",
+    "options": [
+      "The user must perform explicit casting to specify the desired conversion.",
+      "Nothing, because Snowflake will automatically coerce the VARCHAR into a physical cooling metric.",
+      "The user must manually defragment the database before running the function.",
+      "The user must convert the VARCHAR into an analog data translation protocol first."
+    ],
+    "answer": 0,
+    "time": 30,
+    "level": "Hard"
+  }
 
+,
+  
+  {
+    "q": "Why does pulling millions of rows from Snowflake via a traditional ODBC driver often create a performance bottleneck?",
+    "options": [
+      "Because ODBC drivers force Snowflake to temporarily disable its cloud security governance layers.",
+      "Because ODBC is a row-oriented API, requiring Snowflake's native columnar data to undergo costly row-by-row serialization and transposition.",
+      "Because ODBC drivers only allow local network routing and cannot connect to cloud-native platforms.",
+      "Because Snowflake requires manual database defragmentation every time an ODBC handshake is initialized."
+    ],
+    "answer": 1,
+    "time": 30,
+    "level": "Medium"
+  },
+   
+  {
+    "q": "When designing a high-volume data ingestion pipeline to push millions of records from an application into Snowflake, why is executing raw INSERT statements over a standard ODBC driver discouraged?",
+    "options": [
+      "Snowflake does not allow the use of standard ODBC drivers for any data write or insert operations.",
+      "Row-by-row inserts over ODBC incur heavy network and processing overhead; the preferred pattern is staging files in cloud storage and executing a bulk COPY INTO command.",
+      "ODBC drivers automatically convert numbers into unreadable frontend user interface templates upon insertion.",
+      "Executing inserts via ODBC permanently locks the target table and forces a database rollback."
+    ],
+    "answer": 1,
+    "time": 35,
+    "level": "Hard"
+  }
 
+,
+
+  {
+    "q": "When using Snowflake's 'Create Table From File' wizard in Snowsight, how does the platform determine the column names and data types for the new table?",
+    "options": [
+      "The user must manually code a DDL script before the wizard can upload the file structure.",
+      "Snowflake automatically scans the file contents, infers the schema based on data patterns, and allows the user to review or adjust the data types in a visual preview layout.",
+      "Snowflake converts all data columns into generic binary blobs to avoid type checking.",
+      "The platform routes the file to an analog translation protocol to strip out all structural metadata."
+    ],
+    "answer": 1,
+    "time": 30,
+    "level": "Easy"
+  },
+  {
+    "q": "What happens if Snowflake's automatic schema inference misinterprets a custom formatted date string as a VARCHAR column during a file upload process?",
+    "options": [
+      "The file upload fails permanently, and the database account is locked.",
+      "The user must cancel the upload and rewrite the raw file headers manually using code syntax.",
+      "The user can use the UI preview dropdown menus to manually change the inferred data type to TIMESTAMP or DATE before finalizing the table creation.",
+      "Snowflake automatically defragments the storage layer to coerce the string into a physical cooling metric."
+    ],
+    "answer": 2,
+    "time": 25,
+    "level": "Easy"
+  },
+  {
+    "q": "In an elite enterprise data warehouse pipeline, why is pushing massive data volumes via row-by-row INSERT statements over an ODBC driver considered an anti-pattern for Snowflake?",
+    "options": [
+      "ODBC connections are strictly read-only and cannot execute write operations or data pushes.",
+      "Row-by-row operations over ODBC do not support multi-user security governance protocols.",
+      "Snowflake is optimized for bulk columnar loading; row-by-row inserts create extreme network and processing overhead compared to staging files and running a COPY INTO command.",
+      "Using ODBC for writing data automatically corrupts the underlying physical server assembly parameters."
+    ],
+    "answer": 2,
+    "time": 35,
+    "level": "Medium"
+  },
+  {
+    "q": "Which of the following descriptions accurately defines the operational relationship between the ODBC specification and a Snowflake ODBC Driver?",
+    "options": [
+      "ODBC is an outdated hardware component, while the Snowflake Driver is a frontend website builder tool.",
+      "ODBC is a standardized API standard/specification, whereas the Snowflake ODBC Driver is the database-specific translator software that implements that specification.",
+      "The driver handles local network routing, while the ODBC specification dictates offline storage formats.",
+      "They are identical terms representing a single cloud-native peer-to-peer file sharing mechanism."
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Medium"
+  },
+   
+  {
+    "q": "When configuring a downstream analytical dashboard application to extract data from a structured Snowflake Star Schema, what role does a Data Source Name (DSN) play in an ODBC context?",
+    "options": [
+      "It acts as a data defragmentation script to clean up table columns during the handshake.",
+      "It is a custom configuration block on the local machine that stores the connection attributes—such as account ID, warehouse, and credentials—needed to establish the database session.",
+      "It provides a drag-and-drop user interface for building frontend website dashboards.",
+      "It functions as an offline storage container to back up historical records without server access."
+    ],
+    "answer": 1,
+    "time": 30,
+    "level": "Medium"
+  },
+  {
+    "q": "If you are designing a bi-directional data flow using a standard ODBC driver configuration, which statement best describes its capabilities?",
+    "options": [
+      "The driver can only extract data downstream but cannot accept data push or insert workflows.",
+      "The driver can only push data into the staging area but cannot execute analytical queries.",
+      "The driver is natively bi-directional, allowing data to be both pulled into downstream dashboards and pushed back up into Snowflake tables via SQL commands.",
+      "The driver operates completely offline, preventing any live modifications to the database engine."
+    ],
+    "answer": 2,
+    "time": 25,
+    "level": "Medium"
+  },
+  {
+    "q": "Why does a data pipeline that flattens a Star Schema (Fact and Dimension tables) into a single optimized Reporting View provide a significant advantage before connecting to a BI Dashboard tool?",
+    "options": [
+      "It completely deletes the dimension tables to free up local storage space.",
+      "It simplifies the semantic layer for the dashboard, providing an intuitive, high-performance dataset that handles relationship joins efficiently within Snowflake's cloud layer.",
+      "It converts the cloud database into a local peer-to-peer file sharing protocol.",
+      "It forces the dashboard to use analog data translation instead of standard SQL data types."
+    ],
+    "answer": 1,
+    "time": 30,
+    "level": "Hard"
+  },
+  {
+    "q": "When building an ETL framework to move banking data into Snowflake, what is the primary benefit of defining an explicit FILE FORMAT object before executing data load workflows?",
+    "options": [
+      "It allows Snowflake to guess the customer demographics without processing data rows.",
+      "It encapsulates specific parsing parameters—such as field delimiters, string enclosures, and header handling rules—ensuring reproducible and error-free file ingestion.",
+      "It increases physical server cooling efficiency by reducing data volumes during transit.",
+      "It automatically converts all incoming string structures into hardcoded website templates."
+    ],
+    "answer": 1,
+    "time": 30,
+    "level": "Medium"
+  },
+  {
+    "q": "In a Snowflake environment, which keyword combination allows a data engineer to automatically generate a sequence of incremental integer keys when establishing a new Dimension Table layout?",
+    "options": [
+      "MANUAL DEFRAGMENTATION DEFAULT 1",
+      "OFFLINE FORMAT BINARY KEY",
+      "IDENTITY(1,1) PRIMARY KEY",
+      "ANALOG TRANSLATION PROTOCOL SEQUENCE"
+    ],
+    "answer": 2,
+    "time": 25,
+    "level": "Easy"
+  }
 
 
 
