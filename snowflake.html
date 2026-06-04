@@ -537,6 +537,1166 @@ let originalQuestions = [
     "time": 25,
     "level": "Easy"
   }
+,
+  {
+    "q": "A data engineer logs into Snowsight to upload a CSV file but notices that the 'Create Table from File' and 'Load Data' options are completely missing from the interface. What is the most likely cause of this issue?",
+    "options": [
+      "The Snowflake account has run out of physical hardware cooling metrics for the day.",
+      "The engineer's active user session is using a restricted system role, such as PUBLIC, which lacks the USAGE and CREATE TABLE privileges on that specific schema.",
+      "The CSV file format is automatically being blocked by an offline storage protocol.",
+      "The web browser requires a manual database defragmentation update to display buttons."
+    ],
+    "answer": 1,
+    "time": 30,
+    "level": "Medium"
+  },
+  {
+    "q": "Which commands must be executed in a Snowflake worksheet to ensure a user session has both the authority to create database objects and the compute resources to process data?",
+    "options": [
+      "USE SYSTEM TEMPLATE and SET DRAG AND DROP ON;",
+      "RUN PEER TO PEER FILE SHARE and SET COLIATION OFF;",
+      "USE ROLE <role_name>; and USE WAREHOUSE <warehouse_name>;",
+      "SET ANALOG PROTOCOL AND DEFRAGMENT SCHEMA;"
+    ],
+    "answer": 2,
+    "time": 25,
+    "level": "Easy"
+  },
+  {
+    "q": "In Snowflake's Role-Based Access Control (RBAC) framework, which system-defined role is universally recommended for creating and managing database objects like tables, views, and schemas?",
+    "options": [
+      "SECURITYADMIN",
+      "SYSADMIN",
+      "PUBLIC",
+      "ACCOUNTADMIN"
+    ],
+    "answer": 1,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "What happens to data loading privileges if a user inherits multiple roles in Snowflake but forgets to explicitly specify an active role in their worksheet or session context?",
+    "options": [
+      "Snowflake defaults to the user's primary default role, which might lack write permissions, causing data ingestion buttons and options to be hidden or blocked.",
+      "Snowflake routes the connection through an anonymous local network routing portal to assign random privileges.",
+      "The database infrastructure automatically switches into an offline format to protect data blocks.",
+      "The user is prompted to build a custom frontend interface template before continuing."
+    ],
+    "answer": 0,
+    "time": 35,
+    "level": "Hard"
+  },
+  {
+    "q": "If a schema owner wants to grant a junior accountant's role the ability to view data structures without allowing them to load new CSV files or alter tables, which privilege configuration is correct?",
+    "options": [
+      "Grant OWNERSHIP on the schema to the junior role.",
+      "Grant CREATE TABLE and MODIFY privileges to the junior role.",
+      "Grant USAGE on the schema and SELECT on the existing tables to the junior role, while withholding CREATE TABLE privileges.",
+      "Grant ANALOG TRANSLATION privileges across the database instance."
+    ],
+    "answer": 2,
+    "time": 30,
+    "level": "Hard"
+  }
+,
+  
+  {
+    "q": "During the Snowsight file upload process, if you encounter a data formatting error in a column (such as a text string inside a column meant for numeric values), what action can you take within the wizard interface?",
+    "options": [
+      "The wizard will completely crash, requiring you to contact cloud infrastructure support.",
+      "You can modify or transform the column data type settings directly in the visual preview pane to reconcile the data mismatch before the rows are finalized.",
+      "You must convert the database instance into a single-user access format to bypass validation.",
+      "The wizard automatically deletes all rows containing the text string without notifying you."
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Easy"
+  },
+  {
+    "q": "When uploading a local file via the Snowflake UI and designating a Database, Schema, and Table Name, what internal operation is Snowflake performing to temporarily hold your file before loading it?",
+    "options": [
+      "It establishes a peer-to-peer file sharing protocol over your local area network.",
+      "It writes the file into an offline analog translation format on the client machine.",
+      "It streams the file to a secure, Snowflake-managed hidden internal staging area before running the copy operation.",
+      "It automatically triggers a database defragmentation process to generate hardware cooling."
+    ],
+    "answer": 2,
+    "time": 30,
+    "level": "Medium"
+  },
+  {
+    "q": "Why is the ability to transform columns during the visual loading phase a critical feature for data engineers managing financial or transactional datasets?",
+    "options": [
+      "It allows them to build frontend user interface templates for public website hosting.",
+      "It enables them to catch and fix structural inconsistencies—such as overriding an incorrectly inferred VARCHAR type to a proper TIMESTAMP—preventing downstream load failures.",
+      "It eliminates the need for virtual compute warehouses during the data load.",
+      "It restricts data visibility to an offline format to bypass cloud governance rules."
+    ],
+    "answer": 1,
+    "time": 30,
+    "level": "Medium"
+  },
+  {
+    "q": "If you are loading rows via the Snowsight wizard and the operation finishes with errors on specific rows, where does Snowflake look for instructions on whether to abort the load or skip the bad rows?",
+    "options": [
+      "It reviews the local physical server assembly guidelines.",
+      "It references the 'ON_ERROR' copy option parameters, which can be configured to skip a certain number of errors, skip the file, or abort the load entirely.",
+      "It automatically routes the bad data into a drag-and-drop website building tool.",
+      "It stops the session and prompts for an analog data translation protocol initialization."
+    ],
+    "answer": 1,
+    "time": 35,
+    "level": "Hard"
+  },
+  {
+    "q": "When assigning a target table name during a file upload in a schema, what happens if the table name you type already exists in that specific database schema context?",
+    "options": [
+      "Snowflake will permanently delete the entire database instance to avoid naming conflicts.",
+      "Depending on your wizard selections, Snowflake will either append the new rows into the existing table schema or prompt you to truncate/overwrite the existing object structure.",
+      "The platform converts the database into an offline storage format.",
+      "The existing table is automatically published as a public frontend interface template."
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Easy"
+  },
+  {
+    "q": "In an automated ETL pipeline, which SQL command replaces the manual step of clicking 'Browse and Upload File' inside the Snowflake web interface?",
+    "options": [
+      "DEFRAGMENT TABLE LOCAL FILE;",
+      "PUT file://<path_to_file> @~;",
+      "CREATE WEB INTERFACE ROUTER FOR FILE;",
+      "GENERATE DRAG AND DROP PROFILE;"
+    ],
+    "answer": 1,
+    "time": 30,
+    "level": "Medium"
+  },
+  {
+    "q": "What is the technical term used when you map column headings from a raw CSV file directly into matching target data definitions inside a Snowflake table during an ingestion workflow?",
+    "options": [
+      "Schema Mapping (or Column Transformation)",
+      "Analog Data Translation Routing",
+      "Defragmentation Assembly Alignment",
+      "Peer-to-Peer Header Formatting"
+    ],
+    "answer": 0,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "If a data load wizard successfully loads 10,000 rows into a table, where are those structured records physically stored within Snowflake's underlying cloud storage architecture?",
+    "options": [
+      "In a single flat offline text document on the local user's computer.",
+      "In encrypted, columnar optimized storage units called micro-partitions, completely managed by Snowflake.",
+      "On custom peer-to-peer file sharing nodes distributed across analog data centers.",
+      "Inside temporary frontend interface templates built for website hosting."
+    ],
+    "answer": 1,
+    "time": 30,
+    "level": "Medium"
+  },
+  {
+    "q": "When modifying column data types during a wizard upload, why would changing a column from a FLOAT to an INTEGER be considered a 'lossy' transformation?",
+    "options": [
+      "Because it causes the network connection to drop single-user data packets.",
+      "Because it rounds off and drops all fractional numerical values following the decimal point, modifying the absolute precision of the original data points.",
+      "Because it forces Snowflake to change its security governance protocols to manual mode.",
+      "Because it translates the values into custom physical hardware cooling parameters."
+    ],
+    "answer": 1,
+    "time": 30,
+    "level": "Medium"
+  },
+  {
+    "q": "After rows are loaded using the 'Browse' wizard, what is the best practice query statement a data analyst should run to verify the row count matches the source CSV file?",
+    "options": [
+      "SELECT SHOW_ALL_FILES FROM SCHEMA_CONTEXT;",
+      "SELECT COUNT(*) FROM <database_name>.<schema_name>.<table_name>;",
+      "RUN DEFRAGMENTATION CHECK ON CURRENT TABLE;",
+      "GET FRONTEND TEMPLATE COUNT;"
+    ],
+    "answer": 1,
+    "time": 20,
+    "level": "Easy"
+  }
+  ,
+
+  {
+    "q": "Which built-in Snowflake context function should a data engineer execute to determine the exact user account running the current session?",
+    "options": [
+      "SELECT CURRENT_ACCOUNT_OWNER();",
+      "SELECT CURRENT_USER();",
+      "SELECT SHOW_ACTIVE_MEMBER();",
+      "SELECT GET_FRONTEND_USER_TEMPLATE();"
+    ],
+    "answer": 1,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "If a query returns NULL for the CURRENT_WAREHOUSE() function, what does this indicate about the active Snowflake session?",
+    "options": [
+      "The database instance has run out of physical hardware cooling metrics.",
+      "No virtual compute warehouse is currently allocated to the session, meaning queries requiring compute power will fail to execute.",
+      "The user is operating completely in an offline storage format.",
+      "The database security governance layer has blocked the user's local network routing."
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Medium"
+  },
+  {
+    "q": "When writing an audit logging script to track who modified a table, which combination of context functions would capture the user, their active role, and the exact timestamp?",
+    "options": [
+      "USER_ID(), ROLE_ID(), AND DEFRAGMENT_TIME()",
+      "ANALOG_USER(), CONTEXT_ROLE(), AND CURRENT_FORMAT()",
+      "CURRENT_USER(), CURRENT_ROLE(), AND CURRENT_TIMESTAMP()",
+      "TEMPLATE_USER(), WEBPAGE_ROLE(), AND LOCAL_CLOCK()"
+    ],
+    "answer": 2,
+    "time": 25,
+    "level": "Easy"
+  },
+  {
+    "q": "What is the primary operational advantage of using functions like CURRENT_DATABASE() and CURRENT_SCHEMA() inside a dynamic SQL stored procedure?",
+    "options": [
+      "They automatically convert text columns into single-user access arrays.",
+      "They allow the script to adapt to the caller's active environmental context, enabling reusable code across different databases or development sandboxes.",
+      "They eliminate the need for an internet gateway by forcing offline processing.",
+      "They generate drag-and-drop user interface templates for downstream dashboards."
+    ],
+    "answer": 1,
+    "time": 30,
+    "level": "Medium"
+  },
+  {
+    "q": "A data analyst runs 'SELECT CURRENT_SCHEMA();' and receives the result 'PUBLIC'. If they execute a query against a table named 'LOG_DATA' without specifying a prefix, where will Snowflake look for that table?",
+    "options": [
+      "In a global peer-to-peer file sharing repository.",
+      "Exclusively within the 'PUBLIC' schema of the currently active database in the session context.",
+      "In an offline storage container located on the client desktop.",
+      "Across every schema in the entire database account simultaneously."
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Medium"
+  },
+  {
+    "q": "Which of the following statements is true regarding Snowflake context functions like CURRENT_ROLE()?",
+    "options": [
+      "They are classified as scalar functions that return a single value representing the properties of the current user session.",
+      "They require manual database defragmentation before they can output accurate metadata strings.",
+      "They are hardware cooling parameters used to throttle virtual warehouse speeds.",
+      "They can only be executed by the ACCOUNTADMIN system role."
+    ],
+    "answer": 0,
+    "time": 30,
+    "level": "Medium"
+  },
+  {
+    "q": "If you need to fetch the unique internal identifier for the Snowflake account you are currently logged into, which function should you use?",
+    "options": [
+      "CURRENT_USER_NAME()",
+      "CURRENT_ACCOUNT()",
+      "LOCAL_NETWORK_ROUTING_ID()",
+      "ANALOG_TRANSLATION_CODE()"
+    ],
+    "answer": 1,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "Why might running a query containing context functions return different results for two separate users executing the exact same SQL code block?",
+    "options": [
+      "Because context functions evaluate dynamically based on each individual user's active session state, role assignments, and selected warehouse properties.",
+      "Because Snowflake randomized database output when multi-user access limitations are triggered.",
+      "Because one user might be using a newer frontend website template than the other.",
+      "Because context functions read individual local physical server layouts."
+    ],
+    "answer": 0,
+    "time": 30,
+    "level": "Hard"
+  },
+  {
+    "q": "What command sequence can an administrator combine with context functions to programmatically verify if the current session role is allowed to switch to the ACCOUNTADMIN privilege layer?",
+    "options": [
+      "SET ROLE = DEFRAGMENT_ADMIN;",
+      "Using an IF statement or query condition that checks if CURRENT_ROLE() matches 'ACCOUNTADMIN' or evaluates inherited role hierarchies.",
+      "Initializing a peer-to-peer file share check to override session context variables.",
+      "Parsing physical hardware cooling logs through a data mapping wizard."
+    ],
+    "answer": 1,
+    "time": 35,
+    "level": "Hard"
+  },
+  {
+    "q": "Which Snowflake context function can be used to determine the cloud region (e.g., AWS US-East, Azure West Europe) where the active database instance is hosted?",
+    "options": [
+      "CURRENT_CLOUD_TEMPLATE()",
+      "CURRENT_REGION()",
+      "LOCAL_ROUTING_ZONE()",
+      "OFFLINE_STORAGE_LOCATION()"
+    ],
+    "answer": 1,
+    "time": 20,
+    "level": "Easy"
+  }
+,
+  {
+    "q": "Which component of Snowflake's architecture is strictly responsible for providing the CPU, memory, and temporary storage required to execute SQL queries and data loads?",
+    "options": [
+      "A Secure User Account",
+      "A Virtual Warehouse",
+      "An Access Control Role",
+      "An Offline Metadata Template"
+    ],
+    "answer": 1,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "In Snowflake's Role-Based Access Control (RBAC) model, why are access privileges (such as SELECT or INSERT) assigned to Roles instead of directly to individual Users?",
+    "options": [
+      "Because users are restricted to single-user access limitations and cannot process security parameters.",
+      "To simplify user management; administrators can easily grant or revoke access by assigning roles to users rather than managing complex permissions for every single individual account.",
+      "Because individual user accounts do not support encryption or secure network routing protocols.",
+      "To reduce the number of physical hardware cooling metrics consumed during query processing."
+    ],
+    "answer": 1,
+    "time": 30,
+    "level": "Medium"
+  },
+  {
+    "q": "What happens to a User's session if they have the correct security Role to query a table, but their assigned Virtual Warehouse is currently suspended and Auto-Resume is turned off?",
+    "options": [
+      "The query will execute successfully but will run in an offline format using zero compute credits.",
+      "The query will fail immediately and throw an error stating that there is no active warehouse available to execute the compute processing.",
+      "Snowflake will automatically delete the target table to prevent database serialization locks.",
+      "The user's account will be permanently demoted to the PUBLIC system role."
+    ],
+    "answer": 1,
+    "time": 30,
+    "level": "Medium"
+  },
+  {
+    "q": "A data engineering team upgrades a virtual warehouse size from 'Small' to 'Medium'. What primary performance impact will this have on their ETL workloads?",
+    "options": [
+      "It doubles the available compute resources (CPU/Memory), allowing complex queries and bulk data loads to process significantly faster.",
+      "It converts the cloud architecture into an analog data translation layout.",
+      "It completely restricts database access to a single concurrent user session.",
+      "It generates a new set of drag-and-drop website templates for frontend dashboards."
+    ],
+    "answer": 0,
+    "time": 25,
+    "level": "Easy"
+  },
+  {
+    "q": "If a user belongs to three different roles (e.g., DEVELOPER, ANALYST, ACCOUNTANT), how many of these roles can be set as the primary active context at any single moment within a standard Snowflake session?",
+    "options": [
+      "All assigned roles are active at the same time automatically.",
+      "Only one primary role can be active at a single time to determine immediate object creation privileges, though secondary roles can be activated to aggregate access.",
+      "Roles cannot be mixed; the user must log out and create a new account for each role context.",
+      "None; the session defaults exclusively to an offline storage format profile."
+    ],
+    "answer": 1,
+    "time": 35,
+    "level": "Hard"
+  },
+  {
+    "q": "Which command sequence must be run to allow a specific virtual warehouse named 'FINANCE_WH' to be utilized by a security role named 'DATA_ANALYST'?",
+    "options": [
+      "ALTER WAREHOUSE FINANCE_WH SET DEFRAGMENTATION = TRUE;",
+      "GRANT USAGE ON WAREHOUSE FINANCE_WH TO ROLE DATA_ANALYST;",
+      "CONNECT USER TO WAREHOUSE VIA PEER TO PEER SHARE;",
+      "CREATE FRONTEND INTERFACE FOR WAREHOUSE ROLE ALIGNMENT;"
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Medium"
+  },
+  {
+    "q": "What is the key functional difference between a Snowflake User and a Snowflake Role?",
+    "options": [
+      "A User represents an identity or physical entity that authenticates, while a Role represents a collection of permissions and access entitlements.",
+      "A User manages cloud compute resources, whereas a Role handles the physical storage capacity blocks.",
+      "Users operate completely offline, while Roles require an active network routing protocol handshake.",
+      "There is no difference; they are interchangeable terms within a cloud data warehouse database."
+    ],
+    "answer": 0,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "If a business intelligence dashboard queries Snowflake using an integration User account that is assigned a warehouse with an Auto-Suspend setting of 5 minutes, what happens when the dashboard stops sending queries?",
+    "options": [
+      "The warehouse will keep running indefinitely and lock all related dimension tables.",
+      "The virtual warehouse will automatically shut down after 5 minutes of inactivity, freezing credit consumption until a new query wakes it up.",
+      "Snowflake will redirect the dashboard connection to an offline server template.",
+      "The warehouse will perform a manual database defragmentation cycle to clear server cache."
+    ],
+    "answer": 1,
+    "time": 30,
+    "level": "Medium"
+  },
+  {
+    "q": "Why is it possible for multiple different Users to execute queries using the exact same Virtual Warehouse simultaneously without blocking each other's compute sessions?",
+    "options": [
+      "Because Snowflake warehouses automatically scale across multi-user access limitations by allocating queries to separate execution channels or queuing them based on resources.",
+      "Because the warehouse converts every concurrent query into an analog data stream.",
+      "Because virtual warehouses do not process actual queries; they only monitor hardware cooling parameters.",
+      "Because the system switches to a peer-to-peer file sharing mechanism when concurrency rises."
+    ],
+    "answer": 0,
+    "time": 35,
+    "level": "Hard"
+  },
+  {
+    "q": "An administrator wants to track the exact cloud credit spending incurred by a specific group of business analysts. What is the most effective architectural approach to achieve this in Snowflake?",
+    "options": [
+      "Assign each analyst a different frontend interface template to monitor web activity.",
+      "Create a dedicated Virtual Warehouse exclusively for that analyst group's Role, allowing all credit consumption to be tracked directly back to that specific warehouse object.",
+      "Force the analysts to process all data loads offline via a custom file conversion protocol.",
+      "Run a manual database defragmentation script on their local machines daily."
+    ],
+    "answer": 1,
+    "time": 30,
+    "level": "Hard"
+  }
+,
+
+
+  {
+    "q": "Which of the following Snowflake commands is the most efficient way to get a list of all tables within your active database session context without consuming compute warehouse credits?",
+    "options": [
+      "SELECT * FROM ALL_PHYSICAL_TABLES;",
+      "SHOW TABLES;",
+      "RUN DEFRAGMENTATION TABLE SEARCH;",
+      "FETCH FRONTEND INTERFACE TEMPLATES;"
+    ],
+    "answer": 1,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "What is a primary functional difference between executing a 'SHOW TABLES;' command and querying the 'INFORMATION_SCHEMA.TABLES' view?",
+    "options": [
+      "SHOW TABLES can only run completely offline, whereas the INFORMATION_SCHEMA requires a local network routing protocol.",
+      "SHOW TABLES outputs a quick text-based catalog summary, while INFORMATION_SCHEMA.TABLES allows you to write complex SQL queries with WHERE, JOIN, and GROUP BY clauses to filter table metadata.",
+      "SHOW TABLES automatically deletes empty schemas, while the INFORMATION_SCHEMA locks individual user access permissions.",
+      "There is no difference; they are identical aliases managed by physical server guidelines."
+    ],
+    "answer": 1,
+    "time": 30,
+    "level": "Medium"
+  },
+  {
+    "q": "A data engineer runs 'SHOW SCHEMAS;' but notices that a critical schema named 'FINANCE_INGEST' is missing from the output. What is the most likely cause?",
+    "options": [
+      "The engineering team forgot to set the hardware cooling metrics for that schema.",
+      "The engineer's active user role does not possess the USAGE privilege on that specific schema, making it invisible to them in the metadata catalog.",
+      "The schema has automatically converted into an offline peer-to-peer file sharing link.",
+      "The database requires a manual transformation wizard operation to make schemas visible."
+    ],
+    "answer": 1,
+    "time": 30,
+    "level": "Medium"
+  },
+  {
+    "q": "When attempting to list data rows using a 'SELECT *' statement on a multi-billion-row Fact Table during a quick inspection, what is the best-practice clause to append to the query?",
+    "options": [
+      "DEFRAGMENT ROWS NOW",
+      "SET SINGLE_USER ACCESS ON",
+      "LIMIT <number_of_rows>",
+      "EXPORT TO ANALOG PROTOCOL"
+    ],
+    "answer": 2,
+    "time": 15,
+    "level": "Easy"
+  },
+  {
+    "q": "Which column in Snowflake's 'INFORMATION_SCHEMA.TABLES' view can an analytical dashboard developer query to instantly find out how many rows are committed to a table without executing a costly COUNT(*) scan?",
+    "options": [
+      "TOTAL_RECORD_ARRAY",
+      "ROW_COUNT",
+      "FRONTEND_TEMPLATE_METRIC",
+      "ANALOG_ROW_TRANSLATION"
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Medium"
+  },
+  {
+    "q": "If you want to view a comprehensive list of secure structural objects that combine data rows dynamically from multiple base tables without storing the data physically, which command should you run?",
+    "options": [
+      "SHOW DISKS;",
+      "SHOW VIEWS;",
+      "SHOW HARDWARE_CONFIG;",
+      "SHOW OFFLINE_FORMATS;"
+    ],
+    "answer": 1,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "What scope limitation applies to Snowflake's system-defined 'INFORMATION_SCHEMA' views when running queries inside a database?",
+    "options": [
+      "They can only display metadata for individual files stored in peer-to-peer file sharing folders.",
+      "They only contain metadata for the specific database in which the schema resides, meaning you cannot query one database's Information Schema to directly view tables located in a completely different database.",
+      "They operate entirely separate from the cloud, displaying only the local network routing nodes.",
+      "They are limited to displaying a single user template layout at a time."
+    ],
+    "answer": 1,
+    "time": 35,
+    "level": "Hard"
+  },
+  {
+    "q": "Which SQL statement would accurately return only the tables that were created after a specific calendar date within a schema by utilizing the system metadata catalogs?",
+    "options": [
+      "SHOW TABLES WHERE DATE > '2026-05-01';",
+      "SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE CREATED > '2026-05-01' AND TABLE_TYPE = 'BASE TABLE';",
+      "RUN SYSTEM SCHEMA SCAN ON '2026-05-01' WITH DEFRAGMENTATION;",
+      "GET FRONTEND WEBSITE TEMPLATE WHERE UPLOAD_DATE IS RECENT;"
+    ],
+    "answer": 1,
+    "time": 30,
+    "level": "Hard"
+  },
+  {
+    "q": "When running a metadata inspection command, what pattern matching parameter can be appended to a SHOW command to filter objects by name, such as listing only tables that start with 'DIM_'?",
+    "options": [
+      "SHOW TABLES LIKE 'DIM_%';",
+      "SHOW TABLES MATCHING TEMPLATE 'DIM';",
+      "SHOW TABLES WITH ANALOG FILTER 'DIM';",
+      "SHOW TABLES LIMIT ROUTING TO 'DIM';"
+    ],
+    "answer": 0,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "Why does a metadata command like 'SHOW DATABASES;' complete in milliseconds even if the Snowflake account holds petabytes of data distributed across thousands of compute clusters?",
+    "options": [
+      "Because it bypasses the internet layer entirely and operates using an offline format protocol.",
+      "Because it queries Snowflake's centralized, highly optimized cloud services metadata store directly without spinning up or requiring any compute muscle from virtual warehouses.",
+      "Because it limits results to a single-user access viewpoint.",
+      "Because it transposes data records into physical server cooling parameters before evaluating."
+    ],
+    "answer": 1,
+    "time": 30,
+    "level": "Hard"
+  }
+
+,
+  {
+    "q": "What is the primary architectural purpose of a 'Stage' object in a Snowflake data ingestion pipeline?",
+    "options": [
+      "It acts as a visual frontend user interface template to display active graphs.",
+      "It serves as a secure, intermediate cloud storage location that holds raw data files before they are loaded into tables or after they are unloaded.",
+      "It limits database connectivity parameters to single-user access protocols.",
+      "It provides manual database defragmentation sequences to clear server memory caches."
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Easy"
+  },
+  {
+    "q": "If a data engineer wants to see a list of the actual CSV files currently sitting inside an internal stage named '@finance_stage', which command must be executed?",
+    "options": [
+      "SHOW STAGES LIKE 'finance_stage';",
+      "SELECT * FROM INFORMATION_SCHEMA.STAGES WHERE NAME = 'finance_stage';",
+      "LIST @finance_stage;",
+      "FETCH FRONTEND TEMPLATE FROM @finance_stage;"
+    ],
+    "answer": 2,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "What metadata information is returned by executing a 'SHOW STAGES;' command in a Snowflake worksheet session?",
+    "options": [
+      "The exact row counts and column names of the tables linked to the stages.",
+      "A list of the configurations and properties of Stage objects within the current context, such as stage type, owner role, and external cloud URLs.",
+      "The binary content streams of the files converted via analog translation protocols.",
+      "A tracking chart of physical hardware cooling metrics for cloud data storage centers."
+    ],
+    "answer": 1,
+    "time": 30,
+    "level": "Medium"
+  },
+  {
+    "q": "What is a key difference between an Internal Stage and an External Stage in Snowflake's storage architecture?",
+    "options": [
+      "Internal stages store data in offline formats, while external stages use local network routing.",
+      "Internal stages are cloud storage locations managed directly by Snowflake, whereas External stages point to storage locations owned and managed by the user in cloud providers like AWS, Azure, or GCP.",
+      "Internal stages do not consume credit metrics, while external stages require a continuous virtual warehouse session.",
+      "Internal stages can only hold text strings, while external stages are reserved for physical server parameters."
+    ],
+    "answer": 1,
+    "time": 30,
+    "level": "Medium"
+  },
+  {
+    "q": "Every individual user account in Snowflake is automatically allocated a private internal storage area that does not require explicit creation or configuration. What is this called, and how is it referenced?",
+    "options": [
+      "A Public Schema Stage, referenced as @PUBLIC",
+      "A User Stage, referenced using the tilde symbol as @~",
+      "An Analog Infrastructure Stage, referenced as @ANALOG",
+      "A Peer-to-Peer File Sharing Folder, referenced as @SHARE"
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Medium"
+  },
+  {
+    "q": "Why does executing a 'LIST' command on a massive external stage containing millions of files sometimes run slower than a standard 'SHOW STAGES' command?",
+    "options": [
+      "Because LIST requires Snowflake to establish a single-user access lock on the destination schema.",
+      "Because LIST must dynamically perform a live network directory scan of the underlying cloud storage bucket to catalog every individual file object, while SHOW STAGES simply reads static metadata from Snowflake’s catalog.",
+      "Because LIST forces the storage layer to execute a manual data defragmentation process.",
+      "Because LIST automatically converts the file structures into frontend website building elements."
+    ],
+    "answer": 1,
+    "time": 35,
+    "level": "Hard"
+  },
+  {
+    "q": "Which data engineering command is used to copy a local file from a client machine's filesystem directly up into an internal Snowflake stage?",
+    "options": [
+      "COPY INTO @stage_name FROM file://path;",
+      "PUT file://<path_to_local_file> @stage_name;",
+      "INSERT INTO STAGE VALUES (file://path);",
+      "UPLOAD METADATA TEMPLATE LOCAL;"
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Medium"
+  },
+  {
+    "q": "If you run 'LIST @my_stage;' and notice a file name is appended with an '.gz' extension, what does this indicate about how Snowflake is handling that staged data file?",
+    "options": [
+      "The file has been converted into an unreadable offline binary layout.",
+      "The file is automatically compressed using gzip compression, which Snowflake natively supports and can read directly during a bulk COPY INTO operation.",
+      "The file has failed validation and has triggered an analog translation protocol error.",
+      "The file is restricted to single-user access permissions."
+    ],
+    "answer": 1,
+    "time": 30,
+    "level": "Medium"
+  },
+  {
+    "q": "What happens to the files sitting inside an internal stage after a data engineer successfully executes a standard 'COPY INTO target_table FROM @my_stage' statement without specifying additional file-cleanup parameters?",
+    "options": [
+      "The files are automatically moved into a peer-to-peer file sharing repository.",
+      "The files remain in the stage unchanged; the data engineer must explicitly pass the 'PURGE = TRUE' copy option or run a REMOVE command to clean them up.",
+      "The files are completely deleted along with the target table schema structure.",
+      "The files are translated into hardware cooling metrics logs."
+    ],
+    "answer": 1,
+    "time": 35,
+    "level": "Hard"
+  },
+  {
+    "q": "Which privilege must be granted to a security role to allow a user to look at the configurations of stage objects via 'SHOW STAGES' within a specific database schema?",
+    "options": [
+      "GRANT READ ON ALL FILE FORMATS",
+      "GRANT USAGE ON SCHEMA <schema_name>",
+      "GRANT DEFRAGMENTATION ON DATABASE",
+      "GRANT CREATE WEBSITE TEMPLATE ON ACCOUNT"
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Hard"
+  },
+  
+  {
+    "q": "What is the key functional difference between a Scalar Function and an Aggregate Function in Snowflake?",
+    "options": [
+      "Scalar functions only run completely offline, whereas aggregate functions require local network routing.",
+      "A scalar function operates on a single row and returns a single value for each row, while an aggregate function processes a column across multiple rows to return a single summarized result value.",
+      "Scalar functions do not consume virtual compute credits, whereas aggregate functions override hardware cooling metrics.",
+      "Scalar functions are exclusively used to build frontend user interface templates for public websites."
+    ],
+    "answer": 1,
+    "time": 30,
+    "level": "Medium"
+  },
+  {
+    "q": "If you need to calculate the exact number of months that have elapsed between an insurance policy opening date and its expiration date, which Snowflake date function is the most appropriate choice?",
+    "options": [
+      "DATE_TRUNC()",
+      "DATEADD()",
+      "DATEDIFF()",
+      "TIME_SLICE()"
+    ],
+    "answer": 2,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "A data engineer runs the command 'SELECT DATE_TRUNC('MONTH', TO_DATE('2026-05-27'));'. What value will this query evaluate to?",
+    "options": [
+      "2026-05-27 00:00:00",
+      "2026-05-01",
+      "2026-05-31",
+      "The query will return an invalid analog translation protocol error."
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Medium"
+  },
+  {
+    "q": "When parsing a dirty raw ledger CSV file, you notice some string rows contain accidental leading blank spaces (e.g., '  ACC-8849'). Which text function should you apply during data transformation to permanently strip out those spaces?",
+    "options": [
+      "UPPER()",
+      "TRIM()",
+      "SPLIT_PART()",
+      "LPAD()"
+    ],
+    "answer": 1,
+    "time": 15,
+    "level": "Easy"
+  },
+  {
+    "q": "What is the primary operational advantage of Snowflake's case-insensitive pattern matching string operator 'ILIKE' compared to the standard 'LIKE' operator?",
+    "options": [
+      "ILIKE automatically converts text variables into offline peer-to-peer sharing files.",
+      "ILIKE ignores character casing entirely during evaluation, matching strings like 'Credit' or 'CREDIT' identically without requiring explicit UPPER or LOWER functions.",
+      "ILIKE limits query processing to single-user access profiles.",
+      "ILIKE allows the virtual warehouse to run without any active CPU processing power."
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Medium"
+  },
+  {
+    "q": "If an incoming financial file stores combined transaction descriptors such as 'DEBIT;GroceryStore;Store12', which Snowflake function can pull out just the second element ('GroceryStore') directly using the semicolon delimiter?",
+    "options": [
+      "INITCAP()",
+      "TRANSLATE()",
+      "SPLIT_PART()",
+      "LENGTH()"
+    ],
+    "answer": 2,
+    "time": 25,
+    "level": "Medium"
+  },
+  {
+    "q": "Which of the following functions falls under Snowflake's 'Table Functions' (UDTFs) classification because it outputs an actual tabular row-and-column dataset rather than a single cell scalar value?",
+    "options": [
+      "CURRENT_TIMESTAMP()",
+      "SUBSTRING()",
+      "FLATTEN()",
+      "CONCAT()"
+    ],
+    "answer": 2,
+    "time": 30,
+    "level": "Hard"
+  },
+  {
+    "q": "You want to standardize branch codes by making sure they are all exactly 6 characters long. If a branch code is shorter, you want to fill the left side with zeros (e.g., converting '214' into '000214'). Which configuration achieves this?",
+    "options": [
+      "RPAD(branch_code, 6, '0')",
+      "SUBSTR(branch_code, 1, 6)",
+      "LPAD(branch_code, 6, '0')",
+      "DATE_FROM_PARTS(branch_code, 6, 0)"
+    ],
+    "answer": 2,
+    "time": 25,
+    "level": "Medium"
+  },
+  {
+    "q": "What will be the direct outcome if a data engineer passes an argument of a FLOAT data type containing decimals into a function that specifically expects an INTEGER, without explicitly coding a cast statement?",
+    "options": [
+      "Snowflake will fail the compilation step and crash the current active compute warehouse cluster.",
+      "Snowflake will leverage its implicit casting (coercion) mechanisms to automatically convert the value, rounding it to the nearest integer value wherever necessary and possible.",
+      "The value will transform into an offline storage container file format.",
+      "The row data will be uploaded directly into a drag-and-drop website template."
+    ],
+    "answer": 1,
+    "time": 35,
+    "level": "Hard"
+  },
+  {
+    "q": "Which window function can be combined with date metrics to look at a sorted transaction log and pull a value from the immediately preceding row into the current row context for comparison?",
+    "options": [
+      "LAST_DAY()",
+      "LAG()",
+      "CHARINDEX()",
+      "EXTRACT()"
+    ],
+    "answer": 1,
+    "time": 30,
+    "level": "Hard"
+  }
+,
+
+  {
+    "q": "What is the primary function of a 'Directory Table' when managing unstructured data in Snowflake?",
+    "options": [
+      "It automatically converts binary PDF text into integer data types upon loading.",
+      "It provides a structured metadata index over a stage, allowing users to query file attributes like size, path, and modification dates using standard SQL.",
+      "It restricts cloud connectivity parameters to single-user access limitations.",
+      "It acts as an analog data translation protocol to strip out image files."
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Medium"
+  },
+  {
+    "q": "Where does Snowflake physically store unstructured files—such as audio recordings or PDFs—when they are ingested into the platform?",
+    "options": [
+      "Directly inside relational table rows alongside basic integer columns.",
+      "In secure internal or external storage stages, leaving the raw files completely intact.",
+      "In a specialized offline storage format that disables cloud governance layers.",
+      "Inside frontend interface templates built for website building tools."
+    ],
+    "answer": 1,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "Which Snowflake function should a data engineer use to generate a short-lived download link for an unstructured image file that needs to be shared with an external partner who lacks a Snowflake login?",
+    "options": [
+      "GET_SCOPED_URL()",
+      "GET_PRESIGNED_URL()",
+      "CREATE_LOCAL_ROUTING_LINK()",
+      "DEFRAGMENT_FILE_PATH()"
+    ],
+    "answer": 1,
+    "time": 30,
+    "level": "Hard"
+  },
+  {
+    "q": "What is a key security characteristic of a URL generated by Snowflake's 'GET_SCOPED_URL()' function?",
+    "options": [
+      "The link operates entirely offline and requires no internet connection.",
+      "The URL is temporary and securely bound to the user's active Snowflake session, expiring automatically when the session terminates.",
+      "The link completely bypasses all Role-Based Access Control (RBAC) privileges.",
+      "The URL transforms the target file into a public peer-to-peer file sharing protocol."
+    ],
+    "answer": 1,
+    "time": 30,
+    "level": "Medium"
+  },
+  {
+    "q": "When querying a Directory Table on an external stage, what step must a data engineer perform to ensure the metadata accurately reflects files that were just added directly to the cloud storage bucket (e.g., AWS S3)?",
+    "options": [
+      "Run a manual database defragmentation cycle on the warehouse cluster.",
+      "Execute an ALTER STAGE REFRESH statement to synchronize the directory table's metadata with the actual storage bucket files.",
+      "Re-import the entire database instance using a data mapping wizard.",
+      "Re-compile the virtual warehouse using physical server cooling metrics."
+    ],
+    "answer": 1,
+    "time": 35,
+    "level": "Hard"
+  },
+  {
+    "q": "Which data type does Snowflake utilize inside a Directory Table schema to represent the unique relative file path string of an unstructured object?",
+    "options": [
+      "NUMBER",
+      "VARCHAR",
+      "BOOLEAN",
+      "ANALOG_CODE"
+    ],
+    "answer": 1,
+    "time": 15,
+    "level": "Easy"
+  },
+  {
+    "q": "Why does storing unstructured data in Snowflake stages provide a performance and cost advantage over traditional data stores?",
+    "options": [
+      "Because Snowflake stores files using peer-to-peer sharing, which consumes zero cloud resources.",
+      "Because it decouples processing power from raw file storage, allowing massive file stores to sit in inexpensive cloud storage while compute warehouses are only used when querying metadata or processing files.",
+      "Because Snowflake forces all unstructured data to run under single-user access constraints.",
+      "Because it converts raw images into simple website templates automatically."
+    ],
+    "answer": 1,
+    "time": 30,
+    "level": "Medium"
+  },
+  {
+    "q": "If a data pipeline needs to process unstructured text files in Snowflake using advanced Python logic or machine learning libraries, which feature allows this execution to happen directly inside the warehouse?",
+    "options": [
+      "Offline File Translation Links",
+      "Snowpark User-Defined Functions (UDFs) or Stored Procedures capable of reading files dynamically from stages.",
+      "Manual Defragmentation Script Wizards",
+      "Frontend website drag-and-drop frameworks"
+    ],
+    "answer": 1,
+    "time": 35,
+    "level": "Hard"
+  },
+  {
+    "q": "When granting a business role access to query a Directory Table, which privilege layer must be configured correctly for the user to successfully retrieve records?",
+    "options": [
+      "GRANT CREATE ACCOUNT ON SYSTEM",
+      "GRANT USAGE ON THE DATABASE, SCHEMA, AND THE SPECIFIC STAGE OBJECT",
+      "GRANT DEFRAGMENTATION ON WAREHOUSE",
+      "GRANT ANALOG ROUTING ON FIREWALL"
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Medium"
+  },
+  {
+    "q": "What happens if a user executes a SELECT query against a Directory Table but does not have an active Virtual Warehouse running or available?",
+    "options": [
+      "The query will return cached results using an offline peer-to-peer connection layout.",
+      "The query will fail to execute because computing metadata expressions and processing the Directory Table view requires active CPU horsepower from a virtual warehouse.",
+      "Snowflake will automatically allocate free physical hardware cooling resources to run the code.",
+      "The entire database schema will automatically truncate to protect file encryption keys."
+    ],
+    "answer": 1,
+    "time": 30,
+    "level": "Medium"
+  }
+,
+
+  {
+    "q": "When setting up a Snowflake stage to handle raw unstructured files like PDFs, what configuration parameter must be explicitly enabled during object creation to allow SQL querying of file attributes?",
+    "options": [
+      "MANUAL DEFRAGMENTATION = TRUE",
+      "DIRECTORY = (ENABLE = TRUE)",
+      "OFFLINE FORMAT = BINARY",
+      "SINGLE_USER ACCESS = TRUE"
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Medium"
+  },
+  {
+    "q": "Which command is used to programmatically transfer unstructured documents from a local server filesystem directly up into an internal Snowflake stage?",
+    "options": [
+      "COPY INTO TABLE FROM LOCAL;",
+      "PUT file://<path> @stage_name;",
+      "INSERT INTO STAGE VALUES (<file>);",
+      "GENERATE FRONTEND INTERFACE FOR FILE;"
+    ],
+    "answer": 1,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "If unstructured data files are added directly to an external cloud storage bucket (e.g., AWS S3) linked to a Snowflake stage, what command must be executed so the directory table recognizes the new files?",
+    "options": [
+      "ALTER STAGE <stage_name> REFRESH;",
+      "OPTIMIZE WAREHOUSE COOLING METRICS;",
+      "RUN SYSTEM SCHEMA DEFRAGMENTATION;",
+      "UPDATE WEBSITE TEMPLATE CACHE;"
+    ],
+    "answer": 0,
+    "time": 30,
+    "level": "Medium"
+  },
+  {
+    "q": "What structured relational metadata column is natively exposed when running a SQL query against a Snowflake Directory Table using the DIRECTORY() function?",
+    "options": [
+      "RELATIVE_PATH, representing the file string location relative to the stage root.",
+      "ANALOG_TRANSLATION_CODE, representing the file compression algorithm.",
+      "PEER_TO_PEER_ROUTING_ID, tracking network packets.",
+      "DRAG_AND_DROP_TEMPLATE, storing UI layout properties."
+    ],
+    "answer": 0,
+    "time": 25,
+    "level": "Medium"
+  },
+  {
+    "q": "Why does Snowflake leave unstructured data files intact inside stages rather than shredding them into traditional relational table columns upon upload?",
+    "options": [
+      "Because Snowflake lacks the capacity to run internet gateway validation rules.",
+      "To preserve the original file formats for specialized analytical tools, custom code, or AI pipelines, while leveraging cheaper cloud storage layers separated from compute costs.",
+      "Because internal stages operate exclusively in single-user access limitations.",
+      "To force the files into hardcoded frontend interface templates automatically."
+    ],
+    "answer": 1,
+    "time": 30,
+    "level": "Hard"
+  },
+  {
+    "q": "Which Snowflake function allows a developer to extract a secure, time-limited REST link for an unstructured PDF document so an external BI app can display it without database credentials?",
+    "options": [
+      "GET_PRESIGNED_URL()",
+      "EXTRACT_DATE_PART()",
+      "SPLIT_PART()",
+      "DEFRAGMENT_FILE_URL()"
+    ],
+    "answer": 0,
+    "time": 30,
+    "level": "Hard"
+  },
+  {
+    "q": "When uploading file payloads via the Snowsight 'Upload Files' wizard inside a specific stage, what is happening behind the scenes to process the transaction?",
+    "options": [
+      "Snowflake converts the text characters into analog data translation streams.",
+      "The web interface securely handles the transport protocol, writing the raw files straight into the designated internal cloud storage stage object.",
+      "The system runs a local data defragmentation script on your machine.",
+      "Snowflake generates a peer-to-peer file sharing configuration to copy data."
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Easy"
+  },
+  {
+    "q": "What type of warehouse compute utilization occurs when executing a query to list files across an unstructured stage directory table?",
+    "options": [
+      "It consumes zero compute power because directory tables use offline storage profiles.",
+      "It triggers active compute warehouse credit consumption because processing the directory table expressions and filtering metadata columns requires active CPU resources.",
+      "It draws power exclusively from physical hardware cooling configurations.",
+      "It utilizes external website building tools to parse the query."
+    ],
+    "answer": 1,
+    "time": 30,
+    "level": "Hard"
+  },
+  {
+    "q": "If you try to use a standard 'SELECT * FROM @my_stage;' statement to view the files inside an unstructured stage without utilizing the directory table wrapper function, what will happen?",
+    "options": [
+      "Snowflake will throw a SQL syntax compilation error because you cannot query a raw stage directly as a table object without a function layer like DIRECTORY().",
+      "The query will execute successfully but will display unreadable binary code blocks.",
+      "The system will switch into an anonymous local network routing loop.",
+      "The query will automatically create a new table schema inside the PUBLIC context."
+    ],
+    "answer": 0,
+    "time": 35,
+    "level": "Hard"
+  },
+  {
+    "q": "Which data security framework governs who can browse, upload, or generate scoped URLs for unstructured data files inside Snowflake stages?",
+    "options": [
+      "Analog Data Translation Protocols (ADTP)",
+      "Role-Based Access Control (RBAC) privileges granted to specific system security roles.",
+      "Single-User Access Limitations (SUAL)",
+      "Frontend Interface Template Mappings"
+    ],
+    "answer": 1,
+    "time": 20,
+    "level": "Easy"
+  }
+  ,
+  
+  {
+    "q": "What is the primary architectural purpose of the TIME_SLICE function in Snowflake data engineering workflows?",
+    "options": [
+      "To automatically convert unstructured binary files into integer tables.",
+      "To bucket and aggregate continuous timestamp data into uniform, non-overlapping historical time windows or segments.",
+      "To run manual disk defragmentation on underlying micro-partitions.",
+      "To create frontend web layout graphics without using SQL commands."
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Medium"
+  },
+  {
+    "q": "If you pass an 'END' parameter to a TIME_SLICE function with a length of 15 minutes, how does Snowflake define the returned timestamp boundary value?",
+    "options": [
+      "It returns a randomized timestamp inside the targeted interval block.",
+      "It returns the exclusive upper bound of the slice, which represents the exact start timestamp of the next consecutive time interval block.",
+      "It subtracts 15 minutes from the session context time zone property.",
+      "It converts the output into an offline data serialization format string."
+    ],
+    "answer": 1,
+    "time": 30,
+    "level": "Hard"
+  },
+  {
+    "q": "A data engineer runs TIME_SLICE('2026-05-27 14:10:00'::TIMESTAMP, 30, 'MINUTE', 'START'). What is the expected query result output?",
+    "options": [
+      "2026-05-27 14:00:00",
+      "2026-05-27 14:30:00",
+      "2026-05-27 14:10:00",
+      "The statement will trigger an invalid analog translation error."
+    ],
+    "answer": 0,
+    "time": 25,
+    "level": "Medium"
+  },
+  {
+    "q": "To what static historical reference anchor does Snowflake align its internal baseline coordinate math when calculating fixed 'MONTH' slices via the TIME_SLICE function?",
+    "options": [
+      "The Unix Epoch time boundary of 1970-01-01.",
+      "The absolute calendar start date of year 0001-01-01.",
+      "The initialization timestamp of the active compute warehouse cluster.",
+      "The date metadata parameters provided by the local network router."
+    ],
+    "answer": 1,
+    "time": 35,
+    "level": "Hard"
+  },
+  {
+    "q": "When connecting an operational banking dashboard to a flattened view in Snowflake, why is grouping records by a TIME_SLICE column preferred over grouping by a raw TRANSACTION_TIME column?",
+    "options": [
+      "Because grouping by raw timestamps completely disables virtual warehouse credit consumption checks.",
+      "Grouping by raw high-precision timestamps creates millions of granular groups; TIME_SLICE buckets metrics into neat intervals (like 15-min blocks) suitable for trend charting.",
+      "Because raw timestamps force the database into a strict single-user access lock status.",
+      "It automatically reformats string columns into public website deployment scripts."
+    ],
+    "answer": 1,
+    "time": 30,
+    "level": "Medium"
+  },
+  {
+    "q": "What happens if you execute a TIME_SLICE query using a column stored as a raw VARCHAR string data type without wrapping it in an explicit casting function like TO_TIMESTAMP()?",
+    "options": [
+      "The query executes normally by automatically implementing peer-to-peer file sharing protocols.",
+      "Snowflake will throw a compilation error indicating a data type mismatch, because TIME_SLICE strictly requires a valid DATE, TIME, or TIMESTAMP data type input.",
+      "The warehouse dynamically creates a new schema structure named after the string layout.",
+      "The string is truncated into an offline storage index file block automatically."
+    ],
+    "answer": 1,
+    "time": 30,
+    "level": "Hard"
+  },
+  {
+    "q": "Which parameter combination represents the default behavior of the TIME_SLICE function if the fourth argument (<start_or_end>) is left completely omitted from the SQL expression code?",
+    "options": [
+      "It defaults automatically to evaluating the 'END' boundary value.",
+      "It defaults automatically to evaluating the 'START' boundary value.",
+      "The compiler flags it as a fatal missing parameter error and cancels execution.",
+      "It converts the entire calculation step into an interactive wizard template dropdown."
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Medium"
+  },
+  {
+    "q": "A ledger tracking table handles transaction timestamps. Which interval configuration would you declare in TIME_SLICE to isolate transactional volumes into specific 8-hour shift blocks?",
+    "options": [
+      "TIME_SLICE(transaction_time, 8, 'HOUR')",
+      "TIME_SLICE(transaction_time, 8, 'MONTH')",
+      "TIME_SLICE(transaction_time, 8, 'YEAR')",
+      "TIME_SLICE(transaction_time, 8, 'DEFRAGMENT')"
+    ],
+    "answer": 0,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "Why is running a TIME_SLICE operational query on an indexed column highly performant across massive Fact tables inside Snowflake's storage architecture?",
+    "options": [
+      "Because it bypasses the virtual computing warehouse using local analog data loops.",
+      "Because Snowflake can quickly prune out non-matching micro-partitions by evaluating the slice boundaries against minimum and maximum metadata properties stored within each file header.",
+      "Because it forces all analytical data blocks to convert into basic single-user access arrays.",
+      "Because it forces data processing to take place inside a drag-and-drop user dashboard."
+    ],
+    "answer": 1,
+    "time": 35,
+    "level": "Hard"
+  },
+  {
+    "q": "If you want to construct a SQL query that calculates net transaction cash flows grouped into 4-month chunks using TIME_SLICE, which clause must contain the function expression?",
+    "options": [
+      "The ORDER BY clause exclusively.",
+      "Both the SELECT statement list and the GROUP BY clause configuration block.",
+      "The schema creation metadata definition line.",
+      "The file format specification declaration."
+    ],
+    "answer": 1,
+    "time": 30,
+    "level": "Medium"
+  }
+
+
 
 
 
