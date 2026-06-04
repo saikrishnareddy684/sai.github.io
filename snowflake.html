@@ -1695,7 +1695,859 @@ let originalQuestions = [
     "time": 30,
     "level": "Medium"
   }
+,
+  {
+    "q": "Which SQL command is used to instantiate and assign a value to a standard session variable within a Snowflake worksheet session?",
+    "options": [
+      "DECLARE variable_name = value;",
+      "SET variable_name = value;",
+      "INITIALIZE variable_name := value;",
+      "CREATE VARIABLE variable_name;"
+    ],
+    "answer": 1,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "When calling an established SQL session variable inside a SELECT statement's WHERE clause, what prefix character must be placed directly before the variable name?",
+    "options": [
+      "The at symbol (@)",
+      "The dollar sign ($)",
+      "The colon symbol (:)",
+      "The percentage sign (%)"
+    ],
+    "answer": 1,
+    "time": 15,
+    "level": "Easy"
+  },
+  {
+    "q": "What is the primary scope limitation of a Snowflake session variable created using the SET command?",
+    "options": [
+      "It is globally accessible by every user account across the entire Snowflake database instance.",
+      "It is strictly private and localized to the specific user session/worksheet where it was executed, expiring completely once the session disconnects.",
+      "It can only be used inside internal data storage staging areas.",
+      "It is stored permanently inside the database metadata tables until a manual defragmentation is run."
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Medium"
+  },
+  {
+    "q": "If you want to clear a specific session variable named 'target_city' from your active worksheet environment memory, which command should you run?",
+    "options": [
+      "DELETE VARIABLE target_city;",
+      "UNSET target_city;",
+      "DROP VARIABLE target_city;",
+      "ALTER SESSION REMOVE target_city;"
+    ],
+    "answer": 1,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "Which command allows a data engineer to view a comprehensive tabular list of all active variables, their values, and their respective data types in the current Snowflake session?",
+    "options": [
+      "SELECT * FROM INFORMATION_SCHEMA.VARIABLES;",
+      "SHOW VARIABLES;",
+      "LIST ACTIVE_VARIABLES;",
+      "GET SESSION METADATA TEMPLATE;"
+    ],
+    "answer": 1,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "In an advanced Snowflake Scripting anonymous block (BEGIN...END), how are local block variables referenced inside an embedded SQL statement context differently than standard session variables?",
+    "options": [
+      "They are referenced using an explicit dollar sign ($) prefix.",
+      "They are prefixed with a colon character (:), such as :variable_name, to bind them into the DML statement.",
+      "They require an analog data translation protocol wrapper.",
+      "They cannot be passed into SQL statements and are limited to arithmetic tasks."
+    ],
+    "answer": 1,
+    "time": 30,
+    "level": "Hard"
+  },
+  {
+    "q": "What happens if a user session attempts to execute a query referencing a variable named '$cutoff_amt' before running the corresponding SET command to initialize it?",
+    "options": [
+      "Snowflake evaluates the variable as NULL and completes the query scan seamlessly.",
+      "Snowflake throws a compilation error indicating that the session variable does not exist.",
+      "The system automatically assigns a random default integer value to the variable.",
+      "The query switches into an offline data storage format loop."
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Medium"
+  },
+  {
+    "q": "When initializing a session variable with a complex expression or a query result, which method ensures the evaluation is captured correctly into the variable variable container?",
+    "options": [
+      "SET result_var = (SELECT MAX(AMOUNT) FROM FACT_TRANSACTIONS);",
+      "SET result_var := CHOOSE_MAX_FROM_TEMPLATE();",
+      "RUN PEER TO PEER SHARE TO COMPUTE result_var;",
+      "SET result_var = DEFRAGMENT_MAX_VALUE;"
+    ],
+    "answer": 0,
+    "time": 30,
+    "level": "Hard"
+  },
+  {
+    "q": "Is a compute virtual warehouse required to be active and running just to initialize a static string variable using the command 'SET app_name = 'Banking_App';'?",
+    "options": [
+      "Yes, because all variables must undergo active micro-partition structural binding.",
+      "No, setting static session variables is a pure metadata operation handled instantly by Snowflake's Cloud Services layer without spinning up warehouse credits.",
+      "Yes, because variable assignment throttles physical hardware cooling metrics.",
+      "No, because variables can only be set when the database instance is operating completely offline."
+    ],
+    "answer": 1,
+    "time": 30,
+    "level": "Hard"
+  },
+  {
+    "q": "When writing dynamic SQL where a session variable holds an identifier name (like a table name) rather than a literal value, how must the variable be wrapped inside a SELECT query?",
+    "options": [
+      "SELECT * FROM $table_var;",
+      "SELECT * FROM IDENTIFIER($table_var);",
+      "SELECT * FROM ANALOG_ROUTING($table_var);",
+      "SELECT * FROM VIEW_TEMPLATE($table_var);"
+    ],
+    "answer": 1,
+    "time": 35,
+    "level": "Hard"
+  }
+,
+  
+  {
+    "q": "If a data engineer executes TIME_SLICE('2019-02-28'::DATE, 3, 'MONTH', 'END'), what will be the calculated exclusive upper boundary date returned by Snowflake?",
+    "options": [
+      "2019-03-01",
+      "2019-04-01",
+      "2019-05-01",
+      "The query will fail due to an invalid time slice interval size."
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Medium"
+  },
+  {
+    "q": "Why does changing the slice length parameter from 4 to 2 in the TIME_SLICE function change the 'END OF SLICE' value for '2019-02-28' from '2019-05-01' to '2019-03-01'?",
+    "options": [
+      "Because a 2-month length creates narrower, more granular tracking buckets, causing the February input date to fall into a slice that terminates at the start of March rather than May.",
+      "Because Snowflake automatically triggers an offline data compression routine when slice sizes decrease.",
+      "Because a smaller slice length forces the virtual warehouse to run under single-user access restrictions.",
+      "Because the compiler switches to a localized network routing layout to alter date intervals."
+    ],
+    "answer": 0,
+    "time": 30,
+    "level": "Medium"
+  },
+  {
+    "q": "What would be the output of TIME_SLICE('2026-05-27 15:45:00'::TIMESTAMP, 1, 'HOUR', 'START')?",
+    "options": [
+      "2026-05-27 15:00:00",
+      "2026-05-27 16:00:00",
+      "2026-05-27 15:30:00",
+      "The expression will return a null string token error."
+    ],
+    "answer": 0,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "When implementing a sliding-window data metric in a financial dashboard, what is the key advantage of using the 'START' parameter of TIME_SLICE in a SQL GROUP BY clause?",
+    "options": [
+      "It automatically reformats all text strings into frontend website design configurations.",
+      "It groups continuous, unpredictable transactional timestamps into standardized, uniform date/time buckets labeled cleanly by their starting point.",
+      "It completely eliminates the need to run queries using active compute warehouse credits.",
+      "It converts relational rows into a peer-to-peer streaming document link format."
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Medium"
+  },
+  {
+    "q": "A data warehouse engineer wants to slice records into 10-day intervals. Which date part keyword should be supplied as the third argument to the TIME_SLICE function?",
+    "options": [
+      "WEEK",
+      "DAY",
+      "MONTH",
+      "QUARTER"
+    ],
+    "answer": 1,
+    "time": 15,
+    "level": "Easy"
+  },
+  {
+    "q": "What happens if the slice_length argument passed into a TIME_SLICE function evaluates to a negative integer value (e.g., -2)?",
+    "options": [
+      "Snowflake reverses the interval tracking logic to scan backwards from the current session time.",
+      "Snowflake throws a compilation execution error because slice lengths must be positive non-zero integers.",
+      "The function automatically converts the input values into an offline storage profile container.",
+      "The query executes successfully but sets all timestamp rows to a default system baseline value."
+    ],
+    "answer": 1,
+    "time": 30,
+    "level": "Hard"
+  },
+  {
+    "q": "If you query a reporting view that groups tracking data using TIME_SLICE, how does this layout prevent data gaps or missing groups compared to a manual date math approach?",
+    "options": [
+      "It doesn't; it requires a separate manual defragmentation script to preserve group rows.",
+      "The TIME_SLICE function provides standardized, deterministic interval outputs based on structural calendar parameters, guaranteeing that rows falling within the same block are assigned identical keys.",
+      "It forces the data to be held in a local single-user area network cache.",
+      "It transposes data values directly into automated drag-and-drop user dashboard blocks."
+    ],
+    "answer": 1,
+    "time": 35,
+    "level": "Hard"
+  },
+  {
+    "q": "Which data type is returned by the TIME_SLICE function if the primary input variable column is formatted explicitly as a high-precision TIMESTAMP_NTZ?",
+    "options": [
+      "VARCHAR",
+      "TIMESTAMP_NTZ",
+      "DATE",
+      "VARIANT"
+    ],
+    "answer": 1,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "When writing an incremental data pipeline logic block, why is filtering with 'WHERE transaction_time < TIME_SLICE(..., 'END')' considered a robust data engineering pattern?",
+    "options": [
+      "Because the 'END' property acts as an exclusive boundary, matching the exact starting point of the next slice and preventing double-counting or record omissions at edge transitions.",
+      "Because using 'END' automatically clears the micro-partition storage metadata caches.",
+      "Because it allows the transaction data to process without any active user role privileges.",
+      "Because it bypasses the internet gateway to execute using an analog file sharing protocol."
+    ],
+    "answer": 0,
+    "time": 35,
+    "level": "Hard"
+  },
+  {
+    "q": "Can you use a declared session variable as the slice length parameter inside a TIME_SLICE query expression (e.g., TIME_SLICE(DATE, $my_length, 'MONTH', 'START'))?",
+    "options": [
+      "No, variable parameters are strictly prohibited from entering built-in scalar function calls.",
+      "Yes, as long as the session variable is initialized with a valid integer value before the query compilation takes place.",
+      "Yes, but only if the database instance is operating under an ACCOUNTADMIN system role context.",
+      "No, because session variables can only store literal string text variables."
+    ],
+    "answer": 1,
+    "time": 30,
+    "level": "Hard"
+  }
+,
 
+  {
+    "q": "What is the primary architectural purpose of a named File Format object in Snowflake?",
+    "options": [
+      "To automatically configure physical server assembly cooling benchmarks.",
+      "To encapsulate reusable parsing rules—such as delimiters, headers, and compression settings—ensuring consistent file loading and unloading operations.",
+      "To restrict data ingestion access to single-user network protocols.",
+      "To convert raw relational tables into interactive frontend website templates."
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Easy"
+  },
+  {
+    "q": "Which file format types are natively classified as semi-structured data formats within Snowflake's processing engine?",
+    "options": [
+      "CSV and TXT",
+      "JSON, AVRO, ORC, PARQUET, and XML",
+      "MP3, PDF, and PNG",
+      "Only hardcoded SQL string variables"
+    ],
+    "answer": 1,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "When creating a CSV File Format object, what parameter must be set to '1' to prevent Snowflake from treating the first row of your data file containing column names as an actual row of data?",
+    "options": [
+      "TRUNCATE_COLUMNS",
+      "SKIP_HEADER",
+      "STRIP_OUTER_ARRAY",
+      "DEFRAGMENT_ROWS"
+    ],
+    "answer": 1,
+    "time": 15,
+    "level": "Easy"
+  },
+  {
+    "q": "A data engineer is ingestion-loading a large batch of JSON array documents. Which file format property should be set to TRUE to instruct Snowflake to break the outer array into individual separate row records?",
+    "options": [
+      "FIELD_OPTIONALLY_ENCLOSED_BY",
+      "STRIP_OUTER_ARRAY",
+      "PRESERVE_SPACE",
+      "COMPRESSION = SNAPPY"
+    ],
+    "answer": 1,
+    "time": 30,
+    "level": "Medium"
+  },
+  {
+    "q": "If a CSV file uses pipe characters (|) instead of commas to separate field values, how must the File Format object be configured to successfully parse the records?",
+    "options": [
+      "Set TYPE = 'PIPE' inside the format declaration statement.",
+      "Set FIELD_DELIMITER = '|' inside the format declaration statement.",
+      "Run a separate analog translation loop script to change the file layout.",
+      "Initialize an offline storage protocol to swap data symbols."
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Medium"
+  },
+  {
+    "q": "Which data type does Snowflake utilize to ingest and store raw, un-shredded semi-structured data format objects like JSON or AVRO columns directly inside a relational table?",
+    "options": [
+      "NUMBER",
+      "VARIANT",
+      "BOOLEAN",
+      "TIMESTAMP"
+    ],
+    "answer": 1,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "What happens if you run a COPY INTO statement referencing a file format that handles compression, but the raw file sitting in your stage is an uncompressed flat file?",
+    "options": [
+      "Snowflake will crash the virtual compute warehouse and trigger a security lock.",
+      "By default, if COMPRESSION is set to AUTO, Snowflake will automatically detect that the file is uncompressed and parse it seamlessly without errors.",
+      "The file is converted into an unreadable offline binary layout profile.",
+      "Snowflake will automatically delete the target table schema to clear the cache."
+    ],
+    "answer": 1,
+    "time": 35,
+    "level": "Hard"
+  },
+  {
+    "q": "Which command allows a data analyst to view a comprehensive list of all custom File Format configurations defined inside their active database schema context?",
+    "options": [
+      "SHOW FILE FORMATS;",
+      "LIST ACTIVE_SCHEMAS;",
+      "SELECT * FROM SYSTEM.FILE_CONFIG;",
+      "GET FRONTEND TEMPLATE CATALOG;"
+    ],
+    "answer": 0,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "If you need to ensure that empty string fields or strings matching the text 'NULL' inside a source CSV are properly converted to actual SQL NULL database values during ingestion, which parameter configuration is correct?",
+    "options": [
+      "SET BLANK_SPACES = EXCLUSIVE;",
+      "NULL_IF = ('NULL', '');",
+      "STRIP_OUTER_ELEMENT = TRUE;",
+      "RUN SYSTEM SCHEMA DEFRAGMENTATION;"
+    ],
+    "answer": 1,
+    "time": 30,
+    "level": "Hard"
+  },
+  {
+    "q": "Can you override specific file format parameters dynamically inside a COPY INTO command without modifying the underlying permanent named File Format object?",
+    "options": [
+      "No, file format parameter variables are hardcoded and completely immutable after creation.",
+      "Yes, you can explicitly pass individual formatting override options directly into the FILE_FORMAT = ( ... ) clause of your COPY statement.",
+      "Yes, but only if you are operating under an ACCOUNTADMIN system privilege role.",
+      "No, because dynamic changes force the database execution plan into an offline loop."
+    ],
+    "answer": 1,
+    "time": 35,
+    "level": "Hard"
+  }
+
+,
+  
+  {
+    "q": "A data engineer runs TIME_SLICE('2025-01-05 09:14:59'::TIMESTAMP, 15, 'MINUTE'). What is the calculated timestamp output returned by Snowflake?",
+    "options": [
+      "2025-01-05 09:15:00.000",
+      "2025-01-05 09:00:00.000",
+      "2025-01-05 09:30:00.000",
+      "The query throws a date out of range compilation exception."
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Medium"
+  },
+  {
+    "q": "Why is a 15-minute TIME_SLICE bucket highly useful when building an analytical reporting model over streaming financial transaction tables?",
+    "options": [
+      "It allows individual data records to bypass standard cloud encryption protocols.",
+      "It reduces data noise by rolling up irregular, high-frequency transaction timestamps into uniform 15-minute micro-windows for peak load volume charting.",
+      "It automatically converts text descriptions into basic variant structures.",
+      "It forces the underlying tables to operate under strict single-user locks."
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Easy"
+  },
+  {
+    "q": "If you modify the query in the image to explicitly include the 'END' option parameter, what would Row 1 evaluate to for the input '2025-01-05 09:15:23'?",
+    "options": [
+      "2025-01-05 09:15:00.000",
+      "2025-01-05 09:30:00.000",
+      "2025-01-05 09:45:00.000",
+      "2025-01-05 10:00:00.000"
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Medium"
+  },
+  {
+    "q": "To which baseline anchor does Snowflake bind minute-level granular intervals when calculating blocks via the TIME_SLICE scalar function?",
+    "options": [
+      "The exact middle point of the current fiscal working day.",
+      "The top of the respective hour (00 minutes, 00 seconds) of the timestamp value being evaluated.",
+      "The specific time the virtual warehouse was powered on.",
+      "The local gateway coordinate metric from the client machine browser."
+    ],
+    "answer": 1,
+    "time": 30,
+    "level": "Hard"
+  },
+  {
+    "q": "What happens if a data pipeline attempts to run the TIME_SLICE calculation in the image on a column that contains an invalid text string like 'NOT_A_DATE'?",
+    "options": [
+      "Snowflake defaults the value to 1970-01-01 and continues scanning.",
+      "The database will throw a parsing error during execution because the column value cannot be cast into a valid TIMESTAMP data type.",
+      "The query automatically writes an error log out to a peer-to-peer share.",
+      "The value is skipped and mapped to a public website template view."
+    ],
+    "answer": 1,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "If a user wants to aggregate bank transaction amounts into custom 20-minute interval buckets, how should they configure the TIME_SLICE arguments?",
+    "options": [
+      "TIME_SLICE(transaction_date, 20, 'MINUTE')",
+      "TIME_SLICE(transaction_date, 20, 'HOUR')",
+      "TIME_SLICE(transaction_date, 20, 'SECOND')",
+      "TIME_SLICE(transaction_date, 20, 'DEFRAGMENT')"
+    ],
+    "answer": 0,
+    "time": 15,
+    "level": "Easy"
+  },
+  {
+    "q": "How many distinct time slice groups are generated within a single full 24-hour day cycle if the interval length is set to 15 minutes?",
+    "options": [
+      "24 slices",
+      "96 slices",
+      "4 slices",
+      "1440 slices"
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Medium"
+  },
+  {
+    "q": "When deploying a high-volume analytical dashboard query using a 15-minute TIME_SLICE field in the GROUP BY block, what mechanism can speed up performance over billions of rows?",
+    "options": [
+      "Running a manual disk defragmentation sweep before executing the dashboard loop.",
+      "Leveraging Snowflake's automatic query results caching layer, which remembers the output of deterministic group groupings if the underlying micro-partition data hasn't changed.",
+      "Converting the cluster into a single-user offline network routing mode.",
+      "Storing the query logic inside a drag-and-drop web frontend element."
+    ],
+    "answer": 1,
+    "time": 35,
+    "level": "Hard"
+  },
+  {
+    "q": "What is the result of executing the expression: TIME_SLICE('2025-01-05 09:30:00'::TIMESTAMP, 15, 'MINUTE', 'START')?",
+    "options": [
+      "2025-01-05 09:15:00.000",
+      "2025-01-05 09:30:00.000",
+      "2025-01-05 09:45:00.000",
+      "The evaluation is flagged as an ambiguous interval collision error."
+    ],
+    "answer": 1,
+    "time": 30,
+    "level": "Hard"
+  },
+  {
+    "q": "If your transaction table stores the time zones explicitly inside the column metadata (TIMESTAMP_TZ), how does TIME_SLICE process the values?",
+    "options": [
+      "It completely strips out the time zone properties and evaluates them as UTC strings.",
+      "It preserves the time zone alignment, calculating the 15-minute interval boundaries relative to the specific local zone offset recorded in that row.",
+      "It converts the dates using an analog data translation protocol script matrix.",
+      "It flags the rows as unstructured data payloads and redirects them to a stage."
+    ],
+    "answer": 1,
+    "time": 35,
+    "level": "Hard"
+  }
+,
+  {
+    "q": "What is the primary architectural performance advantage of utilizing an ADBC (Arrow Database Connectivity) driver over a traditional ODBC driver when fetching massive analytical datasets from Snowflake?",
+    "options": [
+      "ADBC routes queries entirely offline without utilizing internet network data gateways.",
+      "ADBC transfers data natively in a columnar format utilizing memory buffers, eliminating the massive compute overhead required to serialize Snowflake's columnar micro-partitions into rows and back.",
+      "ADBC forces the database computing clusters to run under strict single-user hardware access locks.",
+      "ADBC automatically reformats incoming query results into interactive frontend drag-and-drop website templates."
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Medium"
+  },
+  {
+    "q": "When a standard business intelligence dashboard requests data from Snowflake via a traditional ODBC driver, how does Snowflake transfer the matching micro-partition records across the network connection?",
+    "options": [
+      "It transfers the data blocks in an unmodified, raw binary disk format profile.",
+      "It serializes the natively columnar structured data into a row-oriented data format, delivering the result set row-by-row to the driver.",
+      "It converts the records into physical server cooling metric parameters.",
+      "It compresses the data into peer-to-peer file sharing streaming folders."
+    ],
+    "answer": 1,
+    "time": 30,
+    "level": "Medium"
+  },
+  {
+    "q": "An administrator setting up a corporate Windows workstation needs to establish a permanent named configuration mapping that contains the Snowflake account identifier, database name, active role, and warehouse to be used by Excel. What is this client-side configuration called?",
+    "options": [
+      "A Metadata Transformation Wizard (MTW)",
+      "A Data Source Name (DSN), configured via the ODBC Data Source Administrator utility.",
+      "An Analog Ingestion Interface (AII)",
+      "A Scoped URL Routing Map (SURM)"
+    ],
+    "answer": 1,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "In which scenario would a data architect strongly recommend implementing an ADBC / Arrow Flight connection paradigm over a highly mature native Snowflake ODBC driver link?",
+    "options": [
+      "When connecting a traditional legacy reporting tool like Microsoft Excel to display small lookup tables.",
+      "When building high-speed data science pipelines in Python or R that extract millions of rows of analytical data into Pandas dataframes.",
+      "When the active user role needs to perform a manual disk defragmentation sweep.",
+      "When setting up a public web interface utilizing hardcoded string variables."
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Easy"
+  },
+  {
+    "q": "What core protocol layer does Snowflake's native ODBC driver utilize to safely transmit translated SQL queries and transport JSON data responses back and forth over the public internet?",
+    "options": [
+      "Secure HTTPS REST API calls",
+      "Analog File Sharing Streams (AFSS)",
+      "Local Peer-to-Peer Routing Loops (PPRL)",
+      "Offline Hardware Framework Arrays (OHFA)"
+    ],
+    "answer": 0,
+    "time": 25,
+    "level": "Medium"
+  },
+  {
+    "q": "If an analytical workflow fetches 10 million rows from Snowflake via ODBC and experiences severe bottleneck slowdowns despite the Snowflake virtual warehouse completing the query calculation in milliseconds, where is the most likely constraint?",
+    "options": [
+      "The virtual warehouse automatically dropped its physical server cooling metrics.",
+      "The network and driver processing overhead caused by converting millions of rows from columnar layout to row layout and back within the client application.",
+      "The security framework forced the target database schemas to truncate permanently.",
+      "The dashboard user interface ran out of drag-and-drop template objects."
+    ],
+    "answer": 1,
+    "time": 35,
+    "level": "Hard"
+  },
+  {
+    "q": "What happens during a data ingestion or data extraction operation if an ODBC driver encounters a Snowflake internal data type—such as TIMESTAMP_NTZ or VARIANT—that does not have a direct matching equivalent in the destination client application?",
+    "options": [
+      "The driver immediately crashes the virtual compute warehouse cluster to preserve database integrity.",
+      "The driver leverages standard data type mapping frameworks to convert Snowflake internal specifications into standardized SQL C data type representations.",
+      "The driver writes the unmapped column cells directly into an unstructured cloud stage folder.",
+      "The column is converted into an offline binary file string token."
+    ],
+    "answer": 1,
+    "time": 30,
+    "level": "Hard"
+  },
+  {
+    "q": "Which of the following descriptions best outlines the configuration differences between establishing an ODBC driver connection versus an ADBC connection framework?",
+    "options": [
+      "ODBC connections require active hardware modification, whereas ADBC runs completely in memory blocks.",
+      "ODBC relies on highly mature graphical user interface (GUI) wizards and DSN administration panels, while ADBC is newer and often initialized programmatically directly inside application code layers.",
+      "ODBC requires a single-user access environment lock, whereas ADBC operates strictly offline.",
+      "There are no configuration differences; they utilize the exact same setup strings."
+    ],
+    "answer": 1,
+    "time": 30,
+    "level": "Medium"
+  },
+  {
+    "q": "Why is the Apache Arrow data ecosystem natively compatible with Snowflake's underlying structural data storage philosophy?",
+    "options": [
+      "Because Apache Arrow forces database tables to operate as flat text arrays.",
+      "Because both Snowflake micro-partitions and Apache Arrow prioritize a column-oriented layout optimization strategy, allowing data to be processed and shared efficiently without structural layout conversions.",
+      "Because Apache Arrow manages the physical hardware cooling metrics for cloud data storage centers.",
+      "Because Apache Arrow translates all query string parameters into peer-to-peer sharing files."
+    ],
+    "answer": 1,
+    "time": 35,
+    "level": "Hard"
+  },
+  {
+    "q": "If a data engineer wants to dynamically pass custom contextual parameters—such as shifting the active warehouse or substituting security roles—at the time an ODBC connection is established from an application script, how can this be accomplished?",
+    "options": [
+      "By executing a manual defragmentation script on the local workstation firewall.",
+      "By embedding explicit key-value parameters (e.g., WAREHOUSE=FINANCE_WH;ROLE=DATA_ANALYST;) inside the ODBC connection string expression.",
+      "By editing the global frontend website template properties inside the cloud console.",
+      "By converting the active user account into an offline binary layout configuration profile."
+    ],
+    "answer": 1,
+    "time": 30,
+    "level": "Medium"
+  },
+  
+  {
+    "q": "What is the primary architectural challenge when connecting SQL Server directly to Snowflake for data replication?",
+    "options": [
+      "SQL Server can only connect to databases that are hosted on the same physical local network switch.",
+      "SQL Server operates natively using row-based storage layouts (OLTP), while Snowflake structures data inside columnar micro-partitions (OLAP), requiring a driver to handle structural translation.",
+      "Snowflake completely prohibits incoming queries that contain any standard JOIN conditions.",
+      "SQL Server automatically deletes destination metadata tables if it detects a cloud endpoint."
+    ],
+    "answer": 1,
+    "time": 30,
+    "level": "Medium"
+  },
+  {
+    "q": "Why can SQL Server NOT connect to Snowflake using its native Tabular Data Stream (TDS) protocol on Port 1433?",
+    "options": [
+      "Because Snowflake operates entirely offline to prevent data corruption.",
+      "Because Snowflake is a cloud-native platform that exposes secure web endpoints communicating over HTTPS REST APIs, rather than traditional database listening ports.",
+      "Because TDS traffic is limited strictly to single-user access environments.",
+      "Because Snowflake automatically converts all TDS network packets into unreadable image file strings."
+    ],
+    "answer": 1,
+    "time": 30,
+    "level": "Hard"
+  },
+  {
+    "q": "When configuring a Linked Server in SQL Server Management Studio (SSMS) to query tables inside Snowflake, which component must be installed on the SQL Server host machine?",
+    "options": [
+      "A Snowflake Virtual Warehouse Cluster Assembly File",
+      "The native Snowflake ODBC Driver along with a properly configured system DSN.",
+      "An automated drag-and-drop web dashboard builder framework.",
+      "An analog data translation proxy server."
+    ],
+    "answer": 1,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "What operational task does the Snowflake ODBC driver perform when converting Snowflake internal data types during an export run into a SQL Server database table?",
+    "options": [
+      "It converts the columns into binary unstructured files and drops them into a user stage.",
+      "It maps Snowflake-specific data types (such as VARIANT semi-structured blocks) into standard SQL C data type representations that SQL Server can ingest.",
+      "It modifies the physical hardware cooling parameters of the hosting database machine.",
+      "It completely deletes the target column descriptions to save network bandwidth."
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Medium"
+  },
+  {
+    "q": "If a data engineer executes a distributed query in SQL Server using OPENQUERY to pull data from Snowflake, where is the initial query text compilation and optimization handled?",
+    "options": [
+      "The query is parsed and optimized by Snowflake’s Cloud Services layer because OPENQUERY passes the raw SQL string straight through the driver to Snowflake.",
+      "The query is handled entirely offline by a local network routing mechanism.",
+      "SQL Server's internal optimizer shreds the query text into basic integer types before sending it.",
+      "The driver runs a manual defragmentation sweep to compile the string variables."
+    ],
+    "answer": 0,
+    "time": 35,
+    "level": "Hard"
+  },
+  {
+    "q": "Which network port must be left completely open on the corporate firewall to allow an on-premises SQL Server integration script to successfully reach a Snowflake cloud instance?",
+    "options": [
+      "Port 1433 (Standard SQL Server Port)",
+      "Port 443 (Standard Secure HTTPS Port)",
+      "Port 21 (Standard FTP Port)",
+      "Port 8080 (Standard Analog Translation Port)"
+    ],
+    "answer": 1,
+    "time": 15,
+    "level": "Easy"
+  },
+  {
+    "q": "Why does pulling millions of rows from Snowflake into SQL Server using a linked server link sometimes cause high CPU utilization on the SQL Server integration machine?",
+    "options": [
+      "Because Snowflake forces the client machine to run complex machine learning models.",
+      "Because the integration engine must handle the high overhead of unpacking row-by-row data streams coming from the driver and re-assembling them into local memory blocks.",
+      "Because the driver forces the physical database disks to enter a single-user isolation lock.",
+      "Because it automatically triggers a frontend website template deployment loop."
+    ],
+    "answer": 1,
+    "time": 30,
+    "level": "Medium"
+  },
+  {
+    "q": "What core benefit does the Snowflake ODBC driver provide regarding session security when transmitting sensitive corporate database credentials from an on-premises environment?",
+    "options": [
+      "It stores passwords in an unencrypted plain text file layout on the local network.",
+      "It encrypts all transactional metadata and credentials using built-in TLS/SSL protocols during transit over the internet.",
+      "It bypasses the cloud governance layer entirely to operate under anonymous access rules.",
+      "It converts credentials into public peer-to-peer file sharing tokens."
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Medium"
+  },
+  {
+    "q": "Can you pass a declared SQL Server local variable directly inside an OPENQUERY string parameter when executing a remote query against Snowflake via a driver?",
+    "options": [
+      "Yes, SQL Server variables seamlessly inject into remote query string variables dynamically.",
+      "No, OPENQUERY strictly requires a static string literal text block parameter; to use variables, you must build a dynamic SQL string using EXEC() or SPI_EXECUTE.",
+      "Yes, but only if the variable is formatted as an explicit binary object template.",
+      "No, because variables trigger an automatic system schema defragmentation crash."
+    ],
+    "answer": 1,
+    "time": 35,
+    "level": "Hard"
+  },
+  {
+    "q": "When troubleshoot-monitoring a bottlenecked cross-database pipeline between SQL Server and Snowflake, what is a best-practice strategy to minimize the volume of data traveling across the driver link?",
+    "options": [
+      "Convert all tables into unstructured data formats before initializing the pipeline loop.",
+      "Push down your filtering, sorting, and aggregation steps directly into the Snowflake remote query block so only the final summarized result set travels back over the network.",
+      "Run the integration script exclusively when the SQL Server instance is completely offline.",
+      "Remove all WHERE clauses to let the driver handle data filtering inside local memory caches."
+    ],
+    "answer": 1,
+    "time": 30,
+    "level": "Medium"
+  }
+
+,
+
+  {
+    "q": "Which Snowflake command is responsible for uploading local data files from a client application server directly into an internal data warehouse storage stage?",
+    "options": [
+      "COPY INTO STAGE",
+      "PUT",
+      "INSERT INTO",
+      "LOAD FILE LOCAL"
+    ],
+    "answer": 1,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "Which statement best describes the primary operational function of the 'COPY INTO <table_name>' command during a bulk data load pipeline?",
+    "options": [
+      "It deletes all metadata properties inside a specified cloud storage stage folder.",
+      "It reads staged file data from an internal or external stage, parses the content according to a file format, and writes the structured records into a target table.",
+      "It sets up an offline peer-to-peer file sharing connection mapping layout.",
+      "It generates dynamic graphical charts directly onto a web frontend dashboard."
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Easy"
+  },
+  {
+    "q": "Why can a data engineer NOT execute a standard 'PUT' command inside a standard cloud browser worksheet session within the Snowsight web interface?",
+    "options": [
+      "Because the PUT command requires direct access to the client machine's local file system architecture, which web browsers restrict; it must be run via the SnowSQL CLI or drivers.",
+      "Because web browser connections completely disable compute virtual warehouse token tracking.",
+      "Because the web interface strictly prohibits loading any structured file formats.",
+      "Because worksheets automatically drop database privileges to prevent security breaches."
+    ],
+    "answer": 0,
+    "time": 30,
+    "level": "Medium"
+  },
+  {
+    "q": "What optimization routine does Snowflake automatically perform by default when a raw flat text CSV file is uploaded to an internal stage via the PUT command?",
+    "options": [
+      "It shatters the columns into randomized string variable arrays.",
+      "It compresses the file using gzip compression, minimizing network data transfer times and storage footprint metrics.",
+      "It converts the contents into an unreadable analog data translation sequence.",
+      "It deploys an interactive HTML wizard template directly over the file object."
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Medium"
+  },
+  {
+    "q": "If you pass the parameter option 'PURGE = TRUE' inside a bulk COPY INTO execution statement, what behavior will Snowflake exhibit upon successful completion of the data load?",
+    "options": [
+      "It will completely truncate all historical data rows from the target relational table.",
+      "It will automatically delete the successfully ingested data files from the source stage, cleaning up the storage environment.",
+      "It will remove the assigned Role-Based Access Control privileges from the active user session.",
+      "It will turn off the virtual compute warehouse to freeze credit consumption."
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Easy"
+  },
+  {
+    "q": "How does Snowflake's bulk loading architecture ensure that the exact same staged data file is not accidentally parsed and processed twice into the same target table if a script runs repeatedly?",
+    "options": [
+      "It locks the target schema down under an exclusive single-user environment constraint.",
+      "It leverages granular load history metadata cataloged in the cloud services layer, tracking file cryptographic hashes for 64 days to prevent redundant ingestion.",
+      "It forces the virtual warehouse clusters to undergo an automated defragmentation wipe.",
+      "It renames the columns of the destination database dynamically to cause compilation errors."
+    ],
+    "answer": 1,
+    "time": 35,
+    "level": "Hard"
+  },
+  {
+    "q": "A massive 500GB CSV export file needs to be bulk loaded into Snowflake. What is the recommended data engineering best-practice step to maximize parallel processing performance before running the PUT command?",
+    "options": [
+      "Convert the single large text payload file into an unstructured image file block layout.",
+      "Split the single massive file into smaller, uniform chunks (e.g., 100MB to 250MB each) so Snowflake's compute warehouse can read them concurrently across multiple parallel nodes.",
+      "Disable the file format's SKIP_HEADER option parameters to accelerate compilation.",
+      "Run the entire process using local analog loop routing without spinning up compute units."
+    ],
+    "answer": 1,
+    "time": 35,
+    "level": "Hard"
+  },
+  {
+    "q": "Which data copy option parameter can be declared inside the COPY INTO statement to instruct Snowflake to gracefully skip over bad source files and continue loading valid records if a row corruption error occurs?",
+    "options": [
+      "ON_ERROR = CONTINUE",
+      "VALIDATE_ONLY = TRUE",
+      "STRIP_OUTER_ARRAY = FALSE",
+      "RUN SYSTEM DEFRAGMENTATION"
+    ],
+    "answer": 0,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "What happens to the credit billing calculation if a data engineer leaves an internal stage filled with staged files for several weeks without executing a PURGE or REMOVE command?",
+    "options": [
+      "It consumes zero credits because internal staging zones are funded entirely by network routing loops.",
+      "The account incurs standard flat cloud storage layer costs based on the cumulative data volume bytes sitting inside the stage.",
+      "The system automatically deducts credits by scaling up the active hardware cooling metrics.",
+      "The staging folder automatically drops its encryption keys and becomes a public website repository."
+    ],
+    "answer": 1,
+    "time": 30,
+    "level": "Medium"
+  },
+  {
+    "q": "When writing a COPY INTO query statement, how can a developer transform or re-order columns on the fly during bulk ingestion if the staging file field layout does not map exactly to the target table column order?",
+    "options": [
+      "By executing an offline peer-to-peer data layout shift script prior to loading.",
+      "By writing a SELECT transformation statement directly inside the FROM clause of the COPY command, mapping positional columns like $1, $2, or $3 to specific target definitions.",
+      "By appending an interactive wizard template mapping rule to the file format definition.",
+      "Positional transformation is strictly prohibited; the file schema must mirror the target table identically."
+    ],
+    "answer": 1,
+    "time": 35,
+    "level": "Hard"
+  }
 
 
 
