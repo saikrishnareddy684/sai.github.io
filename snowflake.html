@@ -1,7 +1,7 @@
 <!DOCTYPE html> 
 <html lang="en">
 <head>
-  <meta charset="utf-8" /> 
+  <meta charset="utf-8" /> g
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Snowflake MCQ Exam – Batch + Resume + Timers + Persistence</title>
   <style>
@@ -2546,6 +2546,127 @@ let originalQuestions = [
     ],
     "answer": 1,
     "time": 35,
+    "level": "Hard"
+  }
+,
+  {
+    "q": "Why is executing a 'SELECT COUNT(*)' query to verify a bulk data load incredibly cost-effective and fast within the Snowflake architecture?",
+    "options": [
+      "Because it bypasses cloud storage and reads files directly from your local hard drive path.",
+      "Because Snowflake maintains pre-computed row counts for tables inside its Cloud Services metadata layer, returning the result instantly without consuming virtual warehouse compute credits.",
+      "Because it automatically converts the entire target table into an unstructured image file format.",
+      "Because it triggers a specialized hardware cooling protocol to speed up processing chips."
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Medium"
+  },
+  {
+    "q": "If a data analyst notices that the table row count returned by COUNT(*) is lower than the line count of the source CSV file, which Snowflake metadata view should they query to investigate specific row-level loading errors?",
+    "options": [
+      "SNOWFLAKE.ACCOUNT_USAGE.LOAD_HISTORY",
+      "INFORMATION_SCHEMA.TABLES",
+      "SYSTEM.DEFRAGMENTATION_LOGS",
+      "FRONTEND.UI_TEMPLATE_ERRORS"
+    ],
+    "answer": 0,
+    "time": 30,
+    "level": "Hard"
+  },
+  {
+    "q": "When using the Snowsight web UI 'Upload Files' wizard to ingest a CSV file, where can you visually see the status of the load and any parsing errors that occurred during the transfer?",
+    "options": [
+      "In the local network adapter router log output wrapper.",
+      "Directly within the upload wizard modal window, which displays the number of rows successfully loaded versus rows that failed.",
+      "By running a standard offline peer-to-peer file validation script.",
+      "Inside a drag-and-drop website design template file."
+    ],
+    "answer": 1,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "Which SQL function can be combined with COUNT(*) to count only the unique, non-duplicate values within an account number column after an ingestion cycle completes?",
+    "options": [
+      "COUNT(DISTINCT column_name)",
+      "COUNT(UNIQUE_ELEMENTS column_name)",
+      "STRIP_OUTER_ARRAY(column_name)",
+      "GET_SCOPED_URL(column_name)"
+    ],
+    "answer": 0,
+    "time": 15,
+    "level": "Easy"
+  },
+  {
+    "q": "What table option parameter should be validated if a SELECT COUNT(*) query unexpectedly returns zero rows immediately after a pipeline script successfully runs a COPY INTO statement?",
+    "options": [
+      "Ensure that the source stage path actually contained matching files and that the file format delimiter parameters matched the source file layout exactly.",
+      "Check if the physical warehouse cooling fans were operational during execution.",
+      "Verify that the system was running in single-user network translation mode.",
+      "Confirm that the database was operating completely offline."
+    ],
+    "answer": 0,
+    "time": 25,
+    "level": "Medium"
+  },
+  {
+    "q": "A data engineer wants to check the load history details for a specific table over the past 14 days using an information schema table function. Which function is correct?",
+    "options": [
+      "INFORMATION_SCHEMA.VALIDATE_FILE_FORMAT()",
+      "INFORMATION_SCHEMA.VALIDATE_PIPE_LOAD()",
+      "TABLE(INFORMATION_SCHEMA.COPY_HISTORY(TABLE_NAME => 'my_table', START_TIME => DATEADD(day, -14, CURRENT_TIMESTAMP())))",
+      "SYSTEM.SHOW_DEFRAGMENTATION_HISTORY()"
+    ],
+    "answer": 2,
+    "time": 35,
+    "level": "Hard"
+  },
+  {
+    "q": "What is the outcome if you attempt to query a table using fully qualified naming syntax like 'SELECT COUNT(*) FROM bank_dwh.public.fact_transactions;' but your active role has not been granted USAGE privileges on that database or schema?",
+    "options": [
+      "Snowflake returns 0 rows to protect data privacy seamlessly.",
+      "Snowflake throws an object compilation error stating that the database/table does not exist or access is denied.",
+      "The query executes an anonymous local network routing loop to fetch the data.",
+      "The system automatically assigns you a temporary ACCOUNTADMIN role status."
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Medium"
+  },
+  {
+    "q": "When verifying data integrity after an ingestion, why might a simple line count check of a raw CSV file be slightly different than a SELECT COUNT(*) count if the CSV contains string values with embedded line breaks wrapped in quotes?",
+    "options": [
+      "Because Snowflake ignores all rows containing text strings during a bulk load.",
+      "Standard command-line line counters treat embedded line breaks as entirely new rows, whereas a properly configured Snowflake File Format object parses them correctly as a single record field.",
+      "Because Snowflake automatically truncates table files when they reach an internet gateway.",
+      "Because the metadata layer drops records randomly to save storage credit costs."
+    ],
+    "answer": 1,
+    "time": 35,
+    "level": "Hard"
+  },
+  {
+    "q": "Which command line utility can be used by an analyst working on a local machine terminal to quickly check the line count of a raw text data file before pushing it up into a Snowflake stage?",
+    "options": [
+      "wc -l filename.csv (on Linux/macOS) or Find /c /v \"\" filename.csv (on Windows)",
+      "PUT file://filename.csv @stage_name;",
+      "SHOW FILE FORMATS IN SCHEMA;",
+      "RUN TRANSLATION ENCODING MATRIX;"
+    ],
+    "answer": 0,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "If a data load script runs a COPY INTO statement with the argument 'VALIDATE_ONLY = TRUE', what happens when the statement executes?",
+    "options": [
+      "Snowflake loads the data into an offline partition segment container.",
+      "Snowflake prepares the execution plan and scans the staged files for parsing errors, returning validation results without writing any actual data rows into the target table.",
+      "Snowflake runs a defragmentation check across the virtual computing cluster nodes.",
+      "The data rows are transformed directly into an interactive frontend dropdown template."
+    ],
+    "answer": 1,
+    "time": 30,
     "level": "Hard"
   }
 
