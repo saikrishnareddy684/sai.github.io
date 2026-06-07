@@ -123,6 +123,175 @@ let originalQuestions = [
     "answer": 1,
     "time": 20
   },
+
+
+
+  {
+    "q": "What is Parameter Sniffing in SQL Server?",
+    "options": [
+      "A process of encrypting query parameters",
+      "SQL Server uses the first parameter value to generate and cache an execution plan",
+      "A method to validate stored procedure parameters",
+      "A feature used for query auditing"
+    ],
+    "answer": 1,
+    "time": 30
+  },
+  {
+    "q": "Why can Parameter Sniffing cause performance problems?",
+    "options": [
+      "Because SQL Server ignores indexes",
+      "Because the cached plan generated for one parameter value may not be optimal for other values",
+      "Because parameters are stored in tempdb",
+      "Because SQL Server recompiles every query"
+    ],
+    "answer": 1,
+    "time": 30
+  },
+  {
+    "q": "Which command forces SQL Server to generate a new execution plan every time a query executes?",
+    "options": [
+      "OPTION(RECOMPILE)",
+      "OPTIMIZE FOR UNKNOWN",
+      "SET NOCOUNT ON",
+      "DBCC FREEPROCCACHE"
+    ],
+    "answer": 0,
+    "time": 20
+  },
+  {
+    "q": "What is the primary disadvantage of OPTION(RECOMPILE)?",
+    "options": [
+      "Indexes cannot be used",
+      "Additional CPU overhead due to recompilation",
+      "Query results may be incorrect",
+      "It disables statistics"
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "What does WITH RECOMPILE do when used on a stored procedure?",
+    "options": [
+      "Rebuilds all indexes",
+      "Forces the entire stored procedure to recompile on each execution",
+      "Deletes execution plans from cache permanently",
+      "Updates statistics automatically"
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "Which option tells SQL Server to ignore the actual parameter value and use average statistics instead?",
+    "options": [
+      "OPTION(RECOMPILE)",
+      "OPTIMIZE FOR UNKNOWN",
+      "FORCESEEK",
+      "LOOP JOIN"
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "Which hint can force SQL Server to optimize a query for a specific parameter value?",
+    "options": [
+      "OPTIMIZE FOR (@Param = value)",
+      "OPTION(RECOMPILE)",
+      "FORCE ORDER",
+      "HASH JOIN"
+    ],
+    "answer": 0,
+    "time": 25
+  },
+  {
+    "q": "Which DMV can be used to inspect cached execution plans?",
+    "options": [
+      "sys.dm_exec_query_stats",
+      "sys.tables",
+      "sys.index_columns",
+      "sys.database_files"
+    ],
+    "answer": 0,
+    "time": 25
+  },
+  {
+    "q": "What is a common symptom of Parameter Sniffing?",
+    "options": [
+      "A query runs fast for some parameter values and very slowly for others",
+      "Database backup fails",
+      "Indexes disappear automatically",
+      "Deadlocks never occur"
+    ],
+    "answer": 0,
+    "time": 20
+  },
+  {
+    "q": "Which command removes all execution plans from the plan cache?",
+    "options": [
+      "DBCC DROPCLEANBUFFERS",
+      "DBCC FREEPROCCACHE",
+      "UPDATE STATISTICS",
+      "CHECKPOINT"
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "How can assigning a parameter to a local variable help with Parameter Sniffing?",
+    "options": [
+      "It forces SQL Server to use average distribution statistics instead of the actual parameter value",
+      "It disables indexes",
+      "It rebuilds statistics",
+      "It improves network performance"
+    ],
+    "answer": 0,
+    "time": 30
+  },
+  {
+    "q": "Which SQL Server feature introduced in newer versions can automatically detect and mitigate parameter-sensitive plans?",
+    "options": [
+      "Query Store",
+      "Parameter Sensitive Plan Optimization (PSP)",
+      "SQL Agent",
+      "Replication"
+    ],
+    "answer": 1,
+    "time": 30
+  },
+  {
+    "q": "When should OPTION(RECOMPILE) generally be considered?",
+    "options": [
+      "When query performance varies significantly based on parameter values",
+      "For every query in the database",
+      "Only for INSERT statements",
+      "Only when indexes are missing"
+    ],
+    "answer": 0,
+    "time": 25
+  },
+  {
+    "q": "What happens when a stored procedure is executed for the first time after compilation?",
+    "options": [
+      "SQL Server generates an execution plan based on the supplied parameter values",
+      "SQL Server skips optimization",
+      "SQL Server creates a clustered index",
+      "SQL Server updates all statistics"
+    ],
+    "answer": 0,
+    "time": 20
+  },
+  {
+    "q": "Which of the following is NOT a common solution to Parameter Sniffing?",
+    "options": [
+      "OPTION(RECOMPILE)",
+      "OPTIMIZE FOR UNKNOWN",
+      "Using local variables",
+      "TRUNCATE TABLE"
+    ],
+    "answer": 3,
+    "time": 20
+  },
+
   {
     "q": "What does the acronym SQL stand for?",
     "options": [
