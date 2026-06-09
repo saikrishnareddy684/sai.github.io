@@ -2670,6 +2670,128 @@ let originalQuestions = [
     "level": "Hard"
   }
 
+,
+  
+  {
+    "q": "To trigger the visual data upload wizard modal window for an internal stage inside the Snowsight web console interface, which primary sidebar menu path should an analyst navigate through?",
+    "options": [
+      "Admin » Cost Management » Warehouses",
+      "Data » Databases » [Database Name] » [Schema Name] » Stages",
+      "Activity » Query History",
+      "Projects » Worksheets"
+    ],
+    "answer": 1,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "What happens behind the scenes if a user utilizes the Snowsight table 'Load Data' UI wizard to upload a local CSV file but leaves the file format parameters unconfigured or mismatched?",
+    "options": [
+      "Snowflake converts the columns into binary images and forces an offline loop.",
+      "The upload wizard modal window will intercept the transaction and throw a structural parsing error, showing which rows failed to load cleanly.",
+      "The query engine automatically alters the target table column names to strings.",
+      "The file is quietly deleted from the system and all active roles are revoked."
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Easy"
+  },
+  {
+    "q": "When running a bulk load pipeline via the Snowsight stages UI wizard interface, what is the maximum recommended file size limit optimal for single-file browser transfers before switching to the SnowSQL CLI PUT command?",
+    "options": [
+      "Browser UI uploads are highly optimized for smaller files (typically up to a few hundred megabytes); massive multi-gigabyte datasets should leverage the multi-threaded SnowSQL PUT tool to prevent browser timeouts.",
+      "Browser UI wizards have a strict hardware lock restriction at exactly 100 kilobytes.",
+      "There is no difference; web browsers process 500GB files identically to terminal scripts.",
+      "Web browsers can only load files if the database instance is operating completely offline."
+    ],
+    "answer": 0,
+    "time": 30,
+    "level": "Medium"
+  },
+  {
+    "q": "Which active privilege tier layer must be applied to a user's active security context role for them to successfully see and interact with the '+ Files' button inside a stage panel view?",
+    "options": [
+      "OWNERSHIP or USAGE privileges on the database, schema, and write access onto that specific stage object.",
+      "GLOBAL DEFRAGMENTATION administrative privilege authorization parameters.",
+      "ANALOG TRANSLATION configuration rights on the corporate security firewall.",
+      "No security privileges are required; UI wizards bypass role frameworks automatically."
+    ],
+    "answer": 0,
+    "time": 25,
+    "level": "Medium"
+  },
+  {
+    "q": "When using the 'Load Data' upload wizard directly on a Table details tab inside Snowsight, what action must you complete right after selecting your data file payload from your computer directory?",
+    "options": [
+      "Select or create an appropriate File Format object configuration that matches the delimiter and layout properties of the file.",
+      "Run a manual hardware cooling check on the underlying storage nodes.",
+      "Convert the table schema parameters into an interactive frontend view template.",
+      "Log out of the session to clear the query results cache maps."
+    ],
+    "answer": 0,
+    "time": 25,
+    "level": "Easy"
+  },
+  {
+    "q": "What is a core benefit of using the direct Table 'Load Data' UI wizard option over managing file imports manually via command line code scripts?",
+    "options": [
+      "It completely bypasses virtual computing warehouse operations and runs for free.",
+      "It provides a clear, guided step-by-step graphical user interface that automates target column mapping and parsing rule checks without requiring manual code entry.",
+      "It forces data structures to write into an un-shredded offline memory array format.",
+      "It eliminates the database security metadata layer entirely to process files faster."
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Medium"
+  },
+  {
+    "q": "If a developer drops a file into a stage using the Snowsight '+ Files' upload wizard panel, under what automated file compression rule does Snowflake ingest the payload into the cloud repository?",
+    "options": [
+      "Snowflake translates the data payload characters into raw uncompressed text strings.",
+      "Snowflake automatically handles gzip data compression during transit, adding a .gz extension marker to the file tracking path.",
+      "Snowflake converts the text characters into analog data translation bytes.",
+      "The file is reformatted into a drag-and-drop website design template framework."
+    ],
+    "answer": 1,
+    "time": 30,
+    "level": "Hard"
+  },
+  {
+    "q": "Where in the Snowsight console can an operations analyst view a real-time running log audit history of queries executed by the visual upload wizard behind the scenes?",
+    "options": [
+      "Under the Admin » Users & Roles panel layout view.",
+      "Inside the Activity » Query History dashboard workspace.",
+      "Through a dedicated system schema option named OFFLINE_ROUTING_LOGS.",
+      "By opening the front-end template configuration manager framework."
+    ],
+    "answer": 1,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "If the '+ Files' action button appears greyed out or completely missing when you click inside a specific internal stage detail screen, what is the most likely data engineering explanation?",
+    "options": [
+      "The database cluster is undergoing an automated defragmentation cycle routine.",
+      "Your current active session role lacks write permission privileges on that specific stage object container.",
+      "The stage was built to accept only unstructured digital sound recordings.",
+      "The web interface context automatically shifted into an offline network tracking loop."
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Medium"
+  },
+  {
+    "q": "Can a data architect choose to load data directly from an external stage (e.g., an AWS S3 bucket) using the Snowsight graphical upload wizard pop-up container interface?",
+    "options": [
+      "Yes, external cloud stages are managed using identical drag-and-drop file transfers.",
+      "No, the local file drag-and-drop wizard is built explicitly to push local payloads into Internal Stages; External Stages point to cloud locations where files are loaded via SQL scripts.",
+      "Yes, but only if the external stage handles binary unstructured image layouts.",
+      "No, because external data processing requires a single-user system environment lock."
+    ],
+    "answer": 1,
+    "time": 35,
+    "level": "Hard"
+  }
 
 
 
