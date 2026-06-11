@@ -13241,7 +13241,174 @@ let originalQuestions = [
     ],
     "answer": 2,
     "time": 20
+  },
+  
+  {
+    "q": "Which function returns the month number (1-12) from a date in SQL Server?",
+    "options": [
+      "DATEPART()",
+      "MONTH()",
+      "DATENAME()",
+      "FORMAT()"
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "What is the output of MONTH('2026-09-15')?",
+    "options": [
+      "09",
+      "September",
+      "9",
+      "2026"
+    ],
+    "answer": 2,
+    "time": 20
+  },
+  {
+    "q": "Which DATEPART expression returns the month number from a date?",
+    "options": [
+      "DATEPART(day, OrderDate)",
+      "DATEPART(year, OrderDate)",
+      "DATEPART(month, OrderDate)",
+      "DATEPART(week, OrderDate)"
+    ],
+    "answer": 2,
+    "time": 20
+  },
+  {
+    "q": "Which statement is equivalent to MONTH(OrderDate)?",
+    "options": [
+      "DATEPART(month, OrderDate)",
+      "DATENAME(month, OrderDate)",
+      "FORMAT(OrderDate, 'MMMM')",
+      "YEAR(OrderDate)"
+    ],
+    "answer": 0,
+    "time": 20
+  },
+  {
+    "q": "Which function can return Year, Quarter, Month, Week, Day, Hour, Minute, and Second values from a date?",
+    "options": [
+      "MONTH()",
+      "FORMAT()",
+      "DATEPART()",
+      "CONVERT()"
+    ],
+    "answer": 2,
+    "time": 20
+  },
+  {
+    "q": "What does DATENAME(month, '2026-09-15') return?",
+    "options": [
+      "9",
+      "09",
+      "September",
+      "2026"
+    ],
+    "answer": 2,
+    "time": 20
+  },
+  {
+    "q": "Which function returns a string representation of a date based on a specified format?",
+    "options": [
+      "MONTH()",
+      "DATEPART()",
+      "YEAR()",
+      "FORMAT()"
+    ],
+    "answer": 3,
+    "time": 20
+  },
+  {
+    "q": "What is the output of FORMAT('2026-09-15', 'MM')?",
+    "options": [
+      "9",
+      "September",
+      "09",
+      "15"
+    ],
+    "answer": 2,
+    "time": 20
+  },
+  {
+    "q": "What is the output of FORMAT('2026-09-15', 'MMMM')?",
+    "options": [
+      "09",
+      "September",
+      "9",
+      "Sep"
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "Which function is generally the slowest for extracting date information from large datasets?",
+    "options": [
+      "MONTH()",
+      "YEAR()",
+      "DATEPART()",
+      "FORMAT()"
+    ],
+    "answer": 3,
+    "time": 20
+  },
+  {
+    "q": "Which function should be preferred when only the month number is required?",
+    "options": [
+      "FORMAT()",
+      "MONTH()",
+      "DATENAME()",
+      "CONVERT()"
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "Which function returns an integer value rather than a string?",
+    "options": [
+      "FORMAT()",
+      "DATENAME()",
+      "MONTH()",
+      "CONCAT()"
+    ],
+    "answer": 2,
+    "time": 20
+  },
+  {
+    "q": "Which query filters records belonging to September?",
+    "options": [
+      "WHERE MONTH(OrderDate) = 9",
+      "WHERE MONTH(OrderDate) = 'September'",
+      "WHERE FORMAT(OrderDate, 'MMMM') = 9",
+      "WHERE DATENAME(month, OrderDate) = 9"
+    ],
+    "answer": 0,
+    "time": 20
+  },
+  {
+    "q": "Which function returns the quarter number from a date?",
+    "options": [
+      "MONTH()",
+      "DATEPART(quarter, DateColumn)",
+      "FORMAT(DateColumn, 'Q')",
+      "DATENAME(quarter, DateColumn)"
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "Why is FORMAT() generally avoided in WHERE clauses on large tables?",
+    "options": [
+      "It cannot work with dates",
+      "It returns only integers",
+      "It is slower because it performs string formatting",
+      "It always returns NULL"
+    ],
+    "answer": 2,
+    "time": 20
   }
+
 
 
   // add more questions here...
