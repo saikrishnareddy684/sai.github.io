@@ -626,6 +626,228 @@ let originalQuestions = [
     "answer": 0,
     "time": 20
   },
+  
+  {
+    "q": "Which syntax correctly creates a Scalar Function in SQL Server?",
+    "options": [
+      "CREATE FUNCTION dbo.GetAge(@DOB DATE) RETURNS INT AS BEGIN RETURN DATEDIFF(YEAR,@DOB,GETDATE()) END",
+      "CREATE PROCEDURE dbo.GetAge(@DOB DATE) RETURNS INT AS BEGIN RETURN 0 END",
+      "CREATE FUNCTION dbo.GetAge(@DOB DATE) RETURN INT AS DATEDIFF(YEAR,@DOB,GETDATE())",
+      "CREATE TABLE FUNCTION dbo.GetAge(@DOB DATE)"
+    ],
+    "answer": 0,
+    "time": 20
+  },
+  {
+    "q": "Which syntax correctly executes a Scalar Function?",
+    "options": [
+      "EXEC dbo.GetAge('1990-01-01')",
+      "CALL dbo.GetAge('1990-01-01')",
+      "SELECT dbo.GetAge('1990-01-01')",
+      "RUN dbo.GetAge('1990-01-01')"
+    ],
+    "answer": 2,
+    "time": 20
+  },
+  {
+    "q": "Which syntax correctly creates an Inline Table-Valued Function (ITVF)?",
+    "options": [
+      "CREATE FUNCTION dbo.GetEmployees() RETURNS TABLE AS RETURN (SELECT * FROM Employees)",
+      "CREATE FUNCTION dbo.GetEmployees() RETURNS @T TABLE(ID INT) AS BEGIN RETURN END",
+      "CREATE PROCEDURE dbo.GetEmployees() AS SELECT * FROM Employees",
+      "CREATE FUNCTION dbo.GetEmployees() RETURNS INT AS BEGIN RETURN 1 END"
+    ],
+    "answer": 0,
+    "time": 20
+  },
+  {
+    "q": "How do you query data from an Inline Table-Valued Function?",
+    "options": [
+      "EXEC dbo.GetEmployees()",
+      "SELECT * FROM dbo.GetEmployees()",
+      "CALL dbo.GetEmployees()",
+      "RUN dbo.GetEmployees()"
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "Which syntax correctly creates a Multi-Statement Table-Valued Function (MSTVF)?",
+    "options": [
+      "CREATE FUNCTION dbo.GetEmployees() RETURNS TABLE AS RETURN (SELECT * FROM Employees)",
+      "CREATE FUNCTION dbo.GetEmployees() RETURNS @Emp TABLE(ID INT, Name VARCHAR(100)) AS BEGIN INSERT INTO @Emp SELECT EmployeeID, Name FROM Employees RETURN END",
+      "CREATE PROCEDURE dbo.GetEmployees() RETURNS TABLE",
+      "CREATE FUNCTION dbo.GetEmployees() RETURNS VARCHAR(100)"
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "Which clause is mandatory in a Multi-Statement Table-Valued Function?",
+    "options": [
+      "RETURNS @TableVariable TABLE(...)",
+      "WITH SCHEMABINDING",
+      "ORDER BY",
+      "GROUP BY"
+    ],
+    "answer": 0,
+    "time": 20
+  },
+  {
+    "q": "Which syntax alters an existing function?",
+    "options": [
+      "MODIFY FUNCTION dbo.GetAge",
+      "UPDATE FUNCTION dbo.GetAge",
+      "ALTER FUNCTION dbo.GetAge(@DOB DATE) RETURNS INT AS BEGIN RETURN 0 END",
+      "CHANGE FUNCTION dbo.GetAge"
+    ],
+    "answer": 2,
+    "time": 20
+  },
+  {
+    "q": "Which statement removes a function from SQL Server?",
+    "options": [
+      "DELETE FUNCTION dbo.GetAge",
+      "REMOVE FUNCTION dbo.GetAge",
+      "DROP FUNCTION dbo.GetAge",
+      "TRUNCATE FUNCTION dbo.GetAge"
+    ],
+    "answer": 2,
+    "time": 20
+  },
+  {
+    "q": "Which syntax passes a parameter to an Inline Table-Valued Function?",
+    "options": [
+      "SELECT * FROM dbo.GetEmployeesByDept(10)",
+      "EXEC dbo.GetEmployeesByDept(10)",
+      "CALL dbo.GetEmployeesByDept(10)",
+      "RUN dbo.GetEmployeesByDept(10)"
+    ],
+    "answer": 0,
+    "time": 20
+  },
+  {
+    "q": "What keyword is used to return a single value from a Scalar Function?",
+    "options": [
+      "OUTPUT",
+      "RETURN",
+      "SELECT",
+      "RESULT"
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "Which syntax correctly declares a return table variable in a Multi-Statement TVF?",
+    "options": [
+      "RETURNS TABLE",
+      "RETURNS @Emp TABLE(EmployeeID INT, Name VARCHAR(100))",
+      "RETURN TABLE(EmployeeID INT)",
+      "TABLE RETURNS(EmployeeID INT)"
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "Which function type generally provides better query optimization because its definition is expanded into the calling query?",
+    "options": [
+      "Scalar Function",
+      "Stored Procedure",
+      "Inline Table-Valued Function",
+      "Cursor"
+    ],
+    "answer": 2,
+    "time": 20
+  },
+  {
+    "q": "Can a SQL Server function modify data in a permanent table using INSERT, UPDATE, or DELETE?",
+    "options": [
+      "Yes, always",
+      "Only Scalar Functions can",
+      "Only Inline TVFs can",
+      "No, user-defined functions cannot modify permanent tables"
+    ],
+    "answer": 3,
+    "time": 20
+  },
+  {
+    "q": "Which syntax is used to call a Scalar Function in a WHERE clause?",
+    "options": [
+      "WHERE dbo.GetAge(DOB) > 18",
+      "WHERE EXEC dbo.GetAge(DOB) > 18",
+      "WHERE CALL dbo.GetAge(DOB) > 18",
+      "WHERE RUN dbo.GetAge(DOB) > 18"
+    ],
+    "answer": 0,
+    "time": 20
+  },
+  {
+    "q": "Which function type returns only a single value?",
+    "options": [
+      "Scalar Function",
+      "Inline TVF",
+      "Multi-Statement TVF",
+      "View"
+    ],
+    "answer": 0,
+    "time": 20
+  },
+  {
+    "q": "Which syntax correctly returns rows from an Inline TVF?",
+    "options": [
+      "RETURN (SELECT EmployeeID, Name FROM Employees)",
+      "SELECT EmployeeID, Name FROM Employees",
+      "OUTPUT EmployeeID, Name",
+      "RETURN TABLE Employees"
+    ],
+    "answer": 0,
+    "time": 20
+  },
+  {
+    "q": "Which of the following is NOT allowed inside a SQL Server User Defined Function?",
+    "options": [
+      "Local variables",
+      "IF statements",
+      "Calling a stored procedure",
+      "RETURN statement"
+    ],
+    "answer": 2,
+    "time": 20
+  },
+  {
+    "q": "Which system view contains information about functions in SQL Server?",
+    "options": [
+      "sys.objects",
+      "sys.tables",
+      "sys.columns",
+      "sys.indexes"
+    ],
+    "answer": 0,
+    "time": 20
+  },
+  {
+    "q": "What is the correct syntax to create a schema-bound function?",
+    "options": [
+      "CREATE FUNCTION dbo.GetData() RETURNS TABLE WITH SCHEMABINDING AS RETURN (SELECT ID FROM dbo.Employee)",
+      "CREATE FUNCTION dbo.GetData() SCHEMABINDING",
+      "CREATE SCHEMABINDING FUNCTION dbo.GetData()",
+      "CREATE FUNCTION dbo.GetData() RETURNS TABLE BIND SCHEMA"
+    ],
+    "answer": 0,
+    "time": 20
+  },
+  {
+    "q": "What is the difference between Inline TVF and Multi-Statement TVF?",
+    "options": [
+      "Inline TVF returns a table using a single SELECT statement; Multi-Statement TVF can populate a table variable through multiple statements.",
+      "Inline TVF returns one value; Multi-Statement TVF returns many values.",
+      "Inline TVF can update tables; Multi-Statement TVF cannot.",
+      "There is no difference."
+    ],
+    "answer": 0,
+    "time": 20
+  }
+,
   {
     "q": "What is a Trigger in SQL Server?",
     "options": [
