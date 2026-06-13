@@ -983,6 +983,119 @@ let originalQuestions = [
   "answer": 0,
   "time": 20
 },
+
+
+  {
+  "q": "Which syntax correctly creates an AFTER DELETE trigger that logs deleted records into the EmployeeAudit table?",
+  "options": [
+    "CREATE TRIGGER trg_AfterDelete ON Employee AFTER DELETE AS BEGIN INSERT INTO EmployeeAudit (EmployeeID, ActionType, ActionDate) SELECT EmployeeID, 'DELETE', GETDATE() FROM deleted; END",
+    
+    "CREATE TRIGGER trg_AfterDelete ON Employee AFTER DELETE AS BEGIN INSERT INTO EmployeeAudit (EmployeeID, ActionType, ActionDate) SELECT EmployeeID, 'DELETE', GETDATE() FROM inserted; END",
+    
+    "CREATE TRIGGER trg_AfterDelete ON Employee AFTER DELETE AS BEGIN INSERT INTO EmployeeAudit (EmployeeID, ActionType, ActionDate) VALUES (EmployeeID, 'DELETE', GETDATE()) FROM deleted; END",
+    
+    "CREATE TRIGGER trg_AfterDelete ON Employee AFTER DELETE AS BEGIN INSERT INTO EmployeeAudit (EmployeeID, ActionType, ActionDate) SELECT EmployeeID, ActionType, GETDATE() FROM deleted; END"
+  ],
+  "answer": 0,
+  "time": 20
+},
+{
+  "q": "Which syntax correctly creates an AFTER UPDATE trigger that logs updated records into the EmployeeAudit table?",
+  "options": [
+    "CREATE TRIGGER trg_AfterUpdate ON Employee AFTER UPDATE AS BEGIN INSERT INTO EmployeeAudit (EmployeeID, ActionType, ActionDate) SELECT EmployeeID, 'UPDATE', GETDATE() FROM inserted; END",
+    
+    "CREATE TRIGGER trg_AfterUpdate ON Employee AFTER UPDATE AS BEGIN INSERT INTO EmployeeAudit (EmployeeID, ActionType, ActionDate) SELECT EmployeeID, 'UPDATE', GETDATE() FROM deleted; END",
+    
+    "CREATE TRIGGER trg_AfterUpdate ON Employee AFTER UPDATE AS BEGIN INSERT INTO EmployeeAudit (EmployeeID, ActionType, ActionDate) SELECT EmployeeID, UPDATE, GETDATE() FROM inserted; END",
+    
+    "CREATE TRIGGER trg_AfterUpdate ON Employee AFTER UPDATE AS BEGIN INSERT INTO EmployeeAudit (EmployeeID, ActionType, ActionDate) VALUES (EmployeeID, 'UPDATE', GETDATE()) FROM inserted; END"
+  ],
+  "answer": 0,
+  "time": 20
+},
+{
+  "q": "Which syntax correctly creates an AFTER UPDATE trigger that records salary changes in the SalaryHistory table?",
+  "options": [
+    "CREATE TRIGGER trg_SalaryHistory ON Employee AFTER UPDATE AS BEGIN INSERT INTO SalaryHistory (EmployeeID, OldSalary, NewSalary, UpdatedDate) SELECT d.EmployeeID, d.Salary, i.Salary, GETDATE() FROM deleted d JOIN inserted i ON d.EmployeeID = i.EmployeeID; END",
+    
+    "CREATE TRIGGER trg_SalaryHistory ON Employee AFTER UPDATE AS BEGIN INSERT INTO SalaryHistory (EmployeeID, OldSalary, NewSalary, UpdatedDate) SELECT i.EmployeeID, i.Salary, d.Salary, GETDATE() FROM deleted d JOIN inserted i ON d.EmployeeID = i.EmployeeID; END",
+    
+    "CREATE TRIGGER trg_SalaryHistory ON Employee AFTER UPDATE AS BEGIN INSERT INTO SalaryHistory (EmployeeID, OldSalary, NewSalary, UpdatedDate) SELECT d.EmployeeID, d.Salary, i.Salary, GETDATE() FROM deleted d JOIN inserted i ON d.Salary = i.Salary; END",
+    
+    "CREATE TRIGGER trg_SalaryHistory ON Employee AFTER UPDATE AS BEGIN INSERT INTO SalaryHistory (EmployeeID, OldSalary, NewSalary, UpdatedDate) SELECT EmployeeID, Salary, Salary, GETDATE() FROM inserted; END"
+  ],
+  "answer": 0,
+  "time": 20
+}
+  ,
+
+  {
+  "q": "Will an UPDATE trigger that joins the inserted and deleted tables on EmployeeID always work correctly if EmployeeID contains duplicate values?",
+  "options": [
+    "Yes, because SQL Server automatically adds a hidden row number to match old and new rows.",
+    "No, because duplicate EmployeeID values can cause a many-to-many join between inserted and deleted, producing incorrect audit records.",
+    "Yes, because the inserted table always contains only one row during an UPDATE operation.",
+    "No, because triggers cannot access the inserted and deleted tables when duplicates exist."
+  ],
+  "answer": 1,
+  "time": 20
+},
+{
+  "q": "What is a common mistake when comparing inserted and deleted tables inside an UPDATE trigger?",
+  "options": [
+    "Using GETDATE() inside the trigger.",
+    "Using a JOIN between inserted and deleted.",
+    "Joining inserted and deleted on a non-unique column, which can produce duplicate or incorrect matches.",
+    "Referencing the inserted table instead of the Employee table."
+  ],
+  "answer": 2,
+  "time": 20
+},
+{
+  "q": "Why can joining inserted and deleted on a non-unique column be problematic in an UPDATE trigger?",
+  "options": [
+    "The trigger will fail with a syntax error.",
+    "SQL Server will automatically convert the trigger into an INSTEAD OF trigger.",
+    "The join can become many-to-many, resulting in duplicate or incorrect audit records.",
+    "The inserted and deleted tables cannot contain duplicate values."
+  ],
+  "answer": 2,
+  "time": 20
+},
+{
+  "q": "Which column should generally be used when joining inserted and deleted tables in an UPDATE trigger?",
+  "options": [
+    "A unique key such as a Primary Key or Identity column.",
+    "Any column that contains business data.",
+    "A column with the highest number of duplicate values.",
+    "A computed column."
+  ],
+  "answer": 0,
+  "time": 20
+},
+{
+  "q": "Suppose EmployeeID contains duplicates and an UPDATE trigger joins inserted and deleted using EmployeeID. What is the most likely outcome?",
+  "options": [
+    "The trigger will automatically remove duplicate EmployeeID values.",
+    "The trigger may generate duplicate or incorrect audit rows due to many-to-many matching.",
+    "SQL Server will prevent the UPDATE from executing.",
+    "The inserted and deleted tables will contain only distinct EmployeeID values."
+  ],
+  "answer": 1,
+  "time": 20
+},
+{
+  "q": "How can you prevent incorrect matches between inserted and deleted rows in an UPDATE trigger?",
+  "options": [
+    "Use DISTINCT on the inserted table.",
+    "Use TOP 1 when joining inserted and deleted.",
+    "Join inserted and deleted using a unique identifier such as a Primary Key or Identity column.",
+    "Use ORDER BY inside the trigger."
+  ],
+  "answer": 2,
+  "time": 20
+}
+  ,
   {
   "q": "What is the difference between User and Schema in SQL Server?",
   "options": [
