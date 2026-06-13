@@ -970,6 +970,20 @@ let originalQuestions = [
     "time": 20
   },
   {
+  "q": "Which syntax correctly creates an AFTER INSERT trigger that logs inserted records into the EmployeeAudit table?",
+  "options": [
+    "CREATE TRIGGER trg_AfterInsert ON Employee AFTER INSERT AS BEGIN INSERT INTO EmployeeAudit (EmployeeID, ActionType, ActionDate) SELECT EmployeeID, 'INSERT', GETDATE() FROM inserted; END",
+    
+    "CREATE TRIGGER trg_AfterInsert ON Employee AFTER INSERT AS BEGIN INSERT INTO EmployeeAudit (EmployeeID, ActionType, ActionDate) SELECT EmployeeID, 'INSERT', GETDATE() FROM deleted; END",
+    
+    "CREATE TRIGGER trg_AfterInsert ON Employee AFTER INSERT AS BEGIN INSERT INTO EmployeeAudit (EmployeeID, ActionType, ActionDate) VALUES (EmployeeID, 'INSERT', GETDATE()) FROM inserted; END",
+    
+    "CREATE TRIGGER trg_AfterInsert ON Employee AFTER INSERT AS BEGIN INSERT EmployeeAudit (EmployeeID, ActionType, ActionDate) SELECT EmployeeID, ActionType, GETDATE() FROM inserted; END"
+  ],
+  "answer": 0,
+  "time": 20
+},
+  {
   "q": "What is the difference between User and Schema in SQL Server?",
   "options": [
     "A user is a container for database objects; a schema is a login used to connect to the database.",
