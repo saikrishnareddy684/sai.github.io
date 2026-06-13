@@ -1354,6 +1354,91 @@ let originalQuestions = [
     "answer": 1,
     "time": 20
   },
+{
+  "q": "Which syntax correctly converts the rows in EmployeeSales into columns using the PIVOT operator?",
+  "options": [
+    "SELECT * FROM (SELECT Name, [Year], Sales FROM EmployeeSales) src PIVOT (SUM(Sales) FOR [Year] IN ([2010],[2011])) p",
+    
+    "SELECT * FROM (SELECT Name, [Year], Sales FROM EmployeeSales) src PIVOT (Sales FOR [Year] IN ([2010],[2011])) p",
+    
+    "SELECT * FROM (SELECT Name, [Year], Sales FROM EmployeeSales) src UNPIVOT (SUM(Sales) FOR [Year] IN ([2010],[2011])) p",
+    
+    "SELECT * FROM EmployeeSales PIVOT ([Year] FOR SUM(Sales) IN ([2010],[2011])) p"
+  ],
+  "answer": 0,
+  "time": 20
+},
+{
+  "q": "Which syntax correctly converts columns [2010] and [2011] back into rows using the UNPIVOT operator?",
+  "options": [
+    "SELECT Name, [Year], Sales FROM SalesPivot UNPIVOT (SUM(Sales) FOR [Year] IN ([2010],[2011])) u",
+    
+    "SELECT Name, [Year], Sales FROM SalesPivot UNPIVOT (Sales FOR [Year] IN ([2010],[2011])) u",
+    
+    "SELECT Name, [Year], Sales FROM SalesPivot PIVOT (Sales FOR [Year] IN ([2010],[2011])) u",
+    
+    "SELECT Name, [Year], Sales FROM SalesPivot UNPIVOT ([2010],[2011] FOR Sales IN ([Year])) u"
+  ],
+  "answer": 1,
+  "time": 20
+},
+{
+  "q": "Why is an aggregate function such as SUM(), MAX(), AVG(), or COUNT() required in a PIVOT operation?",
+  "options": [
+    "Because PIVOT can only be used with numeric columns.",
+    
+    "Because SQL Server requires an aggregate function even when there is only one row per group.",
+    
+    "Because multiple rows may exist for the same pivoted value, and SQL Server needs to know how to combine them into a single result.",
+    
+    "Because aggregate functions improve the performance of the PIVOT operator."
+  ],
+  "answer": 2,
+  "time": 20
+},
+{
+  "q": "What is PIVOT and UNPIVOT in SQL Server?",
+  "options": [
+    "PIVOT converts columns into rows; UNPIVOT converts rows into columns.",
+    
+    "PIVOT converts rows into columns; UNPIVOT converts columns into rows.",
+    
+    "PIVOT and UNPIVOT are used only for XML processing.",
+    
+    "PIVOT is used for sorting data, while UNPIVOT is used for filtering data."
+  ],
+  "answer": 1,
+  "time": 20
+},
+{
+  "q": "Which aggregate function can be used inside a PIVOT operation?",
+  "options": [
+    "SUM(), MAX(), MIN(), AVG(), COUNT()",
+    
+    "Only SUM()",
+    
+    "Only COUNT() and AVG()",
+    
+    "Aggregate functions cannot be used with PIVOT."
+  ],
+  "answer": 0,
+  "time": 20
+},
+{
+  "q": "What will happen if multiple rows exist for the same employee and year during a PIVOT operation and no aggregate function is specified?",
+  "options": [
+    "SQL Server automatically uses SUM().",
+    
+    "SQL Server automatically uses MAX().",
+    
+    "The PIVOT operation will fail because SQL Server does not know how to combine the duplicate values.",
+    
+    "SQL Server ignores duplicate rows."
+  ],
+  "answer": 2,
+  "time": 20
+},
+  
   {
   "q": "In SQL Server, what is the primary use of the FOR XML PATH() construct?",
   "options": [
