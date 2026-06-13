@@ -13729,12 +13729,7 @@ let originalQuestions = [
     "answer": 2,
     "time": 20
   }
-,
-  {
-  "q": "Provide the syntax to create an AFTER INSERT trigger that records inserted EmployeeID values into an EmployeeAudit table.",
-  "answer_script": "CREATE TRIGGER trg_AfterInsert\nON Employee\nAFTER INSERT\nAS\nBEGIN\n    INSERT INTO EmployeeAudit\n    (\n        EmployeeID,\n        ActionType,\n        ActionDate\n    )\n    SELECT\n        EmployeeID,\n        'INSERT',\n        GETDATE()\n    FROM inserted;\nEND",
-  "time": 60
-}
+ 
 
 
   // add more questions here...
