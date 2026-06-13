@@ -1096,6 +1096,21 @@ let originalQuestions = [
   "time": 20
 }
   ,
+{
+  "q": "When would you use an INSTEAD OF trigger instead of an AFTER trigger?",
+  "options": [
+    "Use an INSTEAD OF trigger when you want to intercept and replace the original INSERT, UPDATE, or DELETE operation with custom logic, validation, or processing. Use an AFTER trigger when you want the original operation to complete first and then perform actions such as auditing, logging, notifications, or history tracking.",
+    
+    "Use an INSTEAD OF trigger only for auditing and logging purposes. Use an AFTER trigger when you want to prevent INSERT, UPDATE, or DELETE operations from occurring.",
+    
+    "Use an INSTEAD OF trigger when you need the original DML operation to execute first and then perform additional processing. Use an AFTER trigger to completely replace the original DML operation.",
+    
+    "There is no functional difference. INSTEAD OF and AFTER triggers always execute after the DML operation completes."
+  ],
+  "answer": 0,
+  "time": 20
+},
+  
   {
   "q": "What is the difference between User and Schema in SQL Server?",
   "options": [
