@@ -1110,7 +1110,48 @@ let originalQuestions = [
   "answer": 0,
   "time": 20
 },
-  
+  {
+  "q": "Which syntax correctly creates an INSTEAD OF DELETE trigger that blocks delete operations on the Employee table?",
+  "options": [
+    "CREATE TRIGGER trg_BlockDelete ON Employee AFTER DELETE AS BEGIN PRINT 'Delete is not allowed'; END",
+    
+    "CREATE TRIGGER trg_BlockDelete ON Employee INSTEAD OF DELETE AS BEGIN DELETE FROM Employee; PRINT 'Delete is not allowed'; END",
+    
+    "CREATE TRIGGER trg_BlockDelete ON Employee INSTEAD OF DELETE AS BEGIN PRINT 'Delete is not allowed'; END",
+    
+    "CREATE TRIGGER trg_BlockDelete ON Employee INSTEAD DELETE AS BEGIN PRINT 'Delete is not allowed'; END"
+  ],
+  "answer": 2,
+  "time": 20
+},
+  {
+  "q": "Which syntax correctly creates an INSTEAD OF INSERT trigger that allows inserts only when Salary is greater than 30000?",
+  "options": [
+    "CREATE TRIGGER trg_ValidateSalary ON Employee INSTEAD OF INSERT AS BEGIN IF EXISTS (SELECT 1 FROM inserted WHERE Salary > 30000) BEGIN PRINT 'Salary must be greater than 30000'; RETURN; END INSERT INTO Employee (EmployeeID, EmployeeName, Salary) SELECT EmployeeID, EmployeeName, Salary FROM inserted; END",
+    
+    "CREATE TRIGGER trg_ValidateSalary ON Employee INSTEAD OF INSERT AS BEGIN IF EXISTS (SELECT 1 FROM deleted WHERE Salary <= 30000) BEGIN PRINT 'Salary must be greater than 30000'; RETURN; END INSERT INTO Employee (EmployeeID, EmployeeName, Salary) SELECT EmployeeID, EmployeeName, Salary FROM inserted; END",
+    
+    "CREATE TRIGGER trg_ValidateSalary ON Employee AFTER INSERT AS BEGIN IF EXISTS (SELECT 1 FROM inserted WHERE Salary <= 30000) BEGIN PRINT 'Salary must be greater than 30000'; RETURN; END INSERT INTO Employee (EmployeeID, EmployeeName, Salary) SELECT EmployeeID, EmployeeName, Salary FROM inserted; END",
+    
+    "CREATE TRIGGER trg_ValidateSalary ON Employee INSTEAD OF INSERT AS BEGIN IF EXISTS (SELECT 1 FROM inserted WHERE Salary <= 30000) BEGIN PRINT 'Salary must be greater than 30000'; RETURN; END INSERT INTO Employee (EmployeeID, EmployeeName, Salary) SELECT EmployeeID, EmployeeName, Salary FROM inserted; END"
+  ],
+  "answer": 3,
+  "time": 20
+},
+  {
+  "q": "Which syntax correctly creates an AFTER UPDATE trigger that records salary changes in the SalaryHistory table?",
+  "options": [
+    "CREATE TRIGGER trg_SalaryHistory ON Employee AFTER UPDATE AS BEGIN INSERT INTO SalaryHistory (EmployeeID, OldSalary, NewSalary, UpdatedDate) SELECT i.EmployeeID, i.Salary, d.Salary, GETDATE() FROM deleted d JOIN inserted i ON d.EmployeeID = i.EmployeeID; END",
+    
+    "CREATE TRIGGER trg_SalaryHistory ON Employee AFTER UPDATE AS BEGIN INSERT INTO SalaryHistory (EmployeeID, OldSalary, NewSalary, UpdatedDate) SELECT d.EmployeeID, d.Salary, i.Salary, GETDATE() FROM deleted d JOIN inserted i ON d.EmployeeID = i.EmployeeID; END",
+    
+    "CREATE TRIGGER trg_SalaryHistory ON Employee AFTER UPDATE AS BEGIN INSERT INTO SalaryHistory (EmployeeID, OldSalary, NewSalary, UpdatedDate) SELECT EmployeeID, Salary, Salary, GETDATE() FROM inserted; END",
+    
+    "CREATE TRIGGER trg_SalaryHistory ON Employee AFTER UPDATE AS BEGIN INSERT INTO SalaryHistory (EmployeeID, OldSalary, NewSalary, UpdatedDate) SELECT d.EmployeeID, d.Salary, i.Salary, GETDATE() FROM inserted i JOIN deleted d ON d.Salary = i.Salary; END"
+  ],
+  "answer": 1,
+  "time": 20
+},
   {
   "q": "What is the difference between User and Schema in SQL Server?",
   "options": [
