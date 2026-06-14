@@ -858,6 +858,142 @@ let originalQuestions = [
   "time": 30,
   "level": "Medium"
 },
+
+  {
+  "q": "A Snowflake developer executes 'USE STAGE SAISTAGE;' and receives a SQL compilation error. Why?",
+  "options": [
+    "Stages can only be used by ACCOUNTADMIN users.",
+    "Snowflake does not support the USE STAGE command; stages must be referenced directly using @stage_name.",
+    "Stages must first be converted into tables.",
+    "The stage must be attached to a warehouse before use."
+  ],
+  "answer": 1,
+  "time": 25,
+  "level": "Medium"
+}
+  ,
+  {
+  "q": "A Snowflake engineer executes a COPY INTO command without specifying FILE_FORMAT. Under what condition can the load still succeed?",
+  "options": [
+    "Only if the warehouse size is MEDIUM or larger.",
+    "If a file format is already associated with the stage or the default settings correctly match the source file.",
+    "If the table contains a VARIANT column.",
+    "Only when loading JSON files."
+  ],
+  "answer": 1,
+  "time": 30,
+  "level": "Medium"
+}
+  ,
+  {
+  "q": "What is the advantage of creating a named file format object instead of specifying FILE_FORMAT parameters in every COPY INTO command?",
+  "options": [
+    "It reduces storage costs.",
+    "It allows reuse of consistent parsing settings across multiple data loads.",
+    "It automatically creates target tables.",
+    "It eliminates the need for stages."
+  ],
+  "answer": 1,
+  "time": 25,
+  "level": "Easy"
+}
+  ,
+  {
+  "q": "Which syntax correctly loads a CSV file while skipping the header row?",
+  "options": [
+    "COPY INTO CUSTOMERS FROM @SAISTAGE/customers.csv FILE_FORMAT=(TYPE=CSV SKIP_HEADER=1);",
+    "COPY CUSTOMERS INTO @SAISTAGE/customers.csv SKIP_HEADER=1;",
+    "LOAD INTO CUSTOMERS FROM customers.csv HEADER=FALSE;",
+    "INSERT INTO CUSTOMERS FROM @SAISTAGE/customers.csv;"
+  ],
+  "answer": 0,
+  "time": 30,
+  "level": "Medium"
+},
+  {
+  "q": "Why might inline FILE_FORMAT settings be used in a COPY INTO command?",
+  "options": [
+    "To apply file parsing rules directly within the load statement without creating a named file format object.",
+    "To improve query execution speed.",
+    "To automatically create stages.",
+    "To eliminate the need for warehouses."
+  ],
+  "answer": 0,
+  "time": 30,
+  "level": "Medium"
+},
+  {
+  "q": "Which of the following syntaxes correctly loads data from a staged CSV file into the CUSTOMERS table using an inline file format definition?",
+  "options": [
+    "COPY INTO CUSTOMERS FROM @SAISTAGE/customers.csv FILE_FORMAT=(TYPE=CSV SKIP_HEADER=1);",
+    "COPY CUSTOMERS INTO @SAISTAGE/customers.csv FILE_FORMAT=(TYPE=CSV);",
+    "LOAD INTO CUSTOMERS FROM @SAISTAGE/customers.csv FORMAT=CSV;",
+    "INSERT INTO CUSTOMERS FROM @SAISTAGE/customers.csv FILE_FORMAT=(TYPE=CSV);"
+  ],
+  "answer": 0,
+  "time": 30,
+  "level": "Medium"
+},
+  {
+  "q": "Which of the following syntaxes correctly creates a named CSV file format that skips the header row, treats double quotes as optional field enclosures, and uses a newline character as the row delimiter?",
+  "options": [
+    "CREATE OR REPLACE FILE FORMAT csvtest TYPE='CSV' SKIP_HEADER=1 FIELD_OPTIONALLY_ENCLOSED_BY='\"' RECORD_DELIMITER='\\n';",
+    "CREATE OR REPLACE FILE FORMAT csvtest TYPE='CSV' SKIP_HEADER=1 ROW_DELIMITER='\\n' FIELD_DELIMITER='\"';",
+    "CREATE FILE FORMAT csvtest TYPE='CSV' HEADER=1 RECORD_DELIMITER='\\n';",
+    "CREATE OR REPLACE FILE FORMAT csvtest TYPE='CSV' SKIP_HEADER=1 ROW DELIMITED='\\n';"
+  ],
+  "answer": 0,
+  "time": 30,
+  "level": "Medium"
+},
+  {
+  "q": "Which of the following syntaxes correctly creates a named file format called CSV_FORMAT that loads CSV files and skips the header row?",
+  "options": [
+    "CREATE OR REPLACE FILE FORMAT CSV_FORMAT TYPE = CSV SKIP_HEADER = 1;",
+    "CREATE FILE CSV_FORMAT TYPE = CSV SKIP_HEADER = 1;",
+    "CREATE FORMAT CSV_FORMAT AS CSV HEADER = 1;",
+    "CREATE STAGE CSV_FORMAT TYPE = CSV SKIP_HEADER = 1;"
+  ],
+  "answer": 0,
+  "time": 30,
+  "level": "Easy"
+},
+  {
+  "q": "Which of the following syntaxes correctly loads data from a staged file into the CUSTOMERS table using a named file format?",
+  "options": [
+    "COPY INTO CUSTOMERS FROM @SAISTAGE/customers.csv FILE_FORMAT = CSV_FORMAT;",
+    "COPY INTO CUSTOMERS FROM @SAISTAGE/customers.csv FILE_FORMAT = (FORMAT_NAME = CSV_FORMAT);",
+    "Both A and B",
+    "COPY CUSTOMERS INTO @SAISTAGE/customers.csv USING CSV_FORMAT;"
+  ],
+  "answer": 2,
+  "time": 30,
+  "level": "Medium"
+},
+  {
+  "q": "What can happen if a COPY INTO command is executed without specifying a FILE_FORMAT clause?",
+  "options": [
+    "The load always succeeds because Snowflake automatically detects the file format.",
+    "The load may succeed if the stage has an assigned file format or Snowflake defaults are suitable; otherwise, it may fail or load data incorrectly.",
+    "Snowflake automatically creates a file format object.",
+    "The target table is automatically dropped and recreated."
+  ],
+  "answer": 1,
+  "time": 25,
+  "level": "Medium"
+},
+  {
+  "q": "Which of the following stage definitions allows the COPY INTO command below to omit the FILE_FORMAT clause?\n\nCOPY INTO CUSTOMERS\nFROM @SAISTAGE/customers.csv;",
+  "options": [
+    "CREATE STAGE SAISTAGE FILE_FORMAT=(TYPE=CSV);",
+    "CREATE STAGE SAISTAGE;",
+    "CREATE TABLE SAISTAGE (TYPE VARCHAR);",
+    "CREATE FILE FORMAT CSV_FORMAT TYPE=CSV;"
+  ],
+  "answer": 0,
+  "time": 30,
+  "level": "Easy"
+},
   {
     "q": "Why does Snowflake require a compute warehouse to be active when running a schema inference operation on a raw CSV file in the UI?",
     "options": [
