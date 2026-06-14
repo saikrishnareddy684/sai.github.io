@@ -506,6 +506,129 @@ let originalQuestions = [
     "level": "Hard"
   }
   ,
+
+  
+  {
+    "q": "Which Snowflake data type is specifically designed to store semi-structured data such as JSON, XML, Avro, and Parquet?",
+    "options": [
+      "VARCHAR",
+      "OBJECT",
+      "VARIANT",
+      "ARRAY"
+    ],
+    "answer": 2,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "What is the purpose of the following statement?\nCREATE TABLE CUSTOMER_JSON ( DATA VARIANT );",
+    "options": [
+      "Creates a table that can store JSON data in a native semi-structured format.",
+      "Creates a table that stores only relational data.",
+      "Creates a temporary stage for JSON files.",
+      "Creates a file format object for JSON parsing."
+    ],
+    "answer": 0,
+    "time": 25,
+    "level": "Easy"
+  },
+  {
+    "q": "Which Snowflake function converts a JSON-formatted string into a VARIANT value before insertion?",
+    "options": [
+      "TO_JSON()",
+      "PARSE_JSON()",
+      "JSON_PARSE()",
+      "CONVERT_JSON()"
+    ],
+    "answer": 1,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "Given the statement INSERT INTO CUSTOMER_JSON SELECT PARSE_JSON('{\"customer_id\":101,\"name\":\"Sai\"}');, what will be stored in the DATA column?",
+    "options": [
+      "A VARCHAR containing raw text only.",
+      "A relational table with separate columns.",
+      "A VARIANT object containing the parsed JSON structure.",
+      "A CSV representation of the JSON."
+    ],
+    "answer": 2,
+    "time": 25,
+    "level": "Medium"
+  },
+  {
+    "q": "Which query correctly retrieves the 'name' attribute from the VARIANT column DATA?",
+    "options": [
+      "SELECT DATA.name FROM CUSTOMER_JSON;",
+      "SELECT DATA:name FROM CUSTOMER_JSON;",
+      "SELECT GET(DATA,'name') FROM CUSTOMER_JSON;",
+      "SELECT NAME(DATA) FROM CUSTOMER_JSON;"
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Medium"
+  },
+  {
+    "q": "What will be returned by the following query?\nSELECT DATA:customer_id FROM CUSTOMER_JSON;",
+    "options": [
+      "The entire JSON document.",
+      "The value associated with the customer_id key in the JSON object.",
+      "The column name customer_id.",
+      "An error because VARIANT columns cannot be queried directly."
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Medium"
+  },
+  {
+    "q": "Assume the following JSON was inserted:\n{\"customer_id\":101,\"name\":\"Sai\"}\nWhat is the expected result of SELECT DATA:name, DATA:customer_id FROM CUSTOMER_JSON;",
+    "options": [
+      "Sai, 101",
+      "name, customer_id",
+      "{\"name\":\"Sai\"}, {\"customer_id\":101}",
+      "NULL, NULL"
+    ],
+    "answer": 0,
+    "time": 30,
+    "level": "Medium"
+  },
+  {
+    "q": "What advantage does storing JSON in a VARIANT column provide?",
+    "options": [
+      "JSON must first be converted into relational columns before storage.",
+      "Semi-structured data can be stored and queried without fully flattening it into tables.",
+      "JSON can only be stored as compressed binary files.",
+      "VARIANT supports only XML and not JSON."
+    ],
+    "answer": 1,
+    "time": 30,
+    "level": "Medium"
+  },
+  {
+    "q": "Which Snowflake feature is demonstrated by the syntax DATA:name?",
+    "options": [
+      "Column aliasing",
+      "Stage navigation",
+      "JSON path traversal within a VARIANT column",
+      "Warehouse selection"
+    ],
+    "answer": 2,
+    "time": 25,
+    "level": "Medium"
+  },
+  {
+    "q": "A data engineer receives customer information as JSON files with varying attributes. Why might storing the data in a VARIANT column be preferable to creating fixed relational columns immediately?",
+    "options": [
+      "VARIANT allows flexible storage and querying of evolving JSON structures.",
+      "VARIANT automatically converts JSON into Excel format.",
+      "VARIANT eliminates the need for SQL queries.",
+      "VARIANT requires less storage than all other Snowflake data types."
+    ],
+    "answer": 0,
+    "time": 30,
+    "level": "Hard"
+  }
+,
   
   {
     "q": "If a cloud data platform's web user interface updates its visual layout and shifts an ingestion button, what alternative method can a data engineer use to programmatic upload a local CSV file into Snowflake?",
