@@ -629,7 +629,187 @@ let originalQuestions = [
     "level": "Hard"
   }
 ,
-  
+{
+  "q": "A data engineer executes a PUT command in a Snowsight worksheet to upload a local CSV file but receives a 'No data found' or unexpected result. What is the most likely reason?",
+  "options": [
+    "The virtual warehouse must be resized before any PUT command can run.",
+    "PUT commands are generally not supported directly in Snowsight SQL worksheets and are typically executed using SnowSQL CLI, Snowflake connectors, or Snowpark.",
+    "Snowflake requires all CSV files to be converted into JSON before uploading.",
+    "The user must create a clustering key on the target table before staging files."
+  ],
+  "answer": 1,
+  "time": 30,
+  "level": "Medium"
+},
+  {
+  "q": "Which tool is commonly used to execute Snowflake PUT commands for uploading local files to an internal stage?",
+  "options": [
+    "Power BI",
+    "SSMS",
+    "SnowSQL CLI",
+    "Excel"
+  ],
+  "answer": 2,
+  "time": 20,
+  "level": "Easy"
+},
+  {
+  "q": "A Snowflake developer needs to upload a local file to an internal stage using a PUT command. Which environment is most appropriate?",
+  "options": [
+    "Snowsight worksheet only",
+    "SnowSQL CLI or a supported Snowflake connector",
+    "PowerPoint",
+    "Azure DevOps Wiki"
+  ],
+  "answer": 1,
+  "time": 25,
+  "level": "Easy"
+},
+  {
+  "q": "Why might a PUT command behave differently when executed from a Snowsight worksheet compared to SnowSQL CLI?",
+  "options": [
+    "Snowsight does not always support direct local file uploads through PUT, while SnowSQL CLI can access local files and upload them to stages.",
+    "SnowSQL CLI cannot connect to Snowflake stages.",
+    "Snowsight automatically converts all files to Parquet format.",
+    "PUT commands require a running Task object."
+  ],
+  "answer": 0,
+  "time": 30,
+  "level": "Medium"
+},
+  {
+  "q": "A data engineer executes the following command in Snowflake:\nPUT file://C:/Users/Saikr/Downloads/customers.csv;\nWhy will this command fail?",
+  "options": [
+    "The file must first be converted to JSON format.",
+    "PUT commands require a target stage such as @~ or @mystage as the upload destination.",
+    "A warehouse must be suspended before uploading files.",
+    "CSV files cannot be uploaded using PUT."
+  ],
+  "answer": 1,
+  "time": 30,
+  "level": "Easy"
+},
+  {
+  "q": "What does the @~ symbol represent in Snowflake?",
+  "options": [
+    "The currently active database.",
+    "The currently active warehouse.",
+    "The user's personal internal stage.",
+    "An external stage in AWS S3."
+  ],
+  "answer": 2,
+  "time": 20,
+  "level": "Easy"
+},
+  {
+  "q": "Which statement correctly uploads a local CSV file to a Snowflake user stage?",
+  "options": [
+    "PUT file://C:/data/customers.csv;",
+    "PUT customers.csv INTO TABLE CUSTOMERS;",
+    "PUT file://C:/data/customers.csv @~;",
+    "UPLOAD customers.csv TO DATABASE;"
+  ],
+  "answer": 2,
+  "time": 25,
+  "level": "Easy"
+},
+  {
+  "q": "What is the meaning of the following Snowflake command?\nPUT file://C:/data/customers.csv @~/customers;",
+  "options": [
+    "The file is uploaded directly into a table named CUSTOMERS.",
+    "The file is uploaded into the user's internal stage under a folder/path named customers.",
+    "The file is copied into an external AWS S3 bucket.",
+    "The file is renamed to customers automatically."
+  ],
+  "answer": 1,
+  "time": 30,
+  "level": "Medium"
+},
+  {
+  "q": "After successfully executing:\nPUT file://C:/data/customers.csv @~/customers;\nWhere will the file be stored within Snowflake?",
+  "options": [
+    "@~/customers/customers.csv",
+    "@CUSTOMERS",
+    "CUSTOMERS.TABLE",
+    "@WAREHOUSE/customers.csv"
+  ],
+  "answer": 0,
+  "time": 25,
+  "level": "Medium"
+},
+  {
+  "q": "Which statement correctly compares @~ and @mystage in Snowflake?",
+  "options": [
+    "@~ refers to the user's personal stage, while @mystage refers to a named stage object.",
+    "@~ and @mystage are both warehouses.",
+    "@~ is an external stage and @mystage is an internal stage.",
+    "@~ can store only JSON files, while @mystage can store CSV files."
+  ],
+  "answer": 0,
+  "time": 30,
+  "level": "Medium"
+},
+  {
+  "q": "Before using the command PUT file://C:/data/customers.csv @mystage;, what must exist in Snowflake?",
+  "options": [
+    "A table named MYSTAGE.",
+    "A warehouse named MYSTAGE.",
+    "A stage object named MYSTAGE.",
+    "A database named MYSTAGE."
+  ],
+  "answer": 2,
+  "time": 25,
+  "level": "Easy"
+}
+  ,
+  {
+  "q": "A Snowflake engineer needs to load a local CSV file but does not have access to Snowsight. Which approach should be used?",
+  "options": [
+    "Restart the Snowflake account.",
+    "Use PUT to upload the file to a stage and COPY INTO to load the table.",
+    "Convert the CSV into a PDF first.",
+    "Create a Virtual Warehouse for each row."
+  ],
+  "answer": 1,
+  "time": 25,
+  "level": "Easy"
+},
+  {
+  "q": "What is the primary purpose of the PUT command in Snowflake?",
+  "options": [
+    "To load data from a stage into a table.",
+    "To upload local files into an internal Snowflake stage.",
+    "To create a database.",
+    "To modify warehouse size."
+  ],
+  "answer": 1,
+  "time": 20,
+  "level": "Easy"
+},
+  {
+  "q": "After uploading a CSV file using PUT, which command is commonly used to load the data into a Snowflake table?",
+  "options": [
+    "INSERT FILE",
+    "MERGE FILE",
+    "COPY INTO",
+    "LOAD TABLE"
+  ],
+  "answer": 2,
+  "time": 20,
+  "level": "Easy"
+},
+  {
+  "q": "Why do many Snowflake data engineers prefer SQL-based ingestion commands over relying solely on the UI?",
+  "options": [
+    "SQL commands can be automated and integrated into ETL pipelines.",
+    "The UI does not support data loading.",
+    "SQL commands require less storage.",
+    "Virtual Warehouses cannot be used with the UI."
+  ],
+  "answer": 0,
+  "time": 25,
+  "level": "Medium"
+},
   {
     "q": "If a cloud data platform's web user interface updates its visual layout and shifts an ingestion button, what alternative method can a data engineer use to programmatic upload a local CSV file into Snowflake?",
     "options": [
