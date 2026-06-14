@@ -835,6 +835,30 @@ let originalQuestions = [
     "level": "Medium"
   },
   {
+  "q": "A Snowflake developer successfully logs into Snowsight but cannot connect using SnowSQL with CURRENT_ACCOUNT() as the account identifier. Which account identifier should the developer try for an organization-enabled Snowflake account?",
+  "options": [
+    "The warehouse name",
+    "The region name",
+    "The organization name combined with the account name (for example, WVGYFKE-OT17657)",
+    "The current database name"
+  ],
+  "answer": 2,
+  "time": 30,
+  "level": "Medium"
+},
+  {
+  "q": "A Snowflake user executes SELECT CURRENT_ACCOUNT() and receives QN84166, but successfully connects through SnowSQL using WVGYFKE-OT17657. What does this indicate?",
+  "options": [
+    "QN84166 is the warehouse identifier.",
+    "WVGYFKE-OT17657 represents the organization-account identifier used for modern account connections, while QN84166 is the account locator.",
+    "QN84166 is the username.",
+    "The SnowSQL client is misconfigured."
+  ],
+  "answer": 1,
+  "time": 30,
+  "level": "Medium"
+},
+  {
     "q": "Why does Snowflake require a compute warehouse to be active when running a schema inference operation on a raw CSV file in the UI?",
     "options": [
       "Because scanning the file, executing parsing regex, and determining data column types requires active CPU processing power supplied by the virtual warehouse.",
