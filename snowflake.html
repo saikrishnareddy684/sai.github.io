@@ -1045,19 +1045,7 @@ let originalQuestions = [
     "time": 25,
     "level": "Medium"
   },
-  {
-    "q": "When evaluating Azure Synapse Analytics alongside Snowflake, what unique ecosystem integration capability does Azure Synapse emphasize?",
-    "options": [
-      "Azure Synapse restricts data ingestion exclusively to local flat text files, preventing integration with broader enterprise streaming applications.",
-      "Azure Synapse provides a unified workspace that combines SQL data warehousing, big data analytics via Apache Spark, and data integration pipelines within a single platform.",
-      "Azure Synapse requires third-party ETL tools like Snowflake Snowpipe to move data into its native relational storage pools.",
-      "Azure Synapse relies entirely on open-source command line tools, eliminating the use of visual web-based management consoles or monitoring dashboards."
-    ],
-    "answer": 1,
-    "time": 30,
-    "level": "Medium"
-  },
-  {
+   {
     "q": "Regarding the cost models of Google BigQuery and Snowflake, how do their primary billing mechanisms differ for analytical processing?",
     "options": [
       "BigQuery charges users based on a flat hardware allocation model regardless of database size, whereas Snowflake charges only for the volume of data stored in external object pools.",
@@ -1095,6 +1083,226 @@ let originalQuestions = [
     "time": 25,
     "level": "Easy"
   },
+  
+  {
+    "q": "What is a stage in Snowflake primarily used for?",
+    "options": [
+      "Creating virtual warehouses",
+      "Storing files for data loading and unloading operations",
+      "Managing user authentication",
+      "Creating database backups"
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Easy"
+  },
+  {
+    "q": "Which statement best describes an internal stage in Snowflake?",
+    "options": [
+      "It stores files in customer-managed cloud storage such as Amazon S3.",
+      "It stores files in Snowflake-managed storage.",
+      "It can only be used for unloading data.",
+      "It requires a storage integration to function."
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Easy"
+  },
+  {
+    "q": "Which statement best describes an external stage in Snowflake?",
+    "options": [
+      "Files are stored within Snowflake-managed storage.",
+      "Files are stored in a temporary cache on the user's machine.",
+      "Files remain in external cloud storage such as S3, Azure Blob Storage, or Google Cloud Storage.",
+      "Files are automatically converted into Snowflake tables."
+    ],
+    "answer": 2,
+    "time": 25,
+    "level": "Easy"
+  },
+  {
+    "q": "Which command is commonly used to load data from a stage into a Snowflake table?",
+    "options": [
+      "MERGE INTO",
+      "COPY INTO",
+      "TRANSFER INTO",
+      "MOVE INTO"
+    ],
+    "answer": 1,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "What is the main advantage of using an external stage instead of an internal stage?",
+    "options": [
+      "It eliminates the need for file formats.",
+      "It allows Snowflake to access files directly from cloud storage without uploading them into Snowflake-managed storage.",
+      "It automatically creates tables from files.",
+      "It supports only structured data."
+    ],
+    "answer": 1,
+    "time": 30,
+    "level": "Medium"
+  },
+  {
+    "q": "Which of the following is an example of a user stage in Snowflake?",
+    "options": [
+      "@sales_stage",
+      "@%customers",
+      "@~",
+      "@external_stage"
+    ],
+    "answer": 2,
+    "time": 25,
+    "level": "Medium"
+  },
+  {
+    "q": "Which of the following is an example of a table stage in Snowflake?",
+    "options": [
+      "@~",
+      "@sales_stage",
+      "@%customers",
+      "@internal"
+    ],
+    "answer": 2,
+    "time": 25,
+    "level": "Medium"
+  },
+  {
+    "q": "Which type of stage is automatically available for every Snowflake user?",
+    "options": [
+      "Named Stage",
+      "External Stage",
+      "User Stage",
+      "Table Stage"
+    ],
+    "answer": 2,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "Which Snowflake stage type is created explicitly using the CREATE STAGE command and can be reused across multiple operations?",
+    "options": [
+      "User Stage",
+      "Table Stage",
+      "Named Stage",
+      "Temporary Stage"
+    ],
+    "answer": 2,
+    "time": 25,
+    "level": "Easy"
+  },
+  {
+    "q": "When loading a CSV file stored in Amazon S3 into Snowflake without first uploading it to Snowflake storage, which stage type would typically be used?",
+    "options": [
+      "User Stage",
+      "Table Stage",
+      "Internal Stage",
+      "External Stage"
+    ],
+    "answer": 3,
+    "time": 30,
+    "level": "Medium"
+  }
+,
+  
+  {
+    "q": "Which statement correctly describes a User Stage in Snowflake?",
+    "options": [
+      "A User Stage must be created manually using CREATE STAGE.",
+      "A User Stage is automatically created for every user and is referenced using @~.",
+      "A User Stage can only be created by an ACCOUNTADMIN.",
+      "A User Stage exists only after a file is uploaded."
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Easy"
+  },
+  {
+    "q": "Which syntax correctly loads data from a User Stage into the CUSTOMERS table?",
+    "options": [
+      "COPY INTO CUSTOMERS FROM @~/customers.csv FILE_FORMAT=(TYPE=CSV);",
+      "COPY CUSTOMERS INTO @~/customers.csv;",
+      "LOAD INTO CUSTOMERS FROM @~/customers.csv;",
+      "INSERT INTO CUSTOMERS FROM @~/customers.csv;"
+    ],
+    "answer": 0,
+    "time": 30,
+    "level": "Medium"
+  },
+  {
+    "q": "How is a Table Stage created in Snowflake?",
+    "options": [
+      "Using CREATE TABLE STAGE.",
+      "Using CREATE STAGE table_name.",
+      "It is automatically created when a table is created.",
+      "It is automatically created when a file is uploaded."
+    ],
+    "answer": 2,
+    "time": 25,
+    "level": "Easy"
+  },
+  {
+    "q": "Which syntax correctly loads data from a Table Stage associated with the CUSTOMERS table?",
+    "options": [
+      "COPY INTO CUSTOMERS FROM @CUSTOMERS;",
+      "COPY INTO CUSTOMERS FROM @%CUSTOMERS FILE_FORMAT=(TYPE=CSV);",
+      "COPY CUSTOMERS FROM @%CUSTOMERS;",
+      "LOAD INTO CUSTOMERS FROM @%CUSTOMERS;"
+    ],
+    "answer": 1,
+    "time": 30,
+    "level": "Medium"
+  },
+  {
+    "q": "How many stage categories does Snowflake support?",
+    "options": [
+      "One: Internal Stage only",
+      "Two: Internal Stages and External Stages",
+      "Three: User, Table, and Named Stages",
+      "Four: User, Table, Named, and External Stages"
+    ],
+    "answer": 1,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "Which statement best describes the difference between User Stage, Table Stage, and Named Stage?",
+    "options": [
+      "All three must be created manually using CREATE STAGE.",
+      "User and Table Stages are automatically created by Snowflake, whereas a Named Stage is explicitly created by the user.",
+      "Only User Stages support file uploads.",
+      "Named Stages are automatically created for every schema."
+    ],
+    "answer": 1,
+    "time": 30,
+    "level": "Medium"
+  },
+  {
+    "q": "In which scenario is a Named Stage generally preferred over a User Stage or Table Stage?",
+    "options": [
+      "When files need to be shared and reused across multiple users, processes, or tables.",
+      "When loading data into only one specific table once.",
+      "When testing files in a personal workspace.",
+      "When creating temporary tables."
+    ],
+    "answer": 0,
+    "time": 35,
+    "level": "Medium"
+  },
+  {
+    "q": "When would a Table Stage be preferred over a Named Stage?",
+    "options": [
+      "When the same files must be shared across multiple tables.",
+      "When files are associated with a single table and are not intended for reuse elsewhere.",
+      "When loading data from Amazon S3.",
+      "When multiple users need access to the same staged files."
+    ],
+    "answer": 1,
+    "time": 30,
+    "level": "Medium"
+  }
+,
   {
     "q": "What is the primary difference between explicit casting and implicit casting in Snowflake?",
     "options": [
