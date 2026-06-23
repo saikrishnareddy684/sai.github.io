@@ -100,18 +100,151 @@ const COMPLETED_KEY = 'mcq_completed_batches';
 let originalQuestions = [
 
 
+
   {
-    "q": "Which of the following best provides a comprehensive, interview-ready definition of Snowflake?",
+    "q": "What is a framework in software development?",
     "options": [
-      "It is an on-premises relational database optimized for local transaction processing and manual backup scheduling.",
-      "It is a fully managed, cloud-native data warehouse platform used for storing, processing, and analyzing large volumes of data.",
-      "It is an open-source ETL tool designed strictly for moving data between multi-cloud environments without storage capacity.",
-      "It is a standalone business intelligence dashboarding application used exclusively for rendering real-time financial charts."
+      "A temporary database table used for testing",
+      "A reusable structure that provides predefined components, standards, and processes for building applications",
+      "A tool used only for creating reports",
+      "A backup copy of source code"
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Easy"
+  },
+  {
+    "q": "What does ETL stand for?",
+    "options": [
+      "Extract, Transform, Load",
+      "Evaluate, Transfer, Load",
+      "Extract, Translate, Link",
+      "Enter, Transform, Log"
+    ],
+    "answer": 0,
+    "time": 15,
+    "level": "Easy"
+  },
+  {
+    "q": "What is the primary purpose of an ETL framework?",
+    "options": [
+      "To create databases automatically",
+      "To standardize and reuse ETL processes across multiple data pipelines",
+      "To replace data warehouses",
+      "To generate SQL queries automatically"
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Easy"
+  },
+  {
+    "q": "Which of the following is typically NOT a component of an ETL framework?",
+    "options": [
+      "Data Validation",
+      "Data Transformation",
+      "Logging and Auditing",
+      "Hardware Manufacturing"
+    ],
+    "answer": 3,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "What is the main advantage of using an ETL framework instead of building separate ETL processes for every source?",
+    "options": [
+      "It increases duplicate code",
+      "It reduces reusability",
+      "It promotes standardization, reusability, and easier maintenance",
+      "It eliminates the need for data validation"
+    ],
+    "answer": 2,
+    "time": 30,
+    "level": "Medium"
+  },
+  {
+    "q": "In an ETL process, during which phase are business rules applied and data formats converted?",
+    "options": [
+      "Extract",
+      "Transform",
+      "Load",
+      "Archive"
+    ],
+    "answer": 1,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "Which ETL framework component is responsible for tracking rows processed, execution status, and errors?",
+    "options": [
+      "Extraction Layer",
+      "Transformation Layer",
+      "Logging and Auditing Layer",
+      "Source System"
+    ],
+    "answer": 2,
+    "time": 25,
+    "level": "Medium"
+  },
+  {
+    "q": "Why are audit tables commonly used in ETL frameworks?",
+    "options": [
+      "To store application source code",
+      "To track job execution details such as start time, end time, rows loaded, and status",
+      "To improve query performance",
+      "To replace staging tables"
     ],
     "answer": 1,
     "time": 30,
+    "level": "Medium"
+  },
+  {
+    "q": "Which of the following activities is commonly performed during the validation phase of an ETL framework?",
+    "options": [
+      "Checking for NULL values and duplicate records",
+      "Creating virtual warehouses",
+      "Creating database users",
+      "Compressing source code"
+    ],
+    "answer": 0,
+    "time": 25,
     "level": "Easy"
-  } 
+  },
+  {
+    "q": "In a Snowflake-based ETL framework, which command is commonly used to load data from a stage into a table?",
+    "options": [
+      "INSERT FILE",
+      "COPY INTO",
+      "MOVE DATA",
+      "LOAD TABLE"
+    ],
+    "answer": 1,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "Which statement best describes a metadata-driven ETL framework?",
+    "options": [
+      "Each ETL job requires separate custom code",
+      "ETL behavior is controlled through configuration tables or metadata rather than hard-coded logic",
+      "It does not support logging",
+      "It can only process CSV files"
+    ],
+    "answer": 1,
+    "time": 35,
+    "level": "Hard"
+  },
+  {
+    "q": "When would an organization benefit most from implementing an ETL framework?",
+    "options": [
+      "When loading a single file once",
+      "When managing multiple recurring data loads that require consistent processing and monitoring",
+      "When creating a simple report",
+      "When performing manual spreadsheet updates"
+    ],
+    "answer": 1,
+    "time": 30,
+    "level": "Medium"
+  }
 
 
 ];
