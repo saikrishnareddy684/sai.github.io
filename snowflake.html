@@ -1467,6 +1467,309 @@ let originalQuestions = [
     "time": 30,
     "level": "Medium"
   },
+
+  {
+    "q": "Which Snowflake command is used to export data from a table to files in a stage?",
+    "options": [
+      "UNLOAD TABLE",
+      "EXPORT DATA",
+      "COPY INTO @stage",
+      "SAVE TO FILE"
+    ],
+    "answer": 2,
+    "time": 20
+  },
+  {
+    "q": "What is the purpose of a stage in Snowflake?",
+    "options": [
+      "To store SQL queries",
+      "To temporarily hold files for loading and unloading data",
+      "To create virtual warehouses",
+      "To store user credentials"
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "Which command can be used to view files stored in a Snowflake stage?",
+    "options": [
+      "SHOW FILES",
+      "DISPLAY STAGE",
+      "LIST @stage",
+      "VIEW FILES"
+    ],
+    "answer": 2,
+    "time": 20
+  },
+  {
+    "q": "What does HEADER = TRUE do in the COPY INTO @stage command?",
+    "options": [
+      "Adds column names as the first row in the output file",
+      "Creates a file header with metadata",
+      "Encrypts the file header",
+      "Creates a new table header"
+    ],
+    "answer": 0,
+    "time": 20
+  },
+  {
+    "q": "Which file format type is commonly used when exporting data to CSV files?",
+    "options": [
+      "JSON",
+      "PARQUET",
+      "CSV",
+      "AVRO"
+    ],
+    "answer": 2,
+    "time": 20
+  },
+  {
+    "q": "What is the purpose of FIELD_OPTIONALLY_ENCLOSED_BY = '\"' in a CSV file format?",
+    "options": [
+      "Compresses the file",
+      "Encloses field values in quotes when necessary",
+      "Encrypts data fields",
+      "Removes special characters"
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "Which COPY INTO syntax is used to unload data from Snowflake?",
+    "options": [
+      "COPY INTO <table>",
+      "COPY INTO @stage",
+      "COPY FROM @stage",
+      "COPY FILE"
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "How can you export only a subset of rows from a Snowflake table?",
+    "options": [
+      "Use WHERE clause inside a SELECT statement in COPY INTO",
+      "Use EXPORT FILTER",
+      "Use LIMIT only",
+      "Create a temporary stage"
+    ],
+    "answer": 0,
+    "time": 20
+  },
+  {
+    "q": "What is the effect of COMPRESSION = NONE when unloading data?",
+    "options": [
+      "The output files are not compressed",
+      "The output files are encrypted",
+      "The output files are deleted after export",
+      "The output files are stored in memory"
+    ],
+    "answer": 0,
+    "time": 20
+  },
+  {
+    "q": "Which command is used in SnowSQL to download files from a stage to a local machine?",
+    "options": [
+      "COPY",
+      "DOWNLOAD",
+      "GET",
+      "FETCH"
+    ],
+    "answer": 2,
+    "time": 20
+  },
+  {
+    "q": "What is the primary difference between COPY INTO <table> and COPY INTO @stage?",
+    "options": [
+      "Both perform the same operation",
+      "COPY INTO <table> loads data, COPY INTO @stage unloads data",
+      "COPY INTO @stage loads data, COPY INTO <table> unloads data",
+      "Neither supports CSV files"
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "Which clause allows exporting only customers with BALANCE > 100000?",
+    "options": [
+      "WHERE BALANCE > 100000 after COPY INTO",
+      "FROM (SELECT * FROM CUSTOMERS WHERE BALANCE > 100000)",
+      "FILTER BALANCE > 100000",
+      "EXPORT WHERE BALANCE > 100000"
+    ],
+    "answer": 1,
+    "time": 25
+  },
+  {
+    "q": "Which object type can be used as the destination for unloaded data in Snowflake?",
+    "options": [
+      "Stage",
+      "Warehouse",
+      "Role",
+      "Database"
+    ],
+    "answer": 0,
+    "time": 20
+  },
+  {
+    "q": "What happens if the target stage does not exist when executing COPY INTO @stage?",
+    "options": [
+      "Snowflake automatically creates the stage",
+      "The command fails with an error",
+      "Data is stored in a temporary stage",
+      "The data is written to the local machine"
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "Which clause allows exporting the results of a query instead of an entire table?",
+    "options": [
+      "FROM (SELECT ...)",
+      "EXPORT QUERY",
+      "RESULT SET",
+      "QUERY OUTPUT"
+    ],
+    "answer": 0,
+    "time": 20
+  },
+  {
+    "q": "Why might Snowflake generate multiple output files during an unload operation?",
+    "options": [
+      "To improve performance through parallel processing",
+      "Because CSV format requires multiple files",
+      "Because stages cannot store large files",
+      "To encrypt data separately"
+    ],
+    "answer": 0,
+    "time": 20
+  }
+,
+  
+  {
+    "q": "In the statement COPY INTO @MY_STAGE FROM CUSTOMERS, what does '@MY_STAGE' represent?",
+    "options": [
+      "A table",
+      "A virtual warehouse",
+      "A stage location",
+      "A file format"
+    ],
+    "answer": 2,
+    "time": 20
+  },
+  {
+    "q": "Which clause specifies the source table or query when unloading data from Snowflake?",
+    "options": [
+      "INTO",
+      "FROM",
+      "USING",
+      "SELECT"
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "What is the purpose of the FILE_FORMAT clause in a COPY INTO @stage command?",
+    "options": [
+      "To define how output files should be written",
+      "To select the warehouse",
+      "To create a stage",
+      "To grant permissions"
+    ],
+    "answer": 0,
+    "time": 20
+  },
+  {
+    "q": "Which syntax correctly exports data from a query result?",
+    "options": [
+      "COPY INTO @stage SELECT * FROM CUSTOMERS",
+      "COPY INTO @stage FROM (SELECT * FROM CUSTOMERS)",
+      "EXPORT INTO @stage FROM CUSTOMERS",
+      "COPY @stage FROM CUSTOMERS"
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "What does HEADER = TRUE do in the FILE_FORMAT clause?",
+    "options": [
+      "Includes column names in the output file",
+      "Creates a stage header",
+      "Encrypts the file",
+      "Adds metadata rows"
+    ],
+    "answer": 0,
+    "time": 20
+  },
+  {
+    "q": "Which syntax disables compression when unloading data?",
+    "options": [
+      "COMPRESS = FALSE",
+      "ZIP = NONE",
+      "COMPRESSION = NONE",
+      "COMPRESSED = NO"
+    ],
+    "answer": 2,
+    "time": 20
+  },
+    
+  {
+    "q": "Which syntax correctly creates an internal stage?",
+    "options": [
+      "CREATE STAGE my_stage;",
+      "CREATE STORAGE my_stage;",
+      "CREATE FILE LOCATION my_stage;",
+      "CREATE EXPORT STAGE my_stage;"
+    ],
+    "answer": 0,
+    "time": 20
+  },
+  {
+    "q": "What is the purpose of the file name prefix in COPY INTO @my_stage/customers_?",
+    "options": [
+      "Specifies the output file name prefix",
+      "Creates a folder",
+      "Creates a table",
+      "Specifies the warehouse"
+    ],
+    "answer": 0,
+    "time": 20
+  },
+  
+  {
+    "q": "Which parameter can be used to generate a single output file instead of multiple files?",
+    "options": [
+      "MULTI = FALSE",
+      "SINGLE = TRUE",
+      "ONEFILE = TRUE",
+      "FILES = 1"
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "Which syntax correctly exports data from a table named CUSTOMERS?",
+    "options": [
+      "COPY INTO @stage FROM CUSTOMERS",
+      "COPY CUSTOMERS INTO @stage",
+      "EXPORT CUSTOMERS TO @stage",
+      "UNLOAD CUSTOMERS TO @stage"
+    ],
+    "answer": 0,
+    "time": 20
+  },
+  {
+    "q": "Which parameter overwrites existing files in the target stage?",
+    "options": [
+      "REPLACE = TRUE",
+      "OVERWRITE = TRUE",
+      "FORCE = TRUE",
+      "UPDATE = TRUE"
+    ],
+    "answer": 1,
+    "time": 20
+  },
+   
   {
     "q": "In a Snowflake environment, which keyword combination allows a data engineer to automatically generate a sequence of incremental integer keys when establishing a new Dimension Table layout?",
     "options": [
