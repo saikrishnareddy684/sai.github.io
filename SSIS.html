@@ -757,19 +757,7 @@ let originalQuestions = [
     "time": 30,
     "level": "Medium"
   },
-  {
-    "q": "Which of the following is an OLE DB Provider commonly used for SQL Server?",
-    "options": [
-      "MSOLEDBSQL",
-      "SSISDB",
-      "Flat File",
-      "FTP"
-    ],
-    "answer": 0,
-    "time": 20,
-    "level": "Easy"
-  },
-  {
+   {
     "q": "SQLNCLI11 is best described as:",
     "options": [
       "A SQL Server database",
@@ -840,6 +828,128 @@ let originalQuestions = [
     "answer": 1,
     "time": 35,
     "level": "Hard"
+  }
+,
+  
+  {
+    "q": "What is the main advantage of using a DSN (Data Source Name) when connecting with ODBC?",
+    "options": [
+      "It stores database credentials in plain text",
+      "It eliminates the need to write the full connection string every time by saving a named connection configuration",
+      "It automatically transforms data during queries",
+      "It only works with SQL Server and no other databases"
+    ],
+    "answer": 1,
+    "time": 30,
+    "level": "Medium"
+  },
+  {
+    "q": "When using ODBC, what is the 'User DSN' typically used for?",
+    "options": [
+      "To allow all users on the machine to access a connection",
+      "To store a connection that is only accessible by the current user",
+      "To create a connection for SQL Server only",
+      "To log ETL packages"
+    ],
+    "answer": 1,
+    "time": 30,
+    "level": "Medium"
+  },
+  {
+    "q": "When using ADO.NET, which component in the .NET framework is used for connecting to SQL Server?",
+    "options": [
+      "SqlDataAdapter",
+      "SqlClient",
+      "SqlConnection",
+      "Data Flow Task"
+    ],
+    "answer": 2,
+    "time": 25,
+    "level": "Easy"
+  },
+  {
+    "q": "Can OLE DB be used to connect to non-Microsoft databases such as Oracle?",
+    "options": [
+      "No, OLE DB only works with SQL Server",
+      "Yes, OLE DB providers exist for Oracle, Access, and many other databases",
+      "OLE DB is limited to flat files",
+      "No, only ODBC can connect to Oracle"
+    ],
+    "answer": 1,
+    "time": 30,
+    "level": "Medium"
+  },
+  {
+    "q": "In an ODBC connection, what is a 'Data Source Specification'?",
+    "options": [
+      "A predefined SQL query",
+      "A set of connection details saved as a DSN, which can be used by multiple applications",
+      "A procedure that runs data transformation",
+      "A backup routine for the database"
+    ],
+    "answer": 1,
+    "time": 30,
+    "level": "Medium"
+  },
+  {
+    "q": "What is a key difference between a connection string and a DSN?",
+    "options": [
+      "A connection string is saved in Windows, while a DSN is hardcoded in the application",
+      "A connection string contains all connection details inline, while a DSN stores these details centrally and is referenced by name",
+      "A connection string is used only with OLE DB, while a DSN is used only with ADO.NET",
+      "A DSN is used to run ETL jobs, while a connection string is only for querying data"
+    ],
+    "answer": 1,
+    "time": 35,
+    "level": "Medium"
+  },
+  {
+    "q": "Why might you prefer ADO.NET over OLE DB or ODBC in a .NET application?",
+    "options": [
+      "ADO.NET is faster for all database operations by default",
+      "ADO.NET is tightly integrated with .NET, allowing better performance, strongly typed data, and easier use within .NET applications",
+      "OLE DB is only for SSIS packages",
+      "ODBC is more suitable for SQL Server in all cases"
+    ],
+    "answer": 1,
+    "time": 35,
+    "level": "Medium"
+  },
+  {
+    "q": "In SSIS, when you use an OLE DB Connection Manager, what happens if you leave the database field empty?",
+    "options": [
+      "SSIS will automatically select the first database on the server",
+      "SSIS will fail to connect because it needs a database",
+      "SSIS will try to prompt for the database name during runtime",
+      "The connection manager will assume a default 'master' database"
+    ],
+    "answer": 1,
+    "time": 30,
+    "level": "Medium"
+  },
+  {
+    "q": "When using ODBC with SSIS, why is it sometimes required to create a DSN outside SSIS before configuring the connection?",
+    "options": [
+      "SSIS needs the DSN because ODBC requires a pre-configured connection name and doesn’t list databases directly",
+      "SSIS only works with Oracle, so DSN is mandatory",
+      "DSNs are only for SQL Server and cannot be used for other databases",
+      "SSIS automatically creates a DSN once the ODBC connection is tested"
+    ],
+    "answer": 0,
+    "time": 30,
+    "level": "Medium"
+  },
+  {
+    "q": "Which of the following best describes a 'Connection Manager' in SSIS?",
+    "options": [
+      "It is a task used to move data between tables",
+      "It stores and manages connection information (such as server, database, authentication) for use by tasks and components",
+      "It is a transformation component",
+      "It is a reporting tool used to produce ETL reports"
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Easy"
   }
 
 
