@@ -208,6 +208,128 @@ let originalQuestions = [
     "time": 25,
     "level": "Easy"
   },
+  
+  {
+    "q": "What is the primary responsibility of Control Flow in an SSIS package?",
+    "options": [
+      "Moving data between source and destination",
+      "Defining the workflow and execution order of tasks",
+      "Managing database connections",
+      "Creating audit tables"
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Easy"
+  },
+  {
+    "q": "Which SSIS component determines whether a Data Flow Task runs before or after an Execute SQL Task?",
+    "options": [
+      "Data Flow",
+      "Connection Manager",
+      "Control Flow",
+      "OLE DB Source"
+    ],
+    "answer": 2,
+    "time": 25,
+    "level": "Easy"
+  },
+  {
+    "q": "Which statement best describes the difference between Control Flow and Data Flow in SSIS?",
+    "options": [
+      "Control Flow moves data, while Data Flow manages connections",
+      "Control Flow defines task execution order, while Data Flow moves and transforms data",
+      "Control Flow creates tables, while Data Flow creates indexes",
+      "There is no difference between them"
+    ],
+    "answer": 1,
+    "time": 35,
+    "level": "Medium"
+  },
+  {
+    "q": "Which of the following tasks can be placed directly in the Control Flow of an SSIS package?",
+    "options": [
+      "OLE DB Source",
+      "Derived Column",
+      "Lookup",
+      "Execute SQL Task"
+    ],
+    "answer": 3,
+    "time": 25,
+    "level": "Easy"
+  },
+  {
+    "q": "Which of the following components is typically found inside a Data Flow Task?",
+    "options": [
+      "Execute SQL Task",
+      "Send Mail Task",
+      "OLE DB Source",
+      "File System Task"
+    ],
+    "answer": 2,
+    "time": 25,
+    "level": "Easy"
+  },
+  {
+    "q": "In an SSIS package, where would you define the sequence: Audit Start → Data Load → Send Success Email?",
+    "options": [
+      "OLE DB Provider",
+      "Connection Manager",
+      "Control Flow",
+      "OLE DB Destination"
+    ],
+    "answer": 2,
+    "time": 30,
+    "level": "Medium"
+  },
+  {
+    "q": "Which SSIS area is responsible for extracting, transforming, and loading data?",
+    "options": [
+      "Control Flow",
+      "Data Flow",
+      "Connection Manager",
+      "Event Handler"
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Easy"
+  },
+  {
+    "q": "A package contains an Execute SQL Task, a Data Flow Task, and a Send Mail Task. What SSIS feature controls the order in which these tasks execute?",
+    "options": [
+      "Connection Manager",
+      "OLE DB Provider",
+      "Control Flow and precedence constraints",
+      "OLE DB Destination"
+    ],
+    "answer": 2,
+    "time": 35,
+    "level": "Medium"
+  },
+  {
+    "q": "Which statement about Data Flow is correct?",
+    "options": [
+      "It controls package execution order",
+      "It stores connection details",
+      "It is used to move and transform data between sources and destinations",
+      "It manages package deployment"
+    ],
+    "answer": 2,
+    "time": 25,
+    "level": "Easy"
+  },
+  {
+    "q": "An interviewer asks: 'What component would you use to ensure a Send Mail Task runs only after a Data Flow Task completes successfully?' Which is the best answer?",
+    "options": [
+      "OLE DB Source",
+      "Connection Manager",
+      "Control Flow using precedence constraints",
+      "OLE DB Provider"
+    ],
+    "answer": 2,
+    "time": 40,
+    "level": "Hard"
+  }
+,
   {
     "q": "Which SSIS area is responsible for moving and transforming data?",
     "options": [
