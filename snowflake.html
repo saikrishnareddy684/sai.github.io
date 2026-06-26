@@ -1771,6 +1771,449 @@ let originalQuestions = [
   },
    
   {
+    "q": "What is a Role in Snowflake?",
+    "options": [
+      "A database object used to store data",
+      "A collection of privileges that can be assigned to users or other roles",
+      "A type of warehouse",
+      "A schema object"
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "Why are roles used in Snowflake?",
+    "options": [
+      "To improve query performance",
+      "To manage access permissions efficiently",
+      "To create databases automatically",
+      "To load data into tables"
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "Which Snowflake role has the highest level of privileges?",
+    "options": [
+      "SYSADMIN",
+      "USERADMIN",
+      "SECURITYADMIN",
+      "ACCOUNTADMIN"
+    ],
+    "answer": 3,
+    "time": 20
+  },
+  {
+    "q": "Which command is used to create a role in Snowflake?",
+    "options": [
+      "ADD ROLE analyst_role",
+      "NEW ROLE analyst_role",
+      "CREATE ROLE analyst_role",
+      "MAKE ROLE analyst_role"
+    ],
+    "answer": 2,
+    "time": 20
+  },
+  {
+    "q": "Which command grants a role to a user?",
+    "options": [
+      "GRANT USER analyst_role TO JOHN",
+      "ASSIGN ROLE analyst_role TO USER JOHN",
+      "GRANT ROLE analyst_role TO USER JOHN",
+      "ATTACH ROLE analyst_role TO JOHN"
+    ],
+    "answer": 2,
+    "time": 25
+  },
+  {
+    "q": "Which command activates a role in the current session?",
+    "options": [
+      "SET ROLE analyst_role",
+      "USE ROLE analyst_role",
+      "ACTIVATE ROLE analyst_role",
+      "ENABLE ROLE analyst_role"
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "What happens if a user does not have the required privileges through any role?",
+    "options": [
+      "The query runs with warnings",
+      "Snowflake automatically grants access",
+      "The operation fails with an insufficient privileges error",
+      "The user becomes ACCOUNTADMIN"
+    ],
+    "answer": 2,
+    "time": 20
+  },
+  {
+    "q": "Which privilege is required on a warehouse to run queries?",
+    "options": [
+      "SELECT",
+      "MODIFY",
+      "USAGE",
+      "CREATE"
+    ],
+    "answer": 2,
+    "time": 20
+  },
+  {
+    "q": "Which privilege allows a role to query data from a table?",
+    "options": [
+      "INSERT",
+      "UPDATE",
+      "SELECT",
+      "USAGE"
+    ],
+    "answer": 2,
+    "time": 20
+  },
+  {
+    "q": "Which command grants SELECT access on a table to a role?",
+    "options": [
+      "GRANT SELECT ON TABLE customers TO analyst_role",
+      "ALLOW SELECT ON customers TO analyst_role",
+      "GRANT TABLE customers TO analyst_role",
+      "ENABLE SELECT FOR analyst_role"
+    ],
+    "answer": 0,
+    "time": 25
+  },
+  {
+    "q": "What is role hierarchy in Snowflake?",
+    "options": [
+      "Warehouses inside databases",
+      "Roles granted to other roles",
+      "Schemas inside databases",
+      "Users inside roles"
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "Which command grants one role to another role?",
+    "options": [
+      "GRANT ROLE analyst_role TO ROLE senior_analyst_role",
+      "ASSIGN ROLE analyst_role TO ROLE senior_analyst_role",
+      "LINK ROLE analyst_role TO senior_analyst_role",
+      "ADD ROLE analyst_role TO senior_analyst_role"
+    ],
+    "answer": 0,
+    "time": 25
+  },
+  {
+    "q": "What does the PUBLIC role represent?",
+    "options": [
+      "A role with full administrative access",
+      "A role assigned automatically to all users",
+      "A temporary role",
+      "A warehouse role"
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "Which built-in role is primarily responsible for managing users and roles?",
+    "options": [
+      "USERADMIN",
+      "SYSADMIN",
+      "SECURITYADMIN",
+      "PUBLIC"
+    ],
+    "answer": 2,
+    "time": 20
+  },
+  {
+    "q": "Which built-in role is primarily responsible for creating and managing objects such as databases and warehouses?",
+    "options": [
+      "SYSADMIN",
+      "SECURITYADMIN",
+      "USERADMIN",
+      "PUBLIC"
+    ],
+    "answer": 0,
+    "time": 20
+  },
+  {
+    "q": "Can a role be granted to multiple users?",
+    "options": [
+      "No",
+      "Only for ACCOUNTADMIN",
+      "Yes",
+      "Only for external users"
+    ],
+    "answer": 2,
+    "time": 15
+  },
+  {
+    "q": "Can a user have multiple roles assigned?",
+    "options": [
+      "No",
+      "Yes",
+      "Only one custom role",
+      "Only built-in roles"
+    ],
+    "answer": 1,
+    "time": 15
+  },
+  {
+    "q": "Which privilege is required on a database before accessing objects inside it?",
+    "options": [
+      "SELECT",
+      "MODIFY",
+      "USAGE",
+      "OPERATE"
+    ],
+    "answer": 2,
+    "time": 20
+  },
+  {
+    "q": "Which privilege is required on a schema before accessing tables within it?",
+    "options": [
+      "USAGE",
+      "SELECT",
+      "INSERT",
+      "UPDATE"
+    ],
+    "answer": 0,
+    "time": 20
+  },
+  {
+    "q": "What security principle is achieved by granting only the minimum required privileges to roles?",
+    "options": [
+      "Data Sharing",
+      "Least Privilege",
+      "Data Clustering",
+      "Auto Scaling"
+    ],
+    "answer": 1,
+    "time": 20
+  }
+  ,{
+    "q": "Which option correctly represents all the objects on which a Snowflake role can be granted privileges?",
+    "options": [
+      "Warehouses, Databases, Schemas, Tables, Views",
+      "Warehouses, Databases, Schemas, Tables, Views, Stages, File Formats",
+      "Warehouses, Databases, Schemas, Tables, Views, Stages, File Formats, Tasks, Streams, Procedures, Functions",
+      "Databases, Schemas, Tables, Views, Streams"
+    ],
+    "answer": 2,
+    "time": 25
+  }
+,
+  {
+    "q": "Which Snowflake object returns a value and can be used within SQL expressions?",
+    "options": [
+      "Procedure",
+      "Task",
+      "Function",
+      "Warehouse"
+    ],
+    "answer": 2,
+    "time": 20
+  },
+  {
+    "q": "Which Snowflake object tracks data changes (INSERT, UPDATE, DELETE) for Change Data Capture (CDC)?",
+    "options": [
+      "View",
+      "Procedure",
+      "Stream",
+      "Warehouse"
+    ],
+    "answer": 2,
+    "time": 20
+  },
+   {
+    "q": "Which Snowflake object allows scheduled execution of SQL statements?",
+    "options": [
+      "Task",
+      "Stage",
+      "Warehouse",
+      "Function"
+    ],
+    "answer": 0,
+    "time": 20
+  },
+   {
+    "q": "Access to which Snowflake object determines how data files are formatted during loading or unloading?",
+    "options": [
+      "Stream",
+      "Task",
+      "File Format",
+      "View"
+    ],
+    "answer": 2,
+    "time": 20
+  },
+  {
+    "q": "Which Snowflake object is used to provide compute resources for executing queries and loading data?",
+    "options": [
+      "Schema",
+      "Warehouse",
+      "Stage",
+      "View"
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+  "q": "Which of the following is the correct syntax to grant the USAGE privilege on a warehouse named COMPUTE_WH to the role ANALYST_ROLE in Snowflake?",
+  "options": [
+    "GRANT USAGE TO ANALYST_ROLE ON WAREHOUSE COMPUTE_WH;",
+    "GRANT USAGE ON WAREHOUSE COMPUTE_WH TO ROLE ANALYST_ROLE;",
+    "GRANT WAREHOUSE COMPUTE_WH TO ANALYST_ROLE;",
+    "GRANT ROLE ANALYST_ROLE ON WAREHOUSE COMPUTE_WH;"
+  ],
+  "answer": 1,
+  "time": 25
+},
+  {
+  "q": "Which of the following is the correct syntax to grant the SELECT privilege on the CUSTOMERS table to the ANALYST_ROLE role in Snowflake?",
+  "options": [
+    "GRANT SELECT TO ANALYST_ROLE ON TABLE CUSTOMERS;",
+    "GRANT SELECT ON TABLE CUSTOMERS TO ROLE ANALYST_ROLE;",
+    "GRANT TABLE CUSTOMERS TO ANALYST_ROLE;",
+    "GRANT ROLE ANALYST_ROLE SELECT ON CUSTOMERS;"
+  ],
+  "answer": 1,
+  "time": 25
+},
+  {
+  "q": "Which of the following is the correct syntax to grant the USAGE privilege on the SALES_DB database to the ANALYST_ROLE role in Snowflake?",
+  "options": [
+    "GRANT USAGE TO ANALYST_ROLE ON DATABASE SALES_DB;",
+    "GRANT USAGE ON DATABASE SALES_DB TO ROLE ANALYST_ROLE;",
+    "GRANT DATABASE SALES_DB TO ANALYST_ROLE;",
+    "GRANT ROLE ANALYST_ROLE ON DATABASE SALES_DB;"
+  ],
+  "answer": 1,
+  "time": 25
+},
+  {
+  "q": "Which of the following is the correct syntax to grant the USAGE privilege on the SALES_DB.PUBLIC schema to the ANALYST_ROLE role in Snowflake?",
+  "options": [
+    "GRANT USAGE TO ANALYST_ROLE ON SCHEMA SALES_DB.PUBLIC;",
+    "GRANT SCHEMA SALES_DB.PUBLIC TO ANALYST_ROLE;",
+    "GRANT USAGE ON SCHEMA SALES_DB.PUBLIC TO ROLE ANALYST_ROLE;",
+    "GRANT ROLE ANALYST_ROLE ON SCHEMA SALES_DB.PUBLIC;"
+  ],
+  "answer": 2,
+  "time": 25
+},
+  {
+  "q": "Which of the following lists contains all the built-in system roles in Snowflake?",
+  "options": [
+    "ACCOUNTADMIN, SECURITYADMIN, SYSADMIN, USERADMIN, PUBLIC",
+    "ACCOUNTADMIN, ORGADMIN, SYSADMIN, USERADMIN, PUBLIC",
+    "ACCOUNTADMIN, SECURITYADMIN, DBAADMIN, USERADMIN, PUBLIC",
+    "ACCOUNTADMIN, SECURITYADMIN, SYSADMIN, ROLEADMIN, PUBLIC"
+  ],
+  "answer": 0,
+  "time": 25
+},
+  {
+  "q": "Why does Snowflake use roles instead of granting privileges directly to users?",
+  "options": [
+    "Roles reduce the storage required for user accounts.",
+    "Roles provide centralized access management by granting permissions to roles and assigning roles to users.",
+    "Roles automatically create warehouses for users.",
+    "Roles improve query execution performance."
+  ],
+  "answer": 1,
+  "time": 25
+},
+  {
+  "q": "A user is granted two roles, ANALYST_ROLE and ENGINEER_ROLE. How many primary roles can be active at a time in a Snowflake session?",
+  "options": [
+    "Both roles are active simultaneously",
+    "Only one role can be active at a time",
+    "Up to five roles can be active at a time",
+    "No role is active until explicitly granted again"
+  ],
+  "answer": 1,
+  "time": 20
+},
+  
+  {
+    "q": "After granting USAGE on a database to a role, what additional privilege is required before users can access objects inside the database?",
+    "options": [
+      "USAGE on the schema",
+      "CREATE TABLE on the database",
+      "OWNERSHIP on the warehouse",
+      "MONITOR on the database"
+    ],
+    "answer": 0,
+    "time": 25
+  },
+  {
+    "q": "Which privilege is required on a schema before a user can access tables or views within that schema?",
+    "options": [
+      "SELECT",
+      "USAGE",
+      "MODIFY",
+      "OPERATE"
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "To query data from a table in Snowflake, which combination of privileges is required?",
+    "options": [
+      "USAGE on the database only",
+      "USAGE on the database and SELECT on the table",
+      "USAGE on the database, USAGE on the schema, and SELECT on the table",
+      "SELECT on the table only"
+    ],
+    "answer": 2,
+    "time": 30
+  },
+  {
+    "q": "A role has USAGE on a database but cannot see any tables using SHOW TABLES. What is the most likely reason?",
+    "options": [
+      "The warehouse is suspended.",
+      "The role is missing USAGE on the schema.",
+      "The user must have ACCOUNTADMIN privileges.",
+      "The database needs to be recreated."
+    ],
+    "answer": 1,
+    "time": 30
+  },
+  {
+    "q": "Which statement best describes the hierarchy of privileges needed to query a table in Snowflake?",
+    "options": [
+      "Database → Table",
+      "Warehouse → Table",
+      "Database → Schema → Table",
+      "Schema → Warehouse → Table"
+    ],
+    "answer": 2,
+    "time": 30
+  }
+,
+  {
+  "q": "A user has been granted USAGE on the SALES_DB database, but the user cannot see any schemas or tables. What is the most likely reason?",
+  "options": [
+    "The user must be granted USAGE on the schema and appropriate privileges (such as SELECT) on the tables.",
+    "The database must be recreated after granting privileges.",
+    "The warehouse must be restarted before schemas become visible.",
+    "Snowflake does not allow users to view schemas inside a database."
+  ],
+  "answer": 0,
+  "time": 30
+},
+  {
+  "q": "You granted USAGE on a database to a role, but SHOW SCHEMAS and SHOW TABLES return no results. Which additional privileges are required?",
+  "options": [
+    "USAGE on the warehouse only",
+    "USAGE on the schema and the required object privileges (for example, SELECT on tables)",
+    "OWNERSHIP on the database",
+    "CREATE TABLE on the schema"
+  ],
+  "answer": 1,
+  "time": 30
+},
+  {
     "q": "In a Snowflake environment, which keyword combination allows a data engineer to automatically generate a sequence of incremental integer keys when establishing a new Dimension Table layout?",
     "options": [
       "MANUAL DEFRAGMENTATION DEFAULT 1",
