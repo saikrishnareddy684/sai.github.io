@@ -2213,6 +2213,118 @@ let originalQuestions = [
   "answer": 1,
   "time": 30
 },
+  
+  {
+    "q": "Which set of privileges must a role have to successfully execute an INSERT statement on the SALES_DB.PUBLIC.CUSTOMERS table?",
+    "options": [
+      "USAGE on the database, USAGE on the schema, and INSERT on the table",
+      "INSERT on the table only",
+      "USAGE on the database only",
+      "OWNERSHIP on the database"
+    ],
+    "answer": 0,
+    "time": 30
+  },
+  {
+    "q": "Which privilege allows a user to add new rows to a table in Snowflake?",
+    "options": [
+      "SELECT",
+      "UPDATE",
+      "INSERT",
+      "DELETE"
+    ],
+    "answer": 2,
+    "time": 20
+  },
+  {
+    "q": "Which privilege allows a user to modify existing rows in a Snowflake table?",
+    "options": [
+      "INSERT",
+      "UPDATE",
+      "DELETE",
+      "TRUNCATE"
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "Which statement correctly grants both INSERT and UPDATE privileges on the SALES_DB.PUBLIC.CUSTOMERS table to ANALYST_ROLE?",
+    "options": [
+      "GRANT INSERT, UPDATE ON TABLE SALES_DB.PUBLIC.CUSTOMERS TO ROLE ANALYST_ROLE;",
+      "GRANT INSERT UPDATE TO ROLE ANALYST_ROLE ON TABLE SALES_DB.PUBLIC.CUSTOMERS;",
+      "GRANT TABLE SALES_DB.PUBLIC.CUSTOMERS TO ROLE ANALYST_ROLE;",
+      "GRANT INSERT AND UPDATE ON SALES_DB.PUBLIC.CUSTOMERS TO ANALYST_ROLE;"
+    ],
+    "answer": 0,
+    "time": 30
+  },
+  {
+    "q": "What is the recommended security practice in Snowflake when granting object privileges?",
+    "options": [
+      "Grant privileges directly to every user.",
+      "Grant privileges to roles, then assign roles to users.",
+      "Grant all privileges to the PUBLIC role.",
+      "Grant OWNERSHIP to all users."
+    ],
+    "answer": 1,
+    "time": 25
+  },
+  {
+    "q": "Which privilege allows a user to remove rows from a table without dropping the table itself?",
+    "options": [
+      "DELETE",
+      "TRUNCATE",
+      "UPDATE",
+      "REFERENCES"
+    ],
+    "answer": 0,
+    "time": 20
+  },
+  {
+    "q": "Which privilege removes all rows from a table in a single operation?",
+    "options": [
+      "DELETE",
+      "INSERT",
+      "TRUNCATE",
+      "SELECT"
+    ],
+    "answer": 2,
+    "time": 20
+  },
+  {
+    "q": "Which privilege is used to create foreign key references to a table in Snowflake?",
+    "options": [
+      "REFERENCES",
+      "SELECT",
+      "UPDATE",
+      "OWNERSHIP"
+    ],
+    "answer": 0,
+    "time": 20
+  },
+  {
+    "q": "Which privilege provides full control over a Snowflake object, including the ability to grant privileges to others?",
+    "options": [
+      "MODIFY",
+      "OWNERSHIP",
+      "OPERATE",
+      "USAGE"
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "A Data Analyst needs to read, insert, and update data in a table. Which privileges should be granted on the table?",
+    "options": [
+      "SELECT, INSERT, UPDATE",
+      "SELECT, DELETE, TRUNCATE",
+      "INSERT, DELETE, OWNERSHIP",
+      "USAGE, INSERT, REFERENCES"
+    ],
+    "answer": 0,
+    "time": 25
+  }
+,
   {
     "q": "In a Snowflake environment, which keyword combination allows a data engineer to automatically generate a sequence of incremental integer keys when establishing a new Dimension Table layout?",
     "options": [
