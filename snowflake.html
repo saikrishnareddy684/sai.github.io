@@ -2325,6 +2325,461 @@ let originalQuestions = [
     "time": 25
   }
 ,
+  
+  {
+    "q": "Which privilege is required to drop a table in Snowflake?",
+    "options": [
+      "DELETE",
+      "TRUNCATE",
+      "OWNERSHIP",
+      "MODIFY"
+    ],
+    "answer": 2,
+    "time": 20
+  },
+  {
+    "q": "A user executes `DROP TABLE CUSTOMERS;` but receives an insufficient privileges error. What is the most likely reason?",
+    "options": [
+      "The user is missing the OWNERSHIP privilege on the table.",
+      "The user is missing the SELECT privilege.",
+      "The user is missing the UPDATE privilege.",
+      "The user is missing the REFERENCES privilege."
+    ],
+    "answer": 0,
+    "time": 30
+  },
+  {
+    "q": "Which statement correctly transfers ownership of the CUSTOMERS table to the ANALYST_ROLE role?",
+    "options": [
+      "GRANT DROP ON TABLE SALES_DB.PUBLIC.CUSTOMERS TO ROLE ANALYST_ROLE;",
+      "GRANT OWNERSHIP ON TABLE SALES_DB.PUBLIC.CUSTOMERS TO ROLE ANALYST_ROLE;",
+      "GRANT MODIFY ON TABLE SALES_DB.PUBLIC.CUSTOMERS TO ROLE ANALYST_ROLE;",
+      "GRANT ALTER ON TABLE SALES_DB.PUBLIC.CUSTOMERS TO ROLE ANALYST_ROLE;"
+    ],
+    "answer": 1,
+    "time": 30
+  },
+  {
+    "q": "Which privilege allows a role to drop, alter, and grant privileges on a table?",
+    "options": [
+      "UPDATE",
+      "TRUNCATE",
+      "OWNERSHIP",
+      "SELECT"
+    ],
+    "answer": 2,
+    "time": 25
+  },
+  {
+    "q": "Who becomes the owner of a table immediately after it is created in Snowflake?",
+    "options": [
+      "The PUBLIC role",
+      "The role that created the table",
+      "The ACCOUNTADMIN role",
+      "The SYSADMIN role"
+    ],
+    "answer": 1,
+    "time": 25
+  }
+,
+  {
+    "q": "A role owns the CUSTOMERS table but does not have explicit SELECT, INSERT, UPDATE, or DELETE privileges. Which statement is correct?",
+    "options": [
+      "The role cannot access the table until those privileges are granted.",
+      "The role can perform all operations because OWNERSHIP includes full control over the object.",
+      "The role can only execute SELECT statements.",
+      "The role can only drop the table."
+    ],
+    "answer": 1,
+    "time": 30
+  },
+  {
+    "q": "Which privilege makes explicit SELECT, INSERT, UPDATE, and DELETE grants unnecessary for the owner of a table?",
+    "options": [
+      "USAGE",
+      "OPERATE",
+      "OWNERSHIP",
+      "REFERENCES"
+    ],
+    "answer": 2,
+    "time": 20
+  },
+  {
+    "q": "After transferring OWNERSHIP of a table to ANALYST_ROLE, what can ANALYST_ROLE do?",
+    "options": [
+      "Only read data from the table.",
+      "Only insert and update data.",
+      "Drop, alter, grant privileges, and perform all table operations.",
+      "Only grant SELECT privileges."
+    ],
+    "answer": 2,
+    "time": 30
+  },
+  {
+    "q": "Why can existing SELECT, INSERT, UPDATE, and DELETE grants be revoked after a role becomes the owner of a table?",
+    "options": [
+      "Because OWNERSHIP automatically includes all object privileges.",
+      "Because Snowflake automatically recreates those grants.",
+      "Because PUBLIC receives all privileges.",
+      "Because USAGE includes all table privileges."
+    ],
+    "answer": 0,
+    "time": 30
+  },
+  {
+    "q": "A role has OWNERSHIP on a table. Which of the following operations can it perform?",
+    "options": [
+      "SELECT only",
+      "SELECT, INSERT, UPDATE, DELETE only",
+      "DROP and ALTER only",
+      "SELECT, INSERT, UPDATE, DELETE, ALTER, DROP, and GRANT privileges"
+    ],
+    "answer": 3,
+    "time": 30
+  }
+,
+
+  {
+  "q": "A user receives the error: 'Insufficient privileges to operate on schema PUBLIC. Your primary role ANALYST_ROLE must have CREATE TABLE granted on SCHEMA SALES_DB.PUBLIC.' Which privilege is missing?",
+  "options": [
+    "CREATE TABLE on the schema",
+    "CREATE TABLE on the database",
+    "OWNERSHIP on the database",
+    "INSERT on the schema"
+  ],
+  "answer": 0,
+  "time": 25
+},
+
+  {
+  "q": "Which of the following is the correct syntax to grant the CREATE TABLE privilege on the SALES_DB.PUBLIC schema to the ANALYST_ROLE role in Snowflake?",
+  "options": [
+    "GRANT CREATE TABLE TO ROLE ANALYST_ROLE ON SCHEMA SALES_DB.PUBLIC;",
+    "GRANT CREATE TABLE ON DATABASE SALES_DB TO ROLE ANALYST_ROLE;",
+    "GRANT CREATE TABLE ON SCHEMA SALES_DB.PUBLIC TO ROLE ANALYST_ROLE;",
+    "GRANT CREATE ON TABLE SALES_DB.PUBLIC TO ROLE ANALYST_ROLE;"
+  ],
+  "answer": 2,
+  "time": 25
+},
+
+
+  {
+    "q": "Who automatically becomes the owner of a newly created table in Snowflake?",
+    "options": [
+      "The ACCOUNTADMIN role",
+      "The user who logs into Snowflake",
+      "The active role (CURRENT_ROLE) that creates the table",
+      "The SYSADMIN role"
+    ],
+    "answer": 2,
+    "time": 25
+  },
+  {
+    "q": "Which statement best describes object ownership in Snowflake?",
+    "options": [
+      "A table can have multiple owner roles.",
+      "The role that creates an object automatically becomes its owner.",
+      "Ownership must always be granted manually after creating an object.",
+      "The PUBLIC role automatically owns all newly created objects."
+    ],
+    "answer": 1,
+    "time": 25
+  },
+  {
+    "q": "What happens when the following statement is executed while the active role is TEST_ROLE?\n\nCREATE TABLE CUSTOMERS (ID INT, NAME STRING);",
+    "options": [
+      "SYSADMIN becomes the owner of the CUSTOMERS table.",
+      "PUBLIC becomes the owner of the CUSTOMERS table.",
+      "TEST_ROLE automatically becomes the owner of the CUSTOMERS table.",
+      "No owner is assigned until GRANT OWNERSHIP is executed."
+    ],
+    "answer": 2,
+    "time": 30
+  },
+  {
+    "q": "Which SQL statement can you execute to determine which role will automatically own a newly created object?",
+    "options": [
+      "SELECT CURRENT_USER();",
+      "SHOW ROLES;",
+      "SELECT CURRENT_ROLE();",
+      "SHOW USERS;"
+    ],
+    "answer": 2,
+    "time": 25
+  },
+  {
+    "q": "True or False: You must explicitly execute GRANT OWNERSHIP after creating a table for the creating role to become its owner.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer": 1,
+    "time": 20
+  }
+,
+  
+  {
+    "q": "Which of the following is the correct syntax to revoke the USAGE privilege on the SALES_DB database from the ANALYST_ROLE role?",
+    "options": [
+      "REVOKE USAGE ON DATABASE SALES_DB FROM ROLE ANALYST_ROLE;",
+      "REVOKE DATABASE SALES_DB FROM ROLE ANALYST_ROLE;",
+      "REVOKE ROLE ANALYST_ROLE ON DATABASE SALES_DB;",
+      "REVOKE USAGE TO ROLE ANALYST_ROLE ON DATABASE SALES_DB;"
+    ],
+    "answer": 0,
+    "time": 25
+  },
+  {
+    "q": "Which statement correctly revokes the USAGE privilege on the SALES_DB.PUBLIC schema from ANALYST_ROLE?",
+    "options": [
+      "REVOKE SCHEMA SALES_DB.PUBLIC FROM ROLE ANALYST_ROLE;",
+      "REVOKE USAGE ON SCHEMA SALES_DB.PUBLIC FROM ROLE ANALYST_ROLE;",
+      "REVOKE ROLE ANALYST_ROLE ON SCHEMA SALES_DB.PUBLIC;",
+      "REVOKE USAGE TO ROLE ANALYST_ROLE ON SCHEMA SALES_DB.PUBLIC;"
+    ],
+    "answer": 1,
+    "time": 25
+  },
+  {
+    "q": "Which of the following is the correct syntax to revoke the SELECT privilege on the SALES_DB.PUBLIC.CUSTOMERS table from ANALYST_ROLE?",
+    "options": [
+      "REVOKE TABLE SALES_DB.PUBLIC.CUSTOMERS FROM ROLE ANALYST_ROLE;",
+      "REVOKE SELECT TO ROLE ANALYST_ROLE ON TABLE SALES_DB.PUBLIC.CUSTOMERS;",
+      "REVOKE SELECT ON TABLE SALES_DB.PUBLIC.CUSTOMERS FROM ROLE ANALYST_ROLE;",
+      "REVOKE ROLE ANALYST_ROLE ON TABLE SALES_DB.PUBLIC.CUSTOMERS;"
+    ],
+    "answer": 2,
+    "time": 25
+  },
+  {
+    "q": "Which statement correctly revokes the CREATE TABLE privilege on the SALES_DB.PUBLIC schema from ANALYST_ROLE?",
+    "options": [
+      "REVOKE CREATE TABLE ON SCHEMA SALES_DB.PUBLIC FROM ROLE ANALYST_ROLE;",
+      "REVOKE CREATE TABLE TO ROLE ANALYST_ROLE ON SCHEMA SALES_DB.PUBLIC;",
+      "REVOKE SCHEMA SALES_DB.PUBLIC FROM ROLE ANALYST_ROLE;",
+      "REVOKE CREATE ON TABLE SALES_DB.PUBLIC FROM ROLE ANALYST_ROLE;"
+    ],
+    "answer": 0,
+    "time": 25
+  },
+  {
+    "q": "Which statement correctly revokes the ANALYST_ROLE role from user SAI?",
+    "options": [
+      "REVOKE USER SAI FROM ROLE ANALYST_ROLE;",
+      "REVOKE ANALYST_ROLE FROM USER SAI;",
+      "REVOKE ROLE ANALYST_ROLE FROM USER SAI;",
+      "REVOKE ROLE FROM USER SAI ANALYST_ROLE;"
+    ],
+    "answer": 2,
+    "time": 25
+  },
+  {
+    "q": "Which statement about the OWNERSHIP privilege is correct?",
+    "options": [
+      "OWNERSHIP can be revoked using REVOKE OWNERSHIP.",
+      "OWNERSHIP can only be removed by dropping the object.",
+      "OWNERSHIP cannot be revoked directly; it must be transferred to another role using GRANT OWNERSHIP.",
+      "OWNERSHIP is automatically revoked when SELECT is revoked."
+    ],
+    "answer": 2,
+    "time": 30
+  }
+,
+  
+  {
+    "q": "A user's primary role is TEST_ROLE, and CURRENT_SECONDARY_ROLES() returns {\"roles\":\"ANALYST_ROLE,TEST_ROLE\",\"value\":\"ALL\"}. Why can the user still access objects owned by ANALYST_ROLE?",
+    "options": [
+      "Because privileges from active secondary roles are also available in the session.",
+      "Because TEST_ROLE automatically inherits all privileges from ANALYST_ROLE.",
+      "Because every role has ACCOUNTADMIN privileges by default.",
+      "Because Snowflake ignores the primary role when executing queries."
+    ],
+    "answer": 0,
+    "time": 30
+  },
+  {
+    "q": "Which SQL statement disables all secondary roles in the current Snowflake session?",
+    "options": [
+      "USE ROLE NONE;",
+      "DISABLE SECONDARY ROLES;",
+      "USE SECONDARY ROLES NONE;",
+      "SET SECONDARY ROLE NONE;"
+    ],
+    "answer": 2,
+    "time": 25
+  },
+  {
+    "q": "Which SQL statement enables all granted secondary roles in the current Snowflake session?",
+    "options": [
+      "USE SECONDARY ROLES ALL;",
+      "ENABLE ALL ROLES;",
+      "USE ROLE ALL;",
+      "SET SECONDARY ROLES ALL;"
+    ],
+    "answer": 0,
+    "time": 25
+  },
+  {
+    "q": "Which function returns the active primary role in the current Snowflake session?",
+    "options": [
+      "CURRENT_USER();",
+      "CURRENT_ROLE();",
+      "CURRENT_SECONDARY_ROLES();",
+      "SHOW ROLES;"
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "Which function returns the active secondary roles in the current Snowflake session?",
+    "options": [
+      "CURRENT_ROLE();",
+      "SHOW SECONDARY ROLES;",
+      "CURRENT_SECONDARY_ROLES();",
+      "CURRENT_AVAILABLE_ROLES();"
+    ],
+    "answer": 2,
+    "time": 20
+  },
+  {
+    "q": "When secondary roles are enabled using USE SECONDARY ROLES ALL, which privileges are considered during authorization?",
+    "options": [
+      "Only the primary role's privileges.",
+      "Only the PUBLIC role's privileges.",
+      "The privileges of the primary role and all active secondary roles.",
+      "Only ACCOUNTADMIN privileges."
+    ],
+    "answer": 2,
+    "time": 30
+  }
+,
+
+  {
+    "q": "Which statement correctly transfers ownership of the SALES_DB.PUBLIC.CUSTOMERS table to the TEST_ROLE role?",
+    "options": [
+      "REVOKE OWNERSHIP ON TABLE SALES_DB.PUBLIC.CUSTOMERS FROM ROLE ANALYST_ROLE;",
+      "GRANT OWNERSHIP ON TABLE SALES_DB.PUBLIC.CUSTOMERS TO ROLE TEST_ROLE;",
+      "ALTER OWNERSHIP ON TABLE SALES_DB.PUBLIC.CUSTOMERS TO ROLE TEST_ROLE;",
+      "TRANSFER OWNERSHIP ON TABLE SALES_DB.PUBLIC.CUSTOMERS TO ROLE TEST_ROLE;"
+    ],
+    "answer": 1,
+    "time": 30
+  },
+  {
+    "q": "Which statement about the OWNERSHIP privilege in Snowflake is correct?",
+    "options": [
+      "OWNERSHIP can be revoked using the REVOKE command.",
+      "A table can have multiple owners at the same time.",
+      "OWNERSHIP cannot be revoked directly; it must be transferred to another role.",
+      "OWNERSHIP is automatically assigned to the PUBLIC role."
+    ],
+    "answer": 2,
+    "time": 25
+  },
+  {
+    "q": "Why does Snowflake not allow the OWNERSHIP privilege to be revoked?",
+    "options": [
+      "Because OWNERSHIP is inherited from the database.",
+      "Because every securable object must always have exactly one owner.",
+      "Because only ACCOUNTADMIN can own objects.",
+      "Because OWNERSHIP is the same as the SELECT privilege."
+    ],
+    "answer": 1,
+    "time": 30
+  },
+  {
+    "q": "Which clause can be used when transferring ownership to automatically revoke all existing dependent grants?",
+    "options": [
+      "REMOVE CURRENT GRANTS",
+      "DELETE CURRENT GRANTS",
+      "REVOKE CURRENT GRANTS",
+      "DROP CURRENT GRANTS"
+    ],
+    "answer": 2,
+    "time": 25
+  },
+  {
+    "q": "Which command can be used to verify the current owner of a table in Snowflake?",
+    "options": [
+      "SHOW TABLE OWNER SALES_DB.PUBLIC.CUSTOMERS;",
+      "SHOW GRANTS ON TABLE SALES_DB.PUBLIC.CUSTOMERS;",
+      "SHOW OWNERSHIP ON TABLE SALES_DB.PUBLIC.CUSTOMERS;",
+      "DESCRIBE OWNER SALES_DB.PUBLIC.CUSTOMERS;"
+    ],
+    "answer": 1,
+    "time": 25
+  }
+,
+    
+  {
+    "q": "A user's primary role is TEST_ROLE, and CURRENT_SECONDARY_ROLES() returns {\"roles\":\"ANALYST_ROLE,TEST_ROLE\",\"value\":\"ALL\"}. Why can the user still access objects owned by ANALYST_ROLE?",
+    "options": [
+      "Because privileges from active secondary roles are also available in the session.",
+      "Because TEST_ROLE automatically inherits all privileges from ANALYST_ROLE.",
+      "Because every role has ACCOUNTADMIN privileges by default.",
+      "Because Snowflake ignores the primary role when executing queries."
+    ],
+    "answer": 0,
+    "time": 30
+  },
+  {
+    "q": "Which SQL statement disables all secondary roles in the current Snowflake session?",
+    "options": [
+      "USE ROLE NONE;",
+      "DISABLE SECONDARY ROLES;",
+      "USE SECONDARY ROLES NONE;",
+      "SET SECONDARY ROLE NONE;"
+    ],
+    "answer": 2,
+    "time": 25
+  },
+  {
+    "q": "Which SQL statement enables all granted secondary roles in the current Snowflake session?",
+    "options": [
+      "USE SECONDARY ROLES ALL;",
+      "ENABLE ALL ROLES;",
+      "USE ROLE ALL;",
+      "SET SECONDARY ROLES ALL;"
+    ],
+    "answer": 0,
+    "time": 25
+  },
+  {
+    "q": "Which function returns the active primary role in the current Snowflake session?",
+    "options": [
+      "CURRENT_USER();",
+      "CURRENT_ROLE();",
+      "CURRENT_SECONDARY_ROLES();",
+      "SHOW ROLES;"
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "Which function returns the active secondary roles in the current Snowflake session?",
+    "options": [
+      "CURRENT_ROLE();",
+      "SHOW SECONDARY ROLES;",
+      "CURRENT_SECONDARY_ROLES();",
+      "CURRENT_AVAILABLE_ROLES();"
+    ],
+    "answer": 2,
+    "time": 20
+  },
+  {
+    "q": "When secondary roles are enabled using USE SECONDARY ROLES ALL, which privileges are considered during authorization?",
+    "options": [
+      "Only the primary role's privileges.",
+      "Only the PUBLIC role's privileges.",
+      "The privileges of the primary role and all active secondary roles.",
+      "Only ACCOUNTADMIN privileges."
+    ],
+    "answer": 2,
+    "time": 30
+  }
+,
+  
   {
     "q": "In a Snowflake environment, which keyword combination allows a data engineer to automatically generate a sequence of incremental integer keys when establishing a new Dimension Table layout?",
     "options": [
