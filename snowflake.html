@@ -3436,6 +3436,62 @@ let originalQuestions = [
     "level": "Medium"
   },
   {
+    "q": "What is the smallest physical storage unit in Snowflake?",
+    "options": [
+      "Table",
+      "Schema",
+      "Micro-partition",
+      "Warehouse"
+    ],
+    "answer": 2,
+    "time": 20
+  },
+  {
+    "q": "Who creates micro-partitions in Snowflake?",
+    "options": [
+      "Database Administrator",
+      "Developer",
+      "Snowflake automatically",
+      "System Administrator"
+    ],
+    "answer": 2,
+    "time": 20
+  },
+  {
+    "q": "Approximately how much uncompressed data does a micro-partition store?",
+    "options": [
+      "5 MB - 50 MB",
+      "50 MB - 500 MB",
+      "500 MB - 5 GB",
+      "10 GB - 20 GB"
+    ],
+    "answer": 1,
+    "time": 25
+  },
+  {
+    "q": "Can users manually create or manage micro-partitions?",
+    "options": [
+      "Yes",
+      "Only ACCOUNTADMIN can",
+      "No",
+      "Only SYSADMIN can"
+    ],
+    "answer": 2,
+    "time": 20
+  },
+  {
+    "q": "What is the primary purpose of micro-partitions?",
+    "options": [
+      "Increase storage size",
+      "Improve query performance",
+      "Replace warehouses",
+      "Reduce users"
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  
+  {
     "q": "Which Snowflake feature can return query results faster by reusing previously computed data instead of re-executing the query?",
     "options": [
       "Caching",
@@ -3496,6 +3552,319 @@ let originalQuestions = [
     "level": "Medium"
   }
 ,
+  {
+    "q": "Which metadata is NOT stored for a micro-partition?",
+    "options": [
+      "Minimum value",
+      "Maximum value",
+      "NULL count",
+      "Primary Key"
+    ],
+    "answer": 3,
+    "time": 25
+  },
+  {
+    "q": "Which metadata helps Snowflake skip unnecessary micro-partitions?",
+    "options": [
+      "Warehouse size",
+      "Min/Max values",
+      "User role",
+      "Database name"
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "What is Partition Pruning?",
+    "options": [
+      "Deleting partitions",
+      "Skipping unnecessary micro-partitions during query execution",
+      "Compressing tables",
+      "Creating indexes"
+    ],
+    "answer": 1,
+    "time": 25
+  },
+  {
+    "q": "Partition pruning mainly improves which aspect?",
+    "options": [
+      "Storage Cost",
+      "Network Speed",
+      "Query Performance",
+      "Authentication"
+    ],
+    "answer": 2,
+    "time": 20
+  },
+  {
+    "q": "Snowflake uses ________ to decide which micro-partitions should be scanned.",
+    "options": [
+      "Indexes",
+      "Metadata",
+      "Primary Keys",
+      "Foreign Keys"
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "Does Snowflake require users to define partition keys?",
+    "options": [
+      "Yes",
+      "Only for large tables",
+      "No",
+      "Only for clustered tables"
+    ],
+    "answer": 2,
+    "time": 20
+  },
+  {
+    "q": "What happens when new data is inserted into a table?",
+    "options": [
+      "Existing micro-partitions are modified",
+      "A new micro-partition is created",
+      "Table is recreated",
+      "Warehouse restarts"
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "What happens when an UPDATE statement is executed?",
+    "options": [
+      "Existing micro-partition is updated",
+      "Rows are updated in place",
+      "New micro-partitions are created",
+      "Only metadata changes"
+    ],
+    "answer": 2,
+    "time": 25
+  },
+  {
+    "q": "What happens to old micro-partitions after an UPDATE?",
+    "options": [
+      "Deleted immediately",
+      "Marked obsolete",
+      "Merged automatically",
+      "Archived manually"
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "DELETE operations create new micro-partitions.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer": 0,
+    "time": 15
+  },
+  {
+    "q": "MERGE operations create new micro-partitions.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer": 0,
+    "time": 15
+  },
+  {
+    "q": "Micro-partitions in Snowflake are ________.",
+    "options": [
+      "Mutable",
+      "Editable",
+      "Immutable",
+      "Temporary"
+    ],
+    "answer": 2,
+    "time": 20
+  },
+  {
+    "q": "Why are micro-partitions immutable?",
+    "options": [
+      "To support Time Travel and Fail-safe",
+      "To increase storage cost",
+      "To reduce warehouses",
+      "To create indexes"
+    ],
+    "answer": 0,
+    "time": 25
+  },
+  {
+    "q": "Can the value ranges of two micro-partitions overlap?",
+    "options": [
+      "Yes",
+      "No"
+    ],
+    "answer": 0,
+    "time": 15
+  },
+  {
+    "q": "Why can micro-partitions overlap?",
+    "options": [
+      "Because Snowflake creates them based on data load order",
+      "Because users define them",
+      "Because indexes overlap",
+      "Because warehouses are shared"
+    ],
+    "answer": 0,
+    "time": 25
+  },
+  {
+    "q": "What feature reorganizes data to improve partition pruning?",
+    "options": [
+      "Warehouse Scaling",
+      "Clustering",
+      "Replication",
+      "Streams"
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "Which statement creates a clustering key?",
+    "options": [
+      "PARTITION BY (ORDER_DATE)",
+      "CLUSTER BY (ORDER_DATE)",
+      "INDEX BY (ORDER_DATE)",
+      "SORT BY (ORDER_DATE)"
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "When should clustering keys be considered?",
+    "options": [
+      "For every table",
+      "Only for very large tables with frequent filtering",
+      "Only for temporary tables",
+      "Never"
+    ],
+    "answer": 1,
+    "time": 25
+  },
+  {
+    "q": "Which function provides clustering information?",
+    "options": [
+      "SYSTEM$CLUSTERING_INFORMATION()",
+      "SYSTEM$PARTITION_INFO()",
+      "SHOW CLUSTERING",
+      "DESCRIBE CLUSTER"
+    ],
+    "answer": 0,
+    "time": 25
+  },
+  {
+    "q": "Which statement correctly retrieves clustering information?",
+    "options": [
+      "SELECT SYSTEM$CLUSTERING_INFORMATION('SALES');",
+      "SHOW CLUSTER SALES;",
+      "DESCRIBE CLUSTER SALES;",
+      "SELECT CLUSTER_INFO('SALES');"
+    ],
+    "answer": 0,
+    "time": 30
+  },
+  {
+    "q": "Snowflake primarily replaces traditional indexes with which feature?",
+    "options": [
+      "Primary Keys",
+      "Micro-partitions and metadata",
+      "Views",
+      "Streams"
+    ],
+    "answer": 1,
+    "time": 25
+  },
+  {
+    "q": "Which operation benefits the most from partition pruning?",
+    "options": [
+      "SELECT with WHERE clause",
+      "CREATE USER",
+      "CREATE DATABASE",
+      "ALTER WAREHOUSE"
+    ],
+    "answer": 0,
+    "time": 20
+  },
+  {
+    "q": "A query filters ORDER_DATE='2026-06-01'. What helps Snowflake scan fewer micro-partitions?",
+    "options": [
+      "Primary Key",
+      "Partition Pruning",
+      "Warehouse Auto Suspend",
+      "Masking Policy"
+    ],
+    "answer": 1,
+    "time": 30
+  },
+  {
+    "q": "Which SQL operation does NOT create new micro-partitions?",
+    "options": [
+      "INSERT",
+      "UPDATE",
+      "DELETE",
+      "None of the above"
+    ],
+    "answer": 3,
+    "time": 25
+  },
+  {
+    "q": "Which of the following is NOT an advantage of micro-partitions?",
+    "options": [
+      "Automatic management",
+      "Improved query performance",
+      "Manual partition maintenance",
+      "Partition pruning"
+    ],
+    "answer": 2,
+    "time": 25
+  },
+  {
+    "q": "Which metadata is commonly stored for every micro-partition?",
+    "options": [
+      "Min value, Max value, Row count, Distinct values, NULL count",
+      "Only Primary Keys",
+      "Only Foreign Keys",
+      "Warehouse configuration"
+    ],
+    "answer": 0,
+    "time": 30
+  },
+  {
+    "q": "What is one major benefit of retaining obsolete micro-partitions?",
+    "options": [
+      "Supports Time Travel",
+      "Improves Warehouse Size",
+      "Reduces Users",
+      "Creates Indexes"
+    ],
+    "answer": 0,
+    "time": 25
+  },
+  {
+    "q": "If a table contains 1,000 micro-partitions and only 8 are scanned for a query, what Snowflake optimization is being used?",
+    "options": [
+      "Replication",
+      "Partition Pruning",
+      "Search Optimization",
+      "Data Sharing"
+    ],
+    "answer": 1,
+    "time": 30
+  },
+  {
+    "q": "Why does Snowflake not require traditional indexes for most queries?",
+    "options": [
+      "Because it uses warehouses",
+      "Because it uses micro-partition metadata and partition pruning",
+      "Because every table is cached",
+      "Because all data is stored in memory"
+    ],
+    "answer": 1,
+    "time": 30
+  },
   {
     "q": "A data engineer logs into Snowsight to upload a CSV file but notices that the 'Create Table from File' and 'Load Data' options are completely missing from the interface. What is the most likely cause of this issue?",
     "options": [
