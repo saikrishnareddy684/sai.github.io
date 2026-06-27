@@ -2013,6 +2013,199 @@ let originalQuestions = [
     "answer": 2,
     "time": 20
   },
+  
+  {
+    "q": "Which SQL statement correctly creates a function named DOUBLE_VALUE that accepts a NUMBER and returns its double?",
+    "options": [
+      "CREATE FUNCTION DOUBLE_VALUE(NUM NUMBER) RETURNS NUMBER AS $$ NUM * 2 $$;",
+      "CREATE PROCEDURE DOUBLE_VALUE(NUM NUMBER) RETURNS NUMBER AS $$ NUM * 2 $$;",
+      "CREATE FUNCTION DOUBLE_VALUE(NUM NUMBER) RETURN NUMBER AS $$ NUM * 2 $$;",
+      "CREATE FUNCTION DOUBLE_VALUE(NUM NUMBER) AS $$ NUM * 2 $$;"
+    ],
+    "answer": 0,
+    "time": 30
+  },
+  {
+    "q": "How do you execute a user-defined function named DOUBLE_VALUE in Snowflake?",
+    "options": [
+      "CALL DOUBLE_VALUE(10);",
+      "EXEC DOUBLE_VALUE(10);",
+      "SELECT DOUBLE_VALUE(10);",
+      "RUN DOUBLE_VALUE(10);"
+    ],
+    "answer": 2,
+    "time": 20
+  },
+  {
+    "q": "Which Snowflake object returns a value and can be used inside a SELECT statement?",
+    "options": [
+      "Procedure",
+      "Task",
+      "Function",
+      "Warehouse"
+    ],
+    "answer": 2,
+    "time": 20
+  },
+  {
+    "q": "Which of the following is a valid use of a Snowflake function?",
+    "options": [
+      "SELECT BONUS(SALARY) FROM EMPLOYEE;",
+      "CALL BONUS(SALARY);",
+      "EXEC BONUS(SALARY);",
+      "RUN BONUS(SALARY);"
+    ],
+    "answer": 0,
+    "time": 20
+  },
+  {
+    "q": "Which statement best describes a Snowflake function?",
+    "options": [
+      "A function performs administrative tasks and is executed using CALL.",
+      "A function returns a value and can be used within SQL expressions.",
+      "A function creates warehouses automatically.",
+      "A function schedules SQL execution."
+    ],
+    "answer": 1,
+    "time": 25
+  },
+  
+  {
+    "q": "Which keyword is used to define the logic of a SQL user-defined function in Snowflake?",
+    "options": [
+      "BEGIN...END",
+      "AS",
+      "BODY",
+      "DECLARE"
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "What will the following query return if the function BONUS(SALARY) returns 10% of the salary?\n\nSELECT BONUS(50000);",
+    "options": [
+      "500",
+      "5000",
+      "50000",
+      "55000"
+    ],
+    "answer": 1,
+    "time": 20
+  }
+  ,
+  
+  {
+    "q": "What is the purpose of the $$ delimiter in a Snowflake function or procedure?",
+    "options": [
+      "It defines the function parameters.",
+      "It marks the beginning and end of the function or procedure body.",
+      "It specifies the return data type.",
+      "It commits the transaction automatically."
+    ],
+    "answer": 1,
+    "time": 25
+  },
+  {
+    "q": "Can a Snowflake SQL user-defined function return a STRING value?",
+    "options": [
+      "Yes, by specifying RETURNS STRING.",
+      "No, functions can only return NUMBER values.",
+      "Only if LANGUAGE JAVASCRIPT is used.",
+      "Only procedures can return strings."
+    ],
+    "answer": 0,
+    "time": 20
+  },
+  {
+    "q": "Which clause specifies the return data type of a Snowflake function?",
+    "options": [
+      "RETURN",
+      "OUTPUT",
+      "RETURNS",
+      "RESULT"
+    ],
+    "answer": 2,
+    "time": 20
+  },
+  {
+    "q": "Which SQL statement is used to execute a Snowflake user-defined function named GREETING?",
+    "options": [
+      "CALL GREETING('Sai');",
+      "EXEC GREETING('Sai');",
+      "SELECT GREETING('Sai');",
+      "RUN GREETING('Sai');"
+    ],
+    "answer": 2,
+    "time": 20
+  },
+  {
+    "q": "Which SQL statement is used to execute a stored procedure named INSERT_CUSTOMER?",
+    "options": [
+      "SELECT INSERT_CUSTOMER();",
+      "CALL INSERT_CUSTOMER();",
+      "EXEC INSERT_CUSTOMER();",
+      "RUN INSERT_CUSTOMER();"
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "Which Snowflake object can execute INSERT, UPDATE, DELETE, and other SQL statements?",
+    "options": [
+      "Function",
+      "Warehouse",
+      "Procedure",
+      "View"
+    ],
+    "answer": 2,
+    "time": 20
+  },
+  {
+    "q": "Which of the following operations can a SQL user-defined function perform?",
+    "options": [
+      "INSERT rows into a table",
+      "UPDATE existing records",
+      "Return a computed value for use in SQL expressions",
+      "DELETE rows from a table"
+    ],
+    "answer": 2,
+    "time": 25
+  },
+  {
+    "q": "Which object is best suited for implementing business logic that inserts data into multiple tables?",
+    "options": [
+      "Function",
+      "View",
+      "Procedure",
+      "Stage"
+    ],
+    "answer": 2,
+    "time": 25
+  },
+  {
+    "q": "Which of the following statements correctly creates a function that returns a STRING value?",
+    "options": [
+      "CREATE FUNCTION GREETING(NAME STRING) RETURNS STRING AS $$ CONCAT('Hello ', NAME) $$;",
+      "CREATE PROCEDURE GREETING(NAME STRING) RETURNS STRING AS $$ CONCAT('Hello ', NAME) $$;",
+      "CREATE FUNCTION GREETING(NAME STRING) RETURN STRING AS $$ CONCAT('Hello ', NAME) $$;",
+      "CREATE FUNCTION GREETING(NAME STRING) AS $$ CONCAT('Hello ', NAME) $$;"
+    ],
+    "answer": 0,
+    "time": 30
+  },
+  {
+    "q": "Which statement best describes the difference between a Snowflake function and a stored procedure?",
+    "options": [
+      "Functions are called using CALL, while procedures are called using SELECT.",
+      "Functions return values for use in SQL expressions, while procedures perform actions such as INSERT, UPDATE, and DELETE.",
+      "Functions can modify table data, while procedures cannot.",
+      "There is no difference between a function and a procedure in Snowflake."
+    ],
+    "answer": 1,
+    "time": 30
+  }
+
+,
   {
     "q": "Which Snowflake object tracks data changes (INSERT, UPDATE, DELETE) for Change Data Capture (CDC)?",
     "options": [
@@ -2124,6 +2317,17 @@ let originalQuestions = [
   "time": 25
 },
   {
+    "q": "What is the primary purpose of a Task in Snowflake?",
+    "options": [
+      "To track changes made to a table",
+      "To schedule and automate SQL statements or stored procedures",
+      "To store files in internal stages",
+      "To create virtual warehouses"
+    ],
+    "answer": 1,
+    "time": 25
+  },
+  {
   "q": "A user is granted two roles, ANALYST_ROLE and ENGINEER_ROLE. How many primary roles can be active at a time in a Snowflake session?",
   "options": [
     "Both roles are active simultaneously",
@@ -2134,7 +2338,105 @@ let originalQuestions = [
   "answer": 1,
   "time": 20
 },
-  
+  {
+    "q": "What is the primary purpose of a Stream in Snowflake?",
+    "options": [
+      "To schedule SQL execution",
+      "To track data changes (INSERT, UPDATE, DELETE) on a table",
+      "To store semi-structured data",
+      "To create virtual warehouses"
+    ],
+    "answer": 1,
+    "time": 25
+  },
+  {
+    "q": "Which combination is commonly used in Snowflake ETL pipelines?",
+    "options": [
+      "Warehouse → Function → View",
+      "Task → Stream → Procedure",
+      "Procedure → Stage → Warehouse",
+      "View → Function → Warehouse"
+    ],
+    "answer": 1,
+    "time": 25
+  },
+  {
+    "q": "Why is the LANGUAGE SQL clause specified when creating a stored procedure?",
+    "options": [
+      "To define the warehouse used by the procedure",
+      "To specify that the procedure body is written using SQL",
+      "To enable automatic scheduling",
+      "To define the procedure owner"
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "A stored procedure is declared with RETURNS STRING. Which statement is required inside the procedure?",
+    "options": [
+      "OUTPUT 'Completed';",
+      "PRINT 'Completed';",
+      "RETURN 'Completed';",
+      "RESULT 'Completed';"
+    ],
+    "answer": 2,
+    "time": 20
+  },
+  {
+    "q": "What is the primary purpose of the QUALIFY clause in Snowflake?",
+    "options": [
+      "To filter grouped rows after GROUP BY",
+      "To filter the results of window functions",
+      "To sort query results",
+      "To limit the number of returned rows"
+    ],
+    "answer": 1,
+    "time": 25
+  },
+   {
+    "q": "Which window function is most commonly used with QUALIFY to retrieve the highest-paid employee in each department?",
+    "options": [
+      "COUNT()",
+      "SUM()",
+      "ROW_NUMBER()",
+      "AVG()"
+    ],
+    "answer": 2,
+    "time": 25
+  },
+   {
+    "q": "Which query returns the employee with the highest salary in each department?",
+    "options": [
+      "SELECT * FROM EMPLOYEE QUALIFY ROW_NUMBER() OVER (PARTITION BY DEPARTMENT ORDER BY SALARY DESC) = 1;",
+      "SELECT * FROM EMPLOYEE WHERE ROW_NUMBER() = 1;",
+      "SELECT * FROM EMPLOYEE HAVING ROW_NUMBER() = 1;",
+      "SELECT * FROM EMPLOYEE GROUP BY DEPARTMENT;"
+    ],
+    "answer": 0,
+    "time": 30
+  },
+  {
+    "q": "Which window functions are commonly used with the QUALIFY clause in Snowflake?",
+    "options": [
+      "COUNT(), SUM(), AVG()",
+      "ROW_NUMBER(), RANK(), DENSE_RANK()",
+      "MIN(), MAX(), AVG()",
+      "ABS(), ROUND(), CEIL()"
+    ],
+    "answer": 1,
+    "time": 25
+  },
+   {
+    "q": "Which of the following is a valid use case for a Snowflake Stream?",
+    "options": [
+      "Automatically running a stored procedure every night",
+      "Tracking new, updated, and deleted rows for incremental data processing",
+      "Creating a virtual warehouse",
+      "Managing user roles and privileges"
+    ],
+    "answer": 1,
+    "time": 30
+  },
   {
     "q": "After granting USAGE on a database to a role, what additional privilege is required before users can access objects inside the database?",
     "options": [
@@ -2427,19 +2729,6 @@ let originalQuestions = [
     "time": 30
   },
   {
-    "q": "A role has OWNERSHIP on a table. Which of the following operations can it perform?",
-    "options": [
-      "SELECT only",
-      "SELECT, INSERT, UPDATE, DELETE only",
-      "DROP and ALTER only",
-      "SELECT, INSERT, UPDATE, DELETE, ALTER, DROP, and GRANT privileges"
-    ],
-    "answer": 3,
-    "time": 30
-  }
-,
-
-  {
   "q": "A user receives the error: 'Insufficient privileges to operate on schema PUBLIC. Your primary role ANALYST_ROLE must have CREATE TABLE granted on SCHEMA SALES_DB.PUBLIC.' Which privilege is missing?",
   "options": [
     "CREATE TABLE on the schema",
@@ -2464,17 +2753,6 @@ let originalQuestions = [
 },
 
 
-  {
-    "q": "Who automatically becomes the owner of a newly created table in Snowflake?",
-    "options": [
-      "The ACCOUNTADMIN role",
-      "The user who logs into Snowflake",
-      "The active role (CURRENT_ROLE) that creates the table",
-      "The SYSADMIN role"
-    ],
-    "answer": 2,
-    "time": 25
-  },
   {
     "q": "Which statement best describes object ownership in Snowflake?",
     "options": [
@@ -2574,18 +2852,7 @@ let originalQuestions = [
     "answer": 2,
     "time": 25
   },
-  {
-    "q": "Which statement about the OWNERSHIP privilege is correct?",
-    "options": [
-      "OWNERSHIP can be revoked using REVOKE OWNERSHIP.",
-      "OWNERSHIP can only be removed by dropping the object.",
-      "OWNERSHIP cannot be revoked directly; it must be transferred to another role using GRANT OWNERSHIP.",
-      "OWNERSHIP is automatically revoked when SELECT is revoked."
-    ],
-    "answer": 2,
-    "time": 30
-  }
-,
+  
   
   {
     "q": "A user's primary role is TEST_ROLE, and CURRENT_SECONDARY_ROLES() returns {\"roles\":\"ANALYST_ROLE,TEST_ROLE\",\"value\":\"ALL\"}. Why can the user still access objects owned by ANALYST_ROLE?",
@@ -2711,75 +2978,260 @@ let originalQuestions = [
     "time": 25
   }
 ,
-    
-  {
-    "q": "A user's primary role is TEST_ROLE, and CURRENT_SECONDARY_ROLES() returns {\"roles\":\"ANALYST_ROLE,TEST_ROLE\",\"value\":\"ALL\"}. Why can the user still access objects owned by ANALYST_ROLE?",
+    {
+    "q": "Which SQL statement correctly creates a stream on the CUSTOMERS table?",
     "options": [
-      "Because privileges from active secondary roles are also available in the session.",
-      "Because TEST_ROLE automatically inherits all privileges from ANALYST_ROLE.",
-      "Because every role has ACCOUNTADMIN privileges by default.",
-      "Because Snowflake ignores the primary role when executing queries."
+      "CREATE STREAM CUSTOMER_STREAM ON TABLE CUSTOMERS;",
+      "CREATE STREAM CUSTOMER_STREAM FROM CUSTOMERS;",
+      "CREATE CHANGE STREAM CUSTOMER_STREAM ON CUSTOMERS;",
+      "CREATE STREAM ON TABLE CUSTOMERS AS CUSTOMER_STREAM;"
+    ],
+    "answer": 0,
+    "time": 25
+  },
+   {
+    "q": "Which SQL statement is used to read the changes captured by a Snowflake stream named CUSTOMER_STREAM?",
+    "options": [
+      "SELECT * FROM CUSTOMER_STREAM;",
+      "SHOW STREAM CUSTOMER_STREAM;",
+      "CALL CUSTOMER_STREAM();",
+      "READ STREAM CUSTOMER_STREAM;"
+    ],
+    "answer": 0,
+    "time": 20
+  },
+  {
+    "q": "Which SQL statement correctly creates a task that executes every 5 minutes?",
+    "options": [
+      "CREATE TASK LOAD_TASK WAREHOUSE=COMPUTE_WH SCHEDULE='5 MINUTE' AS CALL LOAD_CUSTOMERS();",
+      "CREATE TASK LOAD_TASK SCHEDULE='EVERY 5 MINUTES' AS CALL LOAD_CUSTOMERS();",
+      "CREATE TASK LOAD_TASK WAREHOUSE=COMPUTE_WH EVERY 5 MINUTE AS CALL LOAD_CUSTOMERS();",
+      "CREATE TASK LOAD_TASK RUN EVERY 5 MINUTE AS CALL LOAD_CUSTOMERS();"
     ],
     "answer": 0,
     "time": 30
   },
   {
-    "q": "Which SQL statement disables all secondary roles in the current Snowflake session?",
+    "q": "Which SQL statement resumes a suspended Snowflake task?",
     "options": [
-      "USE ROLE NONE;",
-      "DISABLE SECONDARY ROLES;",
-      "USE SECONDARY ROLES NONE;",
-      "SET SECONDARY ROLE NONE;"
-    ],
-    "answer": 2,
-    "time": 25
-  },
-  {
-    "q": "Which SQL statement enables all granted secondary roles in the current Snowflake session?",
-    "options": [
-      "USE SECONDARY ROLES ALL;",
-      "ENABLE ALL ROLES;",
-      "USE ROLE ALL;",
-      "SET SECONDARY ROLES ALL;"
-    ],
-    "answer": 0,
-    "time": 25
-  },
-  {
-    "q": "Which function returns the active primary role in the current Snowflake session?",
-    "options": [
-      "CURRENT_USER();",
-      "CURRENT_ROLE();",
-      "CURRENT_SECONDARY_ROLES();",
-      "SHOW ROLES;"
+      "START TASK LOAD_TASK;",
+      "ALTER TASK LOAD_TASK RESUME;",
+      "RESUME TASK LOAD_TASK;",
+      "ENABLE TASK LOAD_TASK;"
     ],
     "answer": 1,
     "time": 20
   },
   {
-    "q": "Which function returns the active secondary roles in the current Snowflake session?",
+    "q": "Which SQL statement suspends a running Snowflake task?",
     "options": [
-      "CURRENT_ROLE();",
-      "SHOW SECONDARY ROLES;",
-      "CURRENT_SECONDARY_ROLES();",
-      "CURRENT_AVAILABLE_ROLES();"
+      "ALTER TASK LOAD_TASK SUSPEND;",
+      "STOP TASK LOAD_TASK;",
+      "DISABLE TASK LOAD_TASK;",
+      "SUSPEND TASK LOAD_TASK;"
+    ],
+    "answer": 0,
+    "time": 20
+  },
+  {
+    "q": "Which SQL statement displays the execution history of Snowflake tasks?",
+    "options": [
+      "SHOW TASK HISTORY;",
+      "SELECT * FROM TABLE(INFORMATION_SCHEMA.TASK_HISTORY());",
+      "SHOW HISTORY TASK;",
+      "SELECT * FROM TASK_HISTORY;"
+    ],
+    "answer": 1,
+    "time": 25
+  },
+   {
+    "q": "Which clause is used to specify the programming language of a Snowflake stored procedure?",
+    "options": [
+      "USING SQL",
+      "LANGUAGE SQL",
+      "AS SQL",
+      "EXECUTE SQL"
+    ],
+    "answer": 1,
+    "time": 20
+  },
+    {
+    "q": "Which SQL statement correctly returns only the highest-paid employee from each department using QUALIFY?",
+    "options": [
+      "SELECT * FROM EMPLOYEE QUALIFY ROW_NUMBER() OVER(PARTITION BY DEPARTMENT ORDER BY SALARY DESC)=1;",
+      "SELECT * FROM EMPLOYEE WHERE ROW_NUMBER()=1;",
+      "SELECT * FROM EMPLOYEE HAVING ROW_NUMBER()=1;",
+      "SELECT * FROM EMPLOYEE GROUP BY DEPARTMENT;"
+    ],
+    "answer": 0,
+    "time": 30
+  },
+  {
+    "q": "Which SQL query finds duplicate EMP_ID values using GROUP BY?",
+    "options": [
+      "SELECT EMP_ID, COUNT(*) FROM EMPLOYEE GROUP BY EMP_ID HAVING COUNT(*) > 1;",
+      "SELECT EMP_ID FROM EMPLOYEE WHERE COUNT(*) > 1;",
+      "SELECT DISTINCT EMP_ID FROM EMPLOYEE;",
+      "SELECT * FROM EMPLOYEE QUALIFY COUNT(*) > 1;"
+    ],
+    "answer": 0,
+    "time": 30
+  },
+  {
+    "q": "Which SQL query keeps only the latest record for each EMP_ID using QUALIFY?",
+    "options": [
+      "SELECT * FROM EMPLOYEE QUALIFY ROW_NUMBER() OVER(PARTITION BY EMP_ID ORDER BY UPDATED_DATE DESC)=1;",
+      "SELECT * FROM EMPLOYEE GROUP BY EMP_ID;",
+      "SELECT DISTINCT EMP_ID FROM EMPLOYEE;",
+      "SELECT * FROM EMPLOYEE WHERE UPDATED_DATE = MAX(UPDATED_DATE);"
+    ],
+    "answer": 0,
+    "time": 30
+  },
+  {
+    "q": "Which SQL statement correctly creates a stored procedure that returns a table?",
+    "options": [
+      "CREATE PROCEDURE GET_CUSTOMERS() RETURNS TABLE(ID INT, NAME STRING) LANGUAGE SQL AS $$ DECLARE RES RESULTSET; BEGIN RES := (SELECT * FROM CUSTOMERS); RETURN TABLE(RES); END; $$;",
+      "CREATE FUNCTION GET_CUSTOMERS() RETURNS TABLE AS $$ SELECT * FROM CUSTOMERS; $$;",
+      "CREATE PROCEDURE GET_CUSTOMERS() RETURNS STRING AS $$ SELECT * FROM CUSTOMERS; $$;",
+      "CREATE PROCEDURE GET_CUSTOMERS() RETURNS RESULTSET AS $$ SELECT * FROM CUSTOMERS; $$;"
+    ],
+    "answer": 0,
+    "time": 40
+  },
+   {
+    "q": "Which Snowflake object records INSERT, UPDATE, and DELETE changes without executing any business logic?",
+    "options": [
+      "Task",
+      "Stream",
+      "Procedure",
+      "Function"
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "Which Snowflake object is primarily responsible for automatically executing SQL statements or stored procedures on a schedule?",
+    "options": [
+      "View",
+      "Function",
+      "Task",
+      "Stage"
+    ],
+    "answer": 2,
+    "time": 20
+  },
+
+  {
+    "q": "Which combination represents the most common Snowflake incremental ETL pipeline?",
+    "options": [
+      "Warehouse → Function → View",
+      "Task → Stream → Procedure",
+      "Procedure → Stage → Warehouse",
+      "View → Function → Warehouse"
+    ],
+    "answer": 1,
+    "time": 25
+  },
+  {
+    "q": "Why is the combination 'Task → Stream → Procedure' commonly used in Snowflake ETL pipelines?",
+    "options": [
+      "The Task captures changed rows, the Stream schedules execution, and the Procedure creates warehouses.",
+      "The Stream captures changed rows, the Procedure processes those changes, and the Task automates execution on a schedule.",
+      "The Procedure creates the Stream automatically, and the Task creates tables.",
+      "The Stream replaces the warehouse, and the Procedure schedules execution."
+    ],
+    "answer": 1,
+    "time": 35
+  },
+   {
+    "q": "What is the default state of a newly created Snowflake task?",
+    "options": [
+      "RUNNING",
+      "ACTIVE",
+      "SUSPENDED",
+      "PAUSED"
     ],
     "answer": 2,
     "time": 20
   },
   {
-    "q": "When secondary roles are enabled using USE SECONDARY ROLES ALL, which privileges are considered during authorization?",
+    "q": "A task has been created successfully but has never been resumed. What will happen at its scheduled time?",
     "options": [
-      "Only the primary role's privileges.",
-      "Only the PUBLIC role's privileges.",
-      "The privileges of the primary role and all active secondary roles.",
-      "Only ACCOUNTADMIN privileges."
+      "The task will execute once and then suspend itself.",
+      "The task will execute every time the schedule is reached.",
+      "The task will not execute until it is resumed.",
+      "The task will automatically resume after the first scheduled interval."
     ],
     "answer": 2,
+    "time": 25
+  },
+  {
+    "q": "A task is scheduled with SCHEDULE='1 MINUTE'. What does this mean?",
+    "options": [
+      "The task waits one minute after completing the previous execution before running again.",
+      "The scheduler attempts to start the task once every minute.",
+      "The task executes only one time after one minute.",
+      "The task remains active for one minute and then stops."
+    ],
+    "answer": 1,
     "time": 30
-  }
-,
-  
+  },
+  {
+    "q": "Why are Snowflake tasks created in the SUSPENDED state by default?",
+    "options": [
+      "To reduce warehouse costs permanently.",
+      "To allow users to verify the task definition before it begins executing.",
+      "Because Snowflake requires every task to be suspended.",
+      "To prevent procedures from returning values."
+    ],
+    "answer": 1,
+    "time": 30
+  },
+  {
+    "q": "Which of the following statements about a Snowflake Task is TRUE?",
+    "options": [
+      "A task can only execute stored procedures.",
+      "A task can execute either a SQL statement or a stored procedure.",
+      "A task can only execute SELECT statements.",
+      "A task cannot execute DML statements."
+    ],
+    "answer": 1,
+    "time": 25
+  },
+  {
+    "q": "Which of the following is a valid task definition that executes a SQL statement instead of a stored procedure?",
+    "options": [
+      "CREATE TASK LOAD_TASK WAREHOUSE=COMPUTE_WH SCHEDULE='5 MINUTE' AS INSERT INTO CUSTOMERS VALUES (100,'Sai');",
+      "CREATE TASK LOAD_TASK AS EXEC INSERT INTO CUSTOMERS;",
+      "CREATE TASK LOAD_TASK RUN INSERT INTO CUSTOMERS;",
+      "CREATE TASK LOAD_TASK EXECUTE INSERT INTO CUSTOMERS;"
+    ],
+    "answer": 0,
+    "time": 35
+  },
+  {
+    "q": "Which statement best describes the relationship between a Task and a Stored Procedure?",
+    "options": [
+      "A stored procedure schedules a task.",
+      "A task can invoke a stored procedure automatically according to its schedule.",
+      "A stored procedure automatically resumes a task.",
+      "A task is created inside a stored procedure."
+    ],
+    "answer": 1,
+    "time": 30
+  },
+  {
+    "q": "A company needs to calculate GST in hundreds of SQL reports. What is the most maintainable solution?",
+    "options": [
+      "Write the GST calculation separately in every query.",
+      "Create a User Defined Function (UDF) for the GST calculation and reuse it.",
+      "Create a separate warehouse for GST calculations.",
+      "Use a task to calculate GST."
+    ],
+    "answer": 1,
+    "time": 30
+  },
   {
     "q": "In a Snowflake environment, which keyword combination allows a data engineer to automatically generate a sequence of incremental integer keys when establishing a new Dimension Table layout?",
     "options": [
