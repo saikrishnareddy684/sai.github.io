@@ -3233,6 +3233,160 @@ let originalQuestions = [
     "time": 30
   },
   {
+    "q": "A company needs to calculate GST in hundreds of SQL reports. What is the most maintainable solution?",
+    "options": [
+      "Write the GST calculation separately in every query.",
+      "Create a User Defined Function (UDF) for the GST calculation and reuse it.",
+      "Create a separate warehouse for GST calculations.",
+      "Use a task to calculate GST."
+    ],
+    "answer": 1,
+    "time": 30
+  },
+   {
+    "q": "Which SQL query correctly finds duplicate CUSTOMER_ID values in the CUSTOMERS table?",
+    "options": [
+      "SELECT CUSTOMER_ID, COUNT(*) FROM CUSTOMERS GROUP BY CUSTOMER_ID HAVING COUNT(*) > 1;",
+      "SELECT DISTINCT CUSTOMER_ID FROM CUSTOMERS;",
+      "SELECT CUSTOMER_ID FROM CUSTOMERS WHERE COUNT(*) > 1;",
+      "SELECT CUSTOMER_ID FROM CUSTOMERS QUALIFY COUNT(*) > 1;"
+    ],
+    "answer": 0,
+    "time": 30
+  },
+  {
+    "q": "Which window function assigns a unique sequential number to each row within a partition, making it useful for removing duplicates?",
+    "options": [
+      "RANK()",
+      "DENSE_RANK()",
+      "ROW_NUMBER()",
+      "COUNT()"
+    ],
+    "answer": 2,
+    "time": 20
+  },
+  {
+    "q": "Which window function assigns the same rank to tied rows but skips the next rank value?",
+    "options": [
+      "ROW_NUMBER()",
+      "RANK()",
+      "DENSE_RANK()",
+      "NTILE()"
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "Which window function assigns the same rank to tied rows without skipping any rank values?",
+    "options": [
+      "ROW_NUMBER()",
+      "RANK()",
+      "DENSE_RANK()",
+      "LEAD()"
+    ],
+    "answer": 2,
+    "time": 20
+  },
+  {
+    "q": "Which SQL clause in Snowflake is commonly used with ROW_NUMBER() to keep only one record from each duplicate group?",
+    "options": [
+      "HAVING",
+      "WHERE",
+      "QUALIFY",
+      "ORDER BY"
+    ],
+    "answer": 2,
+    "time": 20
+  },
+  {
+    "q": "Which approach is generally preferred in Snowflake to remove duplicate rows while keeping the latest record?",
+    "options": [
+      "GROUP BY with HAVING",
+      "DISTINCT",
+      "ROW_NUMBER() with QUALIFY",
+      "ORDER BY"
+    ],
+    "answer": 2,
+    "time": 30
+  },
+  {
+    "q": "Which Snowflake data type is specifically designed to store key-value pairs?",
+    "options": [
+      "VARIANT",
+      "OBJECT",
+      "ARRAY",
+      "VARCHAR"
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "Which Snowflake timestamp data type stores timestamps without any time zone information?",
+    "options": [
+      "TIMESTAMP_LTZ",
+      "TIMESTAMP_TZ",
+      "TIMESTAMP_NTZ",
+      "DATE"
+    ],
+    "answer": 2,
+    "time": 20
+  },
+  {
+    "q": "Which Snowflake timestamp data type converts timestamps based on the session time zone?",
+    "options": [
+      "TIMESTAMP_LTZ",
+      "TIMESTAMP_NTZ",
+      "TIMESTAMP_TZ",
+      "TIME"
+    ],
+    "answer": 0,
+    "time": 25
+  },
+  {
+    "q": "Which Snowflake timestamp data type stores the timestamp together with its time zone offset?",
+    "options": [
+      "TIMESTAMP_LTZ",
+      "TIMESTAMP_NTZ",
+      "TIMESTAMP_TZ",
+      "DATETIME"
+    ],
+    "answer": 2,
+    "time": 25
+  },
+  {
+    "q": "Which Snowflake data type would you use to store TRUE or FALSE values?",
+    "options": [
+      "NUMBER",
+      "BOOLEAN",
+      "VARCHAR",
+      "BINARY"
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "Which of the following is NOT a semi-structured data type in Snowflake?",
+    "options": [
+      "VARIANT",
+      "OBJECT",
+      "ARRAY",
+      "VARCHAR"
+    ],
+    "answer": 3,
+    "time": 20
+  },
+  {
+    "q": "Which numeric data type is commonly used to store fixed-precision decimal values in Snowflake?",
+    "options": [
+      "FLOAT",
+      "NUMBER",
+      "BOOLEAN",
+      "STRING"
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
     "q": "In a Snowflake environment, which keyword combination allows a data engineer to automatically generate a sequence of incremental integer keys when establishing a new Dimension Table layout?",
     "options": [
       "MANUAL DEFRAGMENTATION DEFAULT 1",
