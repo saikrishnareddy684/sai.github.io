@@ -1093,7 +1093,205 @@ let originalQuestions = [
     "answer": 1,
     "time": 20
   }
-
+  ,{
+    "q": "Can DAX Studio import or store a Tabular model?",
+    "options": [
+      "Yes, it imports SSAS models",
+      "Yes, it creates a local copy of the model",
+      "No, it only connects to an existing Tabular model",
+      "Only for Power BI models"
+    ],
+    "answer": 2,
+    "time": 20
+  }
+  ,
+  {
+    "q": "What is the purpose of the Formula Engine in SSAS Tabular?",
+    "options": [
+      "Store compressed columnar data",
+      "Execute SQL queries",
+      "Evaluate DAX expressions and perform complex calculations",
+      "Manage database backups"
+    ],
+    "answer": 2,
+    "time": 20
+  },
+  {
+    "q": "Which engine evaluates functions such as CALCULATE(), FILTER(), SUMX(), and IF()?",
+    "options": [
+      "Storage Engine",
+      "Formula Engine",
+      "SQL Engine",
+      "Mashup Engine"
+    ],
+    "answer": 1,
+    "time": 20
+  },
+{
+    "q": "What is the primary responsibility of the Storage Engine?",
+    "options": [
+      "Evaluate DAX expressions",
+      "Read, scan, filter, and aggregate compressed VertiPaq data",
+      "Create measures",
+      "Deploy Tabular models"
+    ],
+    "answer": 1,
+    "time": 20
+  },
+   {
+    "q": "Where is compressed columnar data stored in an SSAS Tabular model?",
+    "options": [
+      "SQL Server Database Engine",
+      "VertiPaq Storage",
+      "Power Query",
+      "Visual Studio"
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "Which engine is primarily responsible for executing a simple measure such as SUM(Sales[SalesAmount])?",
+    "options": [
+      "Formula Engine",
+      "Storage Engine",
+      "Power Query Engine",
+      "SQL Server Agent"
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "When are both the Formula Engine and Storage Engine typically involved in query execution?",
+    "options": [
+      "Only when creating relationships",
+      "When executing complex DAX expressions such as FILTER() and SUMX()",
+      "Only while deploying the model",
+      "Only when processing partitions"
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "How can you enable Server Timings in DAX Studio?",
+    "options": [
+      "Home → Server Timings",
+      "Advanced → Export Data",
+      "Help → About",
+      "File → Open"
+    ],
+    "answer": 0,
+    "time": 20
+  },
+   {
+    "q": "What information does the Server Timings window display?",
+    "options": [
+      "SQL Server backup history",
+      "Formula Engine time, Storage Engine time, CPU time, and query duration",
+      "Database users",
+      "Relationship diagrams"
+    ],
+    "answer": 1,
+    "time": 20
+  },
+   {
+    "q": "Why might DAX Studio open File Explorer instead of displaying query results after executing a query?",
+    "options": [
+      "The Export Data feature was used instead of Run",
+      "The SSAS server is offline",
+      "The query contains syntax errors",
+      "The model is not processed"
+    ],
+    "answer": 0,
+    "time": 20
+  },
+  {
+    "q": "Which button should you use to display query results directly inside DAX Studio?",
+    "options": [
+      "Export Data",
+      "Run",
+      "Analyze in Excel",
+      "View Metrics"
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "Why is Live Connection recommended for enterprise SSAS Tabular models?",
+    "options": [
+      "It duplicates the semantic model in Power BI",
+      "It centralizes business logic in a single SSAS model",
+      "It removes the need for SSAS",
+      "It converts DAX to SQL automatically"
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "What happens when Power BI uses Import Mode instead of Live Connection?",
+    "options": [
+      "Power BI creates its own local semantic model",
+      "Power BI queries SSAS directly",
+      "No data is stored in Power BI",
+      "DAX Studio cannot connect"
+    ],
+    "answer": 0,
+    "time": 20
+  },
+  {
+    "q": "Which tool is commonly used to capture DAX queries sent from Power BI to an SSAS Tabular server?",
+    "options": [
+      "Visual Studio",
+      "SQL Server Profiler",
+      "Tabular Editor",
+      "Excel"
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "When using SQL Server Profiler with SSAS, which server type should you connect to?",
+    "options": [
+      "Database Engine",
+      "Reporting Services",
+      "Analysis Services",
+      "Integration Services"
+    ],
+    "answer": 2,
+    "time": 20
+  },
+  {
+    "q": "What does SQL Server Profiler capture when Power BI users interact with report visuals in Live Connection mode?",
+    "options": [
+      "SQL INSERT statements",
+      "The DAX queries executed against the SSAS Tabular model",
+      "Power Query M scripts",
+      "Visual Studio deployment scripts"
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "Why do BI developers use SQL Server Profiler with SSAS?",
+    "options": [
+      "To create measures",
+      "To deploy Tabular models",
+      "To capture and troubleshoot DAX queries generated by client tools",
+      "To create relationships"
+    ],
+    "answer": 2,
+    "time": 20
+  },
+  {
+    "q": "Which combination of tools is commonly used in an enterprise SSAS Tabular development workflow?",
+    "options": [
+      "Visual Studio for model development, Power BI for reporting, DAX Studio for query analysis, SQL Server Profiler for tracing",
+      "Excel for model development, SSMS for reporting, Visual Studio for tracing",
+      "Power Query for deployment, SQL Server Agent for DAX optimization",
+      "DAX Studio for model deployment and Visual Studio for report creation"
+    ],
+    "answer": 0,
+    "time": 20
+  }
 ];
 
 /* ----------------- STATE ----------------- */
