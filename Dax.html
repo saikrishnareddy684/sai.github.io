@@ -485,6 +485,615 @@ let originalQuestions = [
     "answer": 0,
     "time": 20
   }
+  ,
+  {
+    "q": "Why can DAX Studio connect to Power BI Desktop, SSAS Tabular, and Excel Power Pivot?",
+    "options": [
+      "They all use the same Tabular (VertiPaq) engine",
+      "They all use SQL Server Database Engine",
+      "They all use MDX only",
+      "They all store data in CSV files"
+    ],
+    "answer": 0,
+    "time": 20
+  },
+  {
+    "q": "Which application creates a local Analysis Services Tabular instance when a Power BI Desktop file is opened?",
+    "options": [
+      "Visual Studio",
+      "Power BI Desktop",
+      "SSMS",
+      "SQL Server Agent"
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "Which connection option should you select in DAX Studio to connect to an open Power BI Desktop model?",
+    "options": [
+      "Tabular Server",
+      "Azure Analysis Services",
+      "Power BI / PBI Model",
+      "Excel Workbook"
+    ],
+    "answer": 2,
+    "time": 20
+  },
+  {
+    "q": "What is required before DAX Studio can connect to Power BI Desktop?",
+    "options": [
+      "Power BI Service must be running",
+      "A PBIX file must be open",
+      "SQL Server Agent must be started",
+      "SSMS must be connected"
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "How does DAX Studio connect to an SSAS Tabular model?",
+    "options": [
+      "By connecting to the SQL Server Database Engine",
+      "By connecting to the SSAS server and selecting a deployed Tabular database",
+      "By importing the model into DAX Studio",
+      "By opening the Visual Studio solution"
+    ],
+    "answer": 1,
+    "time": 20
+  },
+   {
+    "q": "Which component must exist before DAX Studio can connect to an SSAS Tabular model?",
+    "options": [
+      "A deployed Tabular database",
+      "A SQL Server table",
+      "A Power BI report",
+      "An Excel workbook"
+    ],
+    "answer": 0,
+    "time": 20
+  },
+  {
+    "q": "How does DAX Studio connect to Excel?",
+    "options": [
+      "It connects to the Excel worksheet",
+      "It connects to the Power Pivot Tabular model running inside Excel",
+      "It connects to SQL Server",
+      "It connects through SSMS"
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "What DAX statement is required to return a table in DAX Studio?",
+    "options": [
+      "SELECT",
+      "RETURN",
+      "EVALUATE",
+      "FETCH"
+    ],
+    "answer": 2,
+    "time": 20
+  },
+  {
+    "q": "What information does the Server Timings feature in DAX Studio provide?",
+    "options": [
+      "Database backup history",
+      "Execution statistics for DAX queries",
+      "Memory usage of SQL Server",
+      "Visual layout information"
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "Which tool is commonly used to analyze Server Timings for DAX queries?",
+    "options": [
+      "Visual Studio",
+      "SSMS",
+      "DAX Studio",
+      "SQL Profiler"
+    ],
+    "answer": 2,
+    "time": 20
+  },
+  {
+    "q": "Which performance metrics are displayed in Server Timings?",
+    "options": [
+      "CPU Time, Duration, Formula Engine Time, and Storage Engine Time",
+      "Only CPU usage",
+      "Only Memory usage",
+      "Only Network latency"
+    ],
+    "answer": 0,
+    "time": 20
+  },
+  {
+    "q": "Why are Server Timings useful in DAX Studio?",
+    "options": [
+      "To create measures",
+      "To identify Formula Engine and Storage Engine bottlenecks",
+      "To deploy models",
+      "To process partitions"
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "Which engine performs complex DAX calculations such as FILTER(), SUMX(), and IF()?",
+    "options": [
+      "Storage Engine",
+      "Formula Engine",
+      "SQL Engine",
+      "Power Query Engine"
+    ],
+    "answer": 1,
+    "time": 20
+  },
+ {
+    "q": "Which engine is primarily responsible for scanning compressed columnar data stored in VertiPaq?",
+    "options": [
+      "Formula Engine",
+      "Storage Engine",
+      "SQL Server Engine",
+      "Power Query Engine"
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "If Formula Engine time is significantly higher than Storage Engine time, what does it usually indicate?",
+    "options": [
+      "The DAX calculation logic is expensive",
+      "The model has no relationships",
+      "The SQL Server is offline",
+      "The model is not processed"
+    ],
+    "answer": 0,
+    "time": 20
+  },
+  {
+    "q": "If Storage Engine time is significantly higher than Formula Engine time, what is the most likely cause?",
+    "options": [
+      "Complex DAX expressions",
+      "Large data scans or storage operations",
+      "Relationship errors",
+      "Calculation Groups"
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "Which DAX Studio feature helps determine whether a performance issue is caused by the Formula Engine or the Storage Engine?",
+    "options": [
+      "Export Results",
+      "Server Timings",
+      "Metadata Editor",
+      "Relationship Diagram"
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "Can DAX Studio export query results?",
+    "options": [
+      "No",
+      "Only to SQL Server",
+      "Yes, such as CSV and Excel",
+      "Only to JSON"
+    ],
+    "answer": 2,
+    "time": 20
+  },
+  {
+    "q": "Why would a developer export query results from DAX Studio?",
+    "options": [
+      "To validate results and share them with others",
+      "To deploy the Tabular model",
+      "To create relationships",
+      "To process partitions"
+    ],
+    "answer": 0,
+    "time": 20
+  },
+  {
+    "q": "Which of the following is NOT a purpose of DAX Studio?",
+    "options": [
+      "Executing DAX queries",
+      "Analyzing Server Timings",
+      "Deploying SSAS Tabular models",
+      "Viewing Query Plans"
+    ],
+    "answer": 2,
+    "time": 20
+  }
+,
+  {
+    "q": "Which Power BI connector is used to connect to an SSAS Tabular model?",
+    "options": [
+      "SQL Server",
+      "SQL Server Analysis Services Database",
+      "Azure SQL Database",
+      "Oracle Database"
+    ],
+    "answer": 1,
+    "time": 20
+  },
+   {
+    "q": "Where can you find the SSAS connector in Power BI Desktop?",
+    "options": [
+      "Home → Get Data → SQL Server Analysis Services Database",
+      "Transform Data",
+      "Model View",
+      "Report View"
+    ],
+    "answer": 0,
+    "time": 20
+  },
+  {
+    "q": "What information is required to connect Power BI to an SSAS Tabular model?",
+    "options": [
+      "Only the database name",
+      "Only the SQL login",
+      "The SSAS server name",
+      "The SQL Server Database Engine name"
+    ],
+    "answer": 2,
+    "time": 20
+  },
+  {
+    "q": "Which connection mode is recommended when connecting Power BI to an enterprise SSAS Tabular model?",
+    "options": [
+      "Import",
+      "DirectQuery",
+      "Live Connection",
+      "Composite Model"
+    ],
+    "answer": 2,
+    "time": 20
+  },
+   {
+    "q": "What happens when Power BI uses a Live Connection to SSAS Tabular?",
+    "options": [
+      "The data is imported into Power BI",
+      "Power BI queries the SSAS model directly",
+      "A copy of the model is created",
+      "The database is backed up"
+    ],
+    "answer": 1,
+    "time": 20
+  },
+{
+    "q": "Which objects are automatically available in Power BI when using a Live Connection to SSAS Tabular?",
+    "options": [
+      "Only tables",
+      "Only measures",
+      "Tables, measures, hierarchies, and relationships",
+      "Only calculated columns"
+    ],
+    "answer": 2,
+    "time": 20
+  },
+   {
+    "q": "Can you import additional tables into Power BI when using a Live Connection to SSAS Tabular?",
+    "options": [
+      "Yes",
+      "Only if DirectQuery is enabled",
+      "No",
+      "Only from Excel"
+    ],
+    "answer": 2,
+    "time": 20
+  },
+  {
+    "q": "If you create a new measure in Visual Studio and deploy it to SSAS, what must you do in Power BI?",
+    "options": [
+      "Nothing, it appears automatically",
+      "Refresh or reconnect to the model",
+      "Reinstall Power BI",
+      "Restart SQL Server"
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "Which tool is primarily used to create and deploy an SSAS Tabular model?",
+    "options": [
+      "Power BI Desktop",
+      "DAX Studio",
+      "Visual Studio (SSDT)",
+      "Excel"
+    ],
+    "answer": 2,
+    "time": 20
+  },
+  {
+    "q": "Which tool is primarily used to execute and analyze DAX queries against an SSAS Tabular model?",
+    "options": [
+      "Visual Studio",
+      "Power BI Desktop",
+      "DAX Studio",
+      "SSMS"
+    ],
+    "answer": 2,
+    "time": 20
+  },
+  {
+    "q": "Which tool is used to build reports and dashboards on top of an SSAS Tabular model?",
+    "options": [
+      "Visual Studio",
+      "Power BI Desktop",
+      "Tabular Editor",
+      "SQL Server Agent"
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "When using a Live Connection, where are DAX measures stored?",
+    "options": [
+      "Power BI Desktop",
+      "SQL Server Database Engine",
+      "SSAS Tabular model",
+      "Excel Workbook"
+    ],
+    "answer": 2,
+    "time": 20
+  },
+  {
+    "q": "When a report visual is refreshed in Power BI using Live Connection, where is the DAX query executed?",
+    "options": [
+      "Power BI Desktop",
+      "SSAS Tabular Server",
+      "SQL Server Database Engine",
+      "Visual Studio"
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "What is the main advantage of using Live Connection instead of Import mode?",
+    "options": [
+      "Data is duplicated for better performance",
+      "Business logic is centralized in the SSAS model",
+      "Power BI creates new relationships automatically",
+      "No SSAS server is required"
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "Which statement best describes the architecture when using Power BI with SSAS Tabular?",
+    "options": [
+      "Power BI stores all the data locally",
+      "Power BI sends DAX queries to SSAS and displays the returned results",
+      "SSAS imports reports from Power BI",
+      "Visual Studio executes report visuals"
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "Which application is commonly used to verify that an SSAS Tabular server is running before connecting from Power BI?",
+    "options": [
+      "Excel",
+      "SQL Server Management Studio (SSMS)",
+      "DAX Studio",
+      "Windows Explorer"
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "What happens if the SSAS server is unavailable while using a Live Connection?",
+    "options": [
+      "Power BI continues using cached data",
+      "The report cannot retrieve data",
+      "Power BI automatically switches to Import mode",
+      "The model is copied locally"
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "Which development workflow is commonly used in enterprise SSAS projects?",
+    "options": [
+      "Power BI → SQL Server → Excel",
+      "Visual Studio → Deploy to SSAS → Connect Power BI → Analyze with DAX Studio",
+      "Excel → Import to SQL Server → Visual Studio",
+      "SSMS → Export to Power BI → Deploy"
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "Which statement about Live Connection is TRUE?",
+    "options": [
+      "Power BI imports all data into the PBIX file",
+      "Power BI uses the existing SSAS semantic model",
+      "Relationships must be recreated in Power BI",
+      "Measures must be rewritten in Power BI"
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "Why do many organizations use SSAS Tabular with Power BI?",
+    "options": [
+      "To centralize business logic and reuse a single semantic model across multiple reports",
+      "To avoid using DAX",
+      "To replace SQL Server Database Engine",
+      "To eliminate the need for Power BI"
+    ],
+    "answer": 0,
+    "time": 20
+  }
+,
+  {
+    "q": "Why does DAX Studio display 'No Databases were found' when connecting to Power BI Desktop using a Live Connection?",
+    "options": [
+      "Power BI is not installed",
+      "Power BI does not create a local Tabular model when using Live Connection",
+      "SSAS is not supported",
+      "DAX Studio cannot connect to Power BI"
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "When Power BI uses a Live Connection to SSAS Tabular, where is the semantic model stored?",
+    "options": [
+      "Inside the PBIX file",
+      "In SQL Server Database Engine",
+      "On the SSAS Tabular server",
+      "Inside DAX Studio"
+    ],
+    "answer": 2,
+    "time": 20
+  },
+  {
+    "q": "Which application should DAX Studio connect to when Power BI is using a Live Connection?",
+    "options": [
+      "Power BI Desktop",
+      "SSAS Tabular Server",
+      "SQL Server Database Engine",
+      "Visual Studio"
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "Why can't DAX Studio connect to the Power BI Desktop model when using Live Connection?",
+    "options": [
+      "Power BI Desktop is unsupported",
+      "Power BI does not host a local Analysis Services database in Live Connection mode",
+      "DAX Studio only supports Excel",
+      "The PBIX file is read-only"
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "Which connection type in Power BI creates a local VertiPaq model?",
+    "options": [
+      "Live Connection",
+      "Import Mode",
+      "DirectQuery to SSAS",
+      "Streaming Dataset"
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "Which connection type allows DAX Studio to attach directly to the Power BI Desktop model?",
+    "options": [
+      "Import Mode",
+      "Live Connection to SSAS",
+      "Live Connection to Power BI Service",
+      "Excel Live Connection"
+    ],
+    "answer": 0,
+    "time": 20
+  },
+  {
+    "q": "When using Live Connection, where are DAX queries executed?",
+    "options": [
+      "Power BI Desktop",
+      "Visual Studio",
+      "SSAS Tabular Server",
+      "SQL Server Database Engine"
+    ],
+    "answer": 2,
+    "time": 20
+  },
+  {
+    "q": "When Power BI is connected live to SSAS, what is Power BI primarily responsible for?",
+    "options": [
+      "Executing DAX calculations",
+      "Hosting the semantic model",
+      "Creating visuals and sending DAX queries to SSAS",
+      "Deploying the Tabular model"
+    ],
+    "answer": 2,
+    "time": 20
+  },
+  {
+    "q": "Which message indicates that Power BI is using a Live Connection instead of an imported model?",
+    "options": [
+      "Import completed successfully",
+      "No Databases were found. If your Power BI file is using a Live Connection please connect directly to the source model instead.",
+      "Database processing completed",
+      "VertiPaq initialized"
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "What is the recommended way to analyze DAX performance when Power BI uses Live Connection?",
+    "options": [
+      "Connect DAX Studio directly to the SSAS Tabular server",
+      "Import the data into Power BI",
+      "Use SQL Server Database Engine",
+      "Create another PBIX file"
+    ],
+    "answer": 0,
+    "time": 20
+  },
+  {
+    "q": "Which tool can capture the DAX queries generated by Power BI against an SSAS Tabular server in a Live Connection scenario?",
+    "options": [
+      "Visual Studio",
+      "SQL Server Profiler",
+      "Windows Event Viewer",
+      "Excel"
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "Which tool is commonly used to execute custom DAX queries against an SSAS Tabular model?",
+    "options": [
+      "Power BI Desktop",
+      "DAX Studio",
+      "SQL Server Agent",
+      "Visual Studio"
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "Which statement about Import Mode is TRUE?",
+    "options": [
+      "The semantic model remains only on SSAS",
+      "Power BI creates a local VertiPaq model inside the PBIX",
+      "No data is stored in Power BI",
+      "DAX Studio must connect to SSAS only"
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "Which statement about Live Connection is TRUE?",
+    "options": [
+      "Power BI imports all data into the PBIX",
+      "The semantic model remains on SSAS and Power BI sends DAX queries to it",
+      "Power BI creates duplicate measures",
+      "DAX Studio cannot query SSAS"
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "Which architecture correctly represents a Live Connection scenario?",
+    "options": [
+      "Power BI → Local VertiPaq → DAX Studio",
+      "AdventureWorks → SSAS Tabular → Power BI Desktop",
+      "Power BI → SQL Server Database Engine",
+      "DAX Studio → SQL Server → Power BI"
+    ],
+    "answer": 1,
+    "time": 20
+  }
+
 ];
 
 /* ----------------- STATE ----------------- */
