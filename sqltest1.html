@@ -14554,6 +14554,96 @@ let originalQuestions = [
     "answer": 2,
     "time": 25
   }
+,
+  
+  {
+    "q": "What is the main rule of First Normal Form (1NF)?",
+    "options": [
+      "Store duplicate records",
+      "Each column should contain only atomic (single) values",
+      "Every table must have two primary keys",
+      "Store multiple values in one column"
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "Which of the following violates First Normal Form (1NF)?",
+    "options": [
+      "CustomerID = 101, Phone = 9876543210",
+      "CustomerID = 101, Phone = 9876543210,9988776655",
+      "CustomerID = 102, Phone = 9123456789",
+      "CustomerID = 103, Phone = 9988112233"
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "Why are comma-separated values in a column considered a violation of 1NF?",
+    "options": [
+      "They increase table size",
+      "They represent multiple values in a single column",
+      "They improve query performance",
+      "They automatically create duplicate rows"
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "How do you convert a table into First Normal Form (1NF)?",
+    "options": [
+      "Merge multiple rows into one",
+      "Split multi-valued columns into separate rows",
+      "Delete duplicate records",
+      "Create indexes"
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "Which table is in First Normal Form (1NF)?",
+    "options": [
+      "CustomerID = 101, Phones = '9876543210,9988776655'",
+      "OrderID = 1, Products = 'Laptop,Mouse'",
+      "CustomerID = 101, Phone = '9876543210' (one phone per row)",
+      "StudentID = 1, Subjects = 'Math,Science'"
+    ],
+    "answer": 2,
+    "time": 20
+  },
+  {
+    "q": "Which of the following is a real-world example of a 1NF violation?",
+    "options": [
+      "One employee skill stored per row",
+      "One product stored per order row",
+      "A customer having multiple phone numbers stored in a single column",
+      "One subject stored per student row"
+    ],
+    "answer": 2,
+    "time": 20
+  },
+  {
+    "q": "What is the primary benefit of converting a table to First Normal Form (1NF)?",
+    "options": [
+      "It ensures each field contains a single value, making data easier to query and maintain",
+      "It automatically removes all duplicate records",
+      "It creates foreign keys automatically",
+      "It improves network speed"
+    ],
+    "answer": 0,
+    "time": 20
+  },
+  {
+    "q": "Which statement about First Normal Form (1NF) is TRUE?",
+    "options": [
+      "A column can contain multiple comma-separated values",
+      "Each row-column intersection should contain exactly one value",
+      "Primary keys are not required",
+      "1NF removes all redundancy from a table"
+    ],
+    "answer": 1,
+    "time": 20
+  }
 
 
   // add more questions here...
