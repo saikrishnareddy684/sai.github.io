@@ -98,8 +98,209 @@ const COMPLETED_KEY = 'mcq_completed_batches';
 
 /* ----------------- SAMPLE QUESTIONS (replace with full set later) ----------------- */
 let originalQuestions = [
-
-
+{
+  "q": "What is a Data Warehouse?",
+  "options": [
+    "A centralized repository that stores structured historical data from multiple sources for reporting and analytics",
+    "A real-time transactional database used for OLTP systems",
+    "A file storage system used for unstructured data like images and videos",
+    "A programming framework used for building applications"
+  ],
+  "answer": 0,
+  "time": 20
+},
+{
+  "q": "What is the difference between conceptual, logical, and physical data models?",
+  "options": [
+    "Conceptual model defines table structures, logical model defines business rules, physical model defines relationships",
+    "Conceptual model is high-level business view, logical model defines structure independent of technology, physical model defines actual database implementation",
+    "Conceptual model is used only in SQL Server, logical model in Snowflake, physical model in Power BI",
+    "All three models are the same but used at different stages without any difference in detail"
+  ],
+  "answer": 1,
+  "time": 30
+},
+  {
+  "q": "What are entities, attributes, and relationships in data modeling?",
+  "options": [
+    "Entities are data values, attributes are tables, relationships are indexes",
+    "Entities are real-world objects, attributes are properties of entities, and relationships define how entities are connected",
+    "Entities are database engines, attributes are storage types, relationships are queries",
+    "Entities are columns, attributes are rows, relationships are schemas"
+  ],
+  "answer": 1,
+  "time": 20
+},
+  {
+  "q": "What is an Entity-Relationship Diagram (ERD)?",
+  "options": [
+    "A diagram used to design user interfaces and dashboards",
+    "A visual representation of entities, attributes, and relationships in a database",
+    "A programming model used to write SQL queries",
+    "A tool used to store data in tables"
+  ],
+  "answer": 1,
+  "time": 20
+},
+  {
+  "q": "What is denormalization? When would you use it?",
+  "options": [
+    "Breaking a table into multiple tables to reduce redundancy",
+    "Combining tables to reduce joins and improve read performance",
+    "Encrypting data to improve security",
+    "Indexing tables to improve write performance"
+  ],
+  "answer": 1,
+  "time": 25
+},
+  
+  {
+    "q": "What is a one-to-many (1:M) relationship in database design?",
+    "options": [
+      "A relationship where one record in a table is related to exactly one record in another table",
+      "A relationship where one record in a parent table is related to multiple records in a child table",
+      "A relationship where multiple records in one table are related to multiple records in another table",
+      "A relationship where tables do not use foreign keys"
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  
+  {
+    "q": "What is a many-to-many (M:N) relationship in database design?",
+    "options": [
+      "One record in a table is related to exactly one record in another table",
+      "One record in a table is related to many records in another table",
+      "Multiple records in one table are related to multiple records in another table",
+      "Tables are not related in many-to-many relationships"
+    ],
+    "answer": 2,
+    "time": 20
+  },
+  {
+    "q": "How is a many-to-many relationship implemented in a relational database?",
+    "options": [
+      "By using only primary keys in both tables",
+      "By using a foreign key in one table only",
+      "By using a junction (bridge) table with foreign keys from both tables",
+      "By duplicating all data into a single table"
+    ],
+    "answer": 2,
+    "time": 25
+  },
+  {
+    "q": "Which of the following is a correct example of a many-to-many relationship?",
+    "options": [
+      "One customer has many orders",
+      "One employee belongs to one department",
+      "Students enroll in many courses, and each course has many students",
+      "One country has many cities"
+    ],
+    "answer": 2,
+    "time": 20
+  },
+  {
+    "q": "What is the main purpose of a bridge (junction) table in a many-to-many relationship?",
+    "options": [
+      "To store duplicate data for performance",
+      "To convert a many-to-many relationship into two one-to-many relationships",
+      "To remove the need for primary keys",
+      "To avoid using foreign keys"
+    ],
+    "answer": 1,
+    "time": 25
+  }
+,
+  {
+    "q": "In a one-to-many relationship, where is the foreign key typically stored?",
+    "options": [
+      "In the parent table",
+      "In both parent and child tables",
+      "In the child table (many side)",
+      "Not required in relational databases"
+    ],
+    "answer": 2,
+    "time": 20
+  },
+  {
+    "q": "Which of the following is a correct example of a one-to-many relationship?",
+    "options": [
+      "One customer has many orders",
+      "One passport belongs to many persons",
+      "One employee has only one department and one department has only one employee",
+      "One order belongs to many customers"
+    ],
+    "answer": 0,
+    "time": 20
+  },
+  {
+    "q": "Why is one-to-many relationship commonly used in database design?",
+    "options": [
+      "To increase data duplication",
+      "To eliminate the need for primary keys",
+      "To reduce redundancy and organize related data efficiently",
+      "To avoid using joins completely"
+    ],
+    "answer": 2,
+    "time": 25
+  }
+,
+  {
+    "q": "Which of the following best describes a true one-to-one (1:1) relationship?",
+    "options": [
+      "One record in a table is related to many records in another table",
+      "Many records in a table are related to one record in another table",
+      "Each record in one table is related to exactly one record in another table",
+      "Tables are not related but stored in the same database"
+    ],
+    "answer": 2,
+    "time": 20
+  },
+  {
+    "q": "Which example represents a true one-to-one relationship?",
+    "options": [
+      "Customer and Orders",
+      "Employee and Department",
+      "Person and Passport",
+      "Student and Course"
+    ],
+    "answer": 2,
+    "time": 20
+  },
+  {
+    "q": "Why is 'Person and Country of Residence' NOT a one-to-one relationship?",
+    "options": [
+      "Because a person can have multiple countries",
+      "Because a country can have many persons living in it",
+      "Because country data is not stored in database",
+      "Because it always requires a join operation"
+    ],
+    "answer": 1,
+    "time": 25
+  },
+  {
+    "q": "How is a one-to-one relationship enforced in a relational database?",
+    "options": [
+      "By using only primary keys in both tables",
+      "By using a foreign key with a UNIQUE constraint",
+      "By using indexes only",
+      "By avoiding relationships between tables"
+    ],
+    "answer": 1,
+    "time": 25
+  },
+  {
+    "q": "What is the main benefit of using a one-to-one relationship in database design?",
+    "options": [
+      "It increases data duplication",
+      "It reduces storage cost by merging all tables",
+      "It separates optional or sensitive data into different tables while maintaining strict mapping",
+      "It removes the need for primary keys"
+    ],
+    "answer": 2,
+    "time": 30
+  }
+,
 
   {
     "q": "What is a framework in software development?",
