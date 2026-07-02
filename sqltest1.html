@@ -13998,6 +13998,173 @@ let originalQuestions = [
     "time": 20
   }
  
+,
+  
+  {
+    "q": "Which column is most commonly used to implement incremental loading in SQL Server?",
+    "options": [
+      "CreatedDate",
+      "LastUpdated",
+      "CustomerID",
+      "RowNumber"
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "Why is the LastUpdated column maintained in a source table?",
+    "options": [
+      "To store the customer's registration date",
+      "To identify rows changed since the last ETL load",
+      "To create primary keys",
+      "To improve index fragmentation"
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "What is the purpose of the ETL_Control table?",
+    "options": [
+      "To store customer records",
+      "To store the last successful ETL load time",
+      "To store audit logs",
+      "To store primary key values"
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "Which SQL query is commonly used to fetch only changed records for an incremental load?",
+    "options": [
+      "SELECT * FROM Customer_Source",
+      "SELECT * FROM Customer_Source WHERE LastUpdated > LastLoadTime",
+      "SELECT TOP 100 * FROM Customer_Source",
+      "SELECT DISTINCT * FROM Customer_Source"
+    ],
+    "answer": 1,
+    "time": 25
+  },
+  {
+    "q": "During an incremental load, which SQL statement is commonly used to update existing rows and insert new rows into the target table?",
+    "options": [
+      "INSERT",
+      "UPDATE",
+      "MERGE",
+      "DELETE"
+    ],
+    "answer": 2,
+    "time": 20
+  },
+  {
+    "q": "What happens after a successful incremental load completes?",
+    "options": [
+      "The source table is truncated",
+      "The target table is dropped",
+      "The ETL_Control table is updated with the current load time",
+      "All records are reloaded"
+    ],
+    "answer": 2,
+    "time": 20
+  },
+  {
+    "q": "A customer's city changes from Delhi to Pune. Which column should also be updated by the application?",
+    "options": [
+      "CustomerID",
+      "LastUpdated",
+      "CustomerName",
+      "CreatedDate"
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "Why is incremental loading preferred over full loading for large tables?",
+    "options": [
+      "It reloads all records every time",
+      "It processes only new or modified records, reducing execution time",
+      "It automatically creates indexes",
+      "It deletes duplicate records"
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "In the ETL process, which table is considered the source table?",
+    "options": [
+      "Customer_Dim",
+      "Customer_Source",
+      "ETL_Control",
+      "Customer_History"
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "In the ETL process, which table is considered the target table?",
+    "options": [
+      "Customer_Source",
+      "Customer_Stage",
+      "Customer_Dim",
+      "ETL_Control"
+    ],
+    "answer": 2,
+    "time": 20
+  },
+  {
+    "q": "If no rows have changed since the previous ETL execution, what will the incremental load query return?",
+    "options": [
+      "All rows",
+      "Only deleted rows",
+      "No rows",
+      "Only duplicate rows"
+    ],
+    "answer": 2,
+    "time": 20
+  },
+  {
+    "q": "Which SQL Server feature automatically records inserts, updates, and deletes without relying on a LastUpdated column?",
+    "options": [
+      "Partitioning",
+      "Change Data Capture (CDC)",
+      "Views",
+      "Stored Procedures"
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "Which SQL Server feature tracks which rows changed but does not store the complete before-and-after values?",
+    "options": [
+      "Triggers",
+      "Change Tracking",
+      "MERGE",
+      "CTE"
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "Who is responsible for updating the LastUpdated column in a real-world application?",
+    "options": [
+      "The DBA manually",
+      "The ETL developer manually",
+      "The source application when data changes",
+      "Snowflake Stream"
+    ],
+    "answer": 2,
+    "time": 20
+  },
+  {
+    "q": "What is the correct sequence for an incremental ETL process using a LastUpdated column?",
+    "options": [
+      "MERGE → Read Source → Update ETL_Control",
+      "Read changed rows → MERGE into target → Update ETL_Control",
+      "Update ETL_Control → Read Source → MERGE",
+      "Delete Target → Insert Source → Update ETL_Control"
+    ],
+    "answer": 1,
+    "time": 25
+  }
 
 
   // add more questions here...
