@@ -14277,6 +14277,283 @@ let originalQuestions = [
     "answer": 1,
     "time": 25
   }
+,
+  
+  {
+    "q": "What is a Dimension table?",
+    "options": [
+      "A table that stores business transactions",
+      "A table that stores descriptive information about business entities",
+      "A temporary table used for ETL",
+      "A table that stores indexes"
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "Which of the following is an example of a Dimension table?",
+    "options": [
+      "Sales",
+      "Customer",
+      "Transaction",
+      "Order Details"
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "What is the primary purpose of a Slowly Changing Dimension (SCD)?",
+    "options": [
+      "To improve query performance",
+      "To manage changes in dimension data over time",
+      "To delete duplicate records",
+      "To partition tables"
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "When a customer's city changes, what does SCD help determine?",
+    "options": [
+      "Whether to create a new database",
+      "Whether to overwrite the old value or preserve history",
+      "Whether to rebuild indexes",
+      "Whether to partition the table"
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "Which SCD type does not allow any changes after the record is inserted?",
+    "options": [
+      "Type 0",
+      "Type 1",
+      "Type 2",
+      "Type 3"
+    ],
+    "answer": 0,
+    "time": 20
+  },
+  {
+    "q": "Which attribute is most suitable for SCD Type 0?",
+    "options": [
+      "Customer Address",
+      "Phone Number",
+      "Date of Birth",
+      "Email Address"
+    ],
+    "answer": 2,
+    "time": 20
+  },
+  {
+    "q": "What happens in SCD Type 1 when a customer changes their city?",
+    "options": [
+      "A new row is inserted",
+      "The old value is overwritten",
+      "The old row is archived",
+      "The history table is updated"
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "Which SCD type does not maintain historical data?",
+    "options": [
+      "Type 0",
+      "Type 1",
+      "Type 2",
+      "Type 4"
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "Which of the following is a common use case for SCD Type 1?",
+    "options": [
+      "Correcting a spelling mistake in a customer's name",
+      "Maintaining address history",
+      "Tracking salary changes",
+      "Maintaining audit history"
+    ],
+    "answer": 0,
+    "time": 20
+  },
+  {
+    "q": "Which SCD type maintains complete historical records?",
+    "options": [
+      "Type 0",
+      "Type 1",
+      "Type 2",
+      "Type 3"
+    ],
+    "answer": 2,
+    "time": 20
+  },
+  {
+    "q": "In SCD Type 2, what happens when a customer's city changes?",
+    "options": [
+      "The existing row is updated",
+      "The old row is deleted",
+      "The current row is expired and a new row is inserted",
+      "The source table is truncated"
+    ],
+    "answer": 2,
+    "time": 25
+  },
+  {
+    "q": "Which columns are commonly found in an SCD Type 2 dimension table?",
+    "options": [
+      "CustomerID, City",
+      "SurrogateKey, EffectiveDate, EndDate, IsCurrent",
+      "OrderID, Amount",
+      "Warehouse, Stage"
+    ],
+    "answer": 1,
+    "time": 25
+  },
+  {
+    "q": "Why is a Surrogate Key used in SCD Type 2?",
+    "options": [
+      "To reduce storage",
+      "Because multiple historical versions of the same business key can exist",
+      "To improve network speed",
+      "To replace foreign keys"
+    ],
+    "answer": 1,
+    "time": 25
+  },
+  {
+    "q": "When a new version of a customer is inserted in SCD Type 2, what happens to the Business Key (CustomerID)?",
+    "options": [
+      "It changes for every version",
+      "It remains the same",
+      "It becomes NULL",
+      "It is automatically deleted"
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "When a new version of a customer is inserted in SCD Type 2, what happens to the Surrogate Key?",
+    "options": [
+      "It remains the same",
+      "It is removed",
+      "A new Surrogate Key is generated",
+      "It becomes the CustomerID"
+    ],
+    "answer": 2,
+    "time": 20
+  },
+  {
+    "q": "Which flag identifies the active record in an SCD Type 2 table?",
+    "options": [
+      "IsDeleted",
+      "IsLatest",
+      "IsCurrent",
+      "IsValid"
+    ],
+    "answer": 2,
+    "time": 20
+  },
+  {
+    "q": "What is the main advantage of SCD Type 2?",
+    "options": [
+      "Smaller table size",
+      "Maintains complete historical data for reporting and auditing",
+      "Deletes duplicate rows",
+      "Avoids using surrogate keys"
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "What does SCD Type 3 store?",
+    "options": [
+      "Complete history",
+      "No history",
+      "Only the current and previous value",
+      "History in a separate table"
+    ],
+    "answer": 2,
+    "time": 20
+  },
+  {
+    "q": "What is the main characteristic of SCD Type 4?",
+    "options": [
+      "No history is maintained",
+      "History is stored in a separate history table",
+      "Only previous value is stored",
+      "Only current value is stored"
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "SCD Type 6 is a combination of which SCD types?",
+    "options": [
+      "Type 0, Type 2 and Type 4",
+      "Type 1, Type 2 and Type 3",
+      "Type 2, Type 4 and Type 5",
+      "Type 3, Type 4 and Type 5"
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "Which SCD type is most commonly used in banking and data warehouse projects?",
+    "options": [
+      "Type 0",
+      "Type 1",
+      "Type 2",
+      "Type 6"
+    ],
+    "answer": 2,
+    "time": 20
+  },
+  {
+    "q": "Why is SCD Type 2 commonly used in banking applications?",
+    "options": [
+      "To reduce storage requirements",
+      "To preserve historical customer information for reporting and auditing",
+      "To delete old customer records",
+      "To avoid using primary keys"
+    ],
+    "answer": 1,
+    "time": 25
+  },
+  {
+    "q": "A customer lived in Bangalore in 2024 and moved to Hyderabad in 2025. Which SCD type ensures that a 2024 loan report still shows Bangalore?",
+    "options": [
+      "Type 0",
+      "Type 1",
+      "Type 2",
+      "Type 3"
+    ],
+    "answer": 2,
+    "time": 25
+  },
+  {
+    "q": "Which statement about SCD Type 2 is TRUE?",
+    "options": [
+      "Old records are overwritten",
+      "Only the previous value is stored",
+      "Every change creates a new historical record",
+      "Changes are ignored"
+    ],
+    "answer": 2,
+    "time": 20
+  },
+  {
+    "q": "Which SCD type would you choose if business users require complete historical tracking of customer address changes?",
+    "options": [
+      "Type 0",
+      "Type 1",
+      "Type 2",
+      "Type 3"
+    ],
+    "answer": 2,
+    "time": 25
+  }
 
 
   // add more questions here...
