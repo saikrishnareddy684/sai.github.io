@@ -6564,6 +6564,119 @@ let originalQuestions = [
     "answer": 1,
     "time": 25
   }
+  ,
+  
+  {
+    "q": "Can multiple Streams be created on the same Snowflake table?",
+    "options": [
+      "No, only one Stream is allowed per table",
+      "Yes, but only for external tables",
+      "Yes, multiple Streams can be created on the same table",
+      "Only if Change Tracking is disabled"
+    ],
+    "answer": 2,
+    "time": 20
+  },
+  {
+    "q": "Why would multiple Streams be created on the same table?",
+    "options": [
+      "To improve query performance",
+      "To allow different downstream processes to independently consume changes",
+      "To reduce storage usage",
+      "To automatically create backups"
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "If CUSTOMER_STREAM consumes all changes, what happens to AUDIT_STREAM on the same source table?",
+    "options": [
+      "AUDIT_STREAM is automatically emptied",
+      "AUDIT_STREAM is dropped",
+      "AUDIT_STREAM still contains the unconsumed changes",
+      "AUDIT_STREAM becomes read-only"
+    ],
+    "answer": 2,
+    "time": 20
+  },
+  {
+    "q": "Each Stream created on the same table maintains its own:",
+    "options": [
+      "Warehouse",
+      "Database",
+      "Offset",
+      "Schema"
+    ],
+    "answer": 2,
+    "time": 20
+  },
+  {
+    "q": "What happens when one Stream advances its offset after a MERGE operation?",
+    "options": [
+      "All other Streams advance automatically",
+      "The source table is truncated",
+      "Only that Stream's offset advances",
+      "All Streams are reset"
+    ],
+    "answer": 2,
+    "time": 20
+  },
+  {
+    "q": "A source table has three Streams: CUSTOMER_STREAM, AUDIT_STREAM, and MARKETING_STREAM. After CUSTOMER_STREAM consumes the changes, which statement is correct?",
+    "options": [
+      "All three Streams become empty",
+      "Only CUSTOMER_STREAM becomes empty while the other Streams still contain unconsumed changes",
+      "The source table is automatically archived",
+      "AUDIT_STREAM and MARKETING_STREAM are deleted"
+    ],
+    "answer": 1,
+    "time": 25
+  },
+  {
+    "q": "Which real-world use case best demonstrates multiple Streams on a single table?",
+    "options": [
+      "One Stream for inserts and another for updates",
+      "Separate Streams for Data Warehouse, Audit, and Marketing teams",
+      "One Stream for each column in the table",
+      "Creating multiple Streams to increase storage capacity"
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "After CUSTOMER_STREAM has consumed rows 101 and 102, and a new row 103 is inserted, what will CUSTOMER_STREAM return?",
+    "options": [
+      "Rows 101, 102, and 103",
+      "Only rows 101 and 102",
+      "Only row 103",
+      "No rows"
+    ],
+    "answer": 2,
+    "time": 20
+  },
+  {
+    "q": "If AUDIT_STREAM has never been consumed and a new row is inserted after existing rows, what will it return?",
+    "options": [
+      "Only the latest inserted row",
+      "No rows",
+      "All unconsumed changes, including previous and new rows",
+      "Only updated rows"
+    ],
+    "answer": 2,
+    "time": 20
+  },
+  {
+    "q": "Which statement about multiple Streams is TRUE?",
+    "options": [
+      "Only one Stream can track changes on a table",
+      "All Streams share the same offset",
+      "Each Stream independently tracks table changes using its own offset",
+      "Creating multiple Streams duplicates the source table"
+    ],
+    "answer": 2,
+    "time": 20
+  }
+
 
 
 
