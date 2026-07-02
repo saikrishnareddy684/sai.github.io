@@ -15104,7 +15104,266 @@ let originalQuestions = [
     ],
     "answer": 0,
     "time": 20
+  },
+  {
+  "q": "Which SQL query returns the names of all employees who work in the same department as the employee with the highest salary?",
+  "options": [
+    "SELECT e2.employee_name FROM employees e1 JOIN employees e2 ON e1.department_id = e2.department_id WHERE e1.salary = (SELECT MAX(salary) FROM employees);",
+    "SELECT employee_name FROM employees WHERE salary = (SELECT MAX(salary) FROM employees);",
+    "SELECT employee_name FROM employees GROUP BY department_id;",
+    "SELECT employee_name FROM employees WHERE department_id = (SELECT MAX(department_id) FROM employees);"
+  ],
+  "answer": 0,
+  "time": 30
+},
+  {
+  "q": "Which SQL query correctly returns the names of customers who have made at least one purchase in every category?",
+  "options": [
+    "SELECT c.CustomerName FROM Customers c JOIN Purchases p ON c.CustomerID = p.CustomerID GROUP BY c.CustomerID, c.CustomerName HAVING COUNT(DISTINCT p.CategoryID) = (SELECT COUNT(*) FROM Categories);",
+    "SELECT CustomerName FROM Customers WHERE CustomerID IN (SELECT CustomerID FROM Purchases);",
+    "SELECT c.CustomerName FROM Customers c JOIN Purchases p ON c.CustomerID = p.CustomerID GROUP BY c.CustomerName HAVING COUNT(*) > 1;",
+    "SELECT DISTINCT CustomerName FROM Customers;"
+  ],
+  "answer": 0,
+  "time": 35
+},
+  {
+  "q": "Which SQL query correctly returns the current month's sales along with the previous month's sales using the LAG() window function?",
+  "options": [
+    "SELECT MonthNumber, Sales, LAG(Sales) OVER(ORDER BY MonthNumber) AS PreviousSales FROM Sales;",
+    "SELECT MonthNumber, Sales, LEAD(Sales) OVER(ORDER BY MonthNumber) AS PreviousSales FROM Sales;",
+    "SELECT MonthNumber, Sales, SUM(Sales) OVER(ORDER BY MonthNumber) AS PreviousSales FROM Sales;",
+    "SELECT MonthNumber, Sales FROM Sales;"
+  ],
+  "answer": 0,
+  "time": 30
+}
+  ,
+  {
+  "q": "Which SQL query correctly returns the current month's sales along with the previous month's sales using a self join?",
+  "options": [
+    "SELECT c.MonthNumber, c.Sales, p.Sales AS PreviousSales FROM Sales c LEFT JOIN Sales p ON c.MonthNumber = p.MonthNumber + 1;",
+    "SELECT c.MonthNumber, c.Sales, p.Sales AS PreviousSales FROM Sales c LEFT JOIN Sales p ON c.MonthNumber = p.MonthNumber;",
+    "SELECT c.MonthNumber, c.Sales, p.Sales AS PreviousSales FROM Sales c LEFT JOIN Sales p ON c.MonthNumber = p.MonthNumber - 2;",
+    "SELECT MonthNumber, Sales FROM Sales;"
+  ],
+  "answer": 0,
+  "time": 35
+}
+  ,
+  {
+  "q": "Which SQL feature is generally preferred over a self join for retrieving values from the previous row?",
+  "options": [
+    "LAG()",
+    "GROUP BY",
+    "UNION",
+    "DISTINCT"
+  ],
+  "answer": 0,
+  "time": 20
+},
+  {
+  "q": "Before window functions such as LAG() were introduced, which SQL technique was commonly used to retrieve values from the previous row?",
+  "options": [
+    "Self Join",
+    "CROSS JOIN",
+    "PIVOT",
+    "MERGE"
+  ],
+  "answer": 0,
+  "time": 20
+},
+  {
+  "q": "Is the ORDER BY clause mandatory when using the LAG() window function in SQL Server?",
+  "options": [
+    "Yes, ORDER BY is mandatory because LAG() requires a defined row sequence.",
+    "No, ORDER BY is optional.",
+    "ORDER BY is required only when PARTITION BY is used.",
+    "ORDER BY is required only for numeric columns."
+  ],
+  "answer": 0,
+  "time": 20
+},
+  {
+  "q": "Which SQL window function is used to retrieve the next row's value without using a self join?",
+  "options": [
+    "LEAD()",
+    "LAG()",
+    "ROW_NUMBER()",
+    "RANK()"
+  ],
+  "answer": 0,
+  "time": 20
+},
+  {
+  "q": "Which SQL query correctly returns the current month's sales along with the next month's sales using the LEAD() window function?",
+  "options": [
+    "SELECT MonthNumber, Sales, LEAD(Sales) OVER(ORDER BY MonthNumber) AS NextMonthSales FROM Sales;",
+    "SELECT MonthNumber, Sales, LAG(Sales) OVER(ORDER BY MonthNumber) AS NextMonthSales FROM Sales;",
+    "SELECT MonthNumber, Sales, SUM(Sales) OVER(ORDER BY MonthNumber) AS NextMonthSales FROM Sales;",
+    "SELECT MonthNumber, Sales FROM Sales;"
+  ],
+  "answer": 0,
+  "time": 30
+},
+  {
+  "q": "Is the ORDER BY clause mandatory when using the LEAD() window function in SQL Server?",
+  "options": [
+    "Yes, because LEAD() requires a defined row order.",
+    "No, ORDER BY is optional.",
+    "Only when PARTITION BY is used.",
+    "Only for numeric columns."
+  ],
+  "answer": 0,
+  "time": 20
+},
+  {
+  "q": "What does LEAD(Sales, 2) OVER(ORDER BY MonthNumber) return?",
+  "options": [
+    "The sales value from the next row",
+    "The sales value from two rows ahead",
+    "The previous row's sales value",
+    "The cumulative sales"
+  ],
+  "answer": 1,
+  "time": 25
+},
+  {
+  "q": "Which SQL query returns the next month's sales separately for each employee?",
+  "options": [
+    "SELECT EmpID, MonthNumber, Sales, LEAD(Sales) OVER(PARTITION BY EmpID ORDER BY MonthNumber) AS NextSales FROM Sales;",
+    "SELECT EmpID, MonthNumber, Sales, LEAD(Sales) OVER(ORDER BY MonthNumber) AS NextSales FROM Sales;",
+    "SELECT EmpID, MonthNumber, Sales, SUM(Sales) OVER(PARTITION BY EmpID ORDER BY MonthNumber) AS NextSales FROM Sales;",
+    "SELECT EmpID, MonthNumber, Sales FROM Sales;"
+  ],
+  "answer": 0,
+  "time": 30
+},
+  {
+  "q": "Which SQL query correctly returns the current month's sales along with the next month's sales using a self join?",
+  "options": [
+    "SELECT c.MonthNumber, c.Sales AS CurrentSales, n.Sales AS NextMonthSales FROM Sales c LEFT JOIN Sales n ON c.MonthNumber + 1 = n.MonthNumber;",
+    "SELECT c.MonthNumber, c.Sales AS CurrentSales, n.Sales AS NextMonthSales FROM Sales c LEFT JOIN Sales n ON c.MonthNumber = n.MonthNumber;",
+    "SELECT c.MonthNumber, c.Sales AS CurrentSales, n.Sales AS NextMonthSales FROM Sales c LEFT JOIN Sales n ON c.MonthNumber = n.MonthNumber + 1;",
+    "SELECT MonthNumber, Sales FROM Sales;"
+  ],
+  "answer": 0,
+  "time": 30
+},
+  {
+  "q": "Which SQL query correctly returns the current month's sales along with the next month's sales using a self join (alternative join condition using next month - 1)?",
+  "options": [
+    "SELECT c.MonthNumber, c.Sales AS CurrentSales, n.Sales AS NextMonthSales FROM Sales c LEFT JOIN Sales n ON c.MonthNumber = n.MonthNumber - 1;",
+    "SELECT c.MonthNumber, c.Sales AS CurrentSales, n.Sales AS NextMonthSales FROM Sales c LEFT JOIN Sales n ON c.MonthNumber = n.MonthNumber + 1;",
+    "SELECT c.MonthNumber, c.Sales AS CurrentSales, n.Sales AS NextMonthSales FROM Sales c LEFT JOIN Sales n ON c.MonthNumber + 1 = n.MonthNumber;",
+    "SELECT c.MonthNumber, c.Sales FROM Sales c;"
+  ],
+  "answer": 0,
+  "time": 30
+},
+  {
+  "q": "Write a SQL query to find total sales, average sales, and total number of orders from the Orders table.",
+  "options": [
+    "SELECT SUM(sales), AVG(sales), COUNT(orderid) FROM orders",
+    "SELECT sales, AVG(sales), COUNT(*) FROM orders",
+    "SELECT SUM(orderid), AVG(orderid), COUNT(sales) FROM orders",
+    "SELECT COUNT(sales), SUM(orderid), AVG(orderid) FROM orders"
+  ],
+  "answer": 0,
+  "time": 20
+},
+  {
+  "q": "Write a SQL query to calculate the 7-day moving average of sales for each product using window functions.",
+  "options": [
+    "SELECT product_id, sale_date, AVG(sales_amount) OVER (PARTITION BY product_id ORDER BY sale_date ROWS BETWEEN 6 PRECEDING AND CURRENT ROW) AS moving_average FROM sales",
+    "SELECT product_id, sale_date, AVG(sales_amount) OVER (ORDER BY sale_date ROWS BETWEEN 6 PRECEDING AND CURRENT ROW) AS moving_average FROM sales",
+    "SELECT product_id, sale_date, SUM(sales_amount) OVER (PARTITION BY product_id ORDER BY sale_date ROWS BETWEEN 6 PRECEDING AND CURRENT ROW) AS moving_average FROM sales",
+    "SELECT product_id, sale_date, AVG(sales_amount) FROM sales GROUP BY product_id, sale_date"
+  ],
+  "answer": 0,
+  "time": 25
+},
+  
+  {
+    "q": "What is the main difference between ROWS and RANGE in SQL window functions?",
+    "options": [
+      "ROWS works on physical row positions, RANGE works on logical value ranges",
+      "ROWS works only with dates, RANGE works only with numbers",
+      "Both behave exactly the same",
+      "RANGE is faster than ROWS always"
+    ],
+    "answer": 0,
+    "time": 20
+  },
+  {
+    "q": "What does ROWS BETWEEN 6 PRECEDING AND CURRENT ROW mean?",
+    "options": [
+      "It considers 6 calendar days",
+      "It considers 6 rows before the current row plus the current row",
+      "It considers all rows in the partition",
+      "It ignores ordering completely"
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "Which scenario is best suited for RANGE instead of ROWS?",
+    "options": [
+      "Finding last 5 transactions",
+      "Finding last 7 rows",
+      "Calculating moving average based on date intervals",
+      "Ranking employees"
+    ],
+    "answer": 2,
+    "time": 25
+  },
+  {
+    "q": "What happens in RANGE when multiple rows have the same ORDER BY value?",
+    "options": [
+      "Only one row is considered",
+      "All rows with the same value are included in the window",
+      "It throws an error",
+      "It ignores duplicates"
+    ],
+    "answer": 1,
+    "time": 25
+  },
+  {
+    "q": "Which of the following is true about ROWS framing?",
+    "options": [
+      "It depends on column values",
+      "It is not affected by gaps in data",
+      "It always works on date intervals",
+      "It groups rows automatically"
+    ],
+    "answer": 1,
+    "time": 20
   }
+,
+  
+  {
+    "q": "Which of the following is the correct syntax for ROWS window frame in SQL?",
+    "options": [
+      "ROWS BETWEEN 6 PRECEDING AND CURRENT ROW",
+      "ROWS FROM 6 PRECEDING TO CURRENT ROW",
+      "ROWS LAST 6 ROWS",
+      "ROWS BETWEEN 6 ROWS BEFORE AND CURRENT"
+    ],
+    "answer": 0,
+    "time": 15
+  },
+  {
+    "q": "Which is the correct syntax for RANGE window frame when working with interval-based filtering?",
+    "options": [
+      "RANGE BETWEEN 6 PRECEDING AND CURRENT ROW",
+      "RANGE BETWEEN INTERVAL '6' DAY PRECEDING AND CURRENT ROW",
+      "RANGE LAST 6 ROWS",
+      "RANGE FROM 6 TO CURRENT ROW"
+    ],
+    "answer": 1,
+    "time": 15
+  }
+
   // add more questions here...
 ];
 
