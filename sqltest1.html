@@ -14768,6 +14768,140 @@ let originalQuestions = [
     "answer": 1,
     "time": 25
   }
+,
+
+  {
+    "q": "What is the main rule of Third Normal Form (3NF)?",
+    "options": [
+      "Every table must have a composite primary key",
+      "Every non-key attribute must depend only on the primary key and not on another non-key attribute",
+      "Every table must contain only one column",
+      "Every table must have a surrogate key"
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "Which type of dependency does Third Normal Form (3NF) eliminate?",
+    "options": [
+      "Functional Dependency",
+      "Partial Dependency",
+      "Transitive Dependency",
+      "Multi-valued Dependency"
+    ],
+    "answer": 2,
+    "time": 20
+  },
+  {
+    "q": "In the relationship StudentID → DepartmentID → DepartmentName, which dependency violates 3NF?",
+    "options": [
+      "DepartmentID depends on StudentID",
+      "DepartmentName depends on DepartmentID",
+      "StudentID depends on DepartmentName",
+      "DepartmentName depends directly on StudentID"
+    ],
+    "answer": 1,
+    "time": 25
+  },
+  {
+    "q": "What is a transitive dependency?",
+    "options": [
+      "A non-key attribute depends on another non-key attribute",
+      "A primary key depends on a foreign key",
+      "A foreign key depends on another foreign key",
+      "A primary key depends on itself"
+    ],
+    "answer": 0,
+    "time": 20
+  },
+  {
+    "q": "How do you convert a table into Third Normal Form (3NF)?",
+    "options": [
+      "Delete duplicate rows",
+      "Move attributes with transitive dependencies into separate tables",
+      "Create a composite primary key",
+      "Merge related tables into one"
+    ],
+    "answer": 1,
+    "time": 25
+  },
+  {
+    "q": "A Student table contains StudentID, StudentName, DepartmentID, and DepartmentName. Which column causes a 3NF violation?",
+    "options": [
+      "StudentID",
+      "StudentName",
+      "DepartmentID",
+      "DepartmentName"
+    ],
+    "answer": 3,
+    "time": 25
+  },
+  {
+    "q": "Why does DepartmentName violate 3NF in a Student table?",
+    "options": [
+      "Because it is part of the primary key",
+      "Because it depends on DepartmentID instead of directly on StudentID",
+      "Because DepartmentName is duplicated",
+      "Because DepartmentID is a foreign key"
+    ],
+    "answer": 1,
+    "time": 25
+  },
+  {
+    "q": "Which statement about Third Normal Form (3NF) is TRUE?",
+    "options": [
+      "3NF removes repeating groups",
+      "3NF removes partial dependencies",
+      "3NF removes transitive dependencies",
+      "3NF requires every table to have two primary keys"
+    ],
+    "answer": 2,
+    "time": 20
+  },
+  {
+    "q": "Does Third Normal Form (3NF) apply only to tables with composite primary keys?",
+    "options": [
+      "Yes",
+      "No, it applies to both single-column and composite primary keys",
+      "Only if the table contains foreign keys",
+      "Only if the table has more than five columns"
+    ],
+    "answer": 1,
+    "time": 25
+  },
+  {
+    "q": "Which normalization stage removes transitive dependency after partial dependency has already been removed?",
+    "options": [
+      "1NF",
+      "2NF",
+      "3NF",
+      "BCNF"
+    ],
+    "answer": 2,
+    "time": 20
+  },
+  {
+    "q": "Which of the following is an example of a transitive dependency?",
+    "options": [
+      "OrderID → CustomerID",
+      "StudentID → DepartmentID → DepartmentName",
+      "EmployeeID → EmployeeName",
+      "ProductID → ProductName"
+    ],
+    "answer": 1,
+    "time": 25
+  },
+  {
+    "q": "A Customer table contains CustomerID, CustomerName, StateCode, and StateName. Which column should be moved to a separate table to achieve 3NF?",
+    "options": [
+      "CustomerID",
+      "CustomerName",
+      "StateCode",
+      "StateName"
+    ],
+    "answer": 3,
+    "time": 25
+  }
 
   // add more questions here...
 ];
