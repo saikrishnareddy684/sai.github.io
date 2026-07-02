@@ -14901,8 +14901,210 @@ let originalQuestions = [
     ],
     "answer": 3,
     "time": 25
+  },
+  {
+  "q": "Which of the following is the best approach to find the second highest DISTINCT salary in SQL Server when duplicate salaries exist?",
+  "options": [
+    "Use ROW_NUMBER()",
+    "Use DENSE_RANK() or MAX() with a subquery",
+    "Use COUNT()",
+    "Use SUM()"
+  ],
+  "answer": 1,
+  "time": 20
+},
+  {
+  "q": "Which window function is most appropriate to return the top 3 highest-paid employees from each department, even if multiple employees have the same salary?",
+  "options": [
+    "ROW_NUMBER()",
+    "DENSE_RANK()",
+    "RANK()",
+    "NTILE()"
+  ],
+  "answer": 0,
+  "time": 20
+},
+  {
+  "q": "Which SQL window function syntax should be used to calculate a running total of sales separately for each employee by month?",
+  "options": [
+    "SUM(Sales) OVER (ORDER BY Month)",
+    "SUM(Sales) OVER (PARTITION BY EmpID ORDER BY Month)",
+    "SUM(Sales) GROUP BY EmpID",
+    "SUM(Sales) OVER (PARTITION BY Month ORDER BY EmpID)"
+  ],
+  "answer": 1,
+  "time": 20
+},
+  {
+  "q": "To calculate a running total of sales separately for each employee by month, which clause is mandatory in the window function?",
+  "options": [
+    "GROUP BY EmpID",
+    "PARTITION BY EmpID",
+    "HAVING EmpID",
+    "DISTINCT EmpID"
+  ],
+  "answer": 1,
+  "time": 20
+},
+  {
+  "q": "What happens if ORDER BY is omitted from SUM(Sales) OVER() when calculating a running total?",
+  "options": [
+    "A running total is still calculated.",
+    "The total sales are repeated for every row instead of a running total.",
+    "SQL Server throws an error.",
+    "Only the first row is returned."
+  ],
+  "answer": 1,
+  "time": 25
+},
+  {
+  "q": "Which SQL Server feature makes it possible to calculate a running total without using a self-join or correlated subquery?",
+  "options": [
+    "Aggregate Functions",
+    "Window Functions",
+    "CTEs",
+    "Temporary Tables"
+  ],
+  "answer": 1,
+  "time": 20
+},
+  
+  {
+    "q": "What is conditional aggregation in SQL?",
+    "options": [
+      "Using CASE with aggregate functions like SUM(), COUNT(), or AVG()",
+      "Using WHERE with GROUP BY",
+      "Using JOIN with aggregate functions",
+      "Using ORDER BY with aggregate functions"
+    ],
+    "answer": 0,
+    "time": 20
+  },
+  {
+    "q": "Which SQL expression is commonly used with SUM() to perform conditional aggregation?",
+    "options": [
+      "IF...ELSE",
+      "CASE WHEN ... THEN ... ELSE ... END",
+      "WHILE",
+      "EXISTS"
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "What is the main advantage of conditional aggregation?",
+    "options": [
+      "It avoids using GROUP BY",
+      "It allows multiple conditional totals or counts to be calculated in a single query",
+      "It removes duplicate rows",
+      "It automatically sorts the result"
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "Which query correctly calculates the total salary of IT employees using conditional aggregation?",
+    "options": [
+      "SUM(CASE WHEN Dept='IT' THEN Salary ELSE 0 END)",
+      "COUNT(CASE WHEN Dept='IT' THEN Salary END)",
+      "AVG(CASE WHEN Dept='IT' THEN Salary END)",
+      "MAX(CASE WHEN Dept='IT' THEN Salary END)"
+    ],
+    "answer": 0,
+    "time": 25
+  },
+  {
+    "q": "When is conditional aggregation most useful?",
+    "options": [
+      "When calculating multiple conditional counts or sums in a single query",
+      "When creating indexes",
+      "When deleting duplicate records",
+      "When sorting data"
+    ],
+    "answer": 0,
+    "time": 20
+  }
+,
+  
+  {
+    "q": "What is a correlated subquery in SQL?",
+    "options": [
+      "A subquery that executes only once and is independent of the outer query.",
+      "A subquery that references columns from the outer query and executes once for each row of the outer query.",
+      "A subquery that can only be used with JOINs.",
+      "A subquery that always returns a single value."
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "How many times is a correlated subquery typically executed?",
+    "options": [
+      "Once for the entire query",
+      "Once for each row processed by the outer query",
+      "Twice for every row",
+      "Only when GROUP BY is used"
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "Which of the following indicates that a subquery is correlated?",
+    "options": [
+      "It contains a GROUP BY clause.",
+      "It references a column from the outer query.",
+      "It uses an aggregate function.",
+      "It contains an ORDER BY clause."
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "Which of the following is a common use case for a correlated subquery?",
+    "options": [
+      "Finding employees whose salary is greater than the average salary of their own department",
+      "Sorting records in descending order",
+      "Removing duplicate rows",
+      "Creating an index on a table"
+    ],
+    "answer": 0,
+    "time": 25
   }
 
+,
+  {
+    "q": "Which of the following factors has the greatest impact on database query performance?",
+    "options": [
+      "Proper indexing",
+      "Changing the database name",
+      "Increasing the number of tables",
+      "Using longer column names"
+    ],
+    "answer": 0,
+    "time": 20
+  },
+  {
+    "q": "Why is indexing important in a database?",
+    "options": [
+      "It improves query performance by reducing data scans.",
+      "It reduces the number of tables.",
+      "It automatically normalizes the database.",
+      "It prevents duplicate records."
+    ],
+    "answer": 0,
+    "time": 20
+  },
+  {
+    "q": "Which of the following can improve SQL query performance?",
+    "options": [
+      "Using appropriate JOINs, WHERE filters, and indexes",
+      "Using SELECT * in every query",
+      "Avoiding indexes",
+      "Using nested queries for every operation"
+    ],
+    "answer": 0,
+    "time": 20
+  }
   // add more questions here...
 ];
 
