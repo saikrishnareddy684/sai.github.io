@@ -14165,6 +14165,118 @@ let originalQuestions = [
     "answer": 1,
     "time": 25
   }
+,
+  
+  {
+    "q": "Can a single SQL Server MERGE statement fully implement SCD Type 2 by updating the old record and inserting the new version for the same matched row?",
+    "options": [
+      "Yes, MERGE can perform both operations for the same matched row in one statement",
+      "No, SQL Server MERGE cannot both update and insert a new version for the same matched row in a single operation",
+      "Yes, but only when using an IDENTITY column",
+      "Yes, but only for tables with fewer than one million rows"
+    ],
+    "answer": 1,
+    "time": 25
+  },
+  {
+    "q": "What is the most common approach to implement SCD Type 2 in SQL Server?",
+    "options": [
+      "DELETE the old record and INSERT a new record",
+      "UPDATE the existing record only",
+      "UPDATE the current record to expire it, then INSERT a new current record",
+      "TRUNCATE the dimension table and reload all records"
+    ],
+    "answer": 2,
+    "time": 20
+  },
+  {
+    "q": "Which clause in a SQL Server MERGE statement can capture updated rows for later insertion into an SCD Type 2 table?",
+    "options": [
+      "RETURN",
+      "OUTPUT",
+      "FETCH",
+      "RESULT"
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "In an SCD Type 2 implementation, what is the purpose of the OUTPUT clause in a MERGE statement?",
+    "options": [
+      "To delete duplicate records",
+      "To capture updated rows so they can be inserted as new historical versions",
+      "To create indexes automatically",
+      "To update the ETL control table"
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "After expiring the old record in an SCD Type 2 process, what is the next step?",
+    "options": [
+      "Delete the source record",
+      "Update the surrogate key",
+      "Insert a new record with IsCurrent = 'Y' and a new EffectiveDate",
+      "Drop the dimension table"
+    ],
+    "answer": 2,
+    "time": 20
+  },
+  {
+    "q": "When a customer's city changes in an SCD Type 2 table, what happens to the existing current record?",
+    "options": [
+      "It is deleted permanently",
+      "Its IsCurrent flag is changed to 'N' and its EndDate is updated",
+      "Nothing changes",
+      "Its surrogate key is reused"
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "Which value is commonly assigned to the EndDate of a newly inserted current record in SCD Type 2?",
+    "options": [
+      "GETDATE()",
+      "'1900-01-01'",
+      "'9999-12-31'",
+      "NULL"
+    ],
+    "answer": 2,
+    "time": 20
+  },
+  {
+    "q": "Which flag identifies the active version of a record in an SCD Type 2 dimension table?",
+    "options": [
+      "IsDeleted",
+      "IsLatest",
+      "IsCurrent",
+      "IsActiveRecord"
+    ],
+    "answer": 2,
+    "time": 20
+  },
+  {
+    "q": "What is the primary benefit of using the MERGE OUTPUT approach for SCD Type 2?",
+    "options": [
+      "It eliminates the need for a source table",
+      "It captures changed rows during the UPDATE phase for insertion as new versions",
+      "It automatically creates surrogate keys",
+      "It removes duplicate business keys"
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "Which statement best describes the SQL Server implementation of SCD Type 2?",
+    "options": [
+      "A single MERGE statement is sufficient for all scenarios",
+      "SCD Type 2 is typically implemented using UPDATE + INSERT or MERGE + OUTPUT",
+      "Only INSERT statements are required",
+      "Only DELETE statements are required"
+    ],
+    "answer": 1,
+    "time": 25
+  }
 
 
   // add more questions here...
