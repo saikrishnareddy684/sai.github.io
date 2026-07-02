@@ -14656,6 +14656,118 @@ let originalQuestions = [
   "answer": 2,
   "time": 30
 }
+,
+  
+  {
+    "q": "What is the main rule of Second Normal Form (2NF)?",
+    "options": [
+      "A table should not contain NULL values",
+      "Every non-key column must depend on the entire primary key",
+      "A table should not contain duplicate rows",
+      "Every table must have an identity column"
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "A table has a composite primary key (StudentID, CourseID). StudentName depends only on StudentID. What type of dependency is this?",
+    "options": [
+      "Transitive Dependency",
+      "Functional Dependency",
+      "Partial Dependency",
+      "Multi-valued Dependency"
+    ],
+    "answer": 2,
+    "time": 20
+  },
+  {
+    "q": "Which normalization rule removes partial dependencies?",
+    "options": [
+      "1NF",
+      "2NF",
+      "3NF",
+      "BCNF"
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "Second Normal Form (2NF) applies mainly to tables with which type of primary key?",
+    "options": [
+      "Identity Key",
+      "Foreign Key",
+      "Single-column Primary Key",
+      "Composite Primary Key"
+    ],
+    "answer": 3,
+    "time": 20
+  },
+  {
+    "q": "Can a table with a single-column primary key violate Second Normal Form (2NF)?",
+    "options": [
+      "Yes, always",
+      "Yes, if duplicate rows exist",
+      "No, because partial dependency cannot exist with a single-column primary key",
+      "Only if the table contains NULL values"
+    ],
+    "answer": 2,
+    "time": 25
+  },
+  {
+    "q": "In a StudentCourse table with primary key (StudentID, CourseID), which column causes a 2NF violation if it depends only on StudentID?",
+    "options": [
+      "CourseID",
+      "StudentName",
+      "Primary Key",
+      "EnrollmentDate"
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "How do you convert a table from 1NF to 2NF?",
+    "options": [
+      "Delete duplicate rows",
+      "Split columns that depend on only part of a composite key into separate tables",
+      "Create indexes",
+      "Add more columns"
+    ],
+    "answer": 1,
+    "time": 25
+  },
+  {
+    "q": "A Student table contains StudentID, StudentName, and CourseID. Each student can enroll in only one course, and StudentID is the primary key. Is the table in 2NF?",
+    "options": [
+      "No, because CourseID is present",
+      "No, because CourseID is a foreign key",
+      "Yes, because there is no composite primary key and therefore no partial dependency",
+      "No, because every foreign key violates 2NF"
+    ],
+    "answer": 2,
+    "time": 30
+  },
+  {
+    "q": "A Student table contains StudentID, StudentName, and CourseID. A student can enroll in multiple courses, so the primary key is (StudentID, CourseID). StudentName depends only on StudentID. Is the table in 2NF?",
+    "options": [
+      "Yes, because the table has a composite key",
+      "No, because StudentName has a partial dependency on the composite key",
+      "Yes, because StudentName is not NULL",
+      "No, because CourseID is repeated"
+    ],
+    "answer": 1,
+    "time": 30
+  },
+  {
+    "q": "Which statement about Second Normal Form (2NF) is TRUE?",
+    "options": [
+      "2NF removes transitive dependencies",
+      "2NF removes partial dependencies by ensuring every non-key attribute depends on the entire composite primary key",
+      "2NF removes all duplicate rows",
+      "2NF requires every table to have a surrogate key"
+    ],
+    "answer": 1,
+    "time": 25
+  }
 
   // add more questions here...
 ];
