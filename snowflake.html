@@ -6397,6 +6397,173 @@ let originalQuestions = [
     "time": 35,
     "level": "Hard"
   }
+,
+  
+  {
+    "q": "Which Snowflake object captures only the changes made to a table?",
+    "options": [
+      "Task",
+      "Stage",
+      "Stream",
+      "View"
+    ],
+    "answer": 2,
+    "time": 20
+  },
+  {
+    "q": "What is the primary purpose of a Stream in Snowflake?",
+    "options": [
+      "Store backup data",
+      "Capture incremental data changes",
+      "Schedule SQL execution",
+      "Create external tables"
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "Which SQL statement is commonly used to perform incremental loading into a target table?",
+    "options": [
+      "INSERT",
+      "DELETE",
+      "MERGE",
+      "TRUNCATE"
+    ],
+    "answer": 2,
+    "time": 20
+  },
+  {
+    "q": "Which Snowflake object is used to automate the execution of SQL statements on a schedule?",
+    "options": [
+      "Warehouse",
+      "Task",
+      "Procedure",
+      "View"
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "What happens after a Stream is successfully consumed by a MERGE statement?",
+    "options": [
+      "The source table is deleted",
+      "The Stream offset advances",
+      "The Stream is automatically dropped",
+      "The target table is truncated"
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "What does the MERGE statement do when the matching record already exists in the target table?",
+    "options": [
+      "Deletes the record",
+      "Ignores the record",
+      "Updates the existing record",
+      "Creates a duplicate record"
+    ],
+    "answer": 2,
+    "time": 20
+  },
+  {
+    "q": "What does the MERGE statement do when no matching record exists in the target table?",
+    "options": [
+      "Deletes the source record",
+      "Updates the source table",
+      "Inserts a new record",
+      "Skips the record"
+    ],
+    "answer": 2,
+    "time": 20
+  },
+  {
+    "q": "When does a Stream start tracking changes in a table?",
+    "options": [
+      "From the time the table is created",
+      "After the Stream is created",
+      "After the first MERGE",
+      "After a Task is resumed"
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "Which object actually stores the business data in an incremental loading solution?",
+    "options": [
+      "Stream",
+      "Task",
+      "Target Table",
+      "Warehouse"
+    ],
+    "answer": 2,
+    "time": 20
+  },
+  {
+    "q": "Can multiple Streams be created on the same Snowflake table?",
+    "options": [
+      "No",
+      "Only one Stream is allowed",
+      "Yes, each Stream maintains its own offset",
+      "Only if the table is partitioned"
+    ],
+    "answer": 2,
+    "time": 20
+  },
+  {
+    "q": "Which component is responsible for providing compute resources to execute the Task?",
+    "options": [
+      "Stage",
+      "Warehouse",
+      "Schema",
+      "Database"
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "Which statement is used to activate a Snowflake Task?",
+    "options": [
+      "START TASK",
+      "ENABLE TASK",
+      "ALTER TASK <task_name> RESUME",
+      "EXECUTE TASK"
+    ],
+    "answer": 2,
+    "time": 20
+  },
+  {
+    "q": "Which metadata does a Stream capture?",
+    "options": [
+      "Only inserted rows",
+      "Only updated rows",
+      "Only deleted rows",
+      "Inserted, updated, and deleted changes"
+    ],
+    "answer": 3,
+    "time": 20
+  },
+  {
+    "q": "Why is MERGE preferred over INSERT for incremental loading?",
+    "options": [
+      "It is faster than INSERT in all cases",
+      "It supports both UPDATE and INSERT operations",
+      "It automatically creates indexes",
+      "It deletes duplicate records automatically"
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "Which of the following best describes a complete incremental loading pipeline in Snowflake?",
+    "options": [
+      "Source Table → Warehouse → View → Target",
+      "Source Table → Stream → Task → MERGE → Target Table",
+      "Source Table → Procedure → Stage → Target",
+      "Source Table → File Format → Warehouse → Target"
+    ],
+    "answer": 1,
+    "time": 25
+  }
 
 
 
