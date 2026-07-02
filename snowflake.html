@@ -6676,6 +6676,118 @@ let originalQuestions = [
     "answer": 2,
     "time": 20
   }
+,
+  
+  {
+    "q": "In an incremental loading process, what is the target table?",
+    "options": [
+      "The table where new data is initially inserted",
+      "The table where processed data is loaded",
+      "The table that stores the Stream metadata",
+      "The table that stores warehouse information"
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "Which table is typically considered the source table in an ETL process?",
+    "options": [
+      "CUSTOMER_DIM",
+      "CUSTOMER_FACT",
+      "CUSTOMER_STG",
+      "CUSTOMER_HISTORY"
+    ],
+    "answer": 2,
+    "time": 20
+  },
+  {
+    "q": "In the data flow CUSTOMER_STG → CUSTOMER_STREAM → MERGE → CUSTOMER_DIM, which is the target table?",
+    "options": [
+      "CUSTOMER_STG",
+      "CUSTOMER_STREAM",
+      "MERGE",
+      "CUSTOMER_DIM"
+    ],
+    "answer": 3,
+    "time": 20
+  },
+  {
+    "q": "What is an offset in a Snowflake Stream?",
+    "options": [
+      "A backup of the source table",
+      "A pointer that tracks the last consumed change",
+      "A copy of the target table",
+      "A warehouse configuration"
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "What happens to a Stream's offset after a successful MERGE consumes its changes?",
+    "options": [
+      "It resets to the beginning of the table",
+      "It advances to the latest consumed change",
+      "It is deleted",
+      "It moves to the target table"
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "Why is the offset maintained in a Snowflake Stream?",
+    "options": [
+      "To improve warehouse performance",
+      "To avoid processing the same changes multiple times",
+      "To create duplicate records",
+      "To compress the source table"
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "After a Stream has consumed rows 104 and 105, and row 106 is inserted into the source table, what will the Stream return?",
+    "options": [
+      "Rows 104, 105, and 106",
+      "Only rows 104 and 105",
+      "Only row 106",
+      "No rows"
+    ],
+    "answer": 2,
+    "time": 20
+  },
+  {
+    "q": "Which statement about a Stream's offset is TRUE?",
+    "options": [
+      "The offset stores the actual table data",
+      "The offset is an internal bookmark that tracks consumed changes",
+      "The offset deletes rows from the source table",
+      "The offset creates new partitions"
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "Which component reads changes from the Stream and loads them into the target table?",
+    "options": [
+      "Warehouse",
+      "MERGE statement",
+      "Stage",
+      "View"
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "Which of the following best describes the purpose of a target table?",
+    "options": [
+      "It captures changes from the source table",
+      "It schedules SQL execution",
+      "It stores the final processed data after transformation",
+      "It maintains the Stream offset"
+    ],
+    "answer": 2,
+    "time": 20
+  }
 
 
 
