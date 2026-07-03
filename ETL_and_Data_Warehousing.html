@@ -942,6 +942,235 @@ let originalQuestions = [
     "answer": 2,
     "time": 20
   }
+,
+  
+  {
+    "q": "What is the primary purpose of Data Warehouse Architecture?",
+    "options": [
+      "To design OLTP applications",
+      "To define how data flows from source systems to reporting and analytics",
+      "To manage database security only",
+      "To store application source code"
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "Which of the following is the correct sequence in a typical Data Warehouse Architecture?",
+    "options": [
+      "Source Systems → Data Warehouse → ETL → Reports",
+      "Source Systems → Staging Layer → ETL/ELT → Data Warehouse → Data Marts → Reports",
+      "Data Warehouse → Source Systems → Data Marts → Reports",
+      "Staging Layer → Source Systems → Reports → Data Warehouse"
+    ],
+    "answer": 1,
+    "time": 25
+  },
+  {
+    "q": "What is the primary purpose of the Staging Layer in a data warehouse?",
+    "options": [
+      "To generate reports",
+      "To temporarily store raw data before transformation",
+      "To store historical analytical data",
+      "To replace the data warehouse"
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "What is the role of the Data Warehouse in the architecture?",
+    "options": [
+      "To store temporary raw data",
+      "To process online transactions",
+      "To store integrated, historical, and analytics-ready data",
+      "To generate application logs"
+    ],
+    "answer": 2,
+    "time": 20
+  },
+  {
+    "q": "Why are Data Marts created in a Data Warehouse Architecture?",
+    "options": [
+      "To replace source systems",
+      "To provide department-specific data for reporting and analysis",
+      "To increase data redundancy",
+      "To store application backups"
+    ],
+    "answer": 1,
+    "time": 20
+  }
+  ,
+  
+  {
+    "q": "What is an Incremental Load?",
+    "options": [
+      "Loading the entire dataset every time",
+      "Loading only new or changed records into the target system",
+      "Deleting all records before loading",
+      "Loading only dimension tables"
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "Which of the following methods is commonly used to identify changed records for an Incremental Load?",
+    "options": [
+      "Primary Key",
+      "Timestamp or Modified Date column",
+      "Clustered Index",
+      "Data Type"
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "Which SQL Server feature automatically captures INSERT, UPDATE, and DELETE operations for incremental loading?",
+    "options": [
+      "Replication",
+      "Partitioning",
+      "Change Data Capture (CDC)",
+      "Triggers"
+    ],
+    "answer": 2,
+    "time": 25
+  },
+  {
+    "q": "Which Snowflake feature is commonly used to implement incremental loading?",
+    "options": [
+      "Stages",
+      "Streams",
+      "Warehouses",
+      "Schemas"
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "Which statement correctly compares Full Load and Incremental Load?",
+    "options": [
+      "Full Load loads only changed records, while Incremental Load reloads all records",
+      "Full Load reloads all records, while Incremental Load loads only new or changed records",
+      "Both approaches always load the same amount of data",
+      "Incremental Load is simpler to implement than Full Load"
+    ],
+    "answer": 1,
+    "time": 25
+  }
+,
+  
+  {
+    "q": "What is aggregation in a data warehouse?",
+    "options": [
+      "Deleting duplicate records",
+      "Summarizing detailed data into higher-level information",
+      "Splitting a large table into smaller tables",
+      "Encrypting data before loading"
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "Which of the following is an example of aggregation?",
+    "options": [
+      "Converting monthly sales into daily sales",
+      "Converting daily sales into monthly sales",
+      "Removing duplicate customer records",
+      "Creating surrogate keys"
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "What is Data Lineage?",
+    "options": [
+      "A method of compressing data",
+      "Tracking the flow of data from source systems to reports",
+      "A technique for indexing tables",
+      "A process of deleting old records"
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "Which of the following best represents Data Lineage?",
+    "options": [
+      "Power BI → Source System → ETL",
+      "Source System → ETL → Data Warehouse → Report",
+      "Report → Data Warehouse → Source System",
+      "Data Mart → Source System → ETL"
+    ],
+    "answer": 1,
+    "time": 25
+  },
+  {
+    "q": "Why is Data Lineage important?",
+    "options": [
+      "To improve internet speed",
+      "To track data flow for auditing, debugging, and impact analysis",
+      "To reduce database storage",
+      "To replace ETL processes"
+    ],
+    "answer": 1,
+    "time": 25
+  }
+,
+  
+  {
+    "q": "Which of the following is NOT a common dimension of data quality?",
+    "options": [
+      "Accuracy",
+      "Completeness",
+      "Consistency",
+      "Compilation"
+    ],
+    "answer": 3,
+    "time": 20
+  },
+  {
+    "q": "What is the primary purpose of partitioning in a data warehouse?",
+    "options": [
+      "To increase data redundancy",
+      "To split a large table into smaller logical parts and improve query performance",
+      "To create backup tables",
+      "To replace indexes"
+    ],
+    "answer": 1,
+    "time": 25
+  },
+  {
+    "q": "Which type of index is most suitable for improving range queries in SQL Server?",
+    "options": [
+      "Non-clustered Index",
+      "Hash Index",
+      "Clustered Index",
+      "Unique Constraint"
+    ],
+    "answer": 2,
+    "time": 20
+  },
+  {
+    "q": "Which type of index is commonly used to improve filtering and lookup queries?",
+    "options": [
+      "Clustered Index",
+      "Non-clustered Index",
+      "Primary Key Only",
+      "Partition Index"
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "Why are data warehouses typically denormalized?",
+    "options": [
+      "To increase the number of joins",
+      "To improve write performance",
+      "To reduce joins and optimize read performance for analytics",
+      "To eliminate dimension tables"
+    ],
+    "answer": 2,
+    "time": 25
+  }
+
 
 
 ];
