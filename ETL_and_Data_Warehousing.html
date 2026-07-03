@@ -520,7 +520,428 @@ let originalQuestions = [
     "time": 40,
     "level": "Hard"
   }
+,
+  {
+  "q": "What is a composite key in a relational database?",
+  "options": [
+    "A key made up of two or more columns that together uniquely identify a row",
+    "A foreign key that references multiple tables",
+    "A primary key that stores duplicate values",
+    "A column that automatically generates unique values"
+  ],
+  "answer": 0,
+  "time": 20
+}
+  ,
+  
+  {
+    "q": "What is the primary purpose of an OLTP system?",
+    "options": [
+      "Business reporting and analytics",
+      "Real-time transaction processing",
+      "Historical trend analysis",
+      "Data warehousing"
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "Which type of workload is typical for an OLAP system?",
+    "options": [
+      "Insert-heavy",
+      "Update-heavy",
+      "Read-heavy analytical queries",
+      "Delete-heavy operations"
+    ],
+    "answer": 2,
+    "time": 20
+  },
+  {
+    "q": "Which database design is commonly used in OLTP systems?",
+    "options": [
+      "Denormalized tables",
+      "Star schema",
+      "Normalized tables",
+      "Data lake"
+    ],
+    "answer": 2,
+    "time": 20
+  },
+  {
+    "q": "Which of the following is an example of an OLAP system?",
+    "options": [
+      "ATM transaction system",
+      "Online shopping checkout",
+      "Bank account transfer",
+      "Data warehouse used for Power BI reporting"
+    ],
+    "answer": 3,
+    "time": 20
+  },
+  {
+    "q": "Which statement correctly describes the difference between OLTP and OLAP?",
+    "options": [
+      "OLTP is used for analytics, while OLAP is used for transactions",
+      "OLTP is for operations, while OLAP is for analytics",
+      "OLTP stores only historical data, while OLAP stores only current data",
+      "Both OLTP and OLAP are designed for the same purpose"
+    ],
+    "answer": 1,
+    "time": 25
+  }
+,
+  
+  {
+    "q": "What is a Star Schema in a data warehouse?",
+    "options": [
+      "A schema with multiple fact tables and one dimension table",
+      "A schema with one central fact table connected directly to multiple dimension tables",
+      "A schema where all tables are normalized",
+      "A schema used only for OLTP databases"
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "Why is a Star Schema generally faster than a Snowflake Schema?",
+    "options": [
+      "Because it contains more indexes",
+      "Because it requires fewer joins due to denormalized dimensions",
+      "Because it stores only numeric data",
+      "Because it avoids using fact tables"
+    ],
+    "answer": 1,
+    "time": 25
+  },
+  {
+    "q": "What is the main characteristic of a Snowflake Schema?",
+    "options": [
+      "Fact tables are normalized",
+      "Dimension tables are normalized into multiple related tables",
+      "It contains only one table",
+      "It does not use foreign keys"
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "Which of the following is an advantage of a Snowflake Schema?",
+    "options": [
+      "Fewer joins",
+      "Higher data redundancy",
+      "Less redundancy through normalized dimension tables",
+      "No need for dimension tables"
+    ],
+    "answer": 2,
+    "time": 20
+  },
+  {
+    "q": "Which statement correctly compares Star Schema and Snowflake Schema?",
+    "options": [
+      "Star Schema uses normalized dimensions, while Snowflake Schema uses denormalized dimensions",
+      "Star Schema requires more joins than Snowflake Schema",
+      "Star Schema has denormalized dimensions and fewer joins, while Snowflake Schema has normalized dimensions and more joins",
+      "Both schemas have identical structures and performance"
+    ],
+    "answer": 2,
+    "time": 25
+  }
+,
+  {
+    "q": "What is a Fact Table in a data warehouse?",
+    "options": [
+      "A table that stores descriptive business information",
+      "A table that stores business metrics, numeric measures, and foreign keys to dimensions",
+      "A table that stores only customer details",
+      "A table used only for transaction logging"
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "What is the primary purpose of a Dimension Table?",
+    "options": [
+      "To store numeric business measures",
+      "To store transaction history",
+      "To store descriptive attributes that provide context to facts",
+      "To store indexes for faster queries"
+    ],
+    "answer": 2,
+    "time": 20
+  },
+  {
+    "q": "Which of the following is typically stored in a Fact Table?",
+    "options": [
+      "Customer Name",
+      "Product Category",
+      "Sales Amount",
+      "City"
+    ],
+    "answer": 2,
+    "time": 20
+  },
+  {
+    "q": "Which of the following is typically stored in a Dimension Table?",
+    "options": [
+      "Profit",
+      "Quantity Sold",
+      "Sales Amount",
+      "Customer Name"
+    ],
+    "answer": 3,
+    "time": 20
+  },
+  {
+    "q": "Which statement correctly describes the relationship between Fact and Dimension tables?",
+    "options": [
+      "Fact tables contain primary keys to fact tables",
+      "Dimension tables contain foreign keys to fact tables",
+      "Fact tables contain foreign keys referencing dimension tables, while dimension tables contain descriptive attributes",
+      "Fact and Dimension tables store the same type of data"
+    ],
+    "answer": 2,
+    "time": 25
+  }
 
+,
+  
+  {
+    "q": "What does ETL stand for?",
+    "options": [
+      "Extract, Transform, Load",
+      "Execute, Transfer, Link",
+      "Extract, Transfer, Load",
+      "Export, Transform, Link"
+    ],
+    "answer": 0,
+    "time": 15
+  },
+  {
+    "q": "What is the correct sequence in the ETL process?",
+    "options": [
+      "Transform → Extract → Load",
+      "Extract → Transform → Load",
+      "Load → Transform → Extract",
+      "Extract → Load → Transform"
+    ],
+    "answer": 1,
+    "time": 15
+  },
+  {
+    "q": "In which stage of ETL are business rules, data cleansing, and calculations typically applied?",
+    "options": [
+      "Extract",
+      "Load",
+      "Transform",
+      "Archive"
+    ],
+    "answer": 2,
+    "time": 20
+  },
+  {
+    "q": "What is the primary difference between ETL and ELT?",
+    "options": [
+      "ETL loads data before transforming it, while ELT transforms data before loading it",
+      "ETL transforms data before loading it, while ELT loads data first and transforms it inside the target system",
+      "ETL is used only for SQL Server, while ELT is used only for Oracle",
+      "There is no difference between ETL and ELT"
+    ],
+    "answer": 1,
+    "time": 25
+  },
+  {
+    "q": "Which of the following platforms primarily follows the ELT approach?",
+    "options": [
+      "SSIS",
+      "Informatica",
+      "Snowflake",
+      "Talend"
+    ],
+    "answer": 2,
+    "time": 20
+  }
+,
+  
+  {
+    "q": "What is a Data Mart?",
+    "options": [
+      "A database used only for OLTP transactions",
+      "A subset of a data warehouse focused on a specific business area or department",
+      "A collection of unstructured files",
+      "A backup of the data warehouse"
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "Which of the following is an example of a Data Mart?",
+    "options": [
+      "Enterprise Data Warehouse",
+      "Finance Data Mart",
+      "SQL Server Instance",
+      "Data Lake"
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "What does 'grain' mean in a data warehouse?",
+    "options": [
+      "The size of the database",
+      "The number of columns in a fact table",
+      "The level of detail represented by each row in a fact table",
+      "The number of dimension tables"
+    ],
+    "answer": 2,
+    "time": 25
+  },
+  {
+    "q": "If each row in a fact table represents one sales transaction, what is the grain of the table?",
+    "options": [
+      "Customer level",
+      "Monthly level",
+      "Transaction level",
+      "Product level"
+    ],
+    "answer": 2,
+    "time": 25
+  },
+  {
+    "q": "Which interview answer correctly describes the grain of a fact table?",
+    "options": [
+      "SalesAmount",
+      "CustomerKey",
+      "One row represents one customer per day",
+      "Fact tables always have fine grain"
+    ],
+    "answer": 2,
+    "time": 30
+  }
+,
+  
+  {
+    "q": "What is a surrogate key?",
+    "options": [
+      "A business-generated unique identifier",
+      "A system-generated unique key with no business meaning",
+      "A foreign key referencing another table",
+      "A composite key made of multiple columns"
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "Why are surrogate keys commonly used in data warehouses?",
+    "options": [
+      "To increase data redundancy",
+      "Because they are shorter, stable, and independent of business data",
+      "To replace foreign keys in fact tables",
+      "To avoid using dimension tables"
+    ],
+    "answer": 1,
+    "time": 25
+  },
+  {
+    "q": "Which of the following is an example of a surrogate key?",
+    "options": [
+      "CustomerID = CUST1001",
+      "Email = sai@example.com",
+      "CustomerKey = 101",
+      "PAN Number"
+    ],
+    "answer": 2,
+    "time": 20
+  },
+  {
+    "q": "In which type of table are surrogate keys most commonly used?",
+    "options": [
+      "Fact tables only",
+      "Dimension tables",
+      "Temporary tables",
+      "Log tables"
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "Why are surrogate keys important in SCD Type 2?",
+    "options": [
+      "They prevent duplicate records",
+      "They allow multiple historical versions of the same business entity to be stored",
+      "They eliminate the need for business keys",
+      "They improve SQL query syntax"
+    ],
+    "answer": 1,
+    "time": 30
+  }
+,
+  
+  {
+    "q": "What is a Conformed Dimension?",
+    "options": [
+      "A dimension used only by one fact table",
+      "A dimension shared across multiple fact tables",
+      "A dimension without a primary key",
+      "A temporary dimension table"
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "Which of the following is an example of a Conformed Dimension?",
+    "options": [
+      "Customer Dimension used by both Sales Fact and Returns Fact",
+      "Invoice Number stored in a fact table",
+      "Gender and Status combined into one table",
+      "A staging table"
+    ],
+    "answer": 0,
+    "time": 20
+  },
+  {
+    "q": "What is a Degenerate Dimension?",
+    "options": [
+      "A dimension shared across multiple fact tables",
+      "A dimension stored directly in the fact table without a separate dimension table",
+      "A normalized dimension table",
+      "A dimension containing historical records"
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "Which of the following is a common example of a Degenerate Dimension?",
+    "options": [
+      "Customer Name",
+      "Product Category",
+      "Invoice Number",
+      "City"
+    ],
+    "answer": 2,
+    "time": 20
+  },
+  {
+    "q": "What is a Junk Dimension?",
+    "options": [
+      "A dimension containing invalid data",
+      "A dimension that stores transaction amounts",
+      "A dimension that combines multiple low-cardinality attributes into a single table",
+      "A dimension used only for historical records"
+    ],
+    "answer": 2,
+    "time": 20
+  },
+  {
+    "q": "Which of the following attributes are commonly stored in a Junk Dimension?",
+    "options": [
+      "Sales Amount and Profit",
+      "Customer Name and Address",
+      "Gender, Status, and Yes/No Flags",
+      "Product Price and Quantity"
+    ],
+    "answer": 2,
+    "time": 20
+  }
 
 
 ];
