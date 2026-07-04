@@ -6788,8 +6788,92 @@ let originalQuestions = [
     "answer": 2,
     "time": 20
   }
-
-
+,
+  
+{
+  "q": "In the following Snowflake SQL stored procedure, why is ':p_id' used in the WHERE clause?\n\nCREATE OR REPLACE PROCEDURE updatecustomertable(p_id INT)\nRETURNS TABLE ()\nLANGUAGE SQL\nAS\n$$\nDECLARE\n    rs RESULTSET;\nBEGIN\n    rs := (\n        SELECT *\n        FROM customers\n        WHERE id = :p_id\n    );\n\n    RETURN TABLE(rs);\nEND;\n$$;",
+  "options": [
+    "It refers to the stored procedure input parameter (bind variable).",
+    "It creates a new column named p_id.",
+    "It is used to reference a session variable only.",
+    "The colon is optional and has no effect."
+  ],
+  "answer": 0,
+  "time": 30,
+  "level": "Medium"
+},
+{
+  "q": "Which declaration is required to store the output of a SELECT statement before returning it as a table in a Snowflake SQL stored procedure?",
+  "options": [
+    "CURSOR rs;",
+    "TABLE rs;",
+    "RESULTSET rs;",
+    "VIEW rs;"
+  ],
+  "answer": 2,
+  "time": 25,
+  "level": "Medium"
+},
+{
+  "q": "What is the purpose of 'RETURNS TABLE()' in a Snowflake SQL stored procedure?",
+  "options": [
+    "It allows the procedure to return a result set as a table.",
+    "It creates a permanent table automatically.",
+    "It converts the procedure into a table function.",
+    "It is required only for INSERT and UPDATE statements."
+  ],
+  "answer": 0,
+  "time": 25,
+  "level": "Easy"
+},
+{
+  "q": "Which statement correctly returns the RESULTSET variable 'rs' from a Snowflake SQL stored procedure?",
+  "options": [
+    "RETURN rs;",
+    "RETURN RESULTSET(rs);",
+    "RETURN TABLE(rs);",
+    "SELECT * FROM rs;"
+  ],
+  "answer": 2,
+  "time": 20,
+  "level": "Easy"
+},
+{
+  "q": "In a Snowflake SQL stored procedure, what is the purpose of the following statement?\n\nrs := (\n    SELECT *\n    FROM customers\n    WHERE id = :p_id\n);",
+  "options": [
+    "It stores the query result into the RESULTSET variable 'rs'.",
+    "It inserts the selected rows into the customers table.",
+    "It creates a temporary table named rs.",
+    "It executes the query without storing the result."
+  ],
+  "answer": 0,
+  "time": 30,
+  "level": "Medium"
+},
+{
+  "q": "Which of the following is the correct sequence for returning query results from a Snowflake SQL stored procedure?",
+  "options": [
+    "DECLARE RESULTSET → Assign SELECT to RESULTSET → RETURN TABLE(resultset)",
+    "RETURN TABLE() → SELECT statement → DECLARE RESULTSET",
+    "SELECT statement → RETURN STRING",
+    "DECLARE CURSOR → RETURN CURSOR"
+  ],
+  "answer": 0,
+  "time": 35,
+  "level": "Hard"
+},
+{
+  "q": "Which of the following statements about Snowflake SQL stored procedures is TRUE?",
+  "options": [
+    "A SELECT statement automatically returns rows to the caller.",
+    "A RESULTSET variable must be used along with RETURN TABLE() to return query results.",
+    "A RETURN statement is optional when RETURNS TABLE() is specified.",
+    "Procedure parameters are referenced using '@parameter' like SQL Server."
+  ],
+  "answer": 1,
+  "time": 35,
+  "level": "Hard"
+}
 
 
 ];
