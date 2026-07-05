@@ -29,6 +29,7 @@
         .jump-buttons {
             margin-bottom: 12px;
         }
+        /*
         .jump-buttons button {
             background-color: #008CBA;
             color: white;
@@ -46,6 +47,44 @@
             width: 100%;
             margin-top: 10px;
         }
+        */
+        .jump-buttons button {
+
+    background-color:#008CBA;
+
+    color:white;
+
+    border:none;
+
+    padding:10px 14px;
+
+    margin:6px;
+
+    border-radius:6px;
+
+    cursor:pointer;
+
+    font-size:13px;
+
+    width:280px;
+
+    height:65px;
+
+    text-align:left;
+
+    white-space:normal;
+
+    line-height:18px;
+
+    vertical-align:top;
+
+}
+
+.jump-buttons button:hover {
+
+    background:#007399;
+
+}
         table, th, td { border: 1px solid #ddd; }
         th, td { padding: 8px; text-align: left; font-size: 13px; }
         th { background: #fafafa; }
@@ -218,7 +257,7 @@ CALL getCustomerCount();
    ============================ */
 
 let currentQuestion = 0;
-
+/*
 function createJumpButtons() {
     const container = document.getElementById('jumpButtons');
     container.innerHTML = '';
@@ -232,6 +271,34 @@ function createJumpButtons() {
         };
         container.appendChild(btn);
     });
+}
+    */
+    function createJumpButtons() {
+
+    const container = document.getElementById('jumpButtons');
+
+    container.innerHTML = '';
+
+    questions.forEach((q, idx) => {
+
+        const btn = document.createElement('button');
+
+        btn.textContent = q.title;
+
+        btn.title = q.title;
+
+        btn.onclick = () => {
+
+            currentQuestion = idx;
+
+            renderQuestion(idx);
+
+        };
+
+        container.appendChild(btn);
+
+    });
+
 }
 
 function renderTableFromObjects(list) {
