@@ -253,6 +253,113 @@ CALL getCustomerCount();
 `
 },
 
+    {
+title: "Stored Procedure - Fetch Customers By City",
+
+question:`
+Create a stored procedure.
+
+Input:
+City Name
+
+Return:
+All customers belonging to that city using RESULTSET.
+`,
+dataset:[
+{ID:1,NAME:"John",CITY:"London"},
+{ID:2,NAME:"David",CITY:"Paris"},
+{ID:3,NAME:"Alex",CITY:"London"}
+],
+output:[
+{ID:1,NAME:"John",CITY:"London"},
+{ID:3,NAME:"Alex",CITY:"London"}
+],
+answer:`
+CREATE OR REPLACE PROCEDURE fetchCustomerByCity(p_city STRING)
+RETURNS TABLE()
+LANGUAGE SQL
+AS
+$$
+
+DECLARE
+rs RESULTSET;
+
+BEGIN
+
+rs:=(
+SELECT *
+FROM CUSTOMER_DIM
+WHERE CITY=:p_city
+);
+
+RETURN TABLE(rs);
+
+END;
+$$;
+
+CALL fetchCustomerByCity('London');
+`
+},
+    {
+title: "Stored Procedure - Update Salary If Customer Exists",
+
+question: `
+Create a SQL Stored Procedure named updatecustomer.
+
+Requirements:
+
+1. Accept Customer ID as an input parameter.
+2. Check whether the customer exists.
+3. If the customer exists:
+   - Increase the salary by 10%.
+   - If salary is NULL, treat it as 10 before increasing.
+4. Return a success message.
+5. If the customer does not exist, return a "Customer not found" message.
+`,
+
+dataset:[
+{ID:1,NAME:"John",SALARY:50000},
+{ID:2,NAME:"David",SALARY:null},
+{ID:3,NAME:"Alex",SALARY:75000}
+],
+
+output:[
+{"Result":"Salary updated for ID 1"}
+],
+
+answer:`
+CREATE OR REPLACE PROCEDURE updatecustomer(pid INT)
+RETURNS STRING
+LANGUAGE SQL
+AS
+$$
+BEGIN
+
+    IF (EXISTS (
+        SELECT 1
+        FROM customers
+        WHERE id = :pid
+    )) THEN
+
+        UPDATE customers
+        SET salary = COALESCE(salary,10) * 1.10
+        WHERE id = :pid;
+
+        RETURN 'Salary updated for ID ' || :pid;
+
+    ELSE
+
+        RETURN 'Customer ID ' || :pid || ' not found';
+
+    END IF;
+
+END;
+$$;
+
+CALL updatecustomer(1);
+`
+},
+    
 /* End of questions array */
 ];
 
