@@ -7068,6 +7068,128 @@ let originalQuestions = [
     "time": 30,
     "level": "Easy"
   }
+,
+  
+  {
+    "q": "In Snowflake SCD Type 2 implementation, why does a simple MERGE statement not insert a new version of a row after updating the current record to ISCURRENT='N'?",
+    "options": [
+      "MERGE does not support UPDATE operations.",
+      "A matched source row executes only the WHEN MATCHED clause and cannot also execute the WHEN NOT MATCHED clause.",
+      "Snowflake automatically inserts a new version after every UPDATE.",
+      "MERGE can only insert new rows and cannot update existing rows."
+    ],
+    "answer": 1,
+    "time": 30,
+    "level": "Hard"
+  },
+  {
+    "q": "What is the recommended approach to implement SCD Type 2 in Snowflake when a record changes?",
+    "options": [
+      "Delete the existing row and insert a new row.",
+      "Use a single UPDATE statement only.",
+      "Expire the current row using UPDATE and then INSERT a new current version of the record.",
+      "Use TRUNCATE and reload the table."
+    ],
+    "answer": 2,
+    "time": 25,
+    "level": "Medium"
+  },
+  {
+    "q": "Which clause of a MERGE statement is executed when the source row matches an existing target row?",
+    "options": [
+      "WHEN NOT MATCHED",
+      "INSERT",
+      "WHEN MATCHED",
+      "DELETE"
+    ],
+    "answer": 2,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "In a MERGE statement, when is the WHEN NOT MATCHED clause executed?",
+    "options": [
+      "When the source row matches an existing target row.",
+      "Only when the source row does not find a matching target row.",
+      "After every UPDATE operation.",
+      "Before the WHEN MATCHED clause."
+    ],
+    "answer": 1,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "Why can't a standard MERGE statement perform both UPDATE and INSERT for the same matched source row in Snowflake?",
+    "options": [
+      "Snowflake does not support INSERT statements.",
+      "A source row can execute only one MERGE branch for a given match condition.",
+      "MERGE only supports DELETE operations.",
+      "Snowflake automatically creates duplicate rows."
+    ],
+    "answer": 1,
+    "time": 30,
+    "level": "Hard"
+  },
+  {
+    "q": "Which SQL Server feature is commonly used to capture updated rows during a MERGE so that new SCD Type 2 records can be inserted?",
+    "options": [
+      "QUALIFY",
+      "RESULTSET",
+      "OUTPUT clause",
+      "STREAM"
+    ],
+    "answer": 2,
+    "time": 25,
+    "level": "Medium"
+  },
+  {
+    "q": "Does Snowflake support the OUTPUT clause in MERGE, UPDATE, INSERT, or DELETE statements like SQL Server?",
+    "options": [
+      "Yes, for all DML statements.",
+      "Yes, but only for MERGE.",
+      "No, Snowflake does not support the OUTPUT clause.",
+      "Only for INSERT statements."
+    ],
+    "answer": 2,
+    "time": 20,
+    "level": "Medium"
+  },
+  {
+    "q": "Which approach is commonly used in Snowflake instead of SQL Server's OUTPUT clause to implement SCD Type 2?",
+    "options": [
+      "UPDATE followed by INSERT.",
+      "DELETE followed by INSERT.",
+      "TRUNCATE followed by COPY INTO.",
+      "Only INSERT statements."
+    ],
+    "answer": 0,
+    "time": 25,
+    "level": "Medium"
+  },
+  {
+    "q": "After marking an existing record as ISCURRENT='N' during an SCD Type 2 implementation, what should be done next?",
+    "options": [
+      "Delete the expired row.",
+      "Insert a new row with the updated values and ISCURRENT='Y'.",
+      "Truncate the target table.",
+      "No further action is required."
+    ],
+    "answer": 1,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "Why is a two-step UPDATE followed by INSERT approach commonly used for SCD Type 2 in Snowflake?",
+    "options": [
+      "Because Snowflake does not support MERGE.",
+      "Because a matched row cannot be both updated and inserted within a standard MERGE operation.",
+      "Because INSERT statements are faster than MERGE.",
+      "Because UPDATE statements are not supported in Snowflake."
+    ],
+    "answer": 1,
+    "time": 30,
+    "level": "Hard"
+  }
 
 
 ];
