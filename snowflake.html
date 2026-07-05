@@ -7190,7 +7190,141 @@ let originalQuestions = [
     "time": 30,
     "level": "Hard"
   }
-
+,
+  {
+  "q": "Which combination correctly represents common objects that can exist in a Snowflake Provider Account?",
+  "options": [
+    "Databases, Schemas, Tables, Views, Secure Views, Materialized Views, Streams, Tasks, Stages, File Formats, Pipes, Functions, Stored Procedures, Sequences, Warehouses, Users, Roles, Shares",
+    "Only Databases, Warehouses, Shares, and Users",
+    "Databases, Virtual Machines, Kubernetes Clusters, APIs, and Docker Containers",
+    "Tables, Operating Systems, Network Routers, Firewalls, and Shares"
+  ],
+  "answer": 0,
+  "time": 30,
+  "level": "Easy"
+}
+,
+  
+  {
+    "q": "Which statement best describes the use of MERGE in implementing SCD Type 2 in Snowflake?",
+    "options": [
+      "MERGE is commonly used as part of an SCD Type 2 solution, but a single MERGE statement cannot both expire an existing row and insert a new version for the same matched record.",
+      "A single MERGE statement automatically performs SCD Type 2 without any additional logic.",
+      "MERGE can only be used for SCD Type 1 implementations.",
+      "MERGE cannot be used in any SCD implementation."
+    ],
+    "answer": 0,
+    "time": 30,
+    "level": "Medium"
+  },
+  {
+    "q": "What happens when a matching record changes in a Slowly Changing Dimension (SCD) Type 2 implementation?",
+    "options": [
+      "The existing record is overwritten with the new values.",
+      "The existing record is deleted and replaced.",
+      "The existing current record is marked inactive and a new current record is inserted.",
+      "The change is ignored."
+    ],
+    "answer": 2,
+    "time": 25,
+    "level": "Easy"
+  },
+  {
+    "q": "Why can't a single standard MERGE statement fully implement SCD Type 2?",
+    "options": [
+      "Because MERGE does not support UPDATE operations.",
+      "Because MERGE can update a matched row or insert an unmatched row, but cannot update a matched row and also insert a second row for that same match in one operation.",
+      "Because MERGE only works on streams.",
+      "Because MERGE requires primary keys."
+    ],
+    "answer": 1,
+    "time": 35,
+    "level": "Hard"
+  },
+  {
+    "q": "Which sequence of operations is typically used to implement SCD Type 2?",
+    "options": [
+      "DELETE followed by INSERT",
+      "INSERT followed by UPDATE",
+      "UPDATE the current record to inactive, then INSERT a new current record",
+      "Only MERGE"
+    ],
+    "answer": 2,
+    "time": 30,
+    "level": "Medium"
+  },
+  {
+    "q": "Which of the following columns are commonly used to support SCD Type 2 history tracking?",
+    "options": [
+      "EMPLOYEE_NAME and DEPARTMENT",
+      "CURRENT_FLAG, START_DATE, and END_DATE",
+      "PRIMARY_KEY and FOREIGN_KEY",
+      "WAREHOUSE and DATABASE"
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Easy"
+  },
+  {
+    "q": "Which SCD type preserves the complete history of changes by creating a new row for each change?",
+    "options": [
+      "SCD Type 3",
+      "SCD Type 0",
+      "SCD Type 2",
+      "SCD Type 1"
+    ],
+    "answer": 2,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "What is the primary purpose of using MERGE in ETL pipelines?",
+    "options": [
+      "To create tables automatically.",
+      "To combine INSERT and UPDATE logic into a single statement based on matching conditions.",
+      "To create streams and tasks.",
+      "To permanently remove duplicate rows."
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Easy"
+  },
+  {
+    "q": "In an SCD Type 2 implementation, which record is considered the active version?",
+    "options": [
+      "The row with CURRENT_FLAG = 'Y' or END_DATE = NULL.",
+      "The oldest record for the business key.",
+      "The row with the smallest surrogate key.",
+      "The row with the highest salary."
+    ],
+    "answer": 0,
+    "time": 25,
+    "level": "Medium"
+  },
+  {
+    "q": "Which statement about SCD Type 1 and SCD Type 2 is correct?",
+    "options": [
+      "SCD Type 1 preserves history, while SCD Type 2 overwrites data.",
+      "Both SCD Type 1 and Type 2 preserve history.",
+      "SCD Type 1 overwrites existing data, while SCD Type 2 preserves historical changes by inserting new versions.",
+      "Neither SCD Type 1 nor Type 2 supports updates."
+    ],
+    "answer": 2,
+    "time": 30,
+    "level": "Medium"
+  },
+  {
+    "q": "How is SCD Type 2 commonly implemented in Snowflake projects?",
+    "options": [
+      "Using a stored procedure or ETL pipeline that performs multiple DML statements such as UPDATE and INSERT, with MERGE used where appropriate.",
+      "Using only a single MERGE statement.",
+      "Using only a DELETE statement.",
+      "Using only a TRUNCATE and INSERT operation."
+    ],
+    "answer": 0,
+    "time": 35,
+    "level": "Hard"
+  }
 
 ];
 
