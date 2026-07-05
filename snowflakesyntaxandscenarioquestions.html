@@ -484,6 +484,56 @@ $$;
 CALL deleteifexistscustomer(1);
 `
 },
+ {
+        
+title: "Stored Procedure - insert rows to table by passing parameter ",
+
+question:`
+Create a stored procedure.
+
+Input:
+Customer Id
+Customer Name
+City
+
+Insert a record into CUSTOMER_DIM.
+
+Return
+
+Customer Inserted Successfully.
+`,
+dataset:[],
+output:[
+{"Result":"Customer Inserted Successfully"}
+],
+answer:`
+CREATE OR REPLACE PROCEDURE insertCustomer
+(
+p_id INT,
+p_name STRING,
+p_city STRING
+)
+RETURNS STRING
+LANGUAGE SQL
+AS
+$$
+
+BEGIN
+
+INSERT INTO CUSTOMER_DIM
+VALUES
+(
+:p_id,
+:p_name,
+:p_city
+);
+
+RETURN 'Customer Inserted Successfully';
+
+END;
+$$;
+`
+},
 
    
     
