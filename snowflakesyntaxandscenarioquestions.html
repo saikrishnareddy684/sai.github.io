@@ -592,7 +592,71 @@ CALL insertsp();
 `
 },
    
-    
+    {
+title: "Table Function - Return Table Data",
+
+question: `
+You need to return all customer records from the CUSTOMER_DIM table.
+
+Requirements:
+
+1. Return the CUSTOMER_ID and CUSTOMER_NAME columns.
+2. The object should return the rows so that they can be queried using a SELECT statement.
+3. Write the appropriate Snowflake object and demonstrate how to call it.
+`,
+
+dataset:[
+{CUSTOMER_ID:1,CUSTOMER_NAME:"John"},
+{CUSTOMER_ID:2,CUSTOMER_NAME:"David"},
+{CUSTOMER_ID:3,CUSTOMER_NAME:"Alex"}
+],
+
+output:[
+{CUSTOMER_ID:1,CUSTOMER_NAME:"John"},
+{CUSTOMER_ID:2,CUSTOMER_NAME:"David"},
+{CUSTOMER_ID:3,CUSTOMER_NAME:"Alex"}
+],
+
+answer:`
+CREATE OR REPLACE FUNCTION sdf()
+RETURNS TABLE
+(
+    CUSTOMER_ID NUMBER,
+    CUSTOMER_NAME STRING
+)
+AS
+$$
+SELECT
+    CUSTOMER_ID,
+    CUSTOMER_NAME
+FROM CUSTOMER_DIM
+$$;
+
+-- Call the function
+
+SELECT *
+FROM TABLE(sdf());
+
+/*
+Note:
+
+Unlike SQL Server, a Snowflake SQL Stored Procedure cannot directly
+return a table or result set using a simple SELECT statement.
+
+If your requirement is to return rows that can be queried using
+SELECT * FROM ..., you should create a TABLE FUNCTION instead.
+
+Stored Procedures are generally used for:
+- INSERT
+- UPDATE
+- DELETE
+- MERGE
+- Administrative or ETL tasks
+
+Table Functions are used when the requirement is to return tabular data.
+*/
+`
+},
     
 /* End of questions array */
 ];
