@@ -657,7 +657,141 @@ Table Functions are used when the requirement is to return tabular data.
 */
 `
 },
-    
+    {
+title: "Stored Procedure - Load SCD Type 2 Using Stream and Merge",
+
+question: `
+Create a SQL Stored Procedure named LOAD_SCD2.
+
+Requirements:
+
+1. Read changed records from the STG_CUSTOMER_STREAM stream.
+2. Process only INSERT operations using the METADATA$ACTION column.
+3. Store the changed records in a temporary table.
+4. Perform SCD Type 2 processing:
+   - If CUSTOMER_NAME or SALARY has changed, mark the existing record as CURRENT_FLAG='N' and set the END_DATE.
+   - Insert the new version of the customer record with CURRENT_FLAG='Y'.
+5. Capture the number of rows updated using SQLROWCOUNT.
+6. Capture the number of rows inserted using SQLROWCOUNT.
+7. Return a message in the format:
+   Updated = <updated_rows>, Inserted = <inserted_rows>
+`,
+
+dataset:[
+{CUSTOMER_ID:101,CUSTOMER_NAME:"John",SALARY:5000,CURRENT_FLAG:"Y",START_DATE:"2025-01-01",END_DATE:null},
+{CUSTOMER_ID:102,CUSTOMER_NAME:"David",SALARY:7000,CURRENT_FLAG:"Y",START_DATE:"2025-01-01",END_DATE:null}
+],
+
+dataset2:[
+{CUSTOMER_ID:101,CUSTOMER_NAME:"John",SALARY:6500,METADATA_ACTION:"INSERT"},
+{CUSTOMER_ID:102,CUSTOMER_NAME:"David",SALARY:7000,METADATA_ACTION:"INSERT"}
+],
+
+output:[
+{CUSTOMER_ID:101,CUSTOMER_NAME:"John",SALARY:5000,CURRENT_FLAG:"N"},
+{CUSTOMER_ID:101,CUSTOMER_NAME:"John",SALARY:6500,CURRENT_FLAG:"Y"},
+{"Result":"Updated = 1, Inserted = 1"}
+],
+
+answer:`
+CREATE OR REPLACE PROCEDURE LOAD_SCD2()
+RETURNS STRING
+LANGUAGE SQL
+AS
+$$
+DECLARE
+    V_UPDATED NUMBER;
+    V_INSERTED NUMBER;
+BEGIN
+
+    CREATE OR REPLACE TEMP TABLE TMP_CHANGES AS
+    SELECT
+        CUSTOMER_ID,
+        CUSTOMER_NAME,
+        SALARY
+    FROM STG_CUSTOMER_STREAM
+    WHERE METADATA$ACTION='INSERT';
+
+    MERGE INTO DIM_CUSTOMER T
+    USING TMP_CHANGES S
+    ON T.CUSTOMER_ID=S.CUSTOMER_ID
+    AND T.CURRENT_FLAG='Y'
+
+    WHEN MATCHED
+    AND (
+            T.CUSTOMER_NAME<>S.CUSTOMER_NAME
+         OR T.SALARY<>S.SALARY
+    )
+
+    THEN UPDATE
+    SET
+        CURRENT_FLAG='N',
+        END_DATE=CURRENT_DATE();
+
+    V_UPDATED:=SQLROWCOUNT;
+
+    INSERT INTO DIM_CUSTOMER
+    (
+        CUSTOMER_ID,
+        CUSTOMER_NAME,
+        SALARY,
+        START_DATE,
+        END_DATE,
+        CURRENT_FLAG
+    )
+
+    SELECT
+        S.CUSTOMER_ID,
+        S.CUSTOMER_NAME,
+        S.SALARY,
+        CURRENT_DATE(),
+        NULL,
+        'Y'
+
+    FROM TMP_CHANGES S
+
+    LEFT JOIN DIM_CUSTOMER D
+
+    ON S.CUSTOMER_ID=D.CUSTOMER_ID
+    AND S.CUSTOMER_NAME=D.CUSTOMER_NAME
+    AND S.SALARY=D.SALARY
+    AND D.CURRENT_FLAG='Y'
+
+    WHERE D.CUSTOMER_ID IS NULL;
+
+    V_INSERTED:=SQLROWCOUNT;
+
+    RETURN
+    'Updated = '
+    ||V_UPDATED
+    ||', Inserted = '
+    ||V_INSERTED;
+
+END;
+$$;
+
+CALL LOAD_SCD2();
+`,
+
+explanation:`
+Concepts Covered:
+
+• Snowflake Streams
+• METADATA$ACTION
+• Temporary Tables
+• MERGE Statement
+• Slowly Changing Dimension (SCD Type 2)
+• SQLROWCOUNT
+• CURRENT_FLAG
+• START_DATE / END_DATE
+• INSERT ... SELECT
+• Stored Procedures
+• RETURN STRING
+
+Note:
+This is a common Snowflake ETL pattern for implementing SCD Type 2. The MERGE statement expires the current version of a record, while the INSERT statement creates the new current version. SQLROWCOUNT is used after each DML operation to report the number of rows updated and inserted.
+`
+},
 /* End of questions array */
 ];
 
