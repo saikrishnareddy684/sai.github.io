@@ -359,6 +359,240 @@ $$;
 CALL updatecustomer(1);
 `
 },
+    {
+title: "Stored Procedure - Delete Customer If Exists",
+
+question: `
+Create a SQL Stored Procedure named deleteifexistscustomer.
+
+Requirements:
+
+1. Accept Customer ID as an input parameter.
+2. Check whether the customer exists.
+3. If the customer exists:
+   - Delete the customer record.
+   - Return a success message.
+4. If the customer does not exist:
+   - Return a "Customer not found" message.
+`,
+
+dataset:[
+{ID:1,NAME:"John",CITY:"London"},
+{ID:2,NAME:"David",CITY:"Paris"},
+{ID:3,NAME:"Alex",CITY:"Tokyo"}
+],
+
+output:[
+{"Result":"Deleted the rows for Customer ID 1"}
+],
+
+answer:`
+CREATE OR REPLACE PROCEDURE deleteifexistscustomer(pid INT)
+RETURNS STRING
+LANGUAGE SQL
+AS
+$$
+BEGIN
+
+    IF (EXISTS (
+        SELECT 1
+        FROM customers
+        WHERE id = :pid
+    )) THEN
+
+        DELETE
+        FROM customers
+        WHERE id = :pid;
+
+        RETURN 'Deleted the rows for Customer ID ' || :pid;
+
+    ELSE
+
+        RETURN 'Customer not found for Customer ID ' || :pid;
+
+    END IF;
+
+END;
+$$;
+
+CALL deleteifexistscustomer(1);
+`
+},
+    {
+title: "Stored Procedure - Delete Customer and Return Rows Deleted",
+
+question: `
+Create a SQL Stored Procedure named deleteifexistscustomer.
+
+Requirements:
+
+1. Accept Customer ID as an input parameter.
+2. Check whether the customer exists.
+3. If the customer exists:
+   - Delete the customer record.
+   - Return a message containing:
+     - Customer ID
+     - Number of rows deleted using SQLROWCOUNT.
+4. If the customer does not exist:
+   - Return a "Customer not found" message.
+`,
+
+dataset:[
+{ID:1,NAME:"John",CITY:"London"},
+{ID:2,NAME:"David",CITY:"Paris"},
+{ID:3,NAME:"Alex",CITY:"Tokyo"}
+],
+
+output:[
+{"Result":"Deleted Customer ID 1. Rows Deleted = 1"}
+],
+
+answer:`
+CREATE OR REPLACE PROCEDURE deleteifexistscustomer(pid INT)
+RETURNS STRING
+LANGUAGE SQL
+AS
+$$
+BEGIN
+
+    IF EXISTS (
+        SELECT 1
+        FROM customers
+        WHERE id = :pid
+    ) THEN
+
+        DELETE
+        FROM customers
+        WHERE id = :pid;
+
+        RETURN 'Deleted Customer ID '
+            || :pid
+            || '. Rows Deleted = '
+            || SQLROWCOUNT;
+
+    ELSE
+
+        RETURN 'Customer ID '
+            || :pid
+            || ' not found.';
+
+    END IF;
+
+END;
+$$;
+
+CALL deleteifexistscustomer(1);
+`
+},
+
+    {
+        
+title: "Stored Procedure - insert rows to table by passing parameter ",
+
+question:`
+Create a stored procedure.
+
+Input:
+Customer Id
+Customer Name
+City
+
+Insert a record into CUSTOMER_DIM.
+
+Return
+
+Customer Inserted Successfully.
+`,
+dataset:[],
+output:[
+{"Result":"Customer Inserted Successfully"}
+],
+answer:`
+CREATE OR REPLACE PROCEDURE insertCustomer
+(
+p_id INT,
+p_name STRING,
+p_city STRING
+)
+RETURNS STRING
+LANGUAGE SQL
+AS
+$$
+
+BEGIN
+
+INSERT INTO CUSTOMER_DIM
+VALUES
+(
+:p_id,
+:p_name,
+:p_city
+);
+
+RETURN 'Customer Inserted Successfully';
+
+END;
+$$;
+`
+},
+{
+title: "Stored Procedure - Load Data from Stream to Target Table",
+
+question: `
+Create a SQL Stored Procedure named insertsp.
+
+Requirements:
+
+1. Read data from the STREAMCUSTOMER stream.
+2. Insert only INSERT operations into the CUSTOMERS table.
+3. Use the metadata column METADATA$ACTION to filter INSERT records.
+4. Insert the ID, NAME and SALARY columns into the CUSTOMERS table.
+5. Return a message displaying the number of rows inserted using SQLROWCOUNT.
+`,
+
+dataset:[
+{ID:1,NAME:"John",SALARY:50000,METADATA_ACTION:"INSERT"},
+{ID:2,NAME:"David",SALARY:65000,METADATA_ACTION:"INSERT"},
+{ID:3,NAME:"Alex",SALARY:70000,METADATA_ACTION:"DELETE"},
+{ID:4,NAME:"Scott",SALARY:80000,METADATA_ACTION:"INSERT"}
+],
+
+output:[
+{"Result":"Inserts 3 rows to customer table"}
+],
+
+answer:`
+CREATE OR REPLACE PROCEDURE insertsp()
+RETURNS STRING
+LANGUAGE SQL
+AS
+$$
+BEGIN
+
+    INSERT INTO customers
+    (
+        id,
+        name,
+        salary
+    )
+    SELECT
+        id,
+        name,
+        salary
+    FROM streamcustomer
+    WHERE METADATA$ACTION='INSERT';
+
+    RETURN 'Inserts '
+           || SQLROWCOUNT
+           || ' rows to customer table';
+
+END;
+$$;
+
+CALL insertsp();
+`
+},
+    
     
 /* End of questions array */
 ];
