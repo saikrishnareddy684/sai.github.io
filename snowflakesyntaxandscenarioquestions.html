@@ -534,7 +534,63 @@ END;
 $$;
 `
 },
+{
+title: "Stored Procedure - Load Data from Stream to Target Table",
 
+question: `
+Create a SQL Stored Procedure named insertsp.
+
+Requirements:
+
+1. Read data from the STREAMCUSTOMER stream.
+2. Insert only INSERT operations into the CUSTOMERS table.
+3. Use the metadata column METADATA$ACTION to filter INSERT records.
+4. Insert the ID, NAME and SALARY columns into the CUSTOMERS table.
+5. Return a message displaying the number of rows inserted using SQLROWCOUNT.
+`,
+
+dataset:[
+{ID:1,NAME:"John",SALARY:50000,METADATA_ACTION:"INSERT"},
+{ID:2,NAME:"David",SALARY:65000,METADATA_ACTION:"INSERT"},
+{ID:3,NAME:"Alex",SALARY:70000,METADATA_ACTION:"DELETE"},
+{ID:4,NAME:"Scott",SALARY:80000,METADATA_ACTION:"INSERT"}
+],
+
+output:[
+{"Result":"Inserts 3 rows to customer table"}
+],
+
+answer:`
+CREATE OR REPLACE PROCEDURE insertsp()
+RETURNS STRING
+LANGUAGE SQL
+AS
+$$
+BEGIN
+
+    INSERT INTO customers
+    (
+        id,
+        name,
+        salary
+    )
+    SELECT
+        id,
+        name,
+        salary
+    FROM streamcustomer
+    WHERE METADATA$ACTION='INSERT';
+
+    RETURN 'Inserts '
+           || SQLROWCOUNT
+           || ' rows to customer table';
+
+END;
+$$;
+
+CALL insertsp();
+`
+},
    
     
     
