@@ -7506,7 +7506,482 @@ let originalQuestions = [
     "time": 25,
     "level": "Hard"
   }
-
+,
+  {
+  "q": "Which of the following is the correct syntax to create a Hybrid Table in Snowflake?",
+  "options": [
+    "CREATE TABLE CUSTOMER (CUSTOMER_ID INT PRIMARY KEY, CUSTOMER_NAME STRING, CITY STRING, SALARY NUMBER);",
+    "CREATE OR REPLACE HYBRID TABLE CUSTOMER (CUSTOMER_ID INT PRIMARY KEY, CUSTOMER_NAME STRING, CITY STRING, SALARY NUMBER);",
+    "CREATE HYBRID CUSTOMER TABLE (CUSTOMER_ID INT PRIMARY KEY, CUSTOMER_NAME STRING, CITY STRING, SALARY NUMBER);",
+    "CREATE OR REPLACE TABLE HYBRID CUSTOMER (CUSTOMER_ID INT PRIMARY KEY, CUSTOMER_NAME STRING, CITY STRING, SALARY NUMBER);"
+  ],
+  "answer": 1,
+  "time": 30,
+  "level": "Easy"
+}
+  ,
+  
+  {
+    "q": "Which statement is mandatory when creating a Snowflake Hybrid Table?",
+    "options": [
+      "A PRIMARY KEY constraint",
+      "A FOREIGN KEY constraint",
+      "A CLUSTER BY clause",
+      "A WAREHOUSE clause"
+    ],
+    "answer": 0,
+    "time": 25,
+    "level": "Easy"
+  },
+  {
+    "q": "Which command is used to create a Hybrid Table in Snowflake?",
+    "options": [
+      "CREATE TABLE",
+      "CREATE HYBRID",
+      "CREATE OR REPLACE HYBRID TABLE",
+      "CREATE TRANSIENT TABLE"
+    ],
+    "answer": 2,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "Why is a PRIMARY KEY required for a Snowflake Hybrid Table?",
+    "options": [
+      "Because Hybrid Tables enforce primary key constraints for transactional workloads.",
+      "Because it improves data compression.",
+      "Because it is required for Time Travel.",
+      "Because it automatically creates a stream."
+    ],
+    "answer": 0,
+    "time": 30,
+    "level": "Medium"
+  },
+  {
+    "q": "Which of the following CREATE statements is invalid for a Snowflake Hybrid Table?",
+    "options": [
+      "CREATE OR REPLACE HYBRID TABLE CUSTOMER (CUSTOMER_ID INT, CUSTOMER_NAME STRING);",
+      "CREATE OR REPLACE HYBRID TABLE CUSTOMER (CUSTOMER_ID INT PRIMARY KEY, CUSTOMER_NAME STRING);",
+      "CREATE HYBRID TABLE CUSTOMER (CUSTOMER_ID INT PRIMARY KEY, CITY STRING);",
+      "CREATE OR REPLACE HYBRID TABLE CUSTOMER (CUSTOMER_ID NUMBER PRIMARY KEY, SALARY NUMBER);"
+    ],
+    "answer": 0,
+    "time": 35,
+    "level": "Medium"
+  }
+,
+  
+  {
+    "q": "Which SQL statement correctly creates a composite index on the CUSTOMER_NAME and CITY columns of a Snowflake Hybrid Table?",
+    "options": [
+      "CREATE INDEX IDX_CUSTOMER (CUSTOMER_NAME, CITY) ON CUSTOMER;",
+      "CREATE INDEX IDX_CUSTOMER ON CUSTOMER (CUSTOMER_NAME, CITY);",
+      "CREATE COMPOSITE INDEX IDX_CUSTOMER ON CUSTOMER (CUSTOMER_NAME, CITY);",
+      "ALTER TABLE CUSTOMER ADD INDEX (CUSTOMER_NAME, CITY);"
+    ],
+    "answer": 1,
+    "time": 30,
+    "level": "Easy"
+  },
+  {
+    "q": "What is a composite index in a Snowflake Hybrid Table?",
+    "options": [
+      "An index that automatically encrypts data.",
+      "An index created only on numeric columns.",
+      "An index created on two or more columns.",
+      "An index created only on primary keys."
+    ],
+    "answer": 2,
+    "time": 25,
+    "level": "Easy"
+  },
+  {
+    "q": "Which of the following statements correctly creates a single-column secondary index on CUSTOMER_NAME?",
+    "options": [
+      "ALTER TABLE CUSTOMER CREATE INDEX IDX_NAME;",
+      "CREATE SECONDARY INDEX IDX_NAME (CUSTOMER_NAME) ON CUSTOMER;",
+      "CREATE INDEX ON CUSTOMER_NAME;",
+      "CREATE INDEX IDX_NAME ON CUSTOMER (CUSTOMER_NAME);"
+    ],
+    "answer": 3,
+    "time": 25,
+    "level": "Easy"
+  },
+  {
+    "q": "For which type of queries is a composite index most beneficial?",
+    "options": [
+      "Queries filtering on multiple indexed columns together.",
+      "Queries performing only COUNT(*).",
+      "Queries that truncate tables.",
+      "Queries that create warehouses."
+    ],
+    "answer": 0,
+    "time": 25,
+    "level": "Medium"
+  },
+  {
+    "q": "Given a composite index on (CUSTOMER_NAME, CITY), which query is most likely to benefit from the index?",
+    "options": [
+      "SELECT CURRENT_DATE();",
+      "DROP TABLE CUSTOMER;",
+      "SELECT * FROM CUSTOMER WHERE CUSTOMER_NAME='John' AND CITY='Hyderabad';",
+      "SELECT COUNT(*) FROM CUSTOMER;"
+    ],
+    "answer": 2,
+    "time": 30,
+    "level": "Medium"
+  },
+  {
+    "q": "Which statement is true about composite indexes in Snowflake Hybrid Tables?",
+    "options": [
+      "Composite indexes are supported on standard Snowflake tables only.",
+      "Composite indexes cannot be created manually.",
+      "A composite index can only include primary key columns.",
+      "A composite index can include multiple columns to improve query performance."
+    ],
+    "answer": 3,
+    "time": 30,
+    "level": "Medium"
+  },
+  {
+    "q": "What is the correct syntax to create a composite index named IDX_CUST_CITY on CUSTOMER_NAME and CITY?",
+    "options": [
+      "ALTER TABLE CUSTOMER ADD COMPOSITE INDEX IDX_CUST_CITY;",
+      "CREATE INDEX IDX_CUST_CITY (CUSTOMER_NAME, CITY) ON CUSTOMER;",
+      "CREATE INDEX IDX_CUST_CITY ON CUSTOMER (CUSTOMER_NAME, CITY);",
+      "CREATE COMPOSITE IDX_CUST_CITY ON CUSTOMER_NAME, CITY;"
+    ],
+    "answer": 2,
+    "time": 30,
+    "level": "Easy"
+  },
+  {
+    "q": "Which index is automatically created when defining a PRIMARY KEY on a Snowflake Hybrid Table?",
+    "options": [
+      "A bitmap index.",
+      "The primary key index.",
+      "No index is created automatically.",
+      "A composite secondary index."
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Medium"
+  },
+  {
+    "q": "Which statement correctly drops an index from a Snowflake Hybrid Table?",
+    "options": [
+      "DELETE INDEX IDX_CUST_CITY;",
+      "ALTER TABLE CUSTOMER DROP INDEX IDX_CUST_CITY;",
+      "DROP INDEX IDX_CUST_CITY;",
+      "DROP INDEX IDX_CUST_CITY ON CUSTOMER;"
+    ],
+    "answer": 2,
+    "time": 25,
+    "level": "Medium"
+  },
+  {
+    "q": "Why would you create a composite index instead of two separate single-column indexes?",
+    "options": [
+      "To automatically partition the table.",
+      "To optimize queries that frequently filter using both columns together.",
+      "To reduce the size of the table.",
+      "To increase the number of warehouses."
+    ],
+    "answer": 1,
+    "time": 30,
+    "level": "Hard"
+  }
+,
+   {
+    "q": "What does low-latency transaction mean?",
+    "options": [
+      "A transaction that processes millions of rows",
+      "A transaction that completes quickly, typically in milliseconds",
+      "A transaction executed only once per day",
+      "A transaction executed without a warehouse"
+    ],
+    "answer": 1,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "Which type of application benefits the most from low-latency transactions?",
+    "options": [
+      "Monthly Sales Reporting",
+      "Data Warehouse Analytics",
+      "Banking and Payment Applications",
+      "Data Lake Storage"
+    ],
+    "answer": 2,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "What is a point lookup in a database?",
+    "options": [
+      "Scanning the entire table",
+      "Retrieving a single row using a key or indexed column",
+      "Loading data from cloud storage",
+      "Aggregating millions of rows"
+    ],
+    "answer": 1,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "Which SQL query is an example of a point lookup?",
+    "options": [
+      "SELECT SUM(SALARY) FROM CUSTOMER;",
+      "SELECT * FROM CUSTOMER WHERE CUSTOMER_ID = 101;",
+      "SELECT CITY, COUNT(*) FROM CUSTOMER GROUP BY CITY;",
+      "SELECT * FROM CUSTOMER;"
+    ],
+    "answer": 1,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "Why are indexes useful in Hybrid Tables?",
+    "options": [
+      "They reduce storage costs.",
+      "They improve point lookup performance.",
+      "They automatically create warehouses.",
+      "They eliminate the need for primary keys."
+    ],
+    "answer": 1,
+    "time": 20,
+    "level": "Medium"
+  },
+  {
+    "q": "Which SQL command creates an index on a Hybrid Table?",
+    "options": [
+      "CREATE KEY",
+      "CREATE INDEX",
+      "ALTER INDEX",
+      "ADD INDEX"
+    ],
+    "answer": 1,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "Which index creates an index on both CITY and CUSTOMER_NAME columns?",
+    "options": [
+      "Single-column index",
+      "Composite index",
+      "Clustered index",
+      "Bitmap index"
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Medium"
+  },
+  {
+    "q": "Which type of index is supported in Snowflake Hybrid Tables?",
+    "options": [
+      "Bitmap Index",
+      "Hash Index",
+      "Secondary Index",
+      "Clustered Index"
+    ],
+    "answer": 2,
+    "time": 20,
+    "level": "Medium"
+  },
+  {
+    "q": "When should you create an index on a Hybrid Table column?",
+    "options": [
+      "When the column is frequently searched using WHERE conditions",
+      "For every column in the table",
+      "Only for DATE columns",
+      "Only for VARCHAR columns"
+    ],
+    "answer": 0,
+    "time": 20,
+    "level": "Medium"
+  },
+  {
+    "q": "Which query is most likely to benefit from an index on CUSTOMER_ID?",
+    "options": [
+      "SELECT * FROM CUSTOMER WHERE CUSTOMER_ID = 100;",
+      "SELECT COUNT(*) FROM CUSTOMER;",
+      "SELECT SUM(SALARY) FROM CUSTOMER;",
+      "SELECT * FROM CUSTOMER;"
+    ],
+    "answer": 0,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "Which query is least likely to benefit from an index?",
+    "options": [
+      "SELECT * FROM CUSTOMER WHERE CUSTOMER_ID = 5;",
+      "SELECT * FROM CUSTOMER WHERE CITY = 'London';",
+      "SELECT SUM(SALARY) FROM CUSTOMER;",
+      "SELECT * FROM CUSTOMER WHERE EMAIL = 'abc@gmail.com';"
+    ],
+    "answer": 2,
+    "time": 25,
+    "level": "Medium"
+  },
+  {
+    "q": "Which statement about indexes in standard Snowflake tables is correct?",
+    "options": [
+      "Standard tables support secondary indexes.",
+      "Standard tables do not support user-created indexes.",
+      "Indexes are automatically created for every column.",
+      "Indexes are mandatory for all tables."
+    ],
+    "answer": 1,
+    "time": 20,
+    "level": "Medium"
+  },
+  {
+    "q": "What happens if you insert a duplicate Primary Key value into a Hybrid Table?",
+    "options": [
+      "The duplicate row is inserted.",
+      "Snowflake automatically updates the existing row.",
+      "A Primary Key constraint error is raised.",
+      "The duplicate row is ignored."
+    ],
+    "answer": 2,
+    "time": 20,
+    "level": "Medium"
+  },
+  {
+    "q": "Which of the following is NOT a benefit of Hybrid Tables?",
+    "options": [
+      "Low-latency transactions",
+      "Point lookup optimization",
+      "Enforced Primary Keys",
+      "Automatic clustering for analytical queries"
+    ],
+    "answer": 3,
+    "time": 25,
+    "level": "Hard"
+  },
+  {
+    "q": "If a role has the CREATE TABLE privilege on a schema, can it create a Hybrid Table?",
+    "options": [
+      "No, Hybrid Tables require CREATE HYBRID TABLE privilege.",
+      "Yes, provided the account supports Hybrid Tables.",
+      "Only ACCOUNTADMIN can create Hybrid Tables.",
+      "Only SYSADMIN can create Hybrid Tables."
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Medium"
+  },
+  {
+    "q": "What privilege is required to create a Hybrid Table within a schema?",
+    "options": [
+      "CREATE VIEW",
+      "CREATE TABLE",
+      "CREATE STAGE",
+      "CREATE TASK"
+    ],
+    "answer": 1,
+    "time": 20,
+    "level": "Medium"
+  },
+  {
+    "q": "What is the main advantage of point lookup performance?",
+    "options": [
+      "Faster retrieval of individual records",
+      "Faster aggregation of billions of rows",
+      "Reduced storage costs",
+      "Automatic data sharing"
+    ],
+    "answer": 0,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "Which workload is Hybrid Tables primarily optimized for?",
+    "options": [
+      "Batch ETL Processing",
+      "OLAP Reporting",
+      "OLTP Transactions",
+      "Machine Learning"
+    ],
+    "answer": 2,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "Which statement best describes the relationship between indexes and point lookups?",
+    "options": [
+      "Indexes make point lookups slower.",
+      "Indexes allow the database to locate matching rows without scanning the entire table.",
+      "Indexes are used only for aggregate functions.",
+      "Indexes are required only for external tables."
+    ],
+    "answer": 1,
+    "time": 30,
+    "level": "Hard"
+  }
+,
+  
+  {
+    "q": "What is a secondary index in a Snowflake Hybrid Table?",
+    "options": [
+      "An index created automatically on the primary key.",
+      "An additional index created on one or more non-primary key columns to improve query performance.",
+      "An index used only for clustering data.",
+      "An index that stores data in external storage."
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Easy"
+  },
+  {
+    "q": "Which SQL statement correctly creates a secondary index on the CUSTOMER_NAME column of a Hybrid Table named CUSTOMER?",
+    "options": [
+      "ALTER TABLE CUSTOMER ADD INDEX (CUSTOMER_NAME);",
+      "CREATE SECONDARY INDEX IDX_NAME ON CUSTOMER (CUSTOMER_NAME);",
+      "CREATE INDEX IDX_NAME ON CUSTOMER (CUSTOMER_NAME);",
+      "CREATE INDEX ON CUSTOMER_NAME;"
+    ],
+    "answer": 2,
+    "time": 30,
+    "level": "Easy"
+  },
+  {
+    "q": "On which type of Snowflake table can you create a secondary index?",
+    "options": [
+      "External Tables",
+      "Hybrid Tables",
+      "Temporary Tables",
+      "Standard Permanent Tables"
+    ],
+    "answer": 1,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "When is a secondary index most beneficial?",
+    "options": [
+      "When queries frequently filter on non-primary key columns.",
+      "When dropping tables.",
+      "When creating warehouses.",
+      "When loading files into stages."
+    ],
+    "answer": 0,
+    "time": 25,
+    "level": "Medium"
+  },
+  {
+    "q": "Which statement about secondary indexes is TRUE?",
+    "options": [
+      "A secondary index is created automatically for every column.",
+      "Secondary indexes are mandatory for all Hybrid Tables.",
+      "A secondary index improves the performance of selective queries on indexed columns.",
+      "Secondary indexes can only be created on PRIMARY KEY columns."
+    ],
+    "answer": 2,
+    "time": 30,
+    "level": "Medium"
+  }
 
 ];
 
