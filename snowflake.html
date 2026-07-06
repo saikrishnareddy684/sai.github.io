@@ -7325,6 +7325,188 @@ let originalQuestions = [
     "time": 35,
     "level": "Hard"
   }
+  ,
+  {
+    "q": "Which Snowflake table type is specifically designed for OLTP workloads with low-latency transactions?",
+    "options": [
+      "External Table",
+      "Temporary Table",
+      "Hybrid Table",
+      "Transient Table"
+    ],
+    "answer": 2,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "What is a major advantage of Hybrid Tables over standard Snowflake tables?",
+    "options": [
+      "Unlimited Time Travel",
+      "Enforced Primary Keys",
+      "Automatic Data Sharing",
+      "Unlimited Cloning"
+    ],
+    "answer": 1,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "Which type of workload are Hybrid Tables primarily designed to support?",
+    "options": [
+      "OLAP",
+      "Batch Processing",
+      "OLTP",
+      "Machine Learning"
+    ],
+    "answer": 2,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "Which constraint is enforced in Snowflake Hybrid Tables but is informational in standard tables?",
+    "options": [
+      "CHECK",
+      "NOT NULL",
+      "PRIMARY KEY",
+      "DEFAULT"
+    ],
+    "answer": 2,
+    "time": 20,
+    "level": "Medium"
+  },
+  {
+    "q": "Which SQL statement is used to create a Hybrid Table in Snowflake?",
+    "options": [
+      "CREATE TABLE",
+      "CREATE TRANSIENT TABLE",
+      "CREATE HYBRID TABLE",
+      "CREATE TEMP TABLE"
+    ],
+    "answer": 2,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "What happens if you insert a duplicate Primary Key value into a Hybrid Table?",
+    "options": [
+      "The duplicate row is inserted.",
+      "The duplicate row is ignored.",
+      "Snowflake raises a Primary Key constraint error.",
+      "Snowflake automatically updates the existing row."
+    ],
+    "answer": 2,
+    "time": 25,
+    "level": "Medium"
+  },
+  {
+    "q": "Which feature is supported by Hybrid Tables to improve point lookup performance?",
+    "options": [
+      "Materialized Views",
+      "Indexes",
+      "Streams",
+      "Tasks"
+    ],
+    "answer": 1,
+    "time": 20,
+    "level": "Medium"
+  },
+  {
+    "q": "Which SQL command is used to create an index on a Hybrid Table?",
+    "options": [
+      "CREATE KEY",
+      "CREATE INDEX",
+      "ALTER INDEX",
+      "ADD INDEX"
+    ],
+    "answer": 1,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "Which transaction statements are supported by Hybrid Tables?",
+    "options": [
+      "BEGIN, COMMIT, ROLLBACK",
+      "SAVEPOINT only",
+      "TRUNCATE only",
+      "COPY INTO only"
+    ],
+    "answer": 0,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "Which application is the best fit for Hybrid Tables?",
+    "options": [
+      "Historical Data Warehouse",
+      "Monthly Reporting",
+      "Order Management System",
+      "Data Lake"
+    ],
+    "answer": 2,
+    "time": 25,
+    "level": "Easy"
+  },
+  {
+    "q": "Which statement about Primary Keys in standard Snowflake tables is true?",
+    "options": [
+      "They are always enforced.",
+      "They are informational and not enforced.",
+      "They automatically create indexes.",
+      "They prevent duplicate records."
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Medium"
+  },
+  {
+    "q": "Which statement about Primary Keys in Hybrid Tables is true?",
+    "options": [
+      "They are informational only.",
+      "They are ignored during inserts.",
+      "They are enforced by Snowflake.",
+      "They work only with Streams."
+    ],
+    "answer": 2,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "Which of the following workloads benefits the most from Hybrid Tables?",
+    "options": [
+      "Large analytical scans",
+      "Real-time transactional applications",
+      "Batch ETL processing",
+      "Data Sharing"
+    ],
+    "answer": 1,
+    "time": 20,
+    "level": "Medium"
+  },
+  {
+    "q": "Why were Hybrid Tables introduced in Snowflake?",
+    "options": [
+      "To replace Streams.",
+      "To provide OLTP capabilities within Snowflake.",
+      "To eliminate Warehouses.",
+      "To replace External Tables."
+    ],
+    "answer": 1,
+    "time": 20,
+    "level": "Medium"
+  },
+  {
+    "q": "Which combination best describes Hybrid Tables?",
+    "options": [
+      "Data Lake + Streams",
+      "OLTP support with enforced constraints and indexes",
+      "External Storage + Snowpipe",
+      "Materialized Views + Tasks"
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Hard"
+  }
+
 
 ];
 
