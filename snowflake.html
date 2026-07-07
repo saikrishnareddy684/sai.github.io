@@ -7982,6 +7982,139 @@ let originalQuestions = [
     "time": 30,
     "level": "Medium"
   }
+  ,
+  {
+    "q": "Which statement about PRIMARY KEY constraints in Hybrid Tables is correct?",
+    "options": [
+      "PRIMARY KEY is optional and not enforced.",
+      "PRIMARY KEY is mandatory and enforced.",
+      "PRIMARY KEY is automatically generated if not specified.",
+      "PRIMARY KEY is required only for temporary Hybrid Tables."
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Easy"
+  },
+   {
+    "q": "What happens if you attempt to create a Hybrid Table without defining a PRIMARY KEY?",
+    "options": [
+      "Snowflake automatically creates a hidden primary key.",
+      "The table is created as a standard table.",
+      "The CREATE TABLE statement fails with an error.",
+      "The table is created without constraint enforcement."
+    ],
+    "answer": 2,
+    "time": 25,
+    "level": "Easy"
+  },
+   {
+    "q": "Which constraint behavior is unique to Hybrid Tables compared to standard Snowflake tables?",
+    "options": [
+      "Constraints are informational only.",
+      "PRIMARY KEY, UNIQUE, and FOREIGN KEY constraints are enforced.",
+      "Only NOT NULL constraints are enforced.",
+      "Constraints are enforced only during bulk loads."
+    ],
+    "answer": 1,
+    "time": 30,
+    "level": "Medium"
+  },
+  {
+    "q": "Why are Hybrid Tables suitable for point lookup queries?",
+    "options": [
+      "They automatically create materialized views.",
+      "They use secondary indexes to optimize key-based lookups.",
+      "They disable micro-partitions.",
+      "They replicate data across warehouses."
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Medium"
+  },
+   {
+    "q": "A transaction table stores multiple purchases for the same customer. Which column should typically be defined as the PRIMARY KEY in a Hybrid Table?",
+    "options": [
+      "CustomerID",
+      "TransactionID",
+      "ProductID",
+      "OrderAmount"
+    ],
+    "answer": 1,
+    "time": 30,
+    "level": "Medium"
+  },
+   {
+    "q": "Which statement about CUSTOMER_ID in a Hybrid Table is correct?",
+    "options": [
+      "It cannot contain duplicate values.",
+      "It can contain duplicate values if it is not the PRIMARY KEY.",
+      "It is automatically converted into a unique key.",
+      "It must always be indexed as the PRIMARY KEY."
+    ],
+    "answer": 1,
+    "time": 30,
+    "level": "Medium"
+  },
+  {
+    "q": "Why are standard Snowflake tables generally preferred over Hybrid Tables for fact tables in a data warehouse?",
+    "options": [
+      "Standard tables support OLAP workloads and large analytical queries more efficiently.",
+      "Hybrid Tables cannot store numeric columns.",
+      "Standard tables require less storage space.",
+      "Hybrid Tables do not support joins."
+    ],
+    "answer": 0,
+    "time": 35,
+    "level": "Hard"
+  },
+  {
+    "q": "Can a fact table be implemented as a Hybrid Table?",
+    "options": [
+      "No, Hybrid Tables do not support fact tables.",
+      "Yes, provided the table has a unique PRIMARY KEY such as TransactionID.",
+      "Only if CUSTOMER_ID is unique.",
+      "Only when clustering keys are defined."
+    ],
+    "answer": 1,
+    "time": 30,
+    "level": "Medium"
+  },
+  {
+    "q": "Which workload is NOT an ideal use case for Hybrid Tables?",
+    "options": [
+      "Order Management",
+      "Inventory Tracking",
+      "Shopping Cart Applications",
+      "Enterprise Data Warehouse Reporting"
+    ],
+    "answer": 3,
+    "time": 30,
+    "level": "Medium"
+  },
+  {
+    "q": "Which Snowflake table type is best suited for large-scale analytical reporting and aggregations?",
+    "options": [
+      "Hybrid Table",
+      "Standard Table",
+      "Temporary Hybrid Table",
+      "External Table"
+    ],
+    "answer": 1,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "Which statement best describes Hybrid Tables?",
+    "options": [
+      "They replace standard tables for all workloads.",
+      "They are optimized for transactional processing with enforced constraints and indexes.",
+      "They are designed only for semi-structured data.",
+      "They eliminate the need for virtual warehouses."
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Easy"
+  },
 
 ];
 
