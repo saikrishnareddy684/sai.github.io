@@ -8115,7 +8115,270 @@ let originalQuestions = [
     "time": 25,
     "level": "Easy"
   },
-
+  {
+    "q": "What is the primary purpose of an external stage in Snowflake?",
+    "options": [
+      "To permanently store data inside Snowflake.",
+      "To reference files stored in external cloud storage for loading or unloading data.",
+      "To create indexes on external tables.",
+      "To optimize virtual warehouse performance."
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Easy"
+  },
+   {
+    "q": "Which cloud storage services are supported by Snowflake external stages?",
+    "options": [
+      "Amazon S3 only.",
+      "Amazon S3 and Azure Blob Storage only.",
+      "Amazon S3, Azure Blob Storage, and Google Cloud Storage.",
+      "Amazon S3, Azure Blob Storage, Google Cloud Storage, and Dropbox."
+    ],
+    "answer": 2,
+    "time": 25,
+    "level": "Easy"
+  },
+   {
+    "q": "Which command creates an external stage using AWS Access Keys?",
+    "options": [
+      "CREATE STAGE my_stage URL='s3://bucket/' CREDENTIALS=(AWS_KEY_ID='key' AWS_SECRET_KEY='secret');",
+      "CREATE EXTERNAL STAGE my_stage CREDENTIALS=(AWS_KEY_ID='key');",
+      "CREATE STAGE my_stage LOCATION='s3://bucket/';",
+      "CREATE STORAGE my_stage URL='s3://bucket/';"
+    ],
+    "answer": 0,
+    "time": 30,
+    "level": "Medium"
+  },
+  {
+    "q": "When creating an external stage using AWS Access Keys, is a Storage Integration required?",
+    "options": [
+      "Yes, it is mandatory.",
+      "Only for CSV files.",
+      "Only for Parquet files.",
+      "No, Storage Integration is not required."
+    ],
+    "answer": 3,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "What is the correct syntax to load all files from an external stage named employee_stage into the employees table?",
+    "options": [
+      "COPY employees FROM @employee_stage;",
+      "COPY INTO employees FROM @employee_stage;",
+      "LOAD INTO employees FROM @employee_stage;",
+      "INSERT INTO employees FROM @employee_stage;"
+    ],
+    "answer": 1,
+    "time": 30,
+    "level": "Easy"
+  },
+   {
+    "q": "Which SQL statement creates an external stage that uses an existing storage integration and file format?",
+    "options": [
+      "CREATE STAGE employee_stage URL='s3://company-data/employees/' STORAGE_INTEGRATION=my_s3_integration FILE_FORMAT=csv_format;",
+      "CREATE EXTERNAL TABLE employee_stage URL='s3://company-data/employees/' FILE_FORMAT=csv_format;",
+      "CREATE STORAGE employee_stage URL='s3://company-data/employees/' FILE_FORMAT=csv_format;",
+      "CREATE STAGE employee_stage LOCATION='s3://company-data/employees/';"
+    ],
+    "answer": 0,
+    "time": 45,
+    "level": "Medium"
+  },
+  {
+    "q": "Which SQL statement correctly creates a CSV file format that skips the header row?",
+    "options": [
+      "CREATE FILE FORMAT csv_format TYPE=CSV SKIP_HEADER=1;",
+      "CREATE FORMAT csv_format TYPE=CSV HEADER=1;",
+      "CREATE FILE csv_format TYPE=CSV SKIP_HEADER=TRUE;",
+      "CREATE FILE FORMAT csv_format FORMAT=CSV HEADER=SKIP;"
+    ],
+    "answer": 0,
+    "time": 30,
+    "level": "Easy"
+  },
+ {
+    "q": "Which SQL statement correctly creates a storage integration for Amazon S3?",
+    "options": [
+      "CREATE STORAGE INTEGRATION my_s3_integration TYPE=EXTERNAL_STAGE STORAGE_PROVIDER=S3 ENABLED=TRUE;",
+      "CREATE STAGE my_s3_integration TYPE=S3;",
+      "CREATE INTEGRATION my_s3_integration PROVIDER=S3;",
+      "CREATE STORAGE my_s3_integration TYPE=S3 ENABLED=TRUE;"
+    ],
+    "answer": 0,
+    "time": 45,
+    "level": "Medium"
+  },
+  {
+    "q": "Which SQL statement correctly creates a storage integration for Amazon S3?",
+    "options": [
+      "CREATE STORAGE INTEGRATION my_s3_integration TYPE=EXTERNAL_STAGE STORAGE_PROVIDER=S3 ENABLED=TRUE;",
+      "CREATE STAGE my_s3_integration TYPE=S3;",
+      "CREATE INTEGRATION my_s3_integration PROVIDER=S3;",
+      "CREATE STORAGE my_s3_integration TYPE=S3 ENABLED=TRUE;"
+    ],
+    "answer": 0,
+    "time": 45,
+    "level": "Medium"
+  },
+   {
+    "q": "Which COPY INTO option validates source files without loading data into the target table?",
+    "options": [
+      "ON_ERROR='CONTINUE'",
+      "VALIDATION_MODE='RETURN_ERRORS'",
+      "FORCE=TRUE",
+      "PURGE=TRUE"
+    ],
+    "answer": 1,
+    "time": 30,
+    "level": "Medium"
+  },
+   {
+    "q": "Which SQL statement validates the files in an external stage without loading them?",
+    "options": [
+      "COPY INTO employees FROM @employee_stage VALIDATION_MODE='RETURN_ERRORS';",
+      "COPY INTO employees FROM @employee_stage ON_ERROR='CONTINUE';",
+      "VALIDATE @employee_stage;",
+      "CHECK FILES @employee_stage;"
+    ],
+    "answer": 0,
+    "time": 45,
+    "level": "Medium"
+  },
+  {
+    "q": "Which COPY INTO option allows Snowflake to continue loading valid rows while skipping rows with errors?",
+    "options": [
+      "FORCE=TRUE",
+      "ON_ERROR='CONTINUE'",
+      "PURGE=TRUE",
+      "VALIDATION_MODE='RETURN_ERRORS'"
+    ],
+    "answer": 1,
+    "time": 30,
+    "level": "Medium"
+  },
+   {
+    "q": "Which SQL statement skips invalid rows while loading data from an external stage?",
+    "options": [
+      "COPY INTO employees FROM @employee_stage ON_ERROR='CONTINUE';",
+      "COPY INTO employees FROM @employee_stage VALIDATION_MODE='RETURN_ERRORS';",
+      "COPY INTO employees FROM @employee_stage FORCE=TRUE;",
+      "COPY INTO employees FROM @employee_stage PURGE=TRUE;"
+    ],
+    "answer": 0,
+    "time": 45,
+    "level": "Medium"
+  },
+  {
+    "q": "Which COPY INTO option forces Snowflake to reload files that have already been loaded previously?",
+    "options": [
+      "FORCE=TRUE",
+      "PURGE=TRUE",
+      "ON_ERROR='CONTINUE'",
+      "VALIDATION_MODE='RETURN_ERRORS'"
+    ],
+    "answer": 0,
+    "time": 30,
+    "level": "Medium"
+  },
+  {
+    "q": "Which SQL statement reloads files even if Snowflake has already marked them as loaded?",
+    "options": [
+      "COPY INTO employees FROM @employee_stage FORCE=TRUE;",
+      "COPY INTO employees FROM @employee_stage PURGE=TRUE;",
+      "COPY INTO employees FROM @employee_stage RELOAD=TRUE;",
+      "COPY INTO employees FROM @employee_stage OVERWRITE=TRUE;"
+    ],
+    "answer": 0,
+    "time": 45,
+    "level": "Medium"
+  },
+   {
+    "q": "Which COPY INTO option attempts to remove source files from the stage after a successful load?",
+    "options": [
+      "PURGE=TRUE",
+      "FORCE=TRUE",
+      "ON_ERROR='CONTINUE'",
+      "VALIDATION_MODE='RETURN_ERRORS'"
+    ],
+    "answer": 0,
+    "time": 30,
+    "level": "Medium"
+  },
+  {
+    "q": "Which SQL statement loads only the file named emp1.csv from an external stage?",
+    "options": [
+      "COPY INTO employees FROM @employee_stage FILES=('emp1.csv');",
+      "COPY INTO employees FROM @employee_stage FILE='emp1.csv';",
+      "COPY INTO employees FROM @employee_stage PATTERN='emp1.csv';",
+      "COPY INTO employees FROM @employee_stage ONLY FILE='emp1.csv';"
+    ],
+    "answer": 0,
+    "time": 45,
+    "level": "Medium"
+  },
+  {
+    "q": "Which COPY INTO clause is used to load only specific files from a stage?",
+    "options": [
+      "FILES",
+      "PATTERN",
+      "FILTER",
+      "INCLUDE"
+    ],
+    "answer": 0,
+    "time": 30,
+    "level": "Easy"
+  },
+   {
+    "q": "Which SQL statement loads only files whose names contain '2026'?",
+    "options": [
+      "COPY INTO employees FROM @employee_stage PATTERN='.*2026.*\\\\.csv';",
+      "COPY INTO employees FROM @employee_stage FILES=('2026');",
+      "COPY INTO employees FROM @employee_stage FILTER='2026';",
+      "COPY INTO employees FROM @employee_stage WHERE FILE_NAME LIKE '%2026%';"
+    ],
+    "answer": 0,
+    "time": 45,
+    "level": "Hard"
+  },
+  {
+    "q": "Which COPY INTO clause allows loading files that match a regular expression?",
+    "options": [
+      "PATTERN",
+      "FILES",
+      "MATCH",
+      "FILTER"
+    ],
+    "answer": 0,
+    "time": 30,
+    "level": "Medium"
+  },
+  {
+    "q": "Which COPY INTO parameter limits the total amount of data loaded during a COPY operation?",
+    "options": [
+      "SIZE_LIMIT",
+      "PURGE",
+      "FORCE",
+      "ON_ERROR"
+    ],
+    "answer": 0,
+    "time": 30,
+    "level": "Hard"
+  },
+  {
+    "q": "Which COPY INTO parameter maps source columns to target columns by matching their names instead of their positions?",
+    "options": [
+      "MATCH_BY_COLUMN_NAME",
+      "VALIDATION_MODE",
+      "FILES",
+      "PATTERN"
+    ],
+    "answer": 0,
+    "time": 45,
+    "level": "Hard"
+  },
 ];
 
 /* ----------------- STATE ----------------- */
