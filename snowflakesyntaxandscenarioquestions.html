@@ -792,6 +792,205 @@ Note:
 This is a common Snowflake ETL pattern for implementing SCD Type 2. The MERGE statement expires the current version of a record, while the INSERT statement creates the new current version. SQLROWCOUNT is used after each DML operation to report the number of rows updated and inserted.
 `
 },
+    {
+title: "External Stage - Load CSV File from Amazon S3 into Snowflake",
+
+question:`
+A CSV file named employees.csv has already been uploaded to the following S3 bucket:
+
+s3://company-data/employees/
+
+The CSV contains the following data:
+
+EMP_ID,EMP_NAME,DEPARTMENT,SALARY
+1,John,IT,60000
+2,Alice,HR,55000
+3,Bob,Finance,70000
+
+Perform the following tasks:
+
+1. Create a target table named EMPLOYEES.
+2. Create a CSV file format.
+3. Create a Storage Integration for the S3 bucket.
+4. Create an External Stage using the Storage Integration.
+5. Verify that the file exists in the stage.
+6. Validate the file without loading data.
+7. Load the data into the table.
+8. Reload the file even if it has already been loaded.
+9. Load only employees.csv.
+10. Load only CSV files matching a pattern.
+11. Skip invalid rows while loading.
+12. Remove the source file after successful loading.
+13. Display the loaded data.
+
+Also demonstrate how to create the same External Stage using AWS_ACCESS_KEY_ID and AWS_SECRET_KEY instead of Storage Integration.
+`,
+
+dataset:[
+{"EMP_ID":1,"EMP_NAME":"John","DEPARTMENT":"IT","SALARY":60000},
+{"EMP_ID":2,"EMP_NAME":"Alice","DEPARTMENT":"HR","SALARY":55000},
+{"EMP_ID":3,"EMP_NAME":"Bob","DEPARTMENT":"Finance","SALARY":70000}
+],
+
+output:[
+{"EMP_ID":1,"EMP_NAME":"John","DEPARTMENT":"IT","SALARY":60000},
+{"EMP_ID":2,"EMP_NAME":"Alice","DEPARTMENT":"HR","SALARY":55000},
+{"EMP_ID":3,"EMP_NAME":"Bob","DEPARTMENT":"Finance","SALARY":70000}
+],
+
+answer:`
+
+--------------------------------------------------------
+-- Step 1 : Create Target Table
+--------------------------------------------------------
+
+CREATE OR REPLACE TABLE EMPLOYEES
+(
+EMP_ID NUMBER,
+EMP_NAME STRING,
+DEPARTMENT STRING,
+SALARY NUMBER
+);
+
+--------------------------------------------------------
+-- Step 2 : Create File Format
+--------------------------------------------------------
+
+CREATE OR REPLACE FILE FORMAT CSV_FORMAT
+TYPE = CSV
+FIELD_DELIMITER=','
+SKIP_HEADER=1
+FIELD_OPTIONALLY_ENCLOSED_BY='"'
+NULL_IF=('NULL','');
+
+--------------------------------------------------------
+-- Step 3 : Create Storage Integration
+--------------------------------------------------------
+
+CREATE OR REPLACE STORAGE INTEGRATION S3_INT
+TYPE = EXTERNAL_STAGE
+STORAGE_PROVIDER = S3
+ENABLED = TRUE
+STORAGE_AWS_ROLE_ARN='arn:aws:iam::123456789012:role/SnowflakeRole'
+STORAGE_ALLOWED_LOCATIONS=('s3://company-data/');
+
+--------------------------------------------------------
+-- Step 4 : Describe Storage Integration
+--------------------------------------------------------
+
+DESC INTEGRATION S3_INT;
+
+--------------------------------------------------------
+-- Step 5 : Create External Stage using Storage Integration
+--------------------------------------------------------
+
+CREATE OR REPLACE STAGE EMP_STAGE
+URL='s3://company-data/employees/'
+STORAGE_INTEGRATION=S3_INT
+FILE_FORMAT=CSV_FORMAT;
+
+--------------------------------------------------------
+-- Alternative Method
+-- Create Stage using AWS Keys
+--------------------------------------------------------
+
+CREATE OR REPLACE STAGE EMP_STAGE_KEY
+URL='s3://company-data/employees/'
+CREDENTIALS=(
+AWS_KEY_ID='YOUR_ACCESS_KEY'
+AWS_SECRET_KEY='YOUR_SECRET_KEY'
+)
+FILE_FORMAT=CSV_FORMAT;
+
+--------------------------------------------------------
+-- Step 6 : Verify Files
+--------------------------------------------------------
+
+LIST @EMP_STAGE;
+
+--------------------------------------------------------
+-- Step 7 : Validate without Loading
+--------------------------------------------------------
+
+COPY INTO EMPLOYEES
+FROM @EMP_STAGE
+VALIDATION_MODE='RETURN_ERRORS';
+
+--------------------------------------------------------
+-- Return All Errors
+--------------------------------------------------------
+
+COPY INTO EMPLOYEES
+FROM @EMP_STAGE
+VALIDATION_MODE='RETURN_ALL_ERRORS';
+
+--------------------------------------------------------
+-- Step 8 : Load Data
+--------------------------------------------------------
+
+COPY INTO EMPLOYEES
+FROM @EMP_STAGE;
+
+--------------------------------------------------------
+-- Step 9 : Load only Specific File
+--------------------------------------------------------
+
+COPY INTO EMPLOYEES
+FROM @EMP_STAGE
+FILES=('employees.csv');
+
+--------------------------------------------------------
+-- Step 10 : Load using Pattern
+--------------------------------------------------------
+
+COPY INTO EMPLOYEES
+FROM @EMP_STAGE
+PATTERN='.*employees.*\\.csv';
+
+--------------------------------------------------------
+-- Step 11 : Skip Bad Records
+--------------------------------------------------------
+
+COPY INTO EMPLOYEES
+FROM @EMP_STAGE
+ON_ERROR='CONTINUE';
+
+--------------------------------------------------------
+-- Step 12 : Force Reload
+--------------------------------------------------------
+
+COPY INTO EMPLOYEES
+FROM @EMP_STAGE
+FORCE=TRUE;
+
+--------------------------------------------------------
+-- Step 13 : Purge Files
+--------------------------------------------------------
+
+COPY INTO EMPLOYEES
+FROM @EMP_STAGE
+PURGE=TRUE;
+
+--------------------------------------------------------
+-- Step 14 : Combine Multiple Parameters
+--------------------------------------------------------
+
+COPY INTO EMPLOYEES
+FROM @EMP_STAGE
+FILES=('employees.csv')
+ON_ERROR='CONTINUE'
+FORCE=TRUE
+PURGE=TRUE;
+
+--------------------------------------------------------
+-- Step 15 : View Loaded Data
+--------------------------------------------------------
+
+SELECT *
+FROM EMPLOYEES;
+
+`
+},
 /* End of questions array */
 ];
 
