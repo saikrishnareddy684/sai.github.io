@@ -153,7 +153,108 @@ let originalQuestions = [
   "answer": 1,
   "time": 25
 },
-  
+  {
+    "q": "What is the primary purpose of an ER Diagram?",
+    "options": [
+      "To schedule database backups",
+      "To model the logical structure of a database before implementation",
+      "To optimize SQL query performance",
+      "To monitor database storage usage"
+    ],
+    "answer": 1,
+    "time": 20
+  },
+
+   {
+    "q": "Which of the following components are represented in an ER Diagram?",
+    "options": [
+      "Entities, Attributes, and Relationships",
+      "Functions, Procedures, and Triggers",
+      "Warehouses, Stages, and File Formats",
+      "Indexes, Partitions, and Clusters"
+    ],
+    "answer": 0,
+    "time": 20
+  },
+  {
+    "q": "Which database design approach is an ER Diagram most commonly associated with?",
+    "options": [
+      "OLTP (Transactional Database Design)",
+      "OLAP Cube Design",
+      "Data Warehouse Reporting",
+      "Machine Learning Models"
+    ],
+    "answer": 0,
+    "time": 20
+  },
+  {
+    "q": "How does an ER Diagram differ from a Star Schema?",
+    "options": [
+      "ER Diagrams contain only fact tables",
+      "ER Diagrams model normalized entities and relationships, while Star Schemas use a fact table with denormalized dimensions",
+      "Both are identical and used interchangeably",
+      "Star Schemas are used only for application development"
+    ],
+    "answer": 1,
+    "time": 25
+  },
+  {
+    "q": "Which schema typically contains a central Fact table connected directly to Dimension tables?",
+    "options": [
+      "ER Diagram",
+      "Snowflake Schema",
+      "Star Schema",
+      "Network Model"
+    ],
+    "answer": 2,
+    "time": 20
+  },
+  {
+    "q": "Which schema normalizes its Dimension tables into multiple related tables?",
+    "options": [
+      "Star Schema",
+      "ER Diagram",
+      "Snowflake Schema",
+      "Flat File Model"
+    ],
+    "answer": 2,
+    "time": 20
+  },
+   {
+    "q": "In a Star Schema, Dimension tables are generally:",
+    "options": [
+      "Highly normalized",
+      "Denormalized",
+      "Compressed into one table",
+      "Stored as external tables"
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "Which statement about ER Diagrams is correct?",
+    "options": [
+      "They are primarily used to design Data Warehouse schemas",
+      "They focus on entities, attributes, primary keys, foreign keys, and relationships",
+      "They eliminate the need for primary keys",
+      "They are used only in Snowflake databases"
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "Which of the following best describes a Snowflake Schema?",
+    "options": [
+      "A schema with one Fact table and normalized Dimension tables",
+      "A schema with only Dimension tables",
+      "A schema without primary keys",
+      "A schema used only for OLTP systems"
+    ],
+    "answer": 0,
+    "time": 20
+  }
+
+  ,
   {
     "q": "What is a one-to-many (1:M) relationship in database design?",
     "options": [
@@ -165,7 +266,172 @@ let originalQuestions = [
     "answer": 1,
     "time": 20
   },
-  
+   {
+    "q": "What is the primary purpose of a Bridge Table in data modeling?",
+    "options": [
+      "To store duplicate records from the fact table",
+      "To resolve a many-to-many relationship between two tables",
+      "To improve warehouse auto-scaling",
+      "To replace dimension tables"
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "A Bridge Table is also commonly known as:",
+    "options": [
+      "Fact Table",
+      "Dimension Table",
+      "Junction (Associative) Table",
+      "Lookup Table"
+    ],
+    "answer": 2,
+    "time": 20
+  },
+  {
+    "q": "Which relationship requires a Bridge Table?",
+    "options": [
+      "One-to-One",
+      "One-to-Many",
+      "Many-to-Many",
+      "Self-Join"
+    ],
+    "answer": 2,
+    "time": 20
+  },
+  {
+    "q": "In a Student-Course data model, which table acts as the Bridge Table?",
+    "options": [
+      "STUDENT",
+      "COURSE",
+      "STUDENT_COURSE",
+      "GRADE"
+    ],
+    "answer": 2,
+    "time": 20
+  },
+  {
+    "q": "What does a Bridge Table typically contain?",
+    "options": [
+      "Only descriptive attributes",
+      "The primary keys of two related tables stored as foreign keys",
+      "Only aggregated measures",
+      "Only duplicate records"
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "A Many-to-Many relationship is converted into which type of relationships using a Bridge Table?",
+    "options": [
+      "Two One-to-One relationships",
+      "Two One-to-Many relationships",
+      "One Many-to-One relationship",
+      "Three One-to-Many relationships"
+    ],
+    "answer": 1,
+    "time": 25
+  },
+  {
+    "q": "Which of the following is a valid example of a Many-to-Many relationship?",
+    "options": [
+      "Customer and Address",
+      "Employee and Department",
+      "Student and Course",
+      "Order and Order Date"
+    ],
+    "answer": 2,
+    "time": 20
+  },
+  {
+    "q": "Which of the following scenarios typically requires a Bridge Table in a data warehouse?",
+    "options": [
+      "One Product belongs to one Category",
+      "One Customer places many Orders",
+      "One Order can have multiple Promotions, and one Promotion can apply to multiple Orders",
+      "One Employee has one Manager"
+    ],
+    "answer": 2,
+    "time": 25
+  },
+  {
+    "q": "Which statement about duplicate ORDER_ID values in a Fact table is correct?",
+    "options": [
+      "Duplicate ORDER_ID values always indicate a Many-to-Many relationship.",
+      "Duplicate ORDER_ID values usually indicate that the fact table is at the order-line grain.",
+      "Duplicate ORDER_ID values mean a Bridge Table must be created.",
+      "Duplicate ORDER_ID values are not allowed in Fact tables."
+    ],
+    "answer": 1,
+    "time": 25
+  },
+  {
+    "q": "Why is ORDER_ID often repeated in a Fact Orders table?",
+    "options": [
+      "Because every order has multiple customers",
+      "Because an order can contain multiple products, resulting in one row per order line",
+      "Because ORDER_ID is not a primary key",
+      "Because Snowflake automatically duplicates records"
+    ],
+    "answer": 1,
+    "time": 25
+  },
+  {
+    "q": "Which table would most likely be implemented as a Bridge Table?",
+    "options": [
+      "DIM_PRODUCT",
+      "FACT_SALES",
+      "ORDER_PROMOTION_BRIDGE",
+      "DIM_DATE"
+    ],
+    "answer": 2,
+    "time": 20
+  },
+  {
+    "q": "What is the main benefit of using a Bridge Table?",
+    "options": [
+      "It eliminates the need for Fact tables.",
+      "It resolves Many-to-Many relationships while maintaining normalization.",
+      "It automatically improves query performance.",
+      "It stores aggregated data."
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "Which pair of tables commonly requires a Bridge Table?",
+    "options": [
+      "Customer and Date",
+      "Employee and Skill",
+      "Product and Category",
+      "Store and Location"
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "In a Bridge Table, what do the foreign keys represent?",
+    "options": [
+      "The measures of the fact table",
+      "The relationship between two parent tables",
+      "The partition keys",
+      "The clustering keys"
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "Which statement is TRUE regarding Bridge Tables?",
+    "options": [
+      "They are required whenever a Fact table contains duplicate keys.",
+      "They are used only in OLTP databases.",
+      "They are introduced specifically to model Many-to-Many relationships.",
+      "They replace Dimension tables in a Star Schema."
+    ],
+    "answer": 2,
+    "time": 25
+  }
+,
   {
     "q": "What is a many-to-many (M:N) relationship in database design?",
     "options": [
