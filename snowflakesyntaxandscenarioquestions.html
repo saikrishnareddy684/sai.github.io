@@ -1232,6 +1232,180 @@ FROM EMPLOYEE_DIM;
 
 `
 },
+
+    {
+title: "External Table - Query CSV Files from Amazon S3",
+
+question: `
+A CSV file named customers.csv is stored in the following S3 bucket:
+
+s3://my-practice-bucket-sai-123/
+
+Requirements:
+
+1. Create a CSV File Format.
+2. Create a Storage Integration.
+3. Create an External Stage.
+4. Create an External Table named EXT_CUSTOMERS.
+5. Read the data directly from S3 without loading it into Snowflake.
+6. Refresh the External Table after a new file is uploaded.
+7. Query the External Table.
+`,
+
+dataset:[
+{CUSTOMER_ID:1,CUSTOMER_NAME:"John",CITY:"London"},
+{CUSTOMER_ID:2,CUSTOMER_NAME:"David",CITY:"Paris"},
+{CUSTOMER_ID:3,CUSTOMER_NAME:"Alex",CITY:"Tokyo"}
+],
+
+output:[
+{CUSTOMER_ID:1,CUSTOMER_NAME:"John",CITY:"London"},
+{CUSTOMER_ID:2,CUSTOMER_NAME:"David",CITY:"Paris"},
+{CUSTOMER_ID:3,CUSTOMER_NAME:"Alex",CITY:"Tokyo"}
+],
+
+answer:`
+
+CREATE OR REPLACE FILE FORMAT CSV_FORMAT
+TYPE=CSV
+SKIP_HEADER=1;
+
+CREATE OR REPLACE STORAGE INTEGRATION S3_INT
+TYPE=EXTERNAL_STAGE
+STORAGE_PROVIDER=S3
+ENABLED=TRUE
+STORAGE_AWS_ROLE_ARN='YOUR_ROLE_ARN'
+STORAGE_ALLOWED_LOCATIONS=('s3://my-practice-bucket-sai-123/');
+
+CREATE OR REPLACE STAGE CUSTOMER_STAGE
+URL='s3://my-practice-bucket-sai-123/'
+STORAGE_INTEGRATION=S3_INT
+FILE_FORMAT=CSV_FORMAT;
+
+CREATE OR REPLACE EXTERNAL TABLE EXT_CUSTOMERS
+(
+CUSTOMER_ID NUMBER AS (VALUE:c1::NUMBER),
+CUSTOMER_NAME STRING AS (VALUE:c2::STRING),
+CITY STRING AS (VALUE:c3::STRING)
+)
+LOCATION=@CUSTOMER_STAGE
+PATTERN='.*customers\\.csv'
+AUTO_REFRESH=FALSE
+FILE_FORMAT=(FORMAT_NAME='CSV_FORMAT');
+
+ALTER EXTERNAL TABLE EXT_CUSTOMERS REFRESH;
+
+SELECT *
+FROM EXT_CUSTOMERS;
+
+`
+},
+
+    {
+title: "Snowpipe + Stream + Task - Incremental Employee Load",
+
+question: `
+An employee.csv file is uploaded to Amazon S3.
+
+Requirements:
+
+1. Create a CSV File Format.
+2. Create a Storage Integration.
+3. Create an External Stage.
+4. Create a RAW table named EMPLOYEE_RAW.
+5. Create a Snowpipe to load files into EMPLOYEE_RAW.
+6. Trigger the Snowpipe manually.
+7. Create a Stream on EMPLOYEE_RAW.
+8. Create a target table named EMPLOYEE_DIM.
+9. Create a Task that performs a MERGE from the Stream into EMPLOYEE_DIM.
+10. Resume the Task.
+11. Verify the final data in EMPLOYEE_DIM.
+`,
+
+dataset:[
+{EMP_ID:101,EMP_NAME:"John"},
+{EMP_ID:102,EMP_NAME:"Alice"}
+],
+
+output:[
+{EMP_ID:101,EMP_NAME:"John"},
+{EMP_ID:102,EMP_NAME:"Alice"}
+],
+
+answer:`
+
+CREATE FILE FORMAT CSV_FORMAT
+TYPE=CSV
+SKIP_HEADER=1;
+
+CREATE STORAGE INTEGRATION S3_INT
+TYPE=EXTERNAL_STAGE
+STORAGE_PROVIDER=S3
+ENABLED=TRUE
+STORAGE_AWS_ROLE_ARN='YOUR_ROLE_ARN'
+STORAGE_ALLOWED_LOCATIONS=('s3://my-practice-bucket-sai-123/');
+
+CREATE STAGE EMP_STAGE
+URL='s3://my-practice-bucket-sai-123/'
+STORAGE_INTEGRATION=S3_INT
+FILE_FORMAT=CSV_FORMAT;
+
+CREATE TABLE EMPLOYEE_RAW
+(
+EMP_ID NUMBER,
+EMP_NAME STRING
+);
+
+CREATE PIPE EMPLOYEE_PIPE
+AS
+COPY INTO EMPLOYEE_RAW
+FROM @EMP_STAGE
+PATTERN='.*employee.*\\.csv';
+
+ALTER PIPE EMPLOYEE_PIPE REFRESH;
+
+CREATE STREAM EMPLOYEE_STREAM
+ON TABLE EMPLOYEE_RAW;
+
+CREATE TABLE EMPLOYEE_DIM
+(
+EMP_ID NUMBER,
+EMP_NAME STRING
+);
+
+CREATE TASK EMPLOYEE_TASK
+WAREHOUSE=COMPUTE_WH
+SCHEDULE='1 MINUTE'
+WHEN SYSTEM$STREAM_HAS_DATA('EMPLOYEE_STREAM')
+AS
+
+MERGE INTO EMPLOYEE_DIM T
+USING EMPLOYEE_STREAM S
+ON T.EMP_ID=S.EMP_ID
+
+WHEN MATCHED THEN
+UPDATE SET
+T.EMP_NAME=S.EMP_NAME
+
+WHEN NOT MATCHED THEN
+INSERT
+(
+EMP_ID,
+EMP_NAME
+)
+VALUES
+(
+S.EMP_ID,
+S.EMP_NAME
+);
+
+ALTER TASK EMPLOYEE_TASK RESUME;
+
+SELECT *
+FROM EMPLOYEE_DIM;
+
+`
+},
     
 /* End of questions array */
 ];
