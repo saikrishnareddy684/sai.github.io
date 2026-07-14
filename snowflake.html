@@ -8379,6 +8379,355 @@ let originalQuestions = [
     "time": 45,
     "level": "Hard"
   },
+  {
+    "q": "What is an External Table in Snowflake?",
+    "options": [
+      "A table that stores data inside Snowflake micro-partitions.",
+      "A table that stores only metadata while the actual data remains in external cloud storage.",
+      "A temporary table that exists only for the current session.",
+      "A table that automatically copies data from Amazon S3 into Snowflake."
+    ],
+    "answer": 1,
+    "time": 30,
+    "level": "Easy"
+  },
+   {
+    "q": "Where is the actual data stored when querying an External Table?",
+    "options": [
+      "Snowflake internal storage",
+      "Snowflake cache",
+      "Cloud object storage such as Amazon S3, Azure Blob Storage, or Google Cloud Storage",
+      "Temporary stage"
+    ],
+    "answer": 2,
+    "time": 30,
+    "level": "Easy"
+  },
+  {
+    "q": "Which object is required before creating an External Table?",
+    "options": [
+      "Warehouse",
+      "Materialized View",
+      "External Stage",
+      "Task"
+    ],
+    "answer": 2,
+    "time": 30,
+    "level": "Easy"
+  },
+  {
+    "q": "Which statement is used to create an External Table in Snowflake?",
+    "options": [
+      "CREATE TABLE",
+      "CREATE EXTERNAL TABLE",
+      "CREATE STAGE",
+      "CREATE DIRECTORY TABLE"
+    ],
+    "answer": 1,
+    "time": 30,
+    "level": "Easy"
+  },
+   {
+    "q": "Which SQL statement correctly creates an External Table?",
+    "options": [
+      "CREATE EXTERNAL TABLE ext_sales (sale_id NUMBER AS (VALUE:sale_id::NUMBER)) LOCATION=@sales_stage FILE_FORMAT=(TYPE=PARQUET);",
+      "CREATE TABLE ext_sales FROM @sales_stage;",
+      "CREATE EXTERNAL TABLE ext_sales FROM @sales_stage;",
+      "CREATE TABLE ext_sales LOCATION=@sales_stage;"
+    ],
+    "answer": 0,
+    "time": 45,
+    "level": "Medium"
+  },
+  {
+    "q": "What does the VALUE keyword represent while defining columns in an External Table?",
+    "options": [
+      "The destination table value",
+      "The contents of each row in the external file",
+      "The current warehouse",
+      "The stage name"
+    ],
+    "answer": 1,
+    "time": 45,
+    "level": "Medium"
+  },
+   {
+    "q": "Which expression correctly extracts the sale_id column from a Parquet file?",
+    "options": [
+      "sale_id NUMBER",
+      "sale_id NUMBER AS (VALUE:sale_id::NUMBER)",
+      "sale_id NUMBER FROM VALUE",
+      "sale_id NUMBER USING VALUE"
+    ],
+    "answer": 1,
+    "time": 45,
+    "level": "Medium"
+  },
+  {
+    "q": "When creating an External Table over CSV files, how is the first column typically referenced?",
+    "options": [
+      "VALUE:1",
+      "VALUE:c1",
+      "COLUMN1",
+      "COL1"
+    ],
+    "answer": 1,
+    "time": 45,
+    "level": "Medium"
+  },
+  {
+    "q": "When creating an External Table over Parquet files, how are columns typically referenced?",
+    "options": [
+      "VALUE:c1",
+      "VALUE:c2",
+      "VALUE:column_name",
+      "COLUMN_NAME"
+    ],
+    "answer": 2,
+    "time": 45,
+    "level": "Medium"
+  },
+  {
+    "q": "Which command refreshes an External Table so it recognizes newly added files in the stage?",
+    "options": [
+      "ALTER EXTERNAL TABLE ext_sales REFRESH;",
+      "REFRESH EXTERNAL TABLE ext_sales;",
+      "UPDATE EXTERNAL TABLE ext_sales;",
+      "ALTER STAGE sales_stage REFRESH;"
+    ],
+    "answer": 0,
+    "time": 30,
+    "level": "Easy"
+  },
+  {
+    "q": "Why is ALTER EXTERNAL TABLE ... REFRESH used?",
+    "options": [
+      "To reload all data into Snowflake storage",
+      "To discover new files added to the external stage",
+      "To optimize query performance",
+      "To rebuild micro-partitions"
+    ],
+    "answer": 1,
+    "time": 30,
+    "level": "Easy"
+  },
+  {
+    "q": "Can you INSERT, UPDATE, or DELETE rows in an External Table?",
+    "options": [
+      "Yes",
+      "Only INSERT is allowed",
+      "Only UPDATE is allowed",
+      "No, External Tables are read-only"
+    ],
+    "answer": 3,
+    "time": 30,
+    "level": "Easy"
+  },
+   {
+    "q": "Which SQL operation is supported on an External Table?",
+    "options": [
+      "INSERT",
+      "UPDATE",
+      "DELETE",
+      "SELECT"
+    ],
+    "answer": 3,
+    "time": 30,
+    "level": "Easy"
+  },
+  {
+    "q": "What happens when a new file is uploaded to the S3 bucket used by an External Table?",
+    "options": [
+      "Snowflake automatically loads it into internal storage.",
+      "The file becomes queryable only after the External Table metadata is refreshed or AUTO_REFRESH is enabled.",
+      "The file is ignored permanently.",
+      "Snowflake deletes the old metadata automatically."
+    ],
+    "answer": 1,
+    "time": 45,
+    "level": "Medium"
+  },
+  {
+    "q": "Which of the following is a major advantage of using an External Table?",
+    "options": [
+      "Data is duplicated into Snowflake storage.",
+      "Data remains in the cloud storage without requiring COPY INTO.",
+      "It supports INSERT and UPDATE operations.",
+      "It automatically compresses CSV files."
+    ],
+    "answer": 1,
+    "time": 30,
+    "level": "Easy"
+  },
+  {
+    "q": "Which file format is most commonly used with External Tables because it is self-describing?",
+    "options": [
+      "CSV",
+      "TXT",
+      "Parquet",
+      "XML"
+    ],
+    "answer": 2,
+    "time": 30,
+    "level": "Easy"
+  },
+   {
+    "q": "Which object provides the connection between Snowflake and the cloud storage location used by an External Table?",
+    "options": [
+      "Warehouse",
+      "Database",
+      "External Stage",
+      "Task"
+    ],
+    "answer": 2,
+    "time": 30,
+    "level": "Easy"
+  },
+   {
+    "q": "Which statement correctly describes the relationship between an External Stage and an External Table?",
+    "options": [
+      "The External Stage stores the data and the External Table stores the files.",
+      "The External Stage points to the cloud storage location, while the External Table defines the schema used to query the files.",
+      "Both objects store the data inside Snowflake.",
+      "An External Table can exist without an External Stage."
+    ],
+    "answer": 1,
+    "time": 45,
+    "level": "Medium"
+  },
+  {
+    "q": "Which of the following is NOT true about External Tables?",
+    "options": [
+      "They can query data stored in Amazon S3.",
+      "They store metadata inside Snowflake.",
+      "They physically load data into Snowflake storage.",
+      "They are read-only."
+    ],
+    "answer": 2,
+    "time": 30,
+    "level": "Medium"
+  },
+    "q": "Which feature allows an External Table to automatically detect newly added files without manually running ALTER EXTERNAL TABLE ... REFRESH?",
+    "options": [
+      "FORCE=TRUE",
+      "AUTO_REFRESH=TRUE",
+      "PURGE=TRUE",
+      "VALIDATION_MODE='RETURN_ERRORS'"
+    ],
+    "answer": 1,
+    "time": 45,
+    "level": "Medium"
+  },
+    {
+    "q": "Which comparison between COPY INTO and External Tables is correct?",
+    "options": [
+      "COPY INTO reads data directly from S3 without storing it.",
+      "External Tables load data into Snowflake storage.",
+      "COPY INTO loads data into Snowflake storage, whereas External Tables query data directly from cloud storage.",
+      "Both always duplicate data into Snowflake."
+    ],
+    "answer": 2,
+    "time": 45,
+    "level": "Medium"
+  },
+       {
+    "q": "Which SQL statement is used to query data from an External Table?",
+    "options": [
+      "SELECT * FROM ext_sales;",
+      "COPY INTO ext_sales;",
+      "LOAD DATA ext_sales;",
+      "READ TABLE ext_sales;"
+    ],
+    "answer": 0,
+    "time": 30,
+    "level": "Easy"
+  },
+
+          {
+    "q": "Why are External Tables commonly used in data lake architectures?",
+    "options": [
+      "Because they duplicate data into Snowflake for better performance.",
+      "Because they allow querying files directly in cloud storage without loading them into Snowflake.",
+      "Because they support UPDATE and DELETE operations.",
+      "Because they automatically create indexes on Parquet files."
+    ],
+    "answer": 1,
+    "time": 45,
+    "level": "Medium"
+  },
+            {
+    "q": "Which pattern syntax should you use in Snowflake to match any file containing the word 'emp' anywhere in its name?",
+    "options": [
+      "'*emp*'",
+      "'.*emp.*'",
+      "'%emp%'",
+      "'_emp_'"
+    ],
+    "answer": 1,
+    "time": 30,
+    "level": "Medium"
+  },
+              {
+    "q": "Why might a COPY INTO command return '0 files processed' for a newly corrected file that still exists on the stage?",
+    "options": [
+      "The file size is too small to be processed.",
+      "Snowflake remembers the file was already processed within its 64-day history.",
+      "The stage has automatically entered a read-only sleep mode.",
+      "The database table has reached its row capacity limits."
+    ],
+    "answer": 1,
+    "time": 30,
+    "level": "Medium"
+  },
+    {
+  "q": "True or False: Storing files in an AWS S3 bucket means you have automatically implemented a full Data Lake architecture.",
+  "options": [
+    "True, because S3 inherently provides data cataloging and automatic schema governance.",
+    "True, because any cloud storage bucket containing raw files is technically considered a Data Lake.",
+    "False, because S3 is simply the underlying storage technology; a true Data Lake also requires a management layer for organization, cataloging, and governance.",
+    "False, because a Data Lake can only be built using relational databases, not object storage like S3."
+  ],
+  "answer": 2,
+  "time": 30,
+  "level": "Medium"
+},
+      {
+    "q": "Which statement about External Tables and Storage Integration is correct?",
+    "options": [
+      "Storage Integration is optional for all External Tables.",
+      "Storage Integration is the recommended and secure method for allowing Snowflake to access cloud storage.",
+      "Storage Integration is only supported for internal stages.",
+      "External Tables cannot use Storage Integration."
+    ],
+    "answer": 1,
+    "time": 45,
+    "level": "Medium"
+  },
+        {
+  "q": "When creating an External Table in Snowflake, why are columns defined using expressions such as `sale_id NUMBER AS (VALUE:sale_id::NUMBER)` instead of simply `sale_id NUMBER`?",
+  "options": [
+    "Because External Tables do not store data in Snowflake, so each column must extract and cast values from the external file using the VALUE object.",
+    "Because External Tables require every column to have a default value before querying data.",
+    "Because Snowflake automatically creates clustered indexes for External Tables using the AS clause.",
+    "Because the AS clause is used only to rename columns and has no role in reading external data."
+  ],
+  "answer": 0,
+  "time": 45,
+  "level": "Medium"
+},
+          {
+    "q": "What is Snowpipe in Snowflake?",
+    "options": [
+      "A continuous data ingestion service that automatically loads new files from a stage into a Snowflake table.",
+      "A service used to create virtual warehouses.",
+      "A feature used to clone databases.",
+      "A utility used to optimize SQL queries."
+    ],
+    "answer": 0,
+    "time": 30,
+    "level": "Easy"
+  },
+          
 ];
 
 /* ----------------- STATE ----------------- */
