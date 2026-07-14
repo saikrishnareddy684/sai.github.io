@@ -8727,8 +8727,260 @@ let originalQuestions = [
     "answer": 0,
     "time": 30,
     "level": "Easy"
+  },
+   {
+    "q": "What is the primary purpose of Snowpipe?",
+    "options": [
+      "To automate continuous data loading from staged files into Snowflake.",
+      "To create external stages automatically.",
+      "To optimize micro-partitions.",
+      "To manage Snowflake users and roles."
+    ],
+    "answer": 0,
+    "time": 30,
+    "level": "Easy"
+  },
+   {
+    "q": "Which SQL command does Snowpipe execute internally to load data?",
+    "options": [
+      "MERGE INTO",
+      "CREATE TABLE",
+      "COPY INTO",
+      "INSERT INTO"
+    ],
+    "answer": 2,
+    "time": 30,
+    "level": "Easy"
+  },
+  
+   {
+    "q": "Which statement best describes Snowpipe?",
+    "options": [
+      "It automatically detects new files in a stage and loads them into a target table.",
+      "It automatically creates stages and warehouses.",
+      "It continuously monitors SQL queries for optimization.",
+      "It automatically converts CSV files into JSON."
+    ],
+    "answer": 0,
+    "time": 35,
+    "level": "Easy"
+  },
+  {
+    "q": "Which cloud storage services can Snowpipe ingest data from?",
+    "options": [
+      "Amazon S3, Azure Blob Storage, and Google Cloud Storage.",
+      "Only Amazon S3.",
+      "Only Azure Blob Storage.",
+      "Only Google Drive."
+    ],
+    "answer": 0,
+    "time": 35,
+    "level": "Easy"
+  },
+  {
+    "q": "Which Snowflake object does Snowpipe monitor for newly arriving files?",
+    "options": [
+      "A stage.",
+      "A stream.",
+      "A warehouse.",
+      "A schema."
+    ],
+    "answer": 0,
+    "time": 30,
+    "level": "Easy"
+  },
+  {
+    "q": "What happens when a new file is uploaded to a stage monitored by Snowpipe?",
+    "options": [
+      "Snowpipe automatically executes the COPY INTO command and loads the file into the target table.",
+      "The file is automatically archived.",
+      "The warehouse is resized.",
+      "The file is converted into Parquet format."
+    ],
+    "answer": 0,
+    "time": 35,
+    "level": "Easy"
+  },
+  {
+    "q": "Which property enables automatic event-based ingestion when creating a Snowpipe?",
+    "options": [
+      "AUTO_COPY = TRUE",
+      "AUTO_INGEST = TRUE",
+      "AUTO_LOAD = TRUE",
+      "AUTO_REFRESH = TRUE"
+    ],
+    "answer": 1,
+    "time": 35,
+    "level": "Medium"
+  },
+   {
+    "q": "Which SQL statement is used to create a Snowpipe?",
+    "options": [
+      "CREATE STAGE",
+      "CREATE TASK",
+      "CREATE PIPE",
+      "CREATE STREAM"
+    ],
+    "answer": 2,
+    "time": 30,
+    "level": "Easy"
+  },     
+  {
+    "q": "Which Snowflake feature is commonly used after Snowpipe to capture newly loaded records?",
+    "options": [
+      "Materialized Views",
+      "Streams",
+      "Clustering Keys",
+      "Masking Policies"
+    ],
+    "answer": 1,
+    "time": 35,
+    "level": "Medium"
+  },
+  {
+  "q": "In many enterprise Snowflake ETL architectures, what is the primary role of a landing table used with Snowpipe?",
+  "options": [
+    "To temporarily hold newly ingested data before validation and processing using Streams and Tasks.",
+    "To permanently archive historical files.",
+    "To replace cloud storage such as Amazon S3.",
+    "To store Snowpipe configuration metadata."
+  ],
+  "answer": 0,
+  "time": 45,
+  "level": "Hard"
+},
+  {
+  "q": "After Snowpipe successfully loads data into a permanent Snowflake table, what additional step is required to make the data permanent?",
+  "options": [
+    "The data must be copied to another table using a Task.",
+    "The data must be committed manually.",
+    "No additional step is required because the data is already stored in the target table.",
+    "A Stream must be created before the data becomes permanent."
+  ],
+  "answer": 2,
+  "time": 40,
+  "level": "Medium"
+},
+  {
+    "q": "What does a Snowpipe object primarily contain?",
+    "options": [
+      "A COPY INTO statement that defines how data should be loaded.",
+      "A CREATE TABLE statement.",
+      "A MERGE statement only.",
+      "A SELECT statement."
+    ],
+    "answer": 0,
+    "time": 35,
+    "level": "Medium"
+  },
+  {
+    "q": "What is the major difference between COPY INTO and Snowpipe?",
+    "options": [
+      "COPY INTO is manually executed, whereas Snowpipe automatically executes COPY INTO when new files arrive.",
+      "Snowpipe loads only JSON files while COPY INTO loads CSV files.",
+      "COPY INTO supports only internal stages.",
+      "Snowpipe cannot load data into permanent tables."
+    ],
+    "answer": 0,
+    "time": 45,
+    "level": "Medium"
+  },
+   {
+    "q": "Which scenario is best suited for Snowpipe?",
+    "options": [
+      "Loading transaction files continuously as they arrive in cloud storage.",
+      "Performing yearly data archiving.",
+      "Creating database backups.",
+      "Managing Snowflake user roles."
+    ],
+    "answer": 0,
+    "time": 35,
+    "level": "Easy"
+  },
+   {
+    "q": "Which Snowflake feature is commonly used after Snowpipe to identify newly loaded records?",
+    "options": [
+      "Streams",
+      "Materialized Views",
+      "Masking Policies",
+      "Clustering Keys"
+    ],
+    "answer": 0,
+    "time": 35,
+    "level": "Medium"
+  },
+   {
+    "q": "Which feature is typically used after a Stream to process newly captured data on a schedule?",
+    "options": [
+      "Task",
+      "Warehouse",
+      "Pipe",
+      "External Table"
+    ],
+    "answer": 0,
+    "time": 35,
+    "level": "Medium"
+  },
+  {
+    "q": "Which architecture represents a common production data ingestion pipeline in Snowflake?",
+    "options": [
+      "Cloud Storage → Stage → Snowpipe → Landing Table → Stream → Task → Target Table",
+      "Warehouse → Stage → Snowpipe → Stream → Target Table",
+      "Stage → Warehouse → Stream → Pipe → Table",
+      "Cloud Storage → Task → Stream → Landing Table"
+    ],
+    "answer": 0,
+    "time": 45,
+    "level": "Hard"
+  },
+  {
+    "q": "What is one major benefit of using Snowpipe instead of scheduled COPY INTO jobs?",
+    "options": [
+      "It reduces data latency by automatically loading files as soon as they arrive.",
+      "It eliminates the need for virtual warehouses.",
+      "It automatically transforms data into star schemas.",
+      "It replaces Streams and Tasks completely."
+    ],
+    "answer": 0,
+    "time": 40,
+    "level": "Medium"
+  },
+  {
+    "q": "Why is Snowpipe considered an event-driven ingestion service?",
+    "options": [
+      "Because it automatically starts loading data when notified that new files have arrived in cloud storage.",
+      "Because it runs only when a warehouse is resumed.",
+      "Because it executes only after a Task triggers it.",
+      "Because it continuously scans every Snowflake table for changes."
+    ],
+    "answer": 0,
+    "time": 45,
+    "level": "Hard"
+  },
+  {
+    "q": "Which Snowflake object must exist before creating a Snowpipe?",
+    "options": [
+      "A stage pointing to the location of the source files.",
+      "A stream.",
+      "A materialized view.",
+      "A masking policy."
+    ],
+    "answer": 0,
+    "time": 35,
+    "level": "Easy"
+  },
+  {
+    "q": "In a Snowpipe-based ingestion pipeline, what is the primary role of the landing table?",
+    "options": [
+      "To temporarily store newly ingested data before further processing using Streams and Tasks.",
+      "To permanently archive historical files.",
+      "To replace external cloud storage.",
+      "To store Snowpipe configuration metadata."
+    ],
+    "answer": 0,
+    "time": 45,
+    "level": "Hard"
   }
-          
 ];
 
 /* ----------------- STATE ----------------- */
