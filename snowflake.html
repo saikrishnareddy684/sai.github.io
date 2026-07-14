@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" /> g
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" /> 
   <title>Snowflake MCQ Exam – Batch + Resume + Timers + Persistence</title>
   <style>
     :root{--bg:#f4f4f4;--card:#fff;--accent:#007bff;--good:#28a745;--bad:#dc3545;--muted:#666}
@@ -9067,6 +9067,116 @@ let originalQuestions = [
     "time": 40,
     "level": "Medium"
   },
+  {
+  "q": "Which of the following is the correct syntax to create a Snowflake External Table over Parquet files with partition columns YEAR and MONTH?",
+  "options": [
+    "CREATE EXTERNAL TABLE EMP_EXT (EMP_ID NUMBER AS (VALUE:c1::NUMBER), EMP_NAME STRING AS (VALUE:c2::STRING)) PARTITION BY (YEAR, MONTH) LOCATION=@EMP_STAGE FILE_FORMAT=(TYPE=PARQUET);",
+    "CREATE EXTERNAL TABLE EMP_EXT (EMP_ID NUMBER, EMP_NAME STRING) PARTITION BY (YEAR, MONTH) LOCATION=@EMP_STAGE FILE_FORMAT=(TYPE=PARQUET);",
+    "CREATE EXTERNAL TABLE EMP_EXT (EMP_ID NUMBER AS ($1), EMP_NAME STRING AS ($2)) LOCATION=@EMP_STAGE PARTITION BY (YEAR, MONTH);",
+    "CREATE EXTERNAL TABLE EMP_EXT (EMP_ID NUMBER AS (VALUE:c1), EMP_NAME STRING AS (VALUE:c2)) CLUSTER BY (YEAR, MONTH) LOCATION=@EMP_STAGE FILE_FORMAT=(TYPE=PARQUET);"
+  ],
+  "answer": 0,
+  "time": 40,
+  "level": "Hard"
+},
+  
+  {
+    "q": "How does Snowflake improve query performance on External Tables?",
+    "options": [
+      "By creating micro-partitions for external data.",
+      "By performing file-level partition pruning to scan only relevant files.",
+      "By automatically copying all external files into internal tables.",
+      "By increasing the warehouse size during query execution."
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Medium"
+  },
+  {
+    "q": "Which type of partition pruning is used for Snowflake External Tables?",
+    "options": [
+      "Micro-partition pruning.",
+      "File-level partition pruning.",
+      "Hash partition pruning.",
+      "Cluster partition pruning."
+    ],
+    "answer": 1,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "Why doesn't Snowflake use micro-partition pruning for External Tables?",
+    "options": [
+      "Because external tables always contain unstructured data.",
+      "Because external data remains in cloud storage and is not stored in Snowflake micro-partitions.",
+      "Because external tables cannot be queried using SQL.",
+      "Because partition pruning is supported only for CSV files."
+    ],
+    "answer": 1,
+    "time": 30,
+    "level": "Medium"
+  },
+  {
+    "q": "What is the primary benefit of file-level partition pruning in External Tables?",
+    "options": [
+      "It compresses data files before querying.",
+      "It scans only the required files based on query filters, reducing cost and improving performance.",
+      "It automatically converts CSV files to Parquet.",
+      "It increases the number of virtual warehouses."
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Easy"
+  },
+  {
+    "q": "Consider an External Table storing data in the following folders: year=2025/month=01, year=2025/month=02, year=2026/month=01. What happens when you execute 'SELECT * FROM SALES_EXT WHERE YEAR = 2025 AND MONTH = 2'?",
+    "options": [
+      "Snowflake scans all files in every folder.",
+      "Snowflake scans only files in the year=2025/month=02 partition.",
+      "Snowflake copies the matching files into an internal table before querying.",
+      "Snowflake creates new micro-partitions for the matching data."
+    ],
+    "answer": 1,
+    "time": 35,
+    "level": "Hard"
+  },
+  {
+    "q": "Which statement correctly compares partition pruning for internal and external tables in Snowflake?",
+    "options": [
+      "Both internal and external tables use micro-partition pruning.",
+      "Internal tables use micro-partition pruning, while external tables use file-level partition pruning.",
+      "Internal tables use file-level partition pruning, while external tables use micro-partition pruning.",
+      "Neither internal nor external tables support partition pruning."
+    ],
+    "answer": 1,
+    "time": 30,
+    "level": "Medium"
+  },
+  {
+    "q": "What must be present for Snowflake to effectively perform partition pruning on an External Table?",
+    "options": [
+      "A clustering key.",
+      "Partition metadata or partition columns that allow Snowflake to identify relevant files.",
+      "A materialized view on the external table.",
+      "A Snowpipe configured on the stage."
+    ],
+    "answer": 1,
+    "time": 30,
+    "level": "Medium"
+  },
+  {
+    "q": "Which statement about query performance on External Tables is TRUE?",
+    "options": [
+      "Every query scans all files in the external stage regardless of filters.",
+      "Snowflake skips irrelevant files using file-level partition pruning when partition information is available.",
+      "External tables always perform faster than internal tables because data is stored in S3.",
+      "Warehouse size determines which files are scanned."
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Medium"
+  }
+
 ];
 
 /* ----------------- STATE ----------------- */
