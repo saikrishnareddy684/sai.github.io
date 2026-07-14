@@ -9492,6 +9492,102 @@ let originalQuestions = [
     "time": 20,
     "level": "Easy"
   },
+  {
+    "q": "Why is the PUT command not used with an External Stage?",
+    "options": [
+      "Because External Stages do not support files.",
+      "Because files already exist in external cloud storage.",
+      "Because PUT works only for JSON files.",
+      "Because warehouses cannot access External Stages."
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Medium"
+  },
+  {
+    "q": "Which statement correctly describes an Internal Stage?",
+    "options": [
+      "It stores references to files in Amazon S3.",
+      "It stores files inside Snowflake-managed storage.",
+      "It requires a Storage Integration.",
+      "It can only store Parquet files."
+    ],
+    "answer": 1,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "Which statement correctly describes an External Stage?",
+    "options": [
+      "It stores files inside Snowflake.",
+      "It points to files stored in external cloud storage.",
+      "It automatically creates External Tables.",
+      "It is used only for Snowpipe."
+    ],
+    "answer": 1,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "Which of the following is NOT a valid cloud storage provider for an External Stage?",
+    "options": [
+      "Amazon S3",
+      "Azure Blob Storage",
+      "Google Cloud Storage",
+      "Local C: drive"
+    ],
+    "answer": 3,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "Which syntax is unique to an External Stage compared to an Internal Stage?",
+    "options": [
+      "CREATE STAGE",
+      "FILE_FORMAT",
+      "URL and STORAGE_INTEGRATION (or CREDENTIALS)",
+      "COMMENT"
+    ],
+    "answer": 2,
+    "time": 20,
+    "level": "Medium"
+  },
+  {
+    "q": "What is the biggest security risk of creating an External Stage using direct credentials?",
+    "options": [
+      "It reduces query performance.",
+      "Cloud access keys are exposed in SQL definitions.",
+      "It disables partition pruning.",
+      "It prevents COPY INTO operations."
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Medium"
+  },
+  {
+    "q": "Which object is commonly created before creating an External Stage in a production environment?",
+    "options": [
+      "Task",
+      "Storage Integration",
+      "Materialized View",
+      "Hybrid Table"
+    ],
+    "answer": 1,
+    "time": 20,
+    "level": "Medium"
+  },
+  {
+    "q": "Which statement about Internal and External Stages is correct?",
+    "options": [
+      "Both require a URL.",
+      "Only Internal Stages require cloud credentials.",
+      "External Stages reference external cloud storage, while Internal Stages use Snowflake-managed storage.",
+      "Both store files inside Snowflake."
+    ],
+    "answer": 2,
+    "time": 25,
+    "level": "Medium"
+  },
   
 ];
 
