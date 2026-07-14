@@ -8814,6 +8814,30 @@ let originalQuestions = [
     "level": "Medium"
   },
    {
+    "q": "After creating a Snowpipe on an internal stage, which command is typically used to scan the stage for existing files?",
+    "options": [
+      "ALTER PIPE <pipe_name> START;",
+      "EXECUTE PIPE <pipe_name>;",
+      "ALTER PIPE <pipe_name> REFRESH;",
+      "REFRESH PIPE <pipe_name>;"
+    ],
+    "answer": 2,
+    "time": 35,
+    "level": "Medium"
+  },
+   {
+    "q": "Which statement about the COPY INTO command inside a Snowpipe is TRUE?",
+    "options": [
+      "It can include options such as PATTERN and FILE_FORMAT to control which files are loaded and how they are parsed.",
+      "It supports the VALIDATION_MODE option to validate files before loading.",
+      "It must always include the FORCE=TRUE option.",
+      "It can only load JSON files."
+    ],
+    "answer": 0,
+    "time": 45,
+    "level": "Hard"
+  },
+   {
     "q": "Which SQL statement is used to create a Snowpipe?",
     "options": [
       "CREATE STAGE",
@@ -8957,6 +8981,7 @@ let originalQuestions = [
     "time": 45,
     "level": "Hard"
   },
+  
   {
     "q": "Which Snowflake object must exist before creating a Snowpipe?",
     "options": [
@@ -8981,6 +9006,67 @@ let originalQuestions = [
     "time": 45,
     "level": "Hard"
   }
+  ,
+  {
+    "q": "Which of the following CREATE PIPE statements correctly filters only files containing the word 'employee' and ending with '.csv'?",
+    "options": [
+      "CREATE PIPE EMP_PIPE AS COPY INTO EMPLOYEE_RAW FROM @EMP_STAGE PATTERN='.*employee.*\\\\.csv';",
+      "CREATE PIPE EMP_PIPE AS COPY INTO EMPLOYEE_RAW FROM @EMP_STAGE FILTER='employee.csv';",
+      "CREATE PIPE EMP_PIPE AS COPY INTO EMPLOYEE_RAW FROM @EMP_STAGE MATCH='employee';",
+      "CREATE PIPE EMP_PIPE AS COPY INTO EMPLOYEE_RAW FROM @EMP_STAGE FILE='employee.csv';"
+    ],
+    "answer": 0,
+    "time": 50,
+    "level": "Hard"
+  },
+      {
+    "q": "Why is the COPY INTO statement embedded within a CREATE PIPE statement instead of being executed separately?",
+    "options": [
+      "Because Snowpipe stores the COPY INTO statement as its loading definition and executes it automatically whenever new files are detected.",
+      "Because Snowflake does not allow COPY INTO to be executed manually.",
+      "Because COPY INTO can only be used with external tables.",
+      "Because it creates the target table automatically."
+    ],
+    "answer": 0,
+    "time": 50,
+    "level": "Hard"
+  },
+  {
+    "q": "Which of the following is the correct syntax to create a basic Snowpipe?",
+    "options": [
+      "CREATE PIPE EMP_PIPE COPY INTO EMPLOYEE_RAW FROM @EMP_STAGE;",
+      "CREATE PIPE EMP_PIPE AS COPY INTO EMPLOYEE_RAW FROM @EMP_STAGE;",
+      "CREATE SNOWPIPE EMP_PIPE AS COPY EMPLOYEE_RAW FROM @EMP_STAGE;",
+      "CREATE PIPE EMP_PIPE USING COPY INTO EMPLOYEE_RAW FROM @EMP_STAGE;"
+    ],
+    "answer": 1,
+    "time": 45,
+    "level": "Medium"
+  },
+  {
+    "q": "What is the purpose of the AS keyword in a CREATE PIPE statement?",
+    "options": [
+      "It separates the pipe name from the COPY INTO statement that defines the loading logic.",
+      "It specifies the stage name.",
+      "It creates an alias for the target table.",
+      "It enables automatic ingestion."
+    ],
+    "answer": 0,
+    "time": 40,
+    "level": "Medium"
+  },
+   {
+    "q": "In the following Snowpipe syntax, what is the purpose of FILE_FORMAT=(FORMAT_NAME='CSV_FORMAT')?\n\nCREATE PIPE EMP_PIPE AS\nCOPY INTO EMPLOYEE_RAW\nFROM @EMP_STAGE\nFILE_FORMAT=(FORMAT_NAME='CSV_FORMAT');",
+    "options": [
+      "It specifies how Snowflake should parse the incoming files.",
+      "It creates a new file format automatically.",
+      "It converts CSV files into JSON.",
+      "It specifies the destination table."
+    ],
+    "answer": 0,
+    "time": 40,
+    "level": "Medium"
+  },
 ];
 
 /* ----------------- STATE ----------------- */
