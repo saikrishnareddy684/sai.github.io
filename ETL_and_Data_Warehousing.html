@@ -856,7 +856,172 @@ let originalQuestions = [
     "time": 25
   }
 ,
-  
+  {
+    "q": "What is a transitive dependency in database normalization?",
+    "options": [
+      "A primary key depends on a foreign key",
+      "A non-key attribute depends on another non-key attribute",
+      "A foreign key depends on the primary key",
+      "Two primary keys depend on each other"
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "Which normal form eliminates transitive dependencies?",
+    "options": [
+      "First Normal Form (1NF)",
+      "Second Normal Form (2NF)",
+      "Third Normal Form (3NF)",
+      "Boyce-Codd Normal Form (BCNF)"
+    ],
+    "answer": 2,
+    "time": 20
+  },
+  {
+    "q": "Consider the dependency: EMP_ID → DEPT_ID and DEPT_ID → DEPT_NAME. What type of dependency exists between EMP_ID and DEPT_NAME?",
+    "options": [
+      "Functional dependency",
+      "Partial dependency",
+      "Transitive dependency",
+      "Circular dependency"
+    ],
+    "answer": 2,
+    "time": 25
+  },
+  {
+    "q": "In an EMPLOYEE table, if DEPT_NAME depends on DEPT_ID instead of EMP_ID, what does this indicate?",
+    "options": [
+      "The table is in 3NF",
+      "A transitive dependency exists",
+      "The table is fully normalized",
+      "A bridge table is required"
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "Which of the following is a non-key attribute in an EMPLOYEE table where EMP_ID is the primary key?",
+    "options": [
+      "EMP_ID",
+      "Primary Key",
+      "EMP_NAME",
+      "Unique Constraint"
+    ],
+    "answer": 2,
+    "time": 20
+  },
+  {
+    "q": "A table is in Third Normal Form (3NF) if:",
+    "options": [
+      "It contains repeating groups",
+      "Every non-key attribute depends only on the primary key and not on another non-key attribute",
+      "It has only one column",
+      "It does not contain foreign keys"
+    ],
+    "answer": 1,
+    "time": 25
+  },
+  {
+    "q": "Why are transitive dependencies removed during normalization?",
+    "options": [
+      "To increase duplicate data",
+      "To improve query execution speed only",
+      "To reduce data redundancy and maintain data integrity",
+      "To eliminate primary keys"
+    ],
+    "answer": 2,
+    "time": 20
+  },
+  {
+    "q": "Which dependency chain represents a transitive dependency?",
+    "options": [
+      "EMP_ID → EMP_NAME",
+      "ORDER_ID → ORDER_DATE",
+      "EMP_ID → DEPT_ID → DEPT_NAME",
+      "PRODUCT_ID → PRODUCT_NAME"
+    ],
+    "answer": 2,
+    "time": 25
+  },
+  {
+    "q": "Which statement about non-key attributes is TRUE?",
+    "options": [
+      "They are always part of the primary key",
+      "They should depend only on the primary key in 3NF",
+      "They cannot be stored in a table",
+      "They are always foreign keys"
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "What is the best way to eliminate a transitive dependency?",
+    "options": [
+      "Delete the primary key",
+      "Create a separate table for the dependent attribute and reference it using a foreign key",
+      "Store all attributes in a single table",
+      "Convert the table into a fact table"
+    ],
+    "answer": 1,
+    "time": 25
+  },
+  {
+    "q": "In the CUSTOMER table, if CITY determines STATE (CITY → STATE), what should be done to satisfy 3NF?",
+    "options": [
+      "Store STATE in the CUSTOMER table",
+      "Create a separate CITY table containing CITY and STATE, and reference it from CUSTOMER",
+      "Remove CITY from the table",
+      "Make STATE the primary key"
+    ],
+    "answer": 1,
+    "time": 25
+  },
+  {
+    "q": "Which of the following is an example of a transitive dependency?",
+    "options": [
+      "ORDER_ID → CUSTOMER_ID",
+      "PRODUCT_ID → PRODUCT_NAME",
+      "EMP_ID → DEPT_ID and DEPT_ID → DEPT_NAME",
+      "CUSTOMER_ID → CUSTOMER_NAME"
+    ],
+    "answer": 2,
+    "time": 20
+  },
+  {
+    "q": "What is the main objective of Third Normal Form (3NF)?",
+    "options": [
+      "To eliminate repeating groups",
+      "To eliminate partial dependencies",
+      "To eliminate transitive dependencies",
+      "To eliminate foreign keys"
+    ],
+    "answer": 2,
+    "time": 20
+  },
+  {
+    "q": "Which statement is TRUE about transitive dependency?",
+    "options": [
+      "A primary key depends on another primary key",
+      "A non-key attribute indirectly depends on the primary key through another non-key attribute",
+      "A foreign key becomes a primary key",
+      "Every table in a star schema contains transitive dependencies"
+    ],
+    "answer": 1,
+    "time": 25
+  },
+  {
+    "q": "Why is Third Normal Form (3NF) commonly used in OLTP databases?",
+    "options": [
+      "To increase data redundancy",
+      "To reduce redundancy and prevent update anomalies caused by transitive dependencies",
+      "To improve dashboard performance",
+      "To create star schemas"
+    ],
+    "answer": 1,
+    "time": 25
+  }
+,
   {
     "q": "What is a Star Schema in a data warehouse?",
     "options": [
