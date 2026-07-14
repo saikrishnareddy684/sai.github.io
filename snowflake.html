@@ -8416,6 +8416,19 @@ let originalQuestions = [
     "level": "Easy"
   },
   {
+    "q": "What does Snowflake store for an External Table?",
+    "options": [
+      "The entire dataset.",
+      "Only compressed copies of the data.",
+      "Metadata about the external files such as file locations and partitions.",
+      "Backup copies of the files."
+    ],
+    "answer": 2,
+    "time": 20,
+    "level": "Easy"
+  },
+  
+  {
     "q": "Which statement is used to create an External Table in Snowflake?",
     "options": [
       "CREATE TABLE",
@@ -9079,7 +9092,18 @@ let originalQuestions = [
   "time": 40,
   "level": "Hard"
 },
-  
+  {
+    "q": "What happens when AUTO_REFRESH is enabled for an External Table?",
+    "options": [
+      "Snowflake automatically loads the data into internal tables.",
+      "Snowflake automatically updates metadata when new files arrive, if cloud notifications are configured.",
+      "Snowflake automatically creates warehouses.",
+      "Snowflake automatically deletes old files."
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Medium"
+  },
   {
     "q": "How does Snowflake improve query performance on External Tables?",
     "options": [
@@ -9175,8 +9199,300 @@ let originalQuestions = [
     "answer": 1,
     "time": 25,
     "level": "Medium"
-  }
+  },
+  {
+    "q": "Which cloud storage services are supported for External Tables?",
+    "options": [
+      "Only Amazon S3.",
+      "Amazon S3, Azure Blob Storage, and Google Cloud Storage.",
+      "Only Azure Blob Storage.",
+      "Only Google Cloud Storage."
+    ],
+    "answer": 1,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "Which command is NOT required when querying data using an External Table?",
+    "options": [
+      "CREATE STAGE",
+      "CREATE EXTERNAL TABLE",
+      "COPY INTO",
+      "CREATE FILE FORMAT"
+    ],
+    "answer": 2,
+    "time": 20,
+    "level": "Easy"
+  },
 
+  {
+    "q": "Which operation is supported on an External Table?",
+    "options": [
+      "INSERT",
+      "UPDATE",
+      "DELETE",
+      "SELECT"
+    ],
+    "answer": 3,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "Why are External Tables considered read-only?",
+    "options": [
+      "Because Snowflake does not own or modify the external files.",
+      "Because warehouses cannot access them.",
+      "Because they only support JSON files.",
+      "Because they are cached permanently."
+    ],
+    "answer": 0,
+    "time": 25,
+    "level": "Medium"
+  },
+  {
+    "q": "Which file format generally provides the best performance for External Tables?",
+    "options": [
+      "CSV",
+      "TXT",
+      "Parquet",
+      "XML"
+    ],
+    "answer": 2,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "Which Snowflake object defines the location of files in cloud storage?",
+    "options": [
+      "Warehouse",
+      "External Stage",
+      "Database",
+      "View"
+    ],
+    "answer": 1,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "What is the purpose of a Storage Integration?",
+    "options": [
+      "To create virtual warehouses.",
+      "To securely authenticate Snowflake with external cloud storage.",
+      "To create indexes on external tables.",
+      "To compress Parquet files."
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Medium"
+  },
+
+  {
+    "q": "Why is partition pruning important for External Tables?",
+    "options": [
+      "It increases warehouse size.",
+      "It scans only relevant files, reducing cost and improving performance.",
+      "It automatically compresses files.",
+      "It converts CSV files into Parquet."
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Medium"
+  },
+   {
+    "q": "Which of the following statements about Time Travel is correct for External Tables?",
+    "options": [
+      "External Tables fully support Time Travel.",
+      "External Tables support only one day of Time Travel.",
+      "External Tables do not support Time Travel.",
+      "Time Travel can be enabled using AUTO_REFRESH."
+    ],
+    "answer": 2,
+    "time": 20,
+    "level": "Medium"
+  },
+  {
+    "q": "Which DML operation is NOT allowed on an External Table?",
+    "options": [
+      "SELECT",
+      "INSERT",
+      "Both INSERT and UPDATE",
+      "DESCRIBE"
+    ],
+    "answer": 2,
+    "time": 20,
+    "level": "Easy"
+  },
+   {
+    "q": "When should you prefer using an External Table instead of loading data into Snowflake?",
+    "options": [
+      "When data is already stored in a data lake and should not be duplicated.",
+      "When frequent UPDATE operations are required.",
+      "When primary keys must be enforced.",
+      "When creating hybrid tables."
+    ],
+    "answer": 0,
+    "time": 30,
+    "level": "Medium"
+  },
+  {
+    "q": "Which sequence correctly represents the architecture of querying data using an External Table?",
+    "options": [
+      "Warehouse → Internal Table → S3",
+      "S3 → External Stage → External Table → Query",
+      "Snowpipe → Stream → Task → Query",
+      "CSV → Internal Table → Stage"
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Medium"
+  },
+  {
+    "q": "Which statement best describes the relationship between an External Stage and an External Table?",
+    "options": [
+      "An External Stage stores the data permanently.",
+      "An External Table creates metadata on top of files referenced by an External Stage.",
+      "An External Stage replaces the need for a warehouse.",
+      "An External Table cannot use an External Stage."
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Medium"
+  },
+  {
+    "q": "Which file organization strategy provides better performance for External Tables?",
+    "options": [
+      "Thousands of tiny CSV files.",
+      "Large Parquet files partitioned by commonly filtered columns.",
+      "Randomly named text files.",
+      "One massive XML file."
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Hard"
+  },
+   {
+    "q": "Can MERGE statements be executed against an External Table?",
+    "options": [
+      "Yes, without restrictions.",
+      "Only if AUTO_REFRESH is enabled.",
+      "Only for Parquet files.",
+      "No, because External Tables are read-only."
+    ],
+    "answer": 3,
+    "time": 20,
+    "level": "Medium"
+  },
+  {
+    "q": "What is the main benefit of using External Tables in a data lake architecture?",
+    "options": [
+      "They eliminate the need for cloud storage.",
+      "They allow querying data without copying it into Snowflake storage.",
+      "They automatically convert all files into relational tables.",
+      "They replace Streams and Tasks."
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Easy"
+  },
+  {
+    "q": "Is a Storage Integration mandatory for creating an External Stage in Snowflake?",
+    "options": [
+      "Yes, it is always mandatory.",
+      "No, an External Stage can also be created using cloud credentials directly.",
+      "Only for Azure Blob Storage.",
+      "Only when using Parquet files."
+    ],
+    "answer": 1,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "Which method is recommended by Snowflake for accessing external cloud storage?",
+    "options": [
+      "Using AWS access keys directly in the stage definition.",
+      "Using username and password authentication.",
+      "Using a Storage Integration.",
+      "Using a database role."
+    ],
+    "answer": 2,
+    "time": 20,
+    "level": "Easy"
+  },
+
+
+  {
+    "q": "What is the primary advantage of using a Storage Integration?",
+    "options": [
+      "It stores data inside Snowflake.",
+      "It securely manages authentication without exposing cloud credentials.",
+      "It automatically loads data into Snowflake tables.",
+      "It eliminates the need for a warehouse."
+    ],
+    "answer": 1,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "Which clause is commonly used when creating an External Stage with a Storage Integration?",
+    "options": [
+      "INTEGRATION_NAME",
+      "STORAGE_INTEGRATION",
+      "EXTERNAL_STORAGE",
+      "STORAGE_ROLE"
+    ],
+    "answer": 1,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "Which clause is used to specify AWS access keys when creating an External Stage without a Storage Integration?",
+    "options": [
+      "AUTHENTICATION",
+      "SECURITY",
+      "CREDENTIALS",
+      "ACCESS_KEYS"
+    ],
+    "answer": 2,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "Which statement about credentials in an External Stage is true?",
+    "options": [
+      "Credentials are required only for internal stages.",
+      "Credentials can be specified directly, but this approach is generally not recommended.",
+      "Credentials are never supported.",
+      "Credentials are automatically generated by Snowflake."
+    ],
+    "answer": 1,
+    "time": 20,
+    "level": "Medium"
+  },
+  {
+    "q": "Which of the following is NOT required when creating an Internal Stage?",
+    "options": [
+      "Stage name",
+      "File format (optional)",
+      "Cloud storage URL",
+      "CREATE STAGE statement"
+    ],
+    "answer": 2,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "What is the purpose of the URL parameter in an External Stage?",
+    "options": [
+      "It specifies the Snowflake warehouse.",
+      "It specifies the location of files in external cloud storage.",
+      "It specifies the database location.",
+      "It specifies the schema name."
+    ],
+    "answer": 1,
+    "time": 20,
+    "level": "Easy"
+  },
+  
 ];
 
 /* ----------------- STATE ----------------- */
