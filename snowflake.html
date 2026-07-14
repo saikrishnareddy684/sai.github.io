@@ -8415,6 +8415,102 @@ let originalQuestions = [
     "time": 30,
     "level": "Easy"
   },
+   {
+    "q": "Which operation is supported on an External Table?",
+    "options": [
+      "INSERT",
+      "UPDATE",
+      "DELETE",
+      "SELECT"
+    ],
+    "answer": 3,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "What does Snowflake store for an External Table?",
+    "options": [
+      "The entire dataset.",
+      "Only compressed copies of the data.",
+      "Metadata about the external files such as file locations and partitions.",
+      "Backup copies of the files."
+    ],
+    "answer": 2,
+    "time": 20,
+    "level": "Easy"
+  },
+   {
+    "q": "Which command is NOT required when querying data using an External Table?",
+    "options": [
+      "CREATE STAGE",
+      "CREATE EXTERNAL TABLE",
+      "COPY INTO",
+      "CREATE FILE FORMAT"
+    ],
+    "answer": 2,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "Why are External Tables considered read-only?",
+    "options": [
+      "Because Snowflake does not own or modify the external files.",
+      "Because warehouses cannot access them.",
+      "Because they only support JSON files.",
+      "Because they are cached permanently."
+    ],
+    "answer": 0,
+    "time": 25,
+    "level": "Medium"
+  },
+  {
+    "q": "Which file format generally provides the best performance for External Tables?",
+    "options": [
+      "CSV",
+      "TXT",
+      "Parquet",
+      "XML"
+    ],
+    "answer": 2,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "What is the purpose of a Storage Integration?",
+    "options": [
+      "To create virtual warehouses.",
+      "To securely authenticate Snowflake with external cloud storage.",
+      "To create indexes on external tables.",
+      "To compress Parquet files."
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Medium"
+  },
+  {
+    "q": "What happens when AUTO_REFRESH is enabled for an External Table?",
+    "options": [
+      "Snowflake automatically loads the data into internal tables.",
+      "Snowflake automatically updates metadata when new files arrive, if cloud notifications are configured.",
+      "Snowflake automatically creates warehouses.",
+      "Snowflake automatically deletes old files."
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Medium"
+  },
+  {
+  "q": "Why is partition pruning important for External Tables?",
+  "options": [
+    "It increases warehouse size.",
+    "It scans only relevant files, reducing cost and improving performance.",
+    "It automatically compresses files.",
+    "It converts CSV files into Parquet."
+  ],
+  "answer": 1,
+  "time": 25,
+  "level": "Medium"
+},
   {
     "q": "Which statement is used to create an External Table in Snowflake?",
     "options": [
@@ -9067,6 +9163,175 @@ let originalQuestions = [
     "time": 40,
     "level": "Medium"
   },
+  {
+    "q": "Which property is mandatory when creating an S3 Storage Integration in newer Snowflake versions?",
+    "options": [
+      "STORAGE_AWS_ACCOUNT_ID",
+      "STORAGE_AWS_ROLE_ARN",
+      "AWS_SECRET_KEY",
+      "STORAGE_BUCKET_NAME"
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Medium"
+  },
+   {
+    "q": "What does the STORAGE_AWS_ROLE_ARN property specify?",
+    "options": [
+      "The ARN of the Snowflake IAM User.",
+      "The ARN of the S3 bucket.",
+      "The ARN of the AWS IAM Role that Snowflake assumes.",
+      "The ARN of the virtual warehouse."
+    ],
+    "answer": 2,
+    "time": 25,
+    "level": "Medium"
+  },
+  {
+    "q": "Which command displays the Snowflake IAM User ARN and External ID generated for a Storage Integration?",
+    "options": [
+      "SHOW STAGES;",
+      "DESCRIBE STAGE;",
+      "DESC STORAGE INTEGRATION integration_name;",
+      "SHOW INTEGRATIONS;"
+    ],
+    "answer": 2,
+    "time": 25,
+    "level": "Medium"
+  },
+  {
+    "q": "Why is the STORAGE_AWS_EXTERNAL_ID used during Storage Integration configuration?",
+    "options": [
+      "To identify the S3 bucket region.",
+      "To prevent the confused deputy security problem during AssumeRole.",
+      "To encrypt data stored in S3.",
+      "To compress files before loading."
+    ],
+    "answer": 1,
+    "time": 30,
+    "level": "Hard"
+  },
+  {
+    "q": "Which privilege is typically required to create a Storage Integration?",
+    "options": [
+      "PUBLIC",
+      "SYSADMIN",
+      "ACCOUNTADMIN",
+      "USERADMIN"
+    ],
+    "answer": 2,
+    "time": 20,
+    "level": "Medium"
+  },
+   {
+    "q": "Which statement best describes the difference between an internal stage and an external stage?",
+    "options": [
+      "Internal stages store files within Snowflake-managed storage, whereas external stages reference files stored in cloud storage.",
+      "Internal stages can only store CSV files.",
+      "External stages cannot be used with COPY INTO.",
+      "There is no functional difference between them."
+    ],
+    "answer": 0,
+    "time": 30,
+    "level": "Easy"
+  },
+   {
+    "q": "How does Snowflake improve query performance on External Tables?",
+    "options": [
+      "By creating micro-partitions for external data.",
+      "By performing file-level partition pruning to scan only relevant files.",
+      "By automatically copying all external files into internal tables.",
+      "By increasing the warehouse size during query execution."
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Medium"
+  },
+  {
+    "q": "Which type of partition pruning is used for Snowflake External Tables?",
+    "options": [
+      "Micro-partition pruning.",
+      "File-level partition pruning.",
+      "Hash partition pruning.",
+      "Cluster partition pruning."
+    ],
+    "answer": 1,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "Why doesn't Snowflake use micro-partition pruning for External Tables?",
+    "options": [
+      "Because external tables always contain unstructured data.",
+      "Because external data remains in cloud storage and is not stored in Snowflake micro-partitions.",
+      "Because external tables cannot be queried using SQL.",
+      "Because partition pruning is supported only for CSV files."
+    ],
+    "answer": 1,
+    "time": 30,
+    "level": "Medium"
+  },
+  {
+    "q": "Consider an External Table storing data in the following folders: year=2025/month=01, year=2025/month=02, year=2026/month=01. What happens when you execute 'SELECT * FROM SALES_EXT WHERE YEAR = 2025 AND MONTH = 2'?",
+    "options": [
+      "Snowflake scans all files in every folder.",
+      "Snowflake scans only files in the year=2025/month=02 partition.",
+      "Snowflake copies the matching files into an internal table before querying.",
+      "Snowflake creates new micro-partitions for the matching data."
+    ],
+    "answer": 1,
+    "time": 35,
+    "level": "Hard"
+  },
+  {
+    "q": "Which statement correctly compares partition pruning for internal and external tables in Snowflake?",
+    "options": [
+      "Both internal and external tables use micro-partition pruning.",
+      "Internal tables use micro-partition pruning, while external tables use file-level partition pruning.",
+      "Internal tables use file-level partition pruning, while external tables use micro-partition pruning.",
+      "Neither internal nor external tables support partition pruning."
+    ],
+    "answer": 1,
+    "time": 30,
+    "level": "Medium"
+  },
+   {
+    "q": "What must be present for Snowflake to effectively perform partition pruning on an External Table?",
+    "options": [
+      "A clustering key.",
+      "Partition metadata or partition columns that allow Snowflake to identify relevant files.",
+      "A materialized view on the external table.",
+      "A Snowpipe configured on the stage."
+    ],
+    "answer": 1,
+    "time": 30,
+    "level": "Medium"
+  },
+  {
+    "q": "Which statement about query performance on External Tables is TRUE?",
+    "options": [
+      "Every query scans all files in the external stage regardless of filters.",
+      "Snowflake skips irrelevant files using file-level partition pruning when partition information is available.",
+      "External tables always perform faster than internal tables because data is stored in S3.",
+      "Warehouse size determines which files are scanned."
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Medium"
+  }
+,
+  {
+  "q": "Which of the following is the correct syntax to create a Snowflake External Table over Parquet files with partition columns YEAR and MONTH?",
+  "options": [
+    "CREATE EXTERNAL TABLE EMP_EXT (EMP_ID NUMBER AS (VALUE:c1::NUMBER), EMP_NAME STRING AS (VALUE:c2::STRING)) PARTITION BY (YEAR, MONTH) LOCATION=@EMP_STAGE FILE_FORMAT=(TYPE=PARQUET);",
+    "CREATE EXTERNAL TABLE EMP_EXT (EMP_ID NUMBER, EMP_NAME STRING) PARTITION BY (YEAR, MONTH) LOCATION=@EMP_STAGE FILE_FORMAT=(TYPE=PARQUET);",
+    "CREATE EXTERNAL TABLE EMP_EXT (EMP_ID NUMBER AS ($1), EMP_NAME STRING AS ($2)) LOCATION=@EMP_STAGE PARTITION BY (YEAR, MONTH);",
+    "CREATE EXTERNAL TABLE EMP_EXT (EMP_ID NUMBER AS (VALUE:c1), EMP_NAME STRING AS (VALUE:c2)) CLUSTER BY (YEAR, MONTH) LOCATION=@EMP_STAGE FILE_FORMAT=(TYPE=PARQUET);"
+  ],
+  "answer": 0,
+  "time": 40,
+  "level": "Hard"
+}
 ];
 
 /* ----------------- STATE ----------------- */
