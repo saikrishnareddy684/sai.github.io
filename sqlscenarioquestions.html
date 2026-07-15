@@ -1441,7 +1441,116 @@ Explanation:
 5. COALESCE is used to convert NULLs into zeros for total_amount and total_users.
 `
 }
+,
+    {
+    title: "SQL Server - Change Data Capture (CDC)",
 
+    question: `
+A company wants to implement Change Data Capture (CDC) on an EMPLOYEE table to support incremental ETL loads.
+
+Requirements:
+
+- Create a database named CDC_DEMO.
+- Enable CDC at the database level.
+- Create an EMPLOYEE table.
+- Enable CDC on the EMPLOYEE table.
+- Insert initial employee records.
+- Perform the following operations:
+  - Update one employee's salary.
+  - Delete one employee.
+  - Insert a new employee.
+- Query the CDC change table to view all captured changes.
+- Display the operation type (INSERT, DELETE, UPDATE BEFORE, UPDATE AFTER) instead of operation codes.
+- Use the CDC function to retrieve all captured changes between the minimum and maximum LSN.
+`,
+
+    dataset: [
+        {EMP_ID:1, EMP_NAME:"John", DEPARTMENT:"IT", SALARY:5000},
+        {EMP_ID:2, EMP_NAME:"Mary", DEPARTMENT:"HR", SALARY:6000},
+        {EMP_ID:3, EMP_NAME:"David", DEPARTMENT:"Finance", SALARY:7000}
+    ],
+
+    output: [
+        {EMP_ID:1, OPERATION:"INSERT"},
+        {EMP_ID:2, OPERATION:"INSERT"},
+        {EMP_ID:3, OPERATION:"INSERT"},
+        {EMP_ID:3, OPERATION:"UPDATE (Before)"},
+        {EMP_ID:3, OPERATION:"UPDATE (After)"},
+        {EMP_ID:2, OPERATION:"DELETE"},
+        {EMP_ID:4, OPERATION:"INSERT"}
+    ],
+
+    answer: `
+CREATE DATABASE CDC_DEMO;
+GO
+
+USE CDC_DEMO;
+GO
+
+EXEC sys.sp_cdc_enable_db;
+GO
+
+CREATE TABLE EMPLOYEE
+(
+    EMP_ID INT PRIMARY KEY,
+    EMP_NAME VARCHAR(100),
+    DEPARTMENT VARCHAR(50),
+    SALARY DECIMAL(10,2)
+);
+GO
+
+EXEC sys.sp_cdc_enable_table
+    @source_schema='dbo',
+    @source_name='EMPLOYEE',
+    @role_name=NULL;
+GO
+
+INSERT INTO EMPLOYEE
+VALUES
+(1,'John','IT',5000),
+(2,'Mary','HR',6000),
+(3,'David','Finance',7000);
+
+UPDATE EMPLOYEE
+SET SALARY = 7500
+WHERE EMP_ID = 3;
+
+DELETE
+FROM EMPLOYEE
+WHERE EMP_ID = 2;
+
+INSERT INTO EMPLOYEE
+VALUES
+(4,'Sai','IT',8000);
+
+SELECT
+    EMP_ID,
+    EMP_NAME,
+    DEPARTMENT,
+    SALARY,
+    CASE __$operation
+        WHEN 1 THEN 'DELETE'
+        WHEN 2 THEN 'INSERT'
+        WHEN 3 THEN 'UPDATE (Before)'
+        WHEN 4 THEN 'UPDATE (After)'
+    END AS OPERATION
+FROM cdc.dbo_EMPLOYEE_CT;
+
+DECLARE @from_lsn BINARY(10),
+        @to_lsn BINARY(10);
+
+SET @from_lsn = sys.fn_cdc_get_min_lsn('dbo_EMPLOYEE');
+SET @to_lsn = sys.fn_cdc_get_max_lsn();
+
+SELECT *
+FROM cdc.fn_cdc_get_all_changes_dbo_EMPLOYEE
+(
+    @from_lsn,
+    @to_lsn,
+    'all'
+);
+`
+},
 
 
 /* End of questions array */
