@@ -1,7 +1,7 @@
 <!DOCTYPE html> 
 <html lang="en">
 <head>
-  <meta charset="utf-8" /> g
+  <meta charset="utf-8" /> 
   <meta name="viewport" content="width=device-width,initial-scale=1" /> 
   <title>Snowflake MCQ Exam – Batch + Resume + Timers + Persistence</title>
   <style>
@@ -9939,6 +9939,202 @@ let originalQuestions = [
     "time": 25,
     "level": "Medium"
   }
+  ,
+  {
+    "q": "Which Snowflake feature is used to restrict users from viewing unauthorized rows?",
+    "options": [
+      "Masking Policy",
+      "Row Access Policy",
+      "Stream",
+      "Task"
+    ],
+    "answer": 1,
+    "time": 20,
+    "level": "Easy"
+  },
+
+  
+  {
+    "q": "Which Snowflake feature is used to restrict users from viewing unauthorized rows?",
+    "options": [
+      "Masking Policy",
+      "Row Access Policy",
+      "Stream",
+      "Task"
+    ],
+    "answer": 1,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "Which Snowflake feature is used to hide sensitive values in a column without restricting rows?",
+    "options": [
+      "Masking Policy",
+      "Row Access Policy",
+      "Snowpipe",
+      "Time Travel"
+    ],
+    "answer": 0,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "What is the primary purpose of a Row Access Policy?",
+    "options": [
+      "To encrypt all table data.",
+      "To filter rows returned to a user based on a condition such as role or user.",
+      "To automatically create backups.",
+      "To improve query performance."
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Easy"
+  },
+  {
+    "q": "What is the primary purpose of a Masking Policy?",
+    "options": [
+      "To hide or mask sensitive column values while still returning the row.",
+      "To prevent table creation.",
+      "To schedule ETL jobs.",
+      "To clone a database."
+    ],
+    "answer": 0,
+    "time": 25,
+    "level": "Easy"
+  },
+  {
+    "q": "Which function is commonly used inside a Row Access Policy to determine the current user's role?",
+    "options": [
+      "CURRENT_DATABASE()",
+      "CURRENT_ROLE()",
+      "CURRENT_WAREHOUSE()",
+      "CURRENT_SCHEMA()"
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Medium"
+  },
+  {
+    "q": "Which function can also be used inside a Row Access Policy to secure data for individual users?",
+    "options": [
+      "CURRENT_USER()",
+      "CURRENT_DATE()",
+      "CURRENT_ACCOUNT()",
+      "CURRENT_VERSION()"
+    ],
+    "answer": 0,
+    "time": 25,
+    "level": "Medium"
+  },
+  {
+    "q": "Which SQL statement is used to apply a Row Access Policy to a table?",
+    "options": [
+      "ALTER TABLE employee ADD ROW ACCESS POLICY dept_policy ON (department);",
+      "ALTER TABLE employee SET ROW POLICY dept_policy;",
+      "CREATE ROW ACCESS POLICY employee;",
+      "APPLY ROW POLICY dept_policy;"
+    ],
+    "answer": 0,
+    "time": 30,
+    "level": "Medium"
+  },
+  {
+    "q": "Which SQL statement is used to apply a Masking Policy to a column?",
+    "options": [
+      "ALTER TABLE employee MODIFY COLUMN salary SET MASKING POLICY salary_mask;",
+      "ALTER TABLE employee ADD MASKING POLICY salary_mask;",
+      "SET MASKING POLICY salary_mask;",
+      "CREATE MASKING POLICY salary ON employee;"
+    ],
+    "answer": 0,
+    "time": 30,
+    "level": "Medium"
+  },
+  {
+    "q": "Which statement correctly describes the difference between Row Access Policy and Masking Policy?",
+    "options": [
+      "Row Access Policy filters rows, while Masking Policy hides sensitive column values.",
+      "Both features filter rows only.",
+      "Both features hide columns only.",
+      "Masking Policy filters rows, while Row Access Policy hides columns."
+    ],
+    "answer": 0,
+    "time": 30,
+    "level": "Medium"
+  },
+  {
+    "q": "A company wants HR users to see only HR employee records. Which Snowflake feature should be used?",
+    "options": [
+      "Masking Policy",
+      "Row Access Policy",
+      "Snowpipe",
+      "Materialized View"
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Medium"
+  },
+  {
+    "q": "A company wants non-HR users to see NULL instead of employee salaries. Which feature should be used?",
+    "options": [
+      "Masking Policy",
+      "Row Access Policy",
+      "Time Travel",
+      "Stream"
+    ],
+    "answer": 0,
+    "time": 25,
+    "level": "Medium"
+  },
+  {
+    "q": "Which return type is required while creating a Row Access Policy?",
+    "options": [
+      "BOOLEAN",
+      "STRING",
+      "NUMBER",
+      "VARIANT"
+    ],
+    "answer": 0,
+    "time": 30,
+    "level": "Hard"
+  },
+  {
+    "q": "Which statement is TRUE regarding a Row Access Policy?",
+    "options": [
+      "It returns TRUE for rows the user is allowed to see.",
+      "It encrypts the table automatically.",
+      "It masks all columns.",
+      "It creates a secure view."
+    ],
+    "answer": 0,
+    "time": 30,
+    "level": "Hard"
+  },
+  {
+    "q": "Which of the following is a real-world use case for a Masking Policy?",
+    "options": [
+      "Masking customer SSN or credit card numbers for unauthorized users.",
+      "Scheduling daily ETL jobs.",
+      "Loading CSV files into Snowflake.",
+      "Creating database clones."
+    ],
+    "answer": 0,
+    "time": 25,
+    "level": "Easy"
+  },
+  {
+    "q": "Which of the following is a real-world use case for a Row Access Policy?",
+    "options": [
+      "Allowing regional managers to view only their own region's sales data.",
+      "Masking email addresses.",
+      "Loading incremental data.",
+      "Creating external stages."
+    ],
+    "answer": 0,
+    "time": 25,
+    "level": "Easy"
+  }
+
 ];
 
 /* ----------------- STATE ----------------- */
