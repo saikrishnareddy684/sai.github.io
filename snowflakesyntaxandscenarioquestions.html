@@ -1618,6 +1618,171 @@ ON F.CUSTOMER_SK=D.CUSTOMER_SK;
 
 `
 }
+    ,
+    {
+title: "Conformed Dimension - Shared Dimension Across Multiple Fact Tables",
+
+question: `
+Implement a Conformed Dimension in a Data Warehouse.
+
+Requirements:
+
+1. Create a shared dimension table named DIM_CUSTOMER.
+2. Create two fact tables:
+   - FACT_SALES
+   - FACT_RETURNS
+3. Insert sample data into all three tables.
+4. Ensure both fact tables reference the same CUSTOMER_SK from DIM_CUSTOMER.
+5. Retrieve sales data along with customer information.
+6. Retrieve returns data along with customer information.
+7. Generate a report showing the total sales and total refunds for each customer.
+`,
+
+dataset:{
+
+DIM_CUSTOMER:[
+{CUSTOMER_SK:1,CUSTOMER_ID:101,CUSTOMER_NAME:"Sai",CITY:"Bangalore"},
+{CUSTOMER_SK:2,CUSTOMER_ID:102,CUSTOMER_NAME:"John",CITY:"Hyderabad"},
+{CUSTOMER_SK:3,CUSTOMER_ID:103,CUSTOMER_NAME:"David",CITY:"Chennai"}
+],
+
+FACT_SALES:[
+{ORDER_ID:1001,CUSTOMER_SK:1,SALES_AMOUNT:500},
+{ORDER_ID:1002,CUSTOMER_SK:2,SALES_AMOUNT:700},
+{ORDER_ID:1003,CUSTOMER_SK:3,SALES_AMOUNT:900}
+],
+
+FACT_RETURNS:[
+{RETURN_ID:2001,CUSTOMER_SK:1,REFUND_AMOUNT:500},
+{RETURN_ID:2002,CUSTOMER_SK:3,REFUND_AMOUNT:900}
+]
+
+},
+
+output:{
+
+SALES_REPORT:[
+{ORDER_ID:1001,CUSTOMER_NAME:"Sai",CITY:"Bangalore",SALES_AMOUNT:500},
+{ORDER_ID:1002,CUSTOMER_NAME:"John",CITY:"Hyderabad",SALES_AMOUNT:700},
+{ORDER_ID:1003,CUSTOMER_NAME:"David",CITY:"Chennai",SALES_AMOUNT:900}
+],
+
+RETURNS_REPORT:[
+{RETURN_ID:2001,CUSTOMER_NAME:"Sai",CITY:"Bangalore",REFUND_AMOUNT:500},
+{RETURN_ID:2002,CUSTOMER_NAME:"David",CITY:"Chennai",REFUND_AMOUNT:900}
+]
+
+},
+
+answer:`
+
+--------------------------------------------
+STEP 1 - Create Customer Dimension
+--------------------------------------------
+
+CREATE OR REPLACE TABLE DIM_CUSTOMER
+(
+    CUSTOMER_SK NUMBER,
+    CUSTOMER_ID NUMBER,
+    CUSTOMER_NAME STRING,
+    CITY STRING
+);
+
+INSERT INTO DIM_CUSTOMER VALUES
+(1,101,'Sai','Bangalore'),
+(2,102,'John','Hyderabad'),
+(3,103,'David','Chennai');
+
+--------------------------------------------
+STEP 2 - Create Sales Fact
+--------------------------------------------
+
+CREATE OR REPLACE TABLE FACT_SALES
+(
+    ORDER_ID NUMBER,
+    CUSTOMER_SK NUMBER,
+    SALES_AMOUNT NUMBER(10,2)
+);
+
+INSERT INTO FACT_SALES VALUES
+(1001,1,500),
+(1002,2,700),
+(1003,3,900);
+
+--------------------------------------------
+STEP 3 - Create Returns Fact
+--------------------------------------------
+
+CREATE OR REPLACE TABLE FACT_RETURNS
+(
+    RETURN_ID NUMBER,
+    CUSTOMER_SK NUMBER,
+    REFUND_AMOUNT NUMBER(10,2)
+);
+
+INSERT INTO FACT_RETURNS VALUES
+(2001,1,500),
+(2002,3,900);
+
+--------------------------------------------
+STEP 4 - Sales Report
+--------------------------------------------
+
+SELECT
+S.ORDER_ID,
+C.CUSTOMER_NAME,
+C.CITY,
+S.SALES_AMOUNT
+FROM FACT_SALES S
+JOIN DIM_CUSTOMER C
+ON S.CUSTOMER_SK=C.CUSTOMER_SK;
+
+--------------------------------------------
+STEP 5 - Returns Report
+--------------------------------------------
+
+SELECT
+R.RETURN_ID,
+C.CUSTOMER_NAME,
+C.CITY,
+R.REFUND_AMOUNT
+FROM FACT_RETURNS R
+JOIN DIM_CUSTOMER C
+ON R.CUSTOMER_SK=C.CUSTOMER_SK;
+
+--------------------------------------------
+STEP 6 - Customer-wise Sales and Refund Report
+--------------------------------------------
+
+WITH SALES AS
+(
+SELECT
+CUSTOMER_SK,
+SUM(SALES_AMOUNT) TOTAL_SALES
+FROM FACT_SALES
+GROUP BY CUSTOMER_SK
+),
+RETURNS AS
+(
+SELECT
+CUSTOMER_SK,
+SUM(REFUND_AMOUNT) TOTAL_REFUNDS
+FROM FACT_RETURNS
+GROUP BY CUSTOMER_SK
+)
+
+SELECT
+C.CUSTOMER_NAME,
+COALESCE(S.TOTAL_SALES,0) TOTAL_SALES,
+COALESCE(R.TOTAL_REFUNDS,0) TOTAL_REFUNDS
+FROM DIM_CUSTOMER C
+LEFT JOIN SALES S
+ON C.CUSTOMER_SK=S.CUSTOMER_SK
+LEFT JOIN RETURNS R
+ON C.CUSTOMER_SK=R.CUSTOMER_SK;
+
+`
+},
 /* End of questions array */
 ];
 
