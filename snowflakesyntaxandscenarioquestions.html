@@ -1406,7 +1406,218 @@ FROM EMPLOYEE_DIM;
 
 `
 },
-    
+
+    {
+title: "Surrogate Key Creation for Dimension and Fact Tables using SCD Type 2",
+
+question: `
+Implement a Slowly Changing Dimension (SCD Type 2) process for CUSTOMER_DIM and load the FACT_SALES table.
+
+Requirements:
+
+1. Create a source customer table (SRC_CUSTOMER).
+2. Create a source sales table (SRC_SALES).
+3. Create a dimension table (DIM_CUSTOMER) with:
+   - CUSTOMER_SK
+   - CUSTOMER_ID
+   - CUSTOMER_NAME
+   - CITY
+   - START_DATE
+   - END_DATE
+   - IS_CURRENT
+4. Perform an initial load into DIM_CUSTOMER.
+5. Simulate a customer city change.
+6. Expire the existing dimension record.
+7. Insert a new dimension record with a new surrogate key.
+8. Create FACT_SALES.
+9. Load FACT_SALES by looking up the correct CUSTOMER_SK using CUSTOMER_ID and SALES_DATE.
+10. Verify that historical sales point to the old surrogate key and new sales point to the latest surrogate key.
+`,
+
+dataset:{
+
+SRC_CUSTOMER:[
+{CUSTOMER_ID:101,CUSTOMER_NAME:"Sai",CITY:"Bangalore"},
+{CUSTOMER_ID:102,CUSTOMER_NAME:"John",CITY:"Hyderabad"}
+],
+
+SRC_SALES:[
+{ORDER_ID:1001,CUSTOMER_ID:101,SALES_AMOUNT:500,SALES_DATE:"2026-03-15"},
+{ORDER_ID:1002,CUSTOMER_ID:101,SALES_AMOUNT:800,SALES_DATE:"2026-08-10"},
+{ORDER_ID:1003,CUSTOMER_ID:102,SALES_AMOUNT:600,SALES_DATE:"2026-04-20"}
+]
+
+},
+
+output:{
+
+DIM_CUSTOMER:[
+{
+CUSTOMER_SK:1011,
+CUSTOMER_ID:101,
+CUSTOMER_NAME:"Sai",
+CITY:"Bangalore",
+START_DATE:"2026-01-01",
+END_DATE:"2026-06-30",
+IS_CURRENT:"N"
+},
+{
+CUSTOMER_SK:1012,
+CUSTOMER_ID:101,
+CUSTOMER_NAME:"Sai",
+CITY:"Hyderabad",
+START_DATE:"2026-07-01",
+END_DATE:null,
+IS_CURRENT:"Y"
+},
+{
+CUSTOMER_SK:1021,
+CUSTOMER_ID:102,
+CUSTOMER_NAME:"John",
+CITY:"Hyderabad",
+START_DATE:"2026-01-01",
+END_DATE:null,
+IS_CURRENT:"Y"
+}
+],
+
+FACT_SALES:[
+{
+ORDER_ID:1001,
+CUSTOMER_SK:1011,
+SALES_AMOUNT:500,
+SALES_DATE:"2026-03-15"
+},
+{
+ORDER_ID:1002,
+CUSTOMER_SK:1012,
+SALES_AMOUNT:800,
+SALES_DATE:"2026-08-10"
+},
+{
+ORDER_ID:1003,
+CUSTOMER_SK:1021,
+SALES_AMOUNT:600,
+SALES_DATE:"2026-04-20"
+}
+]
+
+},
+
+answer:`
+
+--------------------------------------------
+STEP 1 - Create Source Tables
+--------------------------------------------
+
+CREATE OR REPLACE TABLE SRC_CUSTOMER
+(
+CUSTOMER_ID NUMBER,
+CUSTOMER_NAME STRING,
+CITY STRING
+);
+
+CREATE OR REPLACE TABLE SRC_SALES
+(
+ORDER_ID NUMBER,
+CUSTOMER_ID NUMBER,
+SALES_AMOUNT NUMBER(10,2),
+SALES_DATE DATE
+);
+
+--------------------------------------------
+STEP 2 - Create Dimension Table
+--------------------------------------------
+
+CREATE OR REPLACE TABLE DIM_CUSTOMER
+(
+CUSTOMER_SK NUMBER,
+CUSTOMER_ID NUMBER,
+CUSTOMER_NAME STRING,
+CITY STRING,
+START_DATE DATE,
+END_DATE DATE,
+IS_CURRENT STRING
+);
+
+--------------------------------------------
+STEP 3 - Create Fact Table
+--------------------------------------------
+
+CREATE OR REPLACE TABLE FACT_SALES
+(
+ORDER_ID NUMBER,
+CUSTOMER_SK NUMBER,
+SALES_AMOUNT NUMBER(10,2),
+SALES_DATE DATE
+);
+
+--------------------------------------------
+STEP 4 - Initial Load
+--------------------------------------------
+
+INSERT INTO DIM_CUSTOMER VALUES
+(1011,101,'Sai','Bangalore','2026-01-01','2026-06-30','N'),
+(1012,101,'Sai','Hyderabad','2026-07-01',NULL,'Y'),
+(1021,102,'John','Hyderabad','2026-01-01',NULL,'Y');
+
+--------------------------------------------
+STEP 5 - Load Sales
+--------------------------------------------
+
+INSERT INTO SRC_SALES VALUES
+(1001,101,500,'2026-03-15'),
+(1002,101,800,'2026-08-10'),
+(1003,102,600,'2026-04-20');
+
+--------------------------------------------
+STEP 6 - Load Fact Table
+--------------------------------------------
+
+INSERT INTO FACT_SALES
+
+SELECT
+
+S.ORDER_ID,
+D.CUSTOMER_SK,
+S.SALES_AMOUNT,
+S.SALES_DATE
+
+FROM SRC_SALES S
+
+JOIN DIM_CUSTOMER D
+
+ON S.CUSTOMER_ID=D.CUSTOMER_ID
+
+AND S.SALES_DATE BETWEEN D.START_DATE
+AND COALESCE(D.END_DATE,'9999-12-31');
+
+--------------------------------------------
+STEP 7 - Verify
+--------------------------------------------
+
+SELECT *
+FROM DIM_CUSTOMER;
+
+SELECT *
+FROM FACT_SALES;
+
+SELECT
+
+F.ORDER_ID,
+D.CUSTOMER_NAME,
+D.CITY,
+F.SALES_AMOUNT,
+F.SALES_DATE
+
+FROM FACT_SALES F
+
+JOIN DIM_CUSTOMER D
+
+ON F.CUSTOMER_SK=D.CUSTOMER_SK;
+
+`
+}
 /* End of questions array */
 ];
 
