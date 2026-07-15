@@ -9589,6 +9589,117 @@ let originalQuestions = [
     "level": "Medium"
   },
   
+   {
+    "q": "What is a Materialized View in Snowflake?",
+    "options": [
+      "A virtual table that stores only the SQL query",
+      "A physical object that stores precomputed query results to improve performance",
+      "A temporary table created during query execution",
+      "A clone of an existing table"
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "What is the primary advantage of using a Materialized View?",
+    "options": [
+      "It reduces the size of the source table",
+      "It improves query performance by storing precomputed results",
+      "It automatically creates indexes",
+      "It eliminates the need for warehouses"
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "How does a Materialized View differ from a standard View?",
+    "options": [
+      "A Materialized View stores precomputed data, while a standard View stores only the query definition",
+      "A standard View stores data, while a Materialized View stores only metadata",
+      "Both store data physically",
+      "There is no difference"
+    ],
+    "answer": 0,
+    "time": 25
+  },
+  {
+    "q": "Who is responsible for refreshing a Materialized View in Snowflake?",
+    "options": [
+      "The user using REFRESH MATERIALIZED VIEW",
+      "A scheduled task",
+      "Snowflake automatically maintains and refreshes it",
+      "The database administrator"
+    ],
+    "answer": 2,
+    "time": 20
+  },
+  {
+    "q": "Does a Materialized View consume storage in Snowflake?",
+    "options": [
+      "No, it stores only the SQL query",
+      "Yes, because it stores precomputed query results",
+      "Only if it contains more than one million rows",
+      "Only for external tables"
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "When is a Materialized View most beneficial?",
+    "options": [
+      "For frequently executed aggregation or filtering queries on large tables",
+      "For inserting data into tables",
+      "For creating users and roles",
+      "For loading CSV files"
+    ],
+    "answer": 0,
+    "time": 25
+  },
+  {
+    "q": "Which SQL statement is used to create a Materialized View in Snowflake?",
+    "options": [
+      "CREATE VIEW MV_SALES AS SELECT * FROM SALES;",
+      "CREATE MATERIALIZED VIEW MV_SALES AS SELECT PRODUCT, SUM(SALES_AMOUNT) FROM SALES GROUP BY PRODUCT;",
+      "CREATE TABLE MV_SALES AS SELECT * FROM SALES;",
+      "ALTER MATERIALIZED VIEW MV_SALES CREATE;"
+    ],
+    "answer": 1,
+    "time": 30
+  },
+  {
+    "q": "Which SQL statement is used to retrieve data from a Materialized View?",
+    "options": [
+      "FETCH FROM MV_SALES;",
+      "READ MATERIALIZED VIEW MV_SALES;",
+      "SELECT * FROM MV_SALES;",
+      "GET MV_SALES;"
+    ],
+    "answer": 2,
+    "time": 20
+  },
+  {
+    "q": "Which statement about Materialized Views is TRUE?",
+    "options": [
+      "They always execute the underlying SELECT query when queried",
+      "They store precomputed results and are automatically maintained by Snowflake",
+      "They cannot contain aggregate functions",
+      "They do not improve query performance"
+    ],
+    "answer": 1,
+    "time": 20
+  },
+  {
+    "q": "What happens when new rows are inserted into the base table of a Materialized View?",
+    "options": [
+      "The Materialized View remains unchanged until manually refreshed",
+      "Snowflake automatically updates the Materialized View",
+      "The Materialized View is dropped automatically",
+      "The base table becomes read-only"
+    ],
+    "answer": 1,
+    "time": 20
+  },
+
 ];
 
 /* ----------------- STATE ----------------- */
