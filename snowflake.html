@@ -10586,6 +10586,127 @@ let originalQuestions = [
   
 
 
+  {
+    "q": "Which SQL statement correctly creates a Single-Cluster Warehouse in Snowflake?",
+    "options": [
+      "CREATE WAREHOUSE my_wh WITH WAREHOUSE_SIZE = MEDIUM AUTO_SUSPEND = 60 AUTO_RESUME = TRUE;",
+      "CREATE WAREHOUSE my_wh WITH WAREHOUSE_SIZE = MEDIUM MIN_CLUSTER_COUNT = 1 MAX_CLUSTER_COUNT = 3;",
+      "CREATE MULTI CLUSTER WAREHOUSE my_wh SIZE = MEDIUM;",
+      "CREATE WAREHOUSE my_wh CLUSTER BY (MEDIUM);"
+    ],
+    "answer": 0,
+    "time": 30,
+    "level": "Easy"
+  },
+  {
+    "q": "Which parameters are required to configure a Multi-Cluster Warehouse in Snowflake?",
+    "options": [
+      "WAREHOUSE_SIZE and AUTO_RESUME only.",
+      "MIN_CLUSTER_COUNT, MAX_CLUSTER_COUNT, and SCALING_POLICY.",
+      "CLUSTER BY and AUTO_CLUSTERING.",
+      "AUTO_SCALE and MAX_SIZE."
+    ],
+    "answer": 1,
+    "time": 30,
+    "level": "Easy"
+  },
+  {
+    "q": "Which SQL statement correctly creates a Multi-Cluster Warehouse?",
+    "options": [
+      "CREATE OR REPLACE WAREHOUSE analytics_wh WITH WAREHOUSE_SIZE = MEDIUM MIN_CLUSTER_COUNT = 1 MAX_CLUSTER_COUNT = 3 SCALING_POLICY = STANDARD AUTO_SUSPEND = 60 AUTO_RESUME = TRUE;",
+      "CREATE OR REPLACE MULTI_CLUSTER WAREHOUSE analytics_wh SIZE = MEDIUM CLUSTERS = 3;",
+      "CREATE WAREHOUSE analytics_wh CLUSTER BY (customer_id);",
+      "CREATE WAREHOUSE analytics_wh WITH AUTO_CLUSTER = TRUE;"
+    ],
+    "answer": 0,
+    "time": 35,
+    "level": "Medium"
+  },
+  {
+    "q": "Which SQL statement converts an existing warehouse into a Multi-Cluster Warehouse?",
+    "options": [
+      "ALTER WAREHOUSE analytics_wh SET MIN_CLUSTER_COUNT = 1, MAX_CLUSTER_COUNT = 5, SCALING_POLICY = STANDARD;",
+      "ALTER WAREHOUSE analytics_wh ENABLE MULTI_CLUSTER;",
+      "ALTER TABLE analytics_wh CLUSTER BY (warehouse);",
+      "CREATE MULTI_CLUSTER analytics_wh;"
+    ],
+    "answer": 0,
+    "time": 35,
+    "level": "Medium"
+  },
+  {
+    "q": "Which SQL statement converts a Multi-Cluster Warehouse back to a Single-Cluster Warehouse?",
+    "options": [
+      "ALTER WAREHOUSE analytics_wh SET MIN_CLUSTER_COUNT = 1, MAX_CLUSTER_COUNT = 1;",
+      "ALTER WAREHOUSE analytics_wh DROP MULTI_CLUSTER;",
+      "ALTER WAREHOUSE analytics_wh SET CLUSTER = SINGLE;",
+      "DROP CLUSTER analytics_wh;"
+    ],
+    "answer": 0,
+    "time": 30,
+    "level": "Medium"
+  },
+  {
+    "q": "Which command displays information about all warehouses in a Snowflake account?",
+    "options": [
+      "SHOW WAREHOUSES;",
+      "SHOW CLUSTERS;",
+      "DESCRIBE ACCOUNT;",
+      "LIST WAREHOUSES;"
+    ],
+    "answer": 0,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "Which command displays the properties of a specific warehouse, including cluster configuration?",
+    "options": [
+      "DESCRIBE WAREHOUSE analytics_wh;",
+      "SHOW CLUSTER analytics_wh;",
+      "SHOW PARAMETERS analytics_wh;",
+      "DESC CLUSTER analytics_wh;"
+    ],
+    "answer": 0,
+    "time": 25,
+    "level": "Easy"
+  },
+  {
+    "q": "Which SCALING_POLICY value prioritizes faster scaling to handle concurrent workloads?",
+    "options": [
+      "STANDARD",
+      "ECONOMY",
+      "AUTO",
+      "PERFORMANCE"
+    ],
+    "answer": 0,
+    "time": 25,
+    "level": "Medium"
+  },
+  {
+    "q": "Which SCALING_POLICY value prioritizes lower credit consumption by delaying the addition of new clusters?",
+    "options": [
+      "STANDARD",
+      "ECONOMY",
+      "MINIMAL",
+      "LOW_COST"
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Medium"
+  },
+  {
+    "q": "In the following syntax, what does MAX_CLUSTER_COUNT = 3 represent?\n\nCREATE WAREHOUSE analytics_wh\nWITH\nWAREHOUSE_SIZE = MEDIUM\nMIN_CLUSTER_COUNT = 1\nMAX_CLUSTER_COUNT = 3\nSCALING_POLICY = STANDARD;",
+    "options": [
+      "The maximum number of compute clusters Snowflake can automatically start for concurrent workloads.",
+      "The maximum number of databases that can use the warehouse.",
+      "The maximum warehouse size allowed.",
+      "The maximum number of users who can connect to the warehouse."
+    ],
+    "answer": 0,
+    "time": 35,
+    "level": "Hard"
+  }
+
 ];
 
 /* ----------------- STATE ----------------- */
