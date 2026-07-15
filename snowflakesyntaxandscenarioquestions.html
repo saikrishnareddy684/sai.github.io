@@ -1783,6 +1783,123 @@ ON C.CUSTOMER_SK=R.CUSTOMER_SK;
 
 `
 },
+    {
+title: "Degenerate Dimension - Store Transaction Identifier in the Fact Table",
+
+question: `
+Implement a Degenerate Dimension in a Data Warehouse.
+
+Requirements:
+
+1. Create a customer dimension table named DIM_CUSTOMER.
+2. Create a product dimension table named DIM_PRODUCT.
+3. Create a fact table named FACT_SALES.
+4. Store ORDER_ID directly in FACT_SALES without creating a DIM_ORDER table.
+5. Insert sample data into all tables.
+6. Join the fact table with the customer and product dimensions.
+7. Retrieve Order ID, Customer Name, Product Name, and Sales Amount.
+8. Explain why ORDER_ID is considered a Degenerate Dimension.
+`,
+
+dataset:{
+
+DIM_CUSTOMER:[
+{CUSTOMER_SK:1,CUSTOMER_NAME:"Sai"},
+{CUSTOMER_SK:2,CUSTOMER_NAME:"John"}
+],
+
+DIM_PRODUCT:[
+{PRODUCT_SK:11,PRODUCT_NAME:"Laptop"},
+{PRODUCT_SK:12,PRODUCT_NAME:"Mobile"}
+],
+
+FACT_SALES:[
+{ORDER_ID:1001,CUSTOMER_SK:1,PRODUCT_SK:11,SALES_AMOUNT:500},
+{ORDER_ID:1002,CUSTOMER_SK:2,PRODUCT_SK:12,SALES_AMOUNT:800},
+{ORDER_ID:1003,CUSTOMER_SK:1,PRODUCT_SK:12,SALES_AMOUNT:700}
+]
+
+},
+
+output:[
+{ORDER_ID:1001,CUSTOMER_NAME:"Sai",PRODUCT_NAME:"Laptop",SALES_AMOUNT:500},
+{ORDER_ID:1002,CUSTOMER_NAME:"John",PRODUCT_NAME:"Mobile",SALES_AMOUNT:800},
+{ORDER_ID:1003,CUSTOMER_NAME:"Sai",PRODUCT_NAME:"Mobile",SALES_AMOUNT:700}
+],
+
+answer:`
+
+--------------------------------------------
+STEP 1 - Create Customer Dimension
+--------------------------------------------
+
+CREATE OR REPLACE TABLE DIM_CUSTOMER
+(
+    CUSTOMER_SK NUMBER,
+    CUSTOMER_NAME STRING
+);
+
+INSERT INTO DIM_CUSTOMER VALUES
+(1,'Sai'),
+(2,'John');
+
+--------------------------------------------
+STEP 2 - Create Product Dimension
+--------------------------------------------
+
+CREATE OR REPLACE TABLE DIM_PRODUCT
+(
+    PRODUCT_SK NUMBER,
+    PRODUCT_NAME STRING
+);
+
+INSERT INTO DIM_PRODUCT VALUES
+(11,'Laptop'),
+(12,'Mobile');
+
+--------------------------------------------
+STEP 3 - Create Fact Table
+--------------------------------------------
+
+CREATE OR REPLACE TABLE FACT_SALES
+(
+    ORDER_ID NUMBER,
+    CUSTOMER_SK NUMBER,
+    PRODUCT_SK NUMBER,
+    SALES_AMOUNT NUMBER(10,2)
+);
+
+INSERT INTO FACT_SALES VALUES
+(1001,1,11,500),
+(1002,2,12,800),
+(1003,1,12,700);
+
+--------------------------------------------
+STEP 4 - Retrieve Sales Report
+--------------------------------------------
+
+SELECT
+    F.ORDER_ID,
+    C.CUSTOMER_NAME,
+    P.PRODUCT_NAME,
+    F.SALES_AMOUNT
+FROM FACT_SALES F
+JOIN DIM_CUSTOMER C
+    ON F.CUSTOMER_SK = C.CUSTOMER_SK
+JOIN DIM_PRODUCT P
+    ON F.PRODUCT_SK = P.PRODUCT_SK;
+
+--------------------------------------------
+STEP 5 - Explanation
+--------------------------------------------
+
+-- ORDER_ID is stored directly in FACT_SALES.
+-- No DIM_ORDER table is created because ORDER_ID is only a
+-- transaction identifier and has no descriptive attributes.
+-- Therefore, ORDER_ID is called a Degenerate Dimension.
+
+`
+},
 /* End of questions array */
 ];
 
