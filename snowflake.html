@@ -9699,7 +9699,246 @@ let originalQuestions = [
     "answer": 1,
     "time": 20
   },
-
+  {
+    "q": "What is Zero-Copy Cloning in Snowflake?",
+    "options": [
+      "Creating a logical copy of an object without physically copying its data, with both objects initially sharing the same micro-partitions.",
+      "Copying all table data into a new table, doubling the storage usage immediately.",
+      "Moving data from one database to another and deleting the original object.",
+      "Creating a backup by exporting table data to an internal stage."
+    ],
+    "answer": 0,
+    "time": 25,
+    "level": "Easy"
+  },
+{
+    "q": "Why is Snowflake cloning called 'Zero-Copy'?",
+    "options": [
+      "Because Snowflake compresses all cloned data into a ZIP file.",
+      "Because only metadata is copied initially while the underlying micro-partitions are shared.",
+      "Because cloning deletes the source table after copying.",
+      "Because cloned tables do not contain any data until queried."
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Easy"
+  },
+  {
+    "q": "What happens to storage immediately after creating a clone of a large table?",
+    "options": [
+      "The original table is compressed to free up storage.",
+      "Snowflake automatically archives the original table.",
+      "The storage usage doubles because all data is copied.",
+      "Almost no additional storage is consumed because the clone shares the source table's micro-partitions."
+    ],
+    "answer": 3,
+    "time": 25,
+    "level": "Easy"
+  },
+   {
+    "q": "What mechanism does Snowflake use when data in a cloned table is modified?",
+    "options": [
+      "Automatic partition deletion before each update.",
+      "Copy-on-Write, where only modified micro-partitions are created as new partitions.",
+      "Manual partition synchronization using Tasks.",
+      "Full table replication for every update operation."
+    ],
+    "answer": 1,
+    "time": 30,
+    "level": "Medium"
+  },
+  {
+    "q": "If a cloned table is updated, what happens to the original table?",
+    "options": [
+      "The original table is updated automatically.",
+      "The original table is deleted after the update.",
+      "The original table becomes read-only.",
+      "The original table remains unchanged because the clone becomes independent for modified data."
+    ],
+    "answer": 3,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "Which of the following Snowflake objects can be cloned?",
+    "options": [
+      "Warehouse",
+      "User",
+      "Database",
+      "Role"
+    ],
+    "answer": 2,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "Which of the following Snowflake objects cannot be cloned?",
+    "options": [
+      "Schema",
+      "Warehouse",
+      "Database",
+      "Table"
+    ],
+    "answer": 1,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "Which SQL statement correctly clones an existing table in Snowflake?",
+    "options": [
+      "CREATE TABLE employee_clone AS CLONE employee;",
+      "COPY TABLE employee TO employee_clone;",
+      "ALTER TABLE employee CLONE employee_clone;",
+      "CREATE TABLE employee_clone CLONE employee;"
+    ],
+    "answer": 3,
+    "time": 25,
+    "level": "Easy"
+  },
+  {
+    "q": "Which SQL statement clones an entire database?",
+    "options": [
+      "CREATE DATABASE company_test CLONE company_prod;",
+      "ALTER DATABASE company_prod CLONE company_test;",
+      "COPY DATABASE company_prod TO company_test;",
+      "CREATE DATABASE company_test AS company_prod;"
+    ],
+    "answer": 0,
+    "time": 25,
+    "level": "Medium"
+  },
+  {
+    "q": "Which SQL statement clones an existing schema?",
+    "options": [
+      "COPY SCHEMA sales TO sales_clone;",
+      "CREATE SCHEMA sales_clone CLONE sales;",
+      "CREATE SCHEMA sales_clone AS sales;",
+      "ALTER SCHEMA sales CLONE sales_clone;"
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Medium"
+  },
+  {
+    "q": "Which Snowflake feature allows you to create a clone from a previous point in time?",
+    "options": [
+      "Streams",
+      "Snowpipe",
+      "Fail-safe",
+      "Time Travel"
+    ],
+    "answer": 3,
+    "time": 25,
+    "level": "Medium"
+  },
+  {
+    "q": "Why do developers commonly use Zero-Copy Cloning?",
+    "options": [
+      "To permanently archive historical data.",
+      "To increase virtual warehouse performance.",
+      "To create fast, storage-efficient development and testing environments without affecting production.",
+      "To automatically schedule ETL jobs."
+    ],
+    "answer": 2,
+    "time": 25,
+    "level": "Medium"
+  },
+  {
+    "q": "What is the primary advantage of CLONE compared to CTAS (CREATE TABLE AS SELECT)?",
+    "options": [
+      "CLONE is faster and initially consumes almost no additional storage because it shares existing micro-partitions.",
+      "CLONE permanently synchronizes changes between source and target tables.",
+      "CLONE automatically compresses data more efficiently than CTAS.",
+      "CLONE requires fewer privileges than CTAS."
+    ],
+    "answer": 0,
+    "time": 30,
+    "level": "Medium"
+  },
+  {
+    "q": "Which statement correctly compares CLONE and CTAS?",
+    "options": [
+      "CTAS shares metadata while CLONE physically copies all data.",
+      "Both CLONE and CTAS physically duplicate all data immediately.",
+      "CTAS physically copies data, while CLONE initially shares existing micro-partitions without copying data.",
+      "Neither CLONE nor CTAS creates a new table."
+    ],
+    "answer": 2,
+    "time": 30,
+    "level": "Medium"
+  },
+  {
+    "q": "When does a cloned object begin consuming additional storage?",
+    "options": [
+      "Only when data in the source or clone is modified, causing new micro-partitions to be created.",
+      "Immediately after the clone is created.",
+      "Only after the original object is dropped.",
+      "When the virtual warehouse is resized."
+    ],
+    "answer": 0,
+    "time": 25,
+    "level": "Medium"
+  },
+  {
+    "q": "Which SQL clause is used to clone a table from a specific historical point in time?",
+    "options": [
+      "USING SNAPSHOT",
+      "AT (TIMESTAMP => '2026-07-14 10:00:00')",
+      "RESTORE TO TIMESTAMP",
+      "HISTORY CLONE"
+    ],
+    "answer": 1,
+    "time": 30,
+    "level": "Hard"
+  },
+  {
+    "q": "Which SQL clause allows cloning a table before a specific SQL statement was executed?",
+    "options": [
+      "BEFORE (STATEMENT => '<query_id>')",
+      "AT QUERY '<query_id>'",
+      "RESTORE BEFORE '<query_id>'",
+      "USING STATEMENT '<query_id>'"
+    ],
+    "answer": 0,
+    "time": 30,
+    "level": "Hard"
+  },
+  {
+    "q": "Which storage concept enables Zero-Copy Cloning in Snowflake?",
+    "options": [
+      "Warehouse caching",
+      "Result cache",
+      "Shared immutable micro-partitions",
+      "Materialized views"
+    ],
+    "answer": 2,
+    "time": 30,
+    "level": "Hard"
+  },
+  {
+    "q": "What happens if the source table is dropped after creating a clone?",
+    "options": [
+      "The clone continues to work independently because it maintains its own metadata references.",
+      "The clone is automatically dropped.",
+      "The clone becomes read-only.",
+      "The clone loses all its data immediately."
+    ],
+    "answer": 0,
+    "time": 30,
+    "level": "Hard"
+  },
+  {
+    "q": "Which real-world scenario is the best use case for Zero-Copy Cloning?",
+    "options": [
+      "Creating a production-like testing environment without duplicating storage.",
+      "Loading CSV files into Snowflake tables.",
+      "Scheduling incremental data loads.",
+      "Automatically monitoring S3 buckets for new files."
+    ],
+    "answer": 0,
+    "time": 25,
+    "level": "Medium"
+  }
 ];
 
 /* ----------------- STATE ----------------- */
