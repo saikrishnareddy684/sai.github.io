@@ -10256,6 +10256,334 @@ let originalQuestions = [
     "time": 35,
     "level": "Hard"
   }
+  ,
+
+   {
+    "q": "What is Time Travel in Snowflake?",
+    "options": [
+      "A feature that automatically moves data between warehouses.",
+      "A feature that allows users to access historical data within a defined retention period.",
+      "A feature that clones databases across cloud providers.",
+      "A feature that schedules SQL queries."
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Easy"
+  },
+  {
+    "q": "What is the primary purpose of Time Travel in Snowflake?",
+    "options": [
+      "To improve query performance.",
+      "To automatically archive data.",
+      "To recover or access historical data after accidental changes.",
+      "To replicate data between regions."
+    ],
+    "answer": 2,
+    "time": 25,
+    "level": "Easy"
+  },
+  {
+    "q": "Depending on the Snowflake Edition, Time Travel supports a retention period of up to:",
+    "options": [
+      "7 days",
+      "30 days",
+      "90 days",
+      "365 days"
+    ],
+    "answer": 2,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "Which of the following is a common use case for Time Travel?",
+    "options": [
+      "Recovering accidentally deleted or updated data.",
+      "Increasing virtual warehouse size.",
+      "Creating external stages.",
+      "Loading files using Snowpipe."
+    ],
+    "answer": 0,
+    "time": 25,
+    "level": "Easy"
+  },
+  {
+    "q": "Which SQL clause is used to query a table at a specific point in time?",
+    "options": [
+      "BEFORE TIMESTAMP",
+      "AT (TIMESTAMP => '2026-07-15 10:00:00')",
+      "USING TIMESTAMP",
+      "RESTORE TIMESTAMP"
+    ],
+    "answer": 1,
+    "time": 30,
+    "level": "Medium"
+  },
+  {
+    "q": "Which SQL clause allows you to access data before a specific query was executed?",
+    "options": [
+      "AT (STATEMENT => '<query_id>')",
+      "BEFORE (STATEMENT => '<query_id>')",
+      "RESTORE BEFORE QUERY",
+      "TIME TRAVEL QUERY"
+    ],
+    "answer": 1,
+    "time": 30,
+    "level": "Medium"
+  },
+  {
+    "q": "What happens if you try to access data outside the Time Travel retention period?",
+    "options": [
+      "Snowflake automatically recreates the data.",
+      "The query fails because the historical data is no longer available through Time Travel.",
+      "Snowflake extends the retention period automatically.",
+      "The table is cloned automatically."
+    ],
+    "answer": 1,
+    "time": 30,
+    "level": "Medium"
+  },
+  {
+    "q": "Which SQL statement queries a table as it existed one hour ago?",
+    "options": [
+      "SELECT * FROM employee AT (OFFSET => -60*60);",
+      "SELECT * FROM employee BEFORE (OFFSET => -60);",
+      "SELECT * FROM employee HISTORY(-1 HOUR);",
+      "SELECT * FROM employee RESTORE ONE HOUR;"
+    ],
+    "answer": 0,
+    "time": 35,
+    "level": "Hard"
+  },
+  {
+    "q": "Which of the following operations can be recovered using Time Travel if performed within the retention period?",
+    "options": [
+      "Accidental DELETE, UPDATE, and DROP operations.",
+      "Warehouse suspension.",
+      "Role deletion.",
+      "Network policy changes."
+    ],
+    "answer": 0,
+    "time": 30,
+    "level": "Medium"
+  },
+  {
+    "q": "How does Time Travel help organizations during audits?",
+    "options": [
+      "It allows auditors to view historical versions of data as it existed at a specific point in time.",
+      "It automatically encrypts audit reports.",
+      "It increases warehouse performance during audits.",
+      "It creates backups every hour."
+    ],
+    "answer": 0,
+    "time": 30,
+    "level": "Medium"
+  },
+  {
+    "q": "Which statement correctly differentiates Time Travel from Zero-Copy Cloning?",
+    "options": [
+      "Time Travel accesses historical versions of data, while Zero-Copy Cloning creates a new independent object.",
+      "Both features are identical.",
+      "Time Travel copies all data physically, while Cloning does not.",
+      "Cloning requires Fail-safe, while Time Travel does not."
+    ],
+    "answer": 0,
+    "time": 35,
+    "level": "Hard"
+  },
+  {
+    "q": "A developer accidentally deletes all records from a table. Which Snowflake feature should be used first to recover the data if it is still within the retention period?",
+    "options": [
+      "Snowpipe",
+      "Materialized View",
+      "Time Travel",
+      "Search Optimization Service"
+    ],
+    "answer": 2,
+    "time": 30,
+    "level": "Medium"
+  },
+  {
+    "q": "Which SQL clause can be used with CREATE TABLE ... CLONE to create a clone from a historical point in time?",
+    "options": [
+      "AT (TIMESTAMP => '2026-07-15 10:00:00')",
+      "RESTORE TIMESTAMP",
+      "USING HISTORY",
+      "OFFSET HISTORY"
+    ],
+    "answer": 0,
+    "time": 35,
+    "level": "Hard"
+  },
+  {
+    "q": "Which parameter can be used with Time Travel to access historical data relative to the current time?",
+    "options": [
+      "TIMESTAMP",
+      "OFFSET",
+      "QUERY_ID",
+      "VERSION"
+    ],
+    "answer": 1,
+    "time": 30,
+    "level": "Hard"
+  },
+  {
+    "q": "Why is Time Travel considered an important feature in Snowflake?",
+    "options": [
+      "It minimizes the impact of human errors by allowing recovery of historical data and supports auditing.",
+      "It permanently stores all historical versions forever.",
+      "It automatically optimizes every SQL query.",
+      "It replaces the need for virtual warehouses."
+    ],
+    "answer": 0,
+    "time": 30,
+    "level": "Medium"
+  }
+  ,
+  {
+    "q": "Which SQL statement queries a table as it existed at a specific timestamp using Time Travel?",
+    "options": [
+      "SELECT * FROM employee AT (TIMESTAMP => '2026-07-15 10:00:00');",
+      "SELECT * FROM employee BEFORE TIMESTAMP '2026-07-15 10:00:00';",
+      "SELECT * FROM employee RESTORE TIMESTAMP '2026-07-15 10:00:00';",
+      "SELECT * FROM employee USING TIMESTAMP '2026-07-15 10:00:00';"
+    ],
+    "answer": 0,
+    "time": 30,
+    "level": "Easy"
+  },
+  {
+    "q": "Which SQL statement retrieves the table data before a specific query was executed?",
+    "options": [
+      "SELECT * FROM employee BEFORE (STATEMENT => 'query_id');",
+      "SELECT * FROM employee AT (QUERY => 'query_id');",
+      "SELECT * FROM employee HISTORY (STATEMENT => 'query_id');",
+      "SELECT * FROM employee RESTORE BEFORE 'query_id';"
+    ],
+    "answer": 0,
+    "time": 30,
+    "level": "Medium"
+  },
+  {
+    "q": "Which SQL statement queries data from one hour ago using Time Travel?",
+    "options": [
+      "SELECT * FROM employee AT (OFFSET => -3600);",
+      "SELECT * FROM employee OFFSET (-3600);",
+      "SELECT * FROM employee BEFORE (OFFSET => -3600);",
+      "SELECT * FROM employee AT (MINUTES => -60);"
+    ],
+    "answer": 0,
+    "time": 30,
+    "level": "Medium"
+  },
+  {
+    "q": "Which SQL statement is used to recover a dropped table using Time Travel?",
+    "options": [
+      "RECOVER TABLE employee;",
+      "RESTORE TABLE employee;",
+      "UNDROP TABLE employee;",
+      "ROLLBACK TABLE employee;"
+    ],
+    "answer": 2,
+    "time": 25,
+    "level": "Easy"
+  },
+  {
+    "q": "Which SQL statement recovers a dropped database?",
+    "options": [
+      "RECOVER DATABASE companydb;",
+      "UNDROP DATABASE companydb;",
+      "RESTORE DATABASE companydb;",
+      "ROLLBACK DATABASE companydb;"
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Easy"
+  },
+  {
+    "q": "Which SQL statement creates a clone of a table as it existed one hour ago?",
+    "options": [
+      "CREATE TABLE employee_backup CLONE employee AT (OFFSET => -3600);",
+      "CREATE TABLE employee_backup AS SELECT * FROM employee OFFSET -3600;",
+      "CREATE TABLE employee_backup HISTORY employee;",
+      "CLONE TABLE employee_backup FROM employee;"
+    ],
+    "answer": 0,
+    "time": 35,
+    "level": "Medium"
+  },
+  {
+    "q": "Which SQL function returns the Query ID of the most recently executed statement?",
+    "options": [
+      "CURRENT_QUERY_ID();",
+      "LAST_QUERY_ID();",
+      "QUERY_HISTORY();",
+      "GET_QUERY_ID();"
+    ],
+    "answer": 1,
+    "time": 25,
+    "level": "Easy"
+  },
+  {
+    "q": "Which SQL statement correctly clones a table before a specific query was executed?",
+    "options": [
+      "CREATE TABLE employee_clone CLONE employee BEFORE (STATEMENT => LAST_QUERY_ID());",
+      "CREATE TABLE employee_clone CLONE employee BEFORE QUERY LAST_QUERY_ID();",
+      "CREATE TABLE employee_clone AS employee BEFORE LAST_QUERY_ID();",
+      "CLONE TABLE employee BEFORE LAST_QUERY_ID();"
+    ],
+    "answer": 0,
+    "time": 35,
+    "level": "Hard"
+  },
+  {
+    "q": "Which SQL statement retrieves the current timestamp to use with Time Travel?",
+    "options": [
+      "SELECT SYSTEM_TIME();",
+      "SELECT GETDATE();",
+      "SELECT CURRENT_TIMESTAMP();",
+      "SELECT CURRENT_TIMEZONE();"
+    ],
+    "answer": 2,
+    "time": 20,
+    "level": "Easy"
+  },
+  {
+    "q": "Which SQL statement queries a table using the current timestamp minus two minutes?",
+    "options": [
+      "SELECT * FROM employee AT (TIMESTAMP => CURRENT_TIMESTAMP() - INTERVAL '2 MINUTE');",
+      "SELECT * FROM employee BEFORE (CURRENT_TIMESTAMP() - 2);",
+      "SELECT * FROM employee OFFSET -120;",
+      "SELECT * FROM employee HISTORY (2 MINUTE);"
+    ],
+    "answer": 0,
+    "time": 35,
+    "level": "Hard"
+  },
+  {
+    "q": "Which clause is valid with the Time Travel AT keyword?",
+    "options": [
+      "TIMESTAMP",
+      "OFFSET",
+      "STATEMENT",
+      "All of the above"
+    ],
+    "answer": 3,
+    "time": 30,
+    "level": "Medium"
+  },
+  {
+    "q": "Which clause is supported with the BEFORE keyword in Snowflake Time Travel?",
+    "options": [
+      "TIMESTAMP only",
+      "OFFSET only",
+      "STATEMENT only",
+      "WAREHOUSE"
+    ],
+    "answer": 2,
+    "time": 30,
+    "level": "Medium"
+  },
+  
 
 
 ];
