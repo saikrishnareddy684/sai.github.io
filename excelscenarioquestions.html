@@ -216,61 +216,230 @@ If F4 does not work on the laptop, use Fn + F4.
 /* QUESTION 2 — Team Match Results */
 {
     question: `
-Using the match result dataset, write a SQL query to:
+You have two Excel tables containing company-level data.
 
-1. Total matches played  
-2. Total wins  
-3. Total losses  
-4. Display team_name, matches_played, wins, losses  
-5. Order by wins desc  
+Table 1 is available in cells A2:D7 and contains the company data
+with the following columns:
+
+comp_code, ead_total, rea, oe
+
+Table 2 is available in cells H2:K7 and contains the same columns:
+
+comp_code, ead_total, rea, oe
+
+The two tables do not contain the same company codes.
+
+For example:
+- Company code 1075 exists in Table 1 but is missing from Table 2.
+- Company code 5500 exists in Table 2 but is missing from Table 1.
+
+Also, some company codes exist in both tables but their measure
+values are different.
+
+For example, company code 1004 has an ead_total of 5500 in Table 1
+and 5000 in Table 2.
+
+The company codes may also be in different row positions in the
+two tables, so comparing the tables row-by-row is not valid.
+
+Use Excel Power Query to compare the two tables.
+
+The comparison should:
+
+1. Use comp_code as the matching column.
+2. Merge Table 1 and Table 2 using comp_code.
+3. Use a Full Outer Join so that company codes missing from either
+   table are also included.
+4. Expand the Table 2 columns after the merge.
+5. Compare ead_total between the two tables.
+6. Compare rea between the two tables.
+7. Compare oe between the two tables.
+8. Calculate the difference between the Table 1 and Table 2 values
+   for each measure.
+9. Identify whether the company code is missing from Table 1,
+   missing from Table 2, or has a value difference.
+10. Identify the company codes where all measure values are the same.
+
+For the difference columns, if a company code is missing from either
+table, return null instead of attempting to calculate the difference.
+
+Determine the correct Power Query steps and formulas required to
+perform this reconciliation.
 `,
     dataset: [
-        {Team_1:"India", Team_2:"SL", Winner:"India"},
-        {Team_1:"SL", Team_2:"Aus", Winner:"Aus"},
-        {Team_1:"SA", Team_2:"Eng", Winner:"Eng"},
-        {Team_1:"Eng", Team_2:"NZ", Winner:"NZ"},
-        {Team_1:"Aus", Team_2:"India", Winner:"India"}
+        {comp_code:"1004", ead_total:"5500", rea:"3000", oe:"1000", source:"Table 1"},
+        {comp_code:"1005", ead_total:"6500", rea:"3500", oe:"1200", source:"Table 1"},
+        {comp_code:"1075", ead_total:"7000", rea:"4000", oe:"1500", source:"Table 1"},
+        {comp_code:"1085", ead_total:"4500", rea:"4500", oe:"1700", source:"Table 1"},
+        {comp_code:"2000", ead_total:"9000", rea:"5000", oe:"2000", source:"Table 1"},
+
+        {comp_code:"1004", ead_total:"5000", rea:"3000", oe:"1000", source:"Table 2"},
+        {comp_code:"1005", ead_total:"6000", rea:"3500", oe:"1200", source:"Table 2"},
+        {comp_code:"1085", ead_total:"8000", rea:"4500", oe:"1700", source:"Table 2"},
+        {comp_code:"2000", ead_total:"2300", rea:"5000", oe:"2000", source:"Table 2"},
+        {comp_code:"5500", ead_total:"2500", rea:"2500", oe:"2500", source:"Table 2"}
     ],
     output: [
-        {Team_Name:"India", Matches_played:2, no_of_wins:2, no_of_losses:0},
-        {Team_Name:"SL", Matches_played:2, no_of_wins:0, no_of_losses:2},
-        {Team_Name:"SA", Matches_played:1, no_of_wins:0, no_of_losses:1},
-        {Team_Name:"Eng", Matches_played:2, no_of_wins:1, no_of_losses:1},
-        {Team_Name:"Aus", Matches_played:2, no_of_wins:1, no_of_losses:1},
-        {Team_Name:"NZ", Matches_played:1, no_of_wins:1, no_of_losses:0}
+        {comp_code:"1004", ead_difference:"500", status:"Value Difference"},
+        {comp_code:"1005", ead_difference:"500", status:"Value Difference"},
+        {comp_code:"1075", ead_difference:"", status:"Missing in Table 2"},
+        {comp_code:"1085", ead_difference:"-3500", status:"Value Difference"},
+        {comp_code:"2000", ead_difference:"6700", status:"Value Difference"},
+        {comp_code:"5500", ead_difference:"", status:"Missing in Table 1"}
     ],
     answer: `
-WITH team_name AS (
-   SELECT team_name, COUNT(*) matches_played FROM (
-       SELECT Team_1 AS team_name FROM MatchResults
-       UNION ALL
-       SELECT Team_2 FROM MatchResults
-   ) a GROUP BY team_name
-),
-no_of_wins AS (
-    SELECT team_name, SUM(no_of_wins) AS no_of_wins FROM (
-        SELECT Team_1 AS team_name,
-               SUM(CASE WHEN Team_1 = Winner THEN 1 ELSE 0 END) AS no_of_wins
-        FROM MatchResults GROUP BY Team_1
+Step 1:
+Convert both datasets into Excel Tables using Ctrl + T.
 
-        UNION ALL
+Name the first table:
 
-        SELECT Team_2 AS team_name,
-               SUM(CASE WHEN Team_2 = Winner THEN 1 ELSE 0 END) AS no_of_wins
-        FROM MatchResults GROUP BY Team_2
-    ) a GROUP BY team_name
-)
-SELECT 
-    a.team_name,
-    a.matches_played,
-    b.no_of_wins,
-    a.matches_played - b.no_of_wins AS no_of_losses
-FROM team_name a
-JOIN no_of_wins b ON a.team_name = b.team_name
-ORDER BY b.no_of_wins DESC;
+Table1
+
+Name the second table:
+
+Table2
+
+Step 2:
+Load Table 1 into Power Query.
+
+Click anywhere inside Table1 and select:
+
+Data → From Table/Range
+
+In Power Query, select:
+
+Home → Close & Load To → Only Create Connection
+
+Repeat the same process for Table2.
+
+Step 3:
+Merge the two tables.
+
+Go to:
+
+Data → Get Data → Combine Queries → Merge
+
+Select:
+
+Top table: Table1
+
+Bottom table: Table2
+
+Select the comp_code column in both tables.
+
+Under Join Kind, select:
+
+Full Outer (all rows from both)
+
+Click OK.
+
+Step 4:
+The merged query will contain the Table 2 data in a nested
+Table2 column.
+
+Expand the Table2 column and select:
+
+ead_total
+rea
+oe
+
+This will place the Table 2 values alongside the Table 1 values.
+
+The columns will be similar to:
+
+ead_total
+rea
+oe
+ead_total.1
+rea.1
+oe.1
+
+Here:
+
+ead_total = Table 1 ead_total
+ead_total.1 = Table 2 ead_total
+
+rea = Table 1 rea
+rea.1 = Table 2 rea
+
+oe = Table 1 oe
+oe.1 = Table 2 oe
+
+Step 5:
+Create a Custom Column named EAD_Difference.
+
+Use:
+
+if [ead_total] = null or [ead_total.1] = null
+then null
+else [ead_total] - [ead_total.1]
+
+This calculates the difference between Table 1 and Table 2.
+
+For example:
+
+1004:
+5500 - 5000 = 500
+
+1085:
+4500 - 8000 = -3500
+
+2000:
+9000 - 2300 = 6700
+
+Step 6:
+Create a Custom Column named REA_Difference.
+
+Use:
+
+if [rea] = null or [rea.1] = null
+then null
+else [rea] - [rea.1]
+
+Step 7:
+Create a Custom Column named OE_Difference.
+
+Use:
+
+if [oe] = null or [oe.1] = null
+then null
+else [oe] - [oe.1]
+
+Step 8:
+Create a Custom Column named Status.
+
+Use:
+
+if [ead_total] = null then "Missing in Table 1"
+else if [ead_total.1] = null then "Missing in Table 2"
+else if [EAD_Difference] <> 0
+    or [REA_Difference] <> 0
+    or [OE_Difference] <> 0
+then "Value Difference"
+else "Match"
+
+Step 9:
+The final Power Query result will allow you to identify:
+
+- Company codes that exist in both tables.
+- Company codes missing from Table 1.
+- Company codes missing from Table 2.
+- Differences in ead_total.
+- Differences in rea.
+- Differences in oe.
+- Company codes where all measure values match.
+
+Important:
+
+Do not compare the tables based on their row numbers.
+
+The comparison must be performed using comp_code as the key.
+
+Therefore, even if the company codes are sorted differently or some
+company codes are missing from either table, Power Query will match
+the correct company codes and perform the comparison.
 `
 },
-
 /* QUESTION 3 — Daily New vs Repeat Customers */
 {
     question: `
