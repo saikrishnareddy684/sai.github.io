@@ -142,33 +142,36 @@ dragged down. It should NOT change to A3:E12, A4:E13, etc.
 
 Determine the correct VLOOKUP formula and make the lookup range
 absolute.
+
+Also explain how to use the F4 keyboard shortcut to add the $ symbol
+and lock the lookup range.
 `,
+    dataset: [
+        {comp_code:"1004", ead_total:"5000", rea:"3000", oe:"1000", source:"Table 1"},
+        {comp_code:"1005", ead_total:"6500", rea:"3500", oe:"1200", source:"Table 1"},
+        {comp_code:"1075", ead_total:"7000", rea:"4000", oe:"1500", source:"Table 1"},
+        {comp_code:"1085", ead_total:"8000", rea:"4500", oe:"1700", source:"Table 1"},
+        {comp_code:"2000", ead_total:"9000", rea:"5000", oe:"2000", source:"Table 1"},
 
-    dataset: {
-        table1: [
-            {comp_code:"1004", ead_total:"5000", rea:"3000", oe:"1000"},
-            {comp_code:"1005", ead_total:"6500", rea:"3500", oe:"1200"},
-            {comp_code:"1075", ead_total:"7000", rea:"4000", oe:"1500"},
-            {comp_code:"1085", ead_total:"8000", rea:"4500", oe:"1700"},
-            {comp_code:"2000", ead_total:"9000", rea:"5000", oe:"2000"}
-        ],
-
-        table2: [
-            {comp_code:"1004"},
-            {comp_code:"1005"},
-            {comp_code:"1085"},
-            {comp_code:"2000"}
-        ]
-    },
-
+        {comp_code:"1004", ead_total:"", rea:"", oe:"", source:"Table 2"},
+        {comp_code:"1005", ead_total:"", rea:"", oe:"", source:"Table 2"},
+        {comp_code:"1085", ead_total:"", rea:"", oe:"", source:"Table 2"},
+        {comp_code:"2000", ead_total:"", rea:"", oe:"", source:"Table 2"}
+    ],
+    output: [
+        {comp_code:"1004", vlookup_result:"1004"},
+        {comp_code:"1005", vlookup_result:"1005"},
+        {comp_code:"1085", vlookup_result:"1085"},
+        {comp_code:"2000", vlookup_result:"2000"}
+    ],
     answer: `
 Step 1:
-Enter the VLOOKUP formula:
+Enter the initial VLOOKUP formula:
 
 =VLOOKUP(I2,A2:E11,1,FALSE)
 
 Step 2:
-The range A2:E11 needs to remain fixed when dragging the formula.
+The lookup range A2:E11 needs to remain fixed when dragging the formula.
 
 Click inside the formula and select the range A2:E11.
 
@@ -187,7 +190,7 @@ So the final formula becomes:
 =VLOOKUP(I2,$A$2:$E$11,1,FALSE)
 
 Step 3:
-Now drag the formula down.
+Drag the formula down.
 
 The formulas will become:
 
@@ -196,25 +199,17 @@ The formulas will become:
 =VLOOKUP(I4,$A$2:$E$11,1,FALSE)
 =VLOOKUP(I5,$A$2:$E$11,1,FALSE)
 
-Notice:
+The lookup cell changes:
 
 I2 → I3 → I4 → I5
 
-changes because we WANT the lookup cell to change.
-
-But:
+But the lookup range remains constant:
 
 $A$2:$E$11
 
-does NOT change because F4 made the range absolute.
+F4 is the shortcut used to add the $ symbols and make the range absolute.
 
-Important keyboard shortcut:
-
-Select A2:E11 in the formula and press F4.
-
-F4 adds the $ symbols and locks the range.
-
-If F4 does not work on your laptop, try Fn + F4.
+If F4 does not work on the laptop, use Fn + F4.
 `
 },
 
