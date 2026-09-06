@@ -124,61 +124,97 @@ const questions = [
 /* QUESTION 1 — Employee Visit Tracking */
 {
     question: `
-A company tracks employee visits, allowing only one entry per employee per day.
-A loophole allows multiple entries using different email IDs.
+You have two Excel tables containing company-level data.
 
-Determine:
-- Total visits
-- Most visited floor
-- Distinct resources used
+Table 1 is available in cells A2:E11 and contains the complete
+company data.
 
-Output columns: Name, Total Visits, Most Visited Floor, Used Resources.
+Table 2 contains company codes in column I.
+
+Use VLOOKUP to find the matching company code from Table 1.
+
+The VLOOKUP formula will be entered in the first row and then dragged
+down for the remaining company codes.
+
+Important:
+The lookup range A2:E11 must remain constant when the formula is
+dragged down. It should NOT change to A3:E12, A4:E13, etc.
+
+Determine the correct VLOOKUP formula and make the lookup range
+absolute.
 `,
-    dataset: [
-        {name:"A    ", address:"Bangalore", email:"A@gmail.com  ", floor:"1    ", resources:"CPU     "},
-        {name:"A    ", address:"Bangalore", email:"A1@gmail.com ", floor:"1    ", resources:"CPU     "},
-        {name:"A    ", address:"Bangalore", email:"A2@gmail.com ", floor:"2    ", resources:"DESKTOP "},
-        {name:"B    ", address:"Bangalore", email:"B@gmail.com  ", floor:"2    ", resources:"DESKTOP "},
-        {name:"B    ", address:"Bangalore", email:"B1@gmail.com ", floor:"2    ", resources:"DESKTOP "},
-        {name:"B    ", address:"Bangalore", email:"B2@gmail.com ", floor:"1    ", resources:"MONITOR "}
-    ],
-    output: [
-        {name:"A    ", total_visits:"3", most_visited_floor:"1    ", resources_used:"CPU,DESKTOP   "},
-        {name:"B    ", total_visits:"3", most_visited_floor:"2    ", resources_used:"DESKTOP,MONITOR"}
-    ],
+
+    dataset: {
+        table1: [
+            {comp_code:"1004", ead_total:"5000", rea:"3000", oe:"1000"},
+            {comp_code:"1005", ead_total:"6500", rea:"3500", oe:"1200"},
+            {comp_code:"1075", ead_total:"7000", rea:"4000", oe:"1500"},
+            {comp_code:"1085", ead_total:"8000", rea:"4500", oe:"1700"},
+            {comp_code:"2000", ead_total:"9000", rea:"5000", oe:"2000"}
+        ],
+
+        table2: [
+            {comp_code:"1004"},
+            {comp_code:"1005"},
+            {comp_code:"1085"},
+            {comp_code:"2000"}
+        ]
+    },
+
     answer: `
-WITH floor_rank AS (
-    SELECT 
-        name,
-        floor,
-        COUNT(*) AS floor_visit_count,
-        RANK() OVER (PARTITION BY name ORDER BY COUNT(*) DESC) AS rn
-    FROM resources_data
-    GROUP BY name, floor
-),
-distinct_resources AS (
-    SELECT DISTINCT name, resources 
-    FROM resources_data
-),
-resource_list AS (
-    SELECT name, STRING_AGG(resources, ',') AS used_resources
-    FROM distinct_resources
-    GROUP BY name
-),
-total_visits AS (
-    SELECT name, COUNT(*) AS total_visits
-    FROM resources_data
-    GROUP BY name
-)
-SELECT 
-    FR.name,
-    TV.total_visits,
-    FR.floor AS most_visited_floor,
-    RL.used_resources
-FROM floor_rank FR
-JOIN total_visits TV ON FR.name = TV.name
-JOIN resource_list RL ON FR.name = RL.name
-WHERE FR.rn = 1;
+Step 1:
+Enter the VLOOKUP formula:
+
+=VLOOKUP(I2,A2:E11,1,FALSE)
+
+Step 2:
+The range A2:E11 needs to remain fixed when dragging the formula.
+
+Click inside the formula and select the range A2:E11.
+
+Press F4 on the keyboard.
+
+Excel will automatically change:
+
+A2:E11
+
+to:
+
+$A$2:$E$11
+
+So the final formula becomes:
+
+=VLOOKUP(I2,$A$2:$E$11,1,FALSE)
+
+Step 3:
+Now drag the formula down.
+
+The formulas will become:
+
+=VLOOKUP(I2,$A$2:$E$11,1,FALSE)
+=VLOOKUP(I3,$A$2:$E$11,1,FALSE)
+=VLOOKUP(I4,$A$2:$E$11,1,FALSE)
+=VLOOKUP(I5,$A$2:$E$11,1,FALSE)
+
+Notice:
+
+I2 → I3 → I4 → I5
+
+changes because we WANT the lookup cell to change.
+
+But:
+
+$A$2:$E$11
+
+does NOT change because F4 made the range absolute.
+
+Important keyboard shortcut:
+
+Select A2:E11 in the formula and press F4.
+
+F4 adds the $ symbols and locks the range.
+
+If F4 does not work on your laptop, try Fn + F4.
 `
 },
 
