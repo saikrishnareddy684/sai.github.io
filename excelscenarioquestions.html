@@ -1,0 +1,1650 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>Excel Question & Answer — Full</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f4f4f9;
+            color: #222;
+        }
+        .container {
+            width: 95%;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+        h1 { margin: 0 0 8px; font-size: 22px; }
+        h2 { margin: 18px 0 6px; font-size: 18px; color: #333; }
+        h3 { margin: 8px 0; font-size: 16px; color: #333; }
+        .box {
+            background: white;
+            padding: 18px;
+            margin-top: 14px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.06);
+        }
+        .jump-buttons {
+            margin-bottom: 12px;
+        }
+        .jump-buttons button {
+            background-color: #008CBA;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            margin-right: 8px;
+            margin-bottom: 8px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 13px;
+        }
+        .jump-buttons button:hover { background-color: #007399; }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-top: 10px;
+        }
+        table, th, td { border: 1px solid #ddd; }
+        th, td { padding: 8px; text-align: left; font-size: 13px; }
+        th { background: #fafafa; }
+        pre {
+            background: #272822;
+            color: #f8f8f2;
+            padding: 14px;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-size: 13px;
+            line-height: 1.45;
+        }
+        .nav-buttons {
+            margin-top: 14px;
+            display: flex;
+            justify-content: space-between;
+            gap: 8px;
+        }
+        .nav-controls button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+        .nav-controls button:hover { background-color: #45a049; }
+        .small-muted { color: #666; font-size: 13px; margin-top: 6px; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>📚 Excel Questions & Answers</h1>
+    <div class="small-muted">Click any question button to jump directly to that question. Buttons are auto-generated from the `questions` array — add new question objects there and a button appears automatically.</div>
+
+    <!-- Jump buttons (auto-generated) -->
+    <div id="jumpButtons" class="jump-buttons"></div>
+
+    <!-- Question area -->
+    <div id="questionBox" class="box"></div>
+
+    <h3>Sample Dataset</h3>
+    <div id="datasetBox" class="box"></div>
+
+    <h3>Sample Dataset</h3>
+    <div id="datasetBox2" class="box"></div>
+
+    <h3>Sample Dataset</h3>
+    <div id="datasetBox3" class="box"></div>
+    
+    <h3>Expected Output</h3>
+    <div id="outputBox" class="box"></div>
+
+    <h2>🟢 Excel Answer</h2>
+    <div class="box">
+        <pre id="answerBox"></pre>
+    </div>
+
+    <div class="nav-buttons">
+        <div class="nav-controls">
+            <button id="prevBtn">⬅ Previous</button>
+            <button id="nextBtn">Next ➡</button>
+        </div>
+        <div class="small-muted" id="questionCounter"></div>
+    </div>
+</div>
+
+<script>
+/* ============================
+   QUESTIONS ARRAY (6 questions)
+   Keep the same object format when adding new questions.
+   Buttons will be generated automatically.
+   ============================ */
+const questions = [
+
+/* QUESTION 1 — Employee Visit Tracking */
+{
+    question: `
+A company tracks employee visits, allowing only one entry per employee per day.
+A loophole allows multiple entries using different email IDs.
+
+Determine:
+- Total visits
+- Most visited floor
+- Distinct resources used
+
+Output columns: Name, Total Visits, Most Visited Floor, Used Resources.
+`,
+    dataset: [
+        {name:"A    ", address:"Bangalore", email:"A@gmail.com  ", floor:"1    ", resources:"CPU     "},
+        {name:"A    ", address:"Bangalore", email:"A1@gmail.com ", floor:"1    ", resources:"CPU     "},
+        {name:"A    ", address:"Bangalore", email:"A2@gmail.com ", floor:"2    ", resources:"DESKTOP "},
+        {name:"B    ", address:"Bangalore", email:"B@gmail.com  ", floor:"2    ", resources:"DESKTOP "},
+        {name:"B    ", address:"Bangalore", email:"B1@gmail.com ", floor:"2    ", resources:"DESKTOP "},
+        {name:"B    ", address:"Bangalore", email:"B2@gmail.com ", floor:"1    ", resources:"MONITOR "}
+    ],
+    output: [
+        {name:"A    ", total_visits:"3", most_visited_floor:"1    ", resources_used:"CPU,DESKTOP   "},
+        {name:"B    ", total_visits:"3", most_visited_floor:"2    ", resources_used:"DESKTOP,MONITOR"}
+    ],
+    answer: `
+WITH floor_rank AS (
+    SELECT 
+        name,
+        floor,
+        COUNT(*) AS floor_visit_count,
+        RANK() OVER (PARTITION BY name ORDER BY COUNT(*) DESC) AS rn
+    FROM resources_data
+    GROUP BY name, floor
+),
+distinct_resources AS (
+    SELECT DISTINCT name, resources 
+    FROM resources_data
+),
+resource_list AS (
+    SELECT name, STRING_AGG(resources, ',') AS used_resources
+    FROM distinct_resources
+    GROUP BY name
+),
+total_visits AS (
+    SELECT name, COUNT(*) AS total_visits
+    FROM resources_data
+    GROUP BY name
+)
+SELECT 
+    FR.name,
+    TV.total_visits,
+    FR.floor AS most_visited_floor,
+    RL.used_resources
+FROM floor_rank FR
+JOIN total_visits TV ON FR.name = TV.name
+JOIN resource_list RL ON FR.name = RL.name
+WHERE FR.rn = 1;
+`
+},
+
+/* QUESTION 2 — Team Match Results */
+{
+    question: `
+Using the match result dataset, write a SQL query to:
+
+1. Total matches played  
+2. Total wins  
+3. Total losses  
+4. Display team_name, matches_played, wins, losses  
+5. Order by wins desc  
+`,
+    dataset: [
+        {Team_1:"India", Team_2:"SL", Winner:"India"},
+        {Team_1:"SL", Team_2:"Aus", Winner:"Aus"},
+        {Team_1:"SA", Team_2:"Eng", Winner:"Eng"},
+        {Team_1:"Eng", Team_2:"NZ", Winner:"NZ"},
+        {Team_1:"Aus", Team_2:"India", Winner:"India"}
+    ],
+    output: [
+        {Team_Name:"India", Matches_played:2, no_of_wins:2, no_of_losses:0},
+        {Team_Name:"SL", Matches_played:2, no_of_wins:0, no_of_losses:2},
+        {Team_Name:"SA", Matches_played:1, no_of_wins:0, no_of_losses:1},
+        {Team_Name:"Eng", Matches_played:2, no_of_wins:1, no_of_losses:1},
+        {Team_Name:"Aus", Matches_played:2, no_of_wins:1, no_of_losses:1},
+        {Team_Name:"NZ", Matches_played:1, no_of_wins:1, no_of_losses:0}
+    ],
+    answer: `
+WITH team_name AS (
+   SELECT team_name, COUNT(*) matches_played FROM (
+       SELECT Team_1 AS team_name FROM MatchResults
+       UNION ALL
+       SELECT Team_2 FROM MatchResults
+   ) a GROUP BY team_name
+),
+no_of_wins AS (
+    SELECT team_name, SUM(no_of_wins) AS no_of_wins FROM (
+        SELECT Team_1 AS team_name,
+               SUM(CASE WHEN Team_1 = Winner THEN 1 ELSE 0 END) AS no_of_wins
+        FROM MatchResults GROUP BY Team_1
+
+        UNION ALL
+
+        SELECT Team_2 AS team_name,
+               SUM(CASE WHEN Team_2 = Winner THEN 1 ELSE 0 END) AS no_of_wins
+        FROM MatchResults GROUP BY Team_2
+    ) a GROUP BY team_name
+)
+SELECT 
+    a.team_name,
+    a.matches_played,
+    b.no_of_wins,
+    a.matches_played - b.no_of_wins AS no_of_losses
+FROM team_name a
+JOIN no_of_wins b ON a.team_name = b.team_name
+ORDER BY b.no_of_wins DESC;
+`
+},
+
+/* QUESTION 3 — Daily New vs Repeat Customers */
+{
+    question: `
+Given the daily orders dataset, write a SQL query to determine:
+
+1. How many customers are NEW on each order date  
+2. How many customers are REPEAT on each order date  
+3. Display order_date, first_visit_flag (new customers), repeat_visit_flag (repeat customers)  
+4. Order the results by order_date  
+`,
+    dataset: [
+        {order_id:1, customer_id:100, order_date:"2022-01-01", order_amount:2000},
+        {order_id:2, customer_id:200, order_date:"2022-01-01", order_amount:2500},
+        {order_id:3, customer_id:300, order_date:"2022-01-01", order_amount:2100},
+        {order_id:4, customer_id:100, order_date:"2022-01-02", order_amount:2000},
+        {order_id:5, customer_id:400, order_date:"2022-01-02", order_amount:2200},
+        {order_id:6, customer_id:500, order_date:"2022-01-02", order_amount:2700},
+        {order_id:7, customer_id:100, order_date:"2022-01-03", order_amount:3000},
+        {order_id:8, customer_id:400, order_date:"2022-01-03", order_amount:1000},
+        {order_id:9, customer_id:600, order_date:"2022-01-03", order_amount:3000}
+    ],
+    output: [
+        {order_date:"2022-01-01", first_visit_flag:3, repeat_visit_flag:0},
+        {order_date:"2022-01-02", first_visit_flag:2, repeat_visit_flag:1},
+        {order_date:"2022-01-03", first_visit_flag:1, repeat_visit_flag:2}
+    ],
+    answer: `
+SELECT 
+    a.order_date,
+    SUM(CASE WHEN b.customer_id IS NOT NULL THEN 1 ELSE 0 END) AS first_visit_flag,
+    SUM(CASE WHEN b.customer_id IS NULL THEN 1 ELSE 0 END) AS repeat_visit_flag
+FROM orders a
+LEFT JOIN (
+    SELECT customer_id, MIN(order_date) AS first_order_date
+    FROM orders
+    GROUP BY customer_id
+) b 
+ON a.customer_id = b.customer_id
+AND a.order_date = b.first_order_date
+GROUP BY a.order_date
+ORDER BY a.order_date;
+`
+},
+
+/* QUESTION 4 — Daily Revenue (New vs Repeat) */
+{
+    question: `
+Extend the previous analysis to compute:
+
+1. New customer count per day  
+2. Repeat customer count per day  
+3. Revenue by new customers  
+4. Revenue by repeat customers  
+`,
+    dataset: [
+        {order_id:1, customer_id:100, order_date:"2022-01-01", order_amount:2000},
+        {order_id:2, customer_id:200, order_date:"2022-01-01", order_amount:2500},
+        {order_id:3, customer_id:300, order_date:"2022-01-01", order_amount:2100},
+        {order_id:4, customer_id:100, order_date:"2022-01-02", order_amount:2000},
+        {order_id:5, customer_id:400, order_date:"2022-01-02", order_amount:2200},
+        {order_id:6, customer_id:500, order_date:"2022-01-02", order_amount:2700},
+        {order_id:7, customer_id:100, order_date:"2022-01-03", order_amount:3000},
+        {order_id:8, customer_id:400, order_date:"2022-01-03", order_amount:1000},
+        {order_id:9, customer_id:600, order_date:"2022-01-03", order_amount:3000}
+    ],
+    output: [
+        {order_date:"2022-01-01", first_visit:3, repeat_visit:0, new_customer_amount:6600, old_customer_amount:0},
+        {order_date:"2022-01-02", first_visit:2, repeat_visit:1, new_customer_amount:4900, old_customer_amount:2000},
+        {order_date:"2022-01-03", first_visit:1, repeat_visit:2, new_customer_amount:3000, old_customer_amount:4000}
+    ],
+    answer: `
+WITH first_order AS (
+    SELECT customer_id, MIN(order_date) AS first_order_date
+    FROM orders
+    GROUP BY customer_id
+),
+visits AS (
+    SELECT 
+        a.order_date,
+        SUM(CASE WHEN a.order_date = b.first_order_date THEN 1 ELSE 0 END) AS first_visit,
+        SUM(CASE WHEN a.order_date <> b.first_order_date THEN 1 ELSE 0 END) AS repeat_visit
+    FROM orders a
+    JOIN first_order b
+        ON a.customer_id = b.customer_id
+    GROUP BY a.order_date
+),
+amount AS (
+    SELECT 
+        a.order_date,
+        SUM(CASE WHEN a.order_date = b.first_order_date THEN order_amount ELSE 0 END) AS new_customer_amount,
+        SUM(CASE WHEN a.order_date <> b.first_order_date THEN order_amount ELSE 0 END) AS old_customer_amount
+    FROM orders a
+    JOIN first_order b
+        ON a.customer_id = b.customer_id
+    GROUP BY a.order_date
+)
+SELECT 
+    v.order_date,
+    v.first_visit,
+    v.repeat_visit,
+    a.new_customer_amount,
+    a.old_customer_amount
+FROM visits v
+JOIN amount a ON v.order_date = a.order_date
+ORDER BY v.order_date;
+`
+},
+
+/* QUESTION 5 — Nth Future Sunday */
+{
+    question: `
+Write a SQL query to find the date of the Nth occurrence of Sunday in the future from a given starting date.
+
+Provide two solutions:
+1. Using a date generator (loop or recursive method)
+2. Using a direct mathematical formula
+
+Also explain why (n - 1) and (8 - weekday) are used.
+`,
+    dataset: [],
+    output: [],
+    answer_1: `
+-- Approach 1: Using date generation (loop)
+
+DROP TABLE IF EXISTS ##date_list;
+
+CREATE TABLE ##date_list (dt DATE);
+
+DECLARE @startdate DATE = CONVERT(DATE, GETDATE());
+DECLARE @enddate DATE = DATEADD(WEEK, 10, @startdate);
+DECLARE @dt DATE = @startdate;
+
+WHILE @dt <= @enddate
+BEGIN
+    INSERT INTO ##date_list VALUES (@dt);
+    SET @dt = DATEADD(DAY, 1, @dt);
+END;
+
+DECLARE @n INT = 3, @weekday VARCHAR(10) = 'Sunday';
+
+SELECT TOP 1 dt
+FROM (
+    SELECT dt,
+           DATENAME(WEEKDAY, dt) AS weekday,
+           ROW_NUMBER() OVER (PARTITION BY DATENAME(WEEKDAY, dt) ORDER BY dt) AS rn
+    FROM ##date_list
+) x
+WHERE weekday = @weekday AND rn = @n
+ORDER BY dt;
+`,
+    answer_2: `
+-- Approach 2: Direct mathematical formula
+
+DECLARE @today_date DATE = CONVERT(DATE, GETDATE());
+DECLARE @n INT = 3;
+
+SELECT DATEADD(
+           WEEK, @n - 1,
+           DATEADD(DAY, 8 - DATEPART(WEEKDAY, @today_date), @today_date)
+       ) AS nth_future_sunday;
+`,
+    explanation: `
+Explanation:
+
+1. DATEPART(WEEKDAY, @today_date)
+   Returns 1–7 (Sunday–Saturday).
+
+2. (8 - weekday):
+   Gives number of days until next Sunday.
+
+3. (n - 1):
+   1st Sunday → +0 weeks
+   2nd Sunday → +1 week
+   3rd Sunday → +2 weeks
+   Nth Sunday → (n - 1) additional weeks.
+`
+},
+
+/* QUESTION 6 — Order Shipping Analysis */
+{
+    question: `
+Given the below order dataset with columns (order_id, customer_id, order_date, ship_date),
+calculate the following for each order:
+
+1. days_to_ship  → Total days between order_date and ship_date  
+2. week_between_days → Number of complete weeks between the dates  
+3. business_days_to_ship → Count of business days (Mon–Fri), excluding weekends
+
+Return all columns including the calculated ones.
+`,
+    dataset: [
+        {order_id:"1000", customer_id:"1", order_date:"2022-01-05", ship_date:"2022-01-11"},
+        {order_id:"1001", customer_id:"2", order_date:"2022-02-04", ship_date:"2022-02-16"},
+        {order_id:"1002", customer_id:"3", order_date:"2022-01-01", ship_date:"2022-01-19"},
+        {order_id:"1003", customer_id:"4", order_date:"2022-01-06", ship_date:"2022-01-30"},
+        {order_id:"1004", customer_id:"1", order_date:"2022-02-07", ship_date:"2022-02-13"},
+        {order_id:"1005", customer_id:"4", order_date:"2022-01-07", ship_date:"2022-01-31"},
+        {order_id:"1006", customer_id:"3", order_date:"2022-02-08", ship_date:"2022-02-26"},
+        {order_id:"1007", customer_id:"2", order_date:"2022-02-09", ship_date:"2022-02-21"},
+        {order_id:"1008", customer_id:"4", order_date:"2022-02-10", ship_date:"2022-03-06"}
+    ],
+    output: [
+        {order_id:"1000", customer_id:"1", order_date:"2022-01-05", ship_date:"2022-01-11", days_to_ship:"6",  week_between_days:"1", business_days_to_ship:"4"},
+        {order_id:"1001", customer_id:"2", order_date:"2022-02-04", ship_date:"2022-02-16", days_to_ship:"12", week_between_days:"2", business_days_to_ship:"8"},
+        {order_id:"1002", customer_id:"3", order_date:"2022-01-01", ship_date:"2022-01-19", days_to_ship:"18", week_between_days:"3", business_days_to_ship:"12"},
+        {order_id:"1003", customer_id:"4", order_date:"2022-01-06", ship_date:"2022-01-30", days_to_ship:"24", week_between_days:"4", business_days_to_ship:"16"},
+        {order_id:"1004", customer_id:"1", order_date:"2022-02-07", ship_date:"2022-02-13", days_to_ship:"6",  week_between_days:"1", business_days_to_ship:"4"},
+        {order_id:"1005", customer_id:"4", order_date:"2022-01-07", ship_date:"2022-01-31", days_to_ship:"24", week_between_days:"4", business_days_to_ship:"16"},
+        {order_id:"1006", customer_id:"3", order_date:"2022-02-08", ship_date:"2022-02-26", days_to_ship:"18", week_between_days:"2", business_days_to_ship:"14"},
+        {order_id:"1007", customer_id:"2", order_date:"2022-02-09", ship_date:"2022-02-21", days_to_ship:"12", week_between_days:"2", business_days_to_ship:"8"},
+        {order_id:"1008", customer_id:"4", order_date:"2022-02-10", ship_date:"2022-03-06", days_to_ship:"24", week_between_days:"4", business_days_to_ship:"16"}
+    ],
+    answer: `
+SELECT
+    order_id,
+    customer_id,
+    order_date,
+    ship_date,
+
+    -- 1. Total days between the dates
+    DATEDIFF(day, order_date, ship_date) AS days_to_ship,
+
+    -- 2. Number of complete weeks between dates
+    DATEDIFF(week, order_date, ship_date) AS week_between_days,
+
+    -- 3. Business days between dates (Mon–Fri)
+    (
+        (DATEDIFF(day, order_date, ship_date) + 1)                  -- total days inclusive
+        - 2 * (DATEDIFF(week, order_date, ship_date))              -- remove Saturdays & Sundays
+        - CASE WHEN DATENAME(weekday, order_date) = 'Sunday' THEN 1 ELSE 0 END
+        - CASE WHEN DATENAME(weekday, ship_date) = 'Saturday' THEN 1 ELSE 0 END
+    ) AS business_days_to_ship
+
+FROM orders_data;
+`
+}
+    ,
+    {
+    question: `
+A company wants to identify the key products contributing to most of its revenue
+using the Pareto Principle (80/20 Rule).
+
+Determine:
+- Total sales per product
+- Running cumulative sales (highest to lowest)
+- Products that together contribute to 80% of total sales
+
+Output columns:
+Product_ID, Product_Sales, Running_Sales, Total_Sales_80_Percent
+`,
+    dataset: [
+        {product_id:"P1", sales:5000},
+        {product_id:"P2", sales:3000},
+        {product_id:"P3", sales:2000},
+        {product_id:"P4", sales:1500},
+        {product_id:"P5", sales:1000},
+        {product_id:"P6", sales:800},
+        {product_id:"P7", sales:700},
+        {product_id:"P8", sales:500}
+    ],
+    output: [
+        {product_id:"P1", product_sales:5000, running_sales:5000, total_sales_80_percent:11200},
+        {product_id:"P2", product_sales:3000, running_sales:8000, total_sales_80_percent:11200},
+        {product_id:"P3", product_sales:2000, running_sales:10000, total_sales_80_percent:11200},
+        {product_id:"P4", product_sales:1500, running_sales:11500, total_sales_80_percent:11200}
+    ],
+    answer: `
+WITH product_sales AS (
+    SELECT 
+        product_id,
+        SUM(sales) AS product_sales
+    FROM orders
+    GROUP BY product_id
+),
+running_totals AS (
+    SELECT *,
+           SUM(product_sales) OVER (
+               ORDER BY product_sales DESC
+               ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW
+           ) AS running_sales,
+           0.8 * SUM(product_sales) OVER () AS total_sales_80_percent
+    FROM product_sales
+)
+SELECT 
+    product_id,
+    product_sales,
+    running_sales,
+    total_sales_80_percent
+FROM running_totals
+WHERE running_sales <= total_sales_80_percent;
+`
+},
+   {
+  question: `
+Given two tables:
+1) PersonScores (person details and scores)
+2) PersonFriends (person to friend mapping)
+
+Write a query to find:
+- Person ID
+- Person Name
+- Number of friends
+- Total score of all their friends
+
+Return only those persons whose friends' total score is greater than 100.
+
+Output columns:
+PersonID, Total_Friend_Score, No_Of_Friends, Person_Name
+`,
+  dataset: [
+    { PersonID: 1, Name: "Alice", Email: "alice2018@hotmail.com", Score: 88 },
+    { PersonID: 2, Name: "Bob",   Email: "bob2018@hotmail.com",   Score: 11 },
+    { PersonID: 3, Name: "Davis", Email: "davis2018@hotmail.com", Score: 27 },
+    { PersonID: 4, Name: "Tara",  Email: "tara2018@hotmail.com",  Score: 45 },
+    { PersonID: 5, Name: "John",  Email: "john2018@hotmail.com",  Score: 63 }
+  ],
+
+  dataset_2: [
+    { PersonID: 1, FriendID: 2 },
+    { PersonID: 1, FriendID: 3 },
+    { PersonID: 2, FriendID: 1 },
+    { PersonID: 2, FriendID: 3 },
+    { PersonID: 3, FriendID: 5 },
+    { PersonID: 4, FriendID: 2 },
+    { PersonID: 4, FriendID: 3 },
+    { PersonID: 4, FriendID: 5 }
+  ],
+
+  output: [
+    { PersonID: 2, Total_Friend_Score: 115, No_Of_Friends: 2, Person_Name: "Bob" },
+    { PersonID: 4, Total_Friend_Score: 101, No_Of_Friends: 3, Person_Name: "Tara" }
+  ],
+
+  answer: "SELECT f.PersonID, SUM(ps.Score) AS Total_Friend_Score, COUNT(f.FriendID) AS No_Of_Friends, p.Name AS Person_Name FROM dataset_2 f JOIN dataset ps ON f.FriendID = ps.PersonID JOIN dataset p ON p.PersonID = f.PersonID GROUP BY f.PersonID, p.Name HAVING SUM(ps.Score) > 100;"
+}
+
+,
+    {
+    question: `
+Given two tables:
+1) PersonScores (person details and scores)
+2) PersonFriends (person to friend mapping)
+
+Write a query to find:
+- Person ID
+- Person Name
+- Number of friends
+- Total score of all their friends
+
+Return only those persons whose friends' total score is greater than 100.
+
+Output columns:
+PersonID, Total_Friend_Score, No_Of_Friends, Person_Name
+`,
+    dataset: {
+        PersonScores: [
+            {PersonID:1, Name:"Alice", Email:"alice2018@hotmail.com", Score:88},
+            {PersonID:2, Name:"Bob",   Email:"bob2018@hotmail.com",   Score:11},
+            {PersonID:3, Name:"Davis", Email:"davis2018@hotmail.com", Score:27},
+            {PersonID:4, Name:"Tara",  Email:"tara2018@hotmail.com",  Score:45},
+            {PersonID:5, Name:"John",  Email:"john2018@hotmail.com",  Score:63}
+        ],
+        PersonFriends: [
+            {PersonID:1, FriendID:2},
+            {PersonID:1, FriendID:3},
+            {PersonID:2, FriendID:1},
+            {PersonID:2, FriendID:3},
+            {PersonID:3, FriendID:5},
+            {PersonID:4, FriendID:2},
+            {PersonID:4, FriendID:3},
+            {PersonID:4, FriendID:5}
+        ]
+    },
+    output: [
+        {personid:2, total_friend_score:115, no_of_friends:2, person_name:"Bob"},
+        {personid:4, total_friend_score:101, no_of_friends:3, person_name:"Tara"}
+    ],
+    answer: `
+SELECT a.PersonID,
+       a.total_friend_score,
+       a.no_of_friends,
+       p.Name AS person_name
+FROM (
+    SELECT 
+        f.PersonID,
+        COUNT(f.FriendID) AS no_of_friends,
+        SUM(ps.Score) AS total_friend_score
+    FROM PersonFriends f
+    JOIN PersonScores ps
+        ON ps.PersonID = f.FriendID
+    GROUP BY f.PersonID
+    HAVING SUM(ps.Score) > 100
+) a
+LEFT JOIN PersonScores p
+    ON a.PersonID = p.PersonID;
+`
+}
+,
+     
+{
+    question: `
+Find customers who placed orders in all months of 2024.
+
+A customer qualifies only if they have at least one order
+in every month (January–December) of the year 2024.
+
+Output columns: Customer, Count_of_Months.
+`,
+    dataset: [
+        {customer:"A", order_date:"2024-01-15", calmonth:"1"},
+        {customer:"A", order_date:"2024-02-20", calmonth:"2"},
+        {customer:"A", order_date:"2024-03-05", calmonth:"3"},
+        {customer:"A", order_date:"2024-04-12", calmonth:"4"},
+        {customer:"A", order_date:"2024-05-30", calmonth:"5"},
+        {customer:"A", order_date:"2024-06-10", calmonth:"6"},
+        {customer:"A", order_date:"2024-07-01", calmonth:"7"},
+        {customer:"A", order_date:"2024-08-22", calmonth:"8"},
+        {customer:"A", order_date:"2024-09-18", calmonth:"9"},
+        {customer:"A", order_date:"2024-10-11", calmonth:"10"},
+        {customer:"A", order_date:"2024-11-25", calmonth:"11"},
+        {customer:"A", order_date:"2024-12-03", calmonth:"12"},
+
+        {customer:"B", order_date:"2024-01-10", calmonth:"1"},
+        {customer:"B", order_date:"2024-02-17", calmonth:"2"},
+        {customer:"B", order_date:"2024-03-21", calmonth:"3"},
+        {customer:"B", order_date:"2024-05-08", calmonth:"5"},
+        {customer:"B", order_date:"2024-06-14", calmonth:"6"},
+
+        {customer:"C", order_date:"2024-01-05", calmonth:"1"},
+        {customer:"C", order_date:"2024-02-08", calmonth:"2"},
+        {customer:"C", order_date:"2024-03-15", calmonth:"3"},
+        {customer:"C", order_date:"2024-04-12", calmonth:"4"},
+        {customer:"C", order_date:"2024-05-19", calmonth:"5"},
+        {customer:"C", order_date:"2024-06-22", calmonth:"6"},
+        {customer:"C", order_date:"2024-07-30", calmonth:"7"},
+        {customer:"C", order_date:"2024-08-09", calmonth:"8"},
+        {customer:"C", order_date:"2024-09-14", calmonth:"9"},
+        {customer:"C", order_date:"2024-10-20", calmonth:"10"},
+        {customer:"C", order_date:"2024-11-25", calmonth:"11"},
+        {customer:"C", order_date:"2024-12-31", calmonth:"12"}
+    ],
+    output: [
+        {customer:"A", count:"12"},
+        {customer:"C", count:"12"}
+    ],
+    answer: `
+WITH months_2024 AS (
+    SELECT COUNT(DISTINCT calmonth) AS total_months
+    FROM orders
+    WHERE YEAR(order_date) = 2024
+)
+SELECT
+    customer,
+    COUNT(DISTINCT calmonth) AS count
+FROM orders
+WHERE YEAR(order_date) = 2024
+GROUP BY customer
+HAVING COUNT(DISTINCT calmonth) = (SELECT total_months FROM months_2024);
+`
+},
+    {
+    question: `
+Explain SQL Performance Optimization Techniques.
+The answer should be interview-ready, practical, and cover both query-level and database-level optimizations.
+`,
+    dataset: [
+        { table: "orders", columns: ["order_id", "customer_id", "order_date", "amount"] },
+        { table: "customers", columns: ["customer_id", "customer_name"] }
+    ],
+    output: [
+        { area: "Indexing", focus: "JOIN, WHERE, ORDER BY columns" },
+        { area: "Query Design", focus: "Filter early, avoid SELECT *" },
+        { area: "Execution Plan", focus: "Remove scans, key lookups" }
+    ],
+    answer: `
+-- SQL Performance Optimization Techniques
+
+-- 1) Indexing (Most Important)
+-- Create indexes on JOIN / WHERE / GROUP BY columns
+
+CREATE INDEX idx_orders_customer_date
+ON orders(customer_id, order_date);
+
+-- Covering index to avoid key lookups
+CREATE INDEX idx_orders_cover
+ON orders(customer_id)
+INCLUDE (order_date, amount);
+
+
+-- 2) Query Design Best Practices
+-- Avoid SELECT *
+-- Filter early
+
+SELECT customer_id, SUM(amount)
+FROM orders
+WHERE order_date >= '2024-01-01'
+GROUP BY customer_id;
+
+-- Avoid functions on indexed columns
+-- BAD
+-- WHERE YEAR(order_date) = 2024
+
+-- GOOD
+WHERE order_date >= '2024-01-01'
+  AND order_date < '2025-01-01';
+
+
+-- 3) Execution Plan Analysis
+SET STATISTICS IO ON;
+SET STATISTICS TIME ON;
+-- Check for table scans, key lookups, missing indexes
+
+
+-- 4) Aggregation Before Join
+WITH agg_orders AS (
+    SELECT customer_id, SUM(amount) AS total_amount
+    FROM orders
+    GROUP BY customer_id
+)
+SELECT c.customer_name, a.total_amount
+FROM agg_orders a
+JOIN customers c
+ON a.customer_id = c.customer_id;
+
+
+-- 5) Data Types & Storage
+-- Use INT over VARCHAR for numeric data
+-- Use DATE instead of DATETIME if time not required
+
+
+-- 6) Statistics & Index Maintenance
+UPDATE STATISTICS orders;
+
+ALTER INDEX ALL ON orders REBUILD;
+
+
+-- 7) Partitioning (Large Tables)
+-- Partition by date for pruning
+PARTITION BY RANGE (order_date);
+
+
+-- 8) Avoid Cursors & RBAR
+-- Prefer set-based operations over row-by-row logic
+
+
+-- 9) Temporary Objects
+-- Use temp tables if reused multiple times
+CREATE TABLE #temp_orders (...);
+
+
+-- 10) Concurrency & Locking
+-- Keep transactions short
+-- Use NOLOCK only if dirty reads are acceptable
+
+
+-- One-line Interview Answer:
+-- SQL performance optimization focuses on proper indexing,
+-- efficient query design, minimizing scans, and analyzing execution plans.
+`
+}
+,
+{
+    question: `
+Find employees who earn more than the average salary of all employees.
+
+Return only those employees whose salary is strictly greater than the overall average salary.
+
+Output columns:
+EmpID, Salary
+`,
+    dataset: [
+        { EmpID: 1, Name: "Alice",   Department: "HR",        Salary: 50000 },
+        { EmpID: 2, Name: "Bob",     Department: "IT",        Salary: 75000 },
+        { EmpID: 3, Name: "Charlie", Department: "Finance",   Salary: 62000 },
+        { EmpID: 4, Name: "Diana",   Department: "IT",        Salary: 80000 },
+        { EmpID: 5, Name: "Ethan",   Department: "HR",        Salary: 48000 },
+        { EmpID: 6, Name: "Fiona",   Department: "Marketing", Salary: 54000 },
+        { EmpID: 7, Name: "George",  Department: "Finance",   Salary: 70000 }
+    ],
+    output: [
+        { EmpID: 2, Salary: 75000 },
+        { EmpID: 4, Salary: 80000 },
+        { EmpID: 7, Salary: 70000 }
+    ],
+    answer_1: `
+-- Approach 1: Subquery (most common & interview-friendly)
+
+SELECT EmpID, Salary
+FROM Employees
+WHERE Salary > (
+    SELECT AVG(Salary)
+    FROM Employees
+);
+`,
+    answer_2: `
+-- Approach 2: Window function (clean & modern SQL)
+
+SELECT EmpID, Salary
+FROM (
+    SELECT
+        EmpID,
+        Salary,
+        AVG(Salary) OVER () AS avg_salary
+    FROM Employees
+) t
+WHERE Salary > avg_salary;
+`,
+    answer_3: `
+-- Approach 3: Aggregation + window function
+-- Useful when multiple salary rows exist per employee
+
+SELECT EmpID, Salary
+FROM (
+    SELECT
+        EmpID,
+        Salary,
+        AVG(Salary) OVER () AS avg_salary
+    FROM (
+        SELECT
+            EmpID,
+            SUM(Salary) AS Salary
+        FROM Employees
+        GROUP BY EmpID
+    ) a
+) b
+WHERE Salary > avg_salary;
+`,
+    explanation: `
+Explanation:
+
+1. Average salary is calculated across all employees.
+2. Only employees whose salary is greater than this average are returned.
+3. Approach 1 uses a scalar subquery.
+4. Approach 2 uses a window function to compute the average once.
+5. Approach 3 first aggregates salary per employee, then compares against the overall average.
+`
+}
+,
+    {
+    question: `
+A company wants to report customers and their related data.
+The requirement is to ALWAYS return all customers, even if no matching records exist
+on the right-side tables.
+
+This question tests common SQL traps where LEFT JOIN unintentionally turns into INNER JOIN.
+
+Identify and fix the mistakes.
+
+Output varies per case but customers with no matches must NOT be removed.
+`,
+    dataset: [
+        { customer_id: 1, customer_name: "Alice" },
+        { customer_id: 2, customer_name: "Bob" },
+        { customer_id: 3, customer_name: "Charlie" },
+        { customer_id: 4, customer_name: "Diana" }
+    ],
+    dataset_orders: [
+        { order_id: 101, customer_id: 1, order_date: "2024-03-15", status: "Completed", amount: 1000 },
+        { order_id: 102, customer_id: 1, order_date: "2023-11-10", status: "Cancelled", amount: 500 },
+        { order_id: 103, customer_id: 2, order_date: "2024-06-20", status: "Completed", amount: 1500 },
+        { order_id: 104, customer_id: 3, order_date: "2022-08-05", status: "Completed", amount: 800 }
+        // Diana has no orders
+    ],
+    output: [
+        { customer_id: 1, order_id: 101 },
+        { customer_id: 2, order_id: 103 },
+        { customer_id: 3, order_id: null },
+        { customer_id: 4, order_id: null }
+    ],
+    answer: `
+----------------------------------------------------
+1️⃣ WHERE filter on RIGHT table (Classic Trap)
+----------------------------------------------------
+
+❌ WRONG
+SELECT c.customer_id, o.order_id
+FROM customers c
+LEFT JOIN orders o ON c.customer_id = o.customer_id
+WHERE o.status = 'Completed';
+
+-- LEFT JOIN becomes INNER JOIN
+
+
+✅ CORRECT
+SELECT c.customer_id, o.order_id
+FROM customers c
+LEFT JOIN orders o
+  ON c.customer_id = o.customer_id
+ AND o.status = 'Completed';
+
+
+
+----------------------------------------------------
+2️⃣ Date filter in WHERE
+----------------------------------------------------
+
+❌ WRONG
+WHERE o.order_date >= '2024-01-01';
+
+✅ CORRECT
+AND o.order_date >= '2024-01-01';
+
+
+
+----------------------------------------------------
+3️⃣ YEAR() / MONTH() in WHERE
+----------------------------------------------------
+
+❌ WRONG
+WHERE YEAR(o.order_date) = 2024;
+
+-- Removes NULLs + blocks index usage
+
+
+✅ CORRECT
+AND o.order_date >= '2024-01-01'
+AND o.order_date <  '2025-01-01';
+
+
+
+----------------------------------------------------
+4️⃣ HAVING removes customers with no orders
+----------------------------------------------------
+
+❌ WRONG
+SELECT c.customer_id, COUNT(o.order_id)
+FROM customers c
+LEFT JOIN orders o ON c.customer_id = o.customer_id
+GROUP BY c.customer_id
+HAVING COUNT(o.order_id) > 0;
+
+
+✅ CORRECT
+SELECT c.customer_id, COUNT(o.order_id)
+FROM customers c
+LEFT JOIN orders o ON c.customer_id = o.customer_id
+GROUP BY c.customer_id;
+
+
+
+----------------------------------------------------
+5️⃣ COUNT(*) instead of COUNT(right_table_column)
+----------------------------------------------------
+
+❌ WRONG
+COUNT(*)   -- counts even NULL-matched rows
+
+
+✅ CORRECT
+COUNT(o.order_id);
+
+
+
+----------------------------------------------------
+6️⃣ SUM without COALESCE
+----------------------------------------------------
+
+❌ WRONG
+SUM(o.amount)  -- returns NULL for no matches
+
+
+✅ CORRECT
+COALESCE(SUM(o.amount), 0);
+
+
+
+----------------------------------------------------
+7️⃣ Filtering RIGHT table in subquery
+----------------------------------------------------
+
+❌ WRONG
+LEFT JOIN (
+    SELECT * FROM orders WHERE status = 'Completed'
+) o ON c.customer_id = o.customer_id;
+
+
+✅ CORRECT
+LEFT JOIN orders o
+  ON c.customer_id = o.customer_id
+ AND o.status = 'Completed';
+
+
+
+----------------------------------------------------
+8️⃣ OR condition to keep NULLs (Anti-pattern)
+----------------------------------------------------
+
+❌ WRONG
+WHERE o.status = 'Completed'
+   OR o.status IS NULL;
+
+
+✅ CORRECT
+AND o.status = 'Completed';
+
+
+
+----------------------------------------------------
+🎯 MASTER INTERVIEW RULE
+----------------------------------------------------
+Any filter on the RIGHT table of a LEFT JOIN
+MUST be placed inside the JOIN condition.
+
+Otherwise:
+LEFT JOIN ➜ INNER JOIN (silently)
+`
+}
+
+,{
+    question: `
+Write a query to print total number of unique hackers who made at least 1 submission each day(starting on the first day of the contest),
+and find the hacker_id and name of the hacker who made maximum number of submissions each day.
+If more than one such hacker has a maximum number of submissions, print the lowest hacker_id.
+The query should print this information for each day of the contest, sorted by the date
+
+Output columns:
+submission_date, hacker_id, unique_count
+`,
+
+    dataset: [
+        {submission_date:"2016-03-01", submission_id:8494,  hacker_id:20703, score:0},
+        {submission_date:"2016-03-01", submission_id:22403, hacker_id:53473, score:15},
+        {submission_date:"2016-03-01", submission_id:23965, hacker_id:79722, score:60},
+        {submission_date:"2016-03-01", submission_id:30173, hacker_id:36396, score:70},
+
+        {submission_date:"2016-03-02", submission_id:34928, hacker_id:20703, score:0},
+        {submission_date:"2016-03-02", submission_id:38740, hacker_id:15758, score:60},
+        {submission_date:"2016-03-02", submission_id:42769, hacker_id:79722, score:25},
+        {submission_date:"2016-03-02", submission_id:44364, hacker_id:79722, score:60},
+
+        {submission_date:"2016-03-03", submission_id:45440, hacker_id:20703, score:0},
+        {submission_date:"2016-03-03", submission_id:49050, hacker_id:36396, score:70},
+        {submission_date:"2016-03-03", submission_id:50273, hacker_id:79722, score:5},
+
+        {submission_date:"2016-03-04", submission_id:50344, hacker_id:20703, score:0},
+        {submission_date:"2016-03-04", submission_id:51360, hacker_id:44065, score:90},
+        {submission_date:"2016-03-04", submission_id:54404, hacker_id:53473, score:65},
+        {submission_date:"2016-03-04", submission_id:61533, hacker_id:79722, score:15},
+
+        {submission_date:"2016-03-05", submission_id:72852, hacker_id:20703, score:0},
+        {submission_date:"2016-03-05", submission_id:74546, hacker_id:38289, score:0},
+        {submission_date:"2016-03-05", submission_id:76487, hacker_id:62529, score:0},
+        {submission_date:"2016-03-05", submission_id:82439, hacker_id:36396, score:10},
+        {submission_date:"2016-03-05", submission_id:90006, hacker_id:36396, score:40},
+
+        {submission_date:"2016-03-06", submission_id:90404, hacker_id:20703, score:0}
+    ],
+
+    output: [
+        {submission_date:"2016-03-01", hacker_id:20703, unique_count:4},
+        {submission_date:"2016-03-02", hacker_id:79722, unique_count:2},
+        {submission_date:"2016-03-03", hacker_id:20703, unique_count:2},
+        {submission_date:"2016-03-04", hacker_id:20703, unique_count:2},
+        {submission_date:"2016-03-05", hacker_id:36396, unique_count:1},
+        {submission_date:"2016-03-06", hacker_id:20703, unique_count:1}
+    ],
+
+    answer: `
+WITH cte AS (
+    SELECT 
+        submission_date,
+        hacker_id,
+        COUNT(*) AS no_of_submissions,
+        DENSE_RANK() OVER (ORDER BY submission_date) AS day_number
+    FROM submissions
+    GROUP BY submission_date, hacker_id
+),
+cte2 AS (
+    SELECT *,
+        COUNT(*) OVER (PARTITION BY hacker_id ORDER BY submission_date) AS till_date_submissions,
+        CASE 
+            WHEN day_number = COUNT(*) OVER (PARTITION BY hacker_id ORDER BY submission_date)
+            THEN 1 ELSE 0 
+        END AS unique_flag
+    FROM cte
+),
+cte3 AS (
+    SELECT *,
+        SUM(unique_flag) OVER (PARTITION BY submission_date) AS unique_count,
+        ROW_NUMBER() OVER (
+            PARTITION BY submission_date 
+            ORDER BY no_of_submissions DESC, hacker_id
+        ) AS rn
+    FROM cte2
+)
+SELECT submission_date, hacker_id, unique_count
+FROM cte3
+WHERE rn = 1
+ORDER BY submission_date;
+`
+}
+,
+{
+  question: `
+A table stores a list of integers, but some numbers in the sequence are missing.
+
+Write an SQL query to identify and return all the missing numbers 
+between the minimum and maximum values present in the table.
+
+Output column: Missing_Number
+  `,
+  dataset: [
+    {number: 1},
+    {number: 4},
+    {number: 7},
+    {number: 6},
+    {number: 9}
+  ],
+  output: [
+    {missing_number: 2},
+    {missing_number: 3},
+    {missing_number: 5},
+    {missing_number: 8}
+  ],
+  answer: `
+WITH cte AS (
+    SELECT
+        ROW_NUMBER() OVER (ORDER BY (SELECT NULL)) AS r
+    FROM sys.objects
+)
+SELECT
+    a.r AS missing_number
+FROM cte a
+LEFT JOIN Missing_Numbers b
+    ON a.r = b.number
+WHERE b.number IS NULL
+  AND a.r <= (SELECT MAX(number) FROM Missing_Numbers)
+ORDER BY a.r;
+  `
+}
+,
+{
+  "question": "A person performs a task every day, and each day the result is either 'success' or 'fail'. Write an SQL query to group consecutive dates with the same state and return the start date, end date, and state for each continuous period.",
+
+  "dataset": [
+    { "date_value": "2019-01-01", "state": "success" },
+    { "date_value": "2019-01-02", "state": "success" },
+    { "date_value": "2019-01-03", "state": "success" },
+    { "date_value": "2019-01-04", "state": "fail" },
+    { "date_value": "2019-01-05", "state": "fail" },
+    { "date_value": "2019-01-06", "state": "success" }
+  ],
+
+  "expected_output": [
+    { "start_date": "2019-01-01", "end_date": "2019-01-03", "state": "success" },
+    { "start_date": "2019-01-04", "end_date": "2019-01-05", "state": "fail" },
+    { "start_date": "2019-01-06", "end_date": "2019-01-06", "state": "success" }
+  ],
+
+  "answer_sql": "WITH cte AS (\n  SELECT *,\n         DATEADD(day, -ROW_NUMBER() OVER (PARTITION BY state ORDER BY date_value), date_value) AS grp\n  FROM tasks\n)\nSELECT\n  MIN(date_value) AS start_date,\n  MAX(date_value) AS end_date,\n  state\nFROM cte\nGROUP BY state, grp\nORDER BY start_date;"
+}
+,
+{
+  "question": "MARKET ANALYSIS: Write an SQL query to find for each seller whether the brand of the second item (by order date) they sold is their favorite brand. If a seller sold less than two items, report the result as NO.",
+
+  dataset: [
+    { "order_id": 1, "order_date": "2019-08-01", "item_id": 4, "buyer_id": 1, "seller_id": 2 },
+    { "order_id": 2, "order_date": "2019-08-02", "item_id": 2, "buyer_id": 1, "seller_id": 3 },
+    { "order_id": 3, "order_date": "2019-08-03", "item_id": 3, "buyer_id": 2, "seller_id": 3 },
+    { "order_id": 4, "order_date": "2019-08-04", "item_id": 1, "buyer_id": 4, "seller_id": 2 },
+    { "order_id": 5, "order_date": "2019-08-04", "item_id": 1, "buyer_id": 3, "seller_id": 4 },
+    { "order_id": 6, "order_date": "2019-08-05", "item_id": 2, "buyer_id": 2, "seller_id": 4 }
+  ],
+
+  dataset2: [
+    { "user_id": 1, "join_date": "2019-01-01", "favorite_brand": "Lenovo" },
+    { "user_id": 2, "join_date": "2019-02-09", "favorite_brand": "Samsung" },
+    { "user_id": 3, "join_date": "2019-01-19", "favorite_brand": "LG" },
+    { "user_id": 4, "join_date": "2019-05-21", "favorite_brand": "HP" }
+  ],
+
+  dataset3: [
+    { "item_id": 1, "item_brand": "Samsung" },
+    { "item_id": 2, "item_brand": "Lenovo" },
+    { "item_id": 3, "item_brand": "LG" },
+    { "item_id": 4, "item_brand": "HP" }
+  ],
+
+  output: [
+    { "seller_id": 1, "second_item_fav_brand": "NO" },
+    { "seller_id": 2, "second_item_fav_brand": "YES" },
+    { "seller_id": 3, "second_item_fav_brand": "YES" },
+    { "seller_id": 4, "second_item_fav_brand": "NO" }
+  ],
+
+  "answer": "WITH ranked_orders AS (\n  SELECT o.seller_id,\n         i.item_brand,\n         ROW_NUMBER() OVER (\n           PARTITION BY o.seller_id\n           ORDER BY o.order_date\n         ) AS rn\n  FROM orders o\n  JOIN items i\n    ON o.item_id = i.item_id\n)\nSELECT u.user_id AS seller_id,\n       CASE\n         WHEN r.item_brand = u.favorite_brand THEN 'YES'\n         ELSE 'NO'\n       END AS second_item_fav_brand\nFROM users u\nLEFT JOIN ranked_orders r\n  ON u.user_id = r.seller_id\n AND r.rn = 2;",
+
+  "answer_1": "WITH finding_second_item AS (\n  SELECT seller_id, item_id\n  FROM (\n    SELECT seller_id,\n           item_id,\n           ROW_NUMBER() OVER (\n             PARTITION BY seller_id\n             ORDER BY order_date\n           ) AS rn\n    FROM orders\n  ) t\n  WHERE rn = 2\n)\nSELECT u.user_id AS seller_id,\n       CASE\n         WHEN u.favorite_brand = i.item_brand THEN 'YES'\n         ELSE 'NO'\n       END AS second_item_fav_brand\nFROM users u\nLEFT JOIN finding_second_item f\n  ON u.user_id = f.seller_id\nLEFT JOIN items i\n  ON f.item_id = i.item_id;"
+},
+    {
+  "question": "TRIP CANCELLATION RATE: Write an SQL query to calculate the daily cancellation rate of trips. Only consider trips where both the client and the driver are not banned. A trip is considered cancelled if its status is either cancelled_by_client or cancelled_by_driver.",
+
+  "dataset": [
+    { "id": 1, "client_id": 1, "driver_id": 10, "city_id": 1, "status": "completed", "request_at": "2013-10-01" },
+    { "id": 2, "client_id": 2, "driver_id": 11, "city_id": 1, "status": "cancelled_by_driver", "request_at": "2013-10-01" },
+    { "id": 3, "client_id": 3, "driver_id": 12, "city_id": 6, "status": "completed", "request_at": "2013-10-01" },
+    { "id": 4, "client_id": 4, "driver_id": 13, "city_id": 6, "status": "cancelled_by_client", "request_at": "2013-10-01" },
+    { "id": 5, "client_id": 1, "driver_id": 10, "city_id": 1, "status": "completed", "request_at": "2013-10-02" },
+    { "id": 6, "client_id": 2, "driver_id": 11, "city_id": 6, "status": "completed", "request_at": "2013-10-02" },
+    { "id": 7, "client_id": 3, "driver_id": 12, "city_id": 6, "status": "completed", "request_at": "2013-10-02" },
+    { "id": 8, "client_id": 2, "driver_id": 12, "city_id": 12, "status": "completed", "request_at": "2013-10-03" },
+    { "id": 9, "client_id": 3, "driver_id": 10, "city_id": 12, "status": "completed", "request_at": "2013-10-03" },
+    { "id": 10, "client_id": 4, "driver_id": 13, "city_id": 12, "status": "cancelled_by_driver", "request_at": "2013-10-03" }
+  ],
+
+  "dataset2": [
+    { "users_id": 1, "banned": "No", "role": "client" },
+    { "users_id": 2, "banned": "Yes", "role": "client" },
+    { "users_id": 3, "banned": "No", "role": "client" },
+    { "users_id": 4, "banned": "No", "role": "client" },
+    { "users_id": 10, "banned": "No", "role": "driver" },
+    { "users_id": 11, "banned": "No", "role": "driver" },
+    { "users_id": 12, "banned": "No", "role": "driver" },
+    { "users_id": 13, "banned": "No", "role": "driver" }
+  ],
+
+  "output": [
+    {
+      "request_at": "2013-10-01",
+      "cancelled_trips": 1,
+      "total_trips": 3,
+      "cancellation_rate": 33.3333333333
+    },
+    {
+      "request_at": "2013-10-02",
+      "cancelled_trips": 0,
+      "total_trips": 2,
+      "cancellation_rate": 0.0
+    },
+    {
+      "request_at": "2013-10-03",
+      "cancelled_trips": 1,
+      "total_trips": 2,
+      "cancellation_rate": 50.0
+    }
+  ],
+
+  "answer": "SELECT\n  a.request_at,\n  COUNT(\n    CASE\n      WHEN a.status IN ('cancelled_by_client', 'cancelled_by_driver') THEN 1\n      ELSE NULL\n    END\n  ) AS cancelled_trips,\n  COUNT(*) AS total_trips,\n  1.0 * COUNT(\n    CASE\n      WHEN a.status IN ('cancelled_by_client', 'cancelled_by_driver') THEN 1\n      ELSE NULL\n    END\n  ) / COUNT(*) * 100 AS cancellation_rate\nFROM trips a\nJOIN users b\n  ON a.driver_id = b.users_id\nJOIN users c\n  ON a.client_id = c.users_id\nWHERE b.banned = 'No'\n  AND c.banned = 'No'\nGROUP BY a.request_at;"
+}
+,
+    {
+  "question": "Write an SQL query to find the winner in each group. The winner in each group is the player who scored the maximum total points within the group. In case of a tie, the player with the lowest player_id should be selected.",
+
+  "dataset": [
+    { "player_id": 15, "group_id": 1 },
+    { "player_id": 25, "group_id": 1 },
+    { "player_id": 30, "group_id": 1 },
+    { "player_id": 45, "group_id": 1 },
+    { "player_id": 10, "group_id": 2 },
+    { "player_id": 35, "group_id": 2 },
+    { "player_id": 50, "group_id": 2 },
+    { "player_id": 20, "group_id": 3 },
+    { "player_id": 40, "group_id": 3 }
+  ],
+
+  "dataset2": [
+    { "match_id": 1, "first_player": 15, "second_player": 45, "first_score": 3, "second_score": 0 },
+    { "match_id": 2, "first_player": 30, "second_player": 25, "first_score": 1, "second_score": 2 },
+    { "match_id": 3, "first_player": 30, "second_player": 15, "first_score": 2, "second_score": 0 },
+    { "match_id": 4, "first_player": 40, "second_player": 20, "first_score": 5, "second_score": 2 },
+    { "match_id": 5, "first_player": 35, "second_player": 50, "first_score": 1, "second_score": 1 }
+  ],
+
+  "output": [
+    { "group_id": 1, "player_id": 15, "score": 3, "r": 1 },
+    { "group_id": 2, "player_id": 35, "score": 1, "r": 1 },
+    { "group_id": 3, "player_id": 40, "score": 5, "r": 1 }
+  ],
+
+  "answer_1": "SELECT *\nFROM (\n  SELECT *,\n         RANK() OVER (PARTITION BY group_id ORDER BY score DESC, player_id) AS r\n  FROM (\n    SELECT p.group_id,\n           s.player_id,\n           SUM(s.score) AS score\n    FROM players p\n    JOIN (\n      SELECT first_player AS player_id, first_score AS score FROM matches\n      UNION ALL\n      SELECT second_player AS player_id, second_score AS score FROM matches\n    ) s\n      ON p.player_id = s.player_id\n    GROUP BY p.group_id, s.player_id\n  ) t\n) x\nWHERE r = 1;",
+
+  "answer_2": "WITH all_scores AS (\n  SELECT first_player AS player_id, first_score AS score FROM matches\n  UNION ALL\n  SELECT second_player AS player_id, second_score AS score FROM matches\n),\nplayer_scores AS (\n  SELECT p.group_id,\n         a.player_id,\n         SUM(a.score) AS total_score\n  FROM players p\n  LEFT JOIN all_scores a\n    ON p.player_id = a.player_id\n  GROUP BY p.group_id, a.player_id\n),\nranked_players AS (\n  SELECT *,\n         ROW_NUMBER() OVER (\n           PARTITION BY group_id\n           ORDER BY total_score DESC, player_id ASC\n         ) AS r\n  FROM player_scores\n)\nSELECT group_id,\n       player_id,\n       total_score AS score,\n       r\nFROM ranked_players\nWHERE r = 1;"
+}
+    ,{
+    "question": `
+An online shopping platform records user purchases made using either mobile or desktop.
+
+Each row represents a purchase made by a user on a given date and platform.
+
+Write a SQL query to determine, for each spend_date:
+- Total amount spent by users who used mobile only
+- Total amount spent by users who used desktop only
+- Total amount spent by users who used both mobile and desktop
+- Total number of users in each category
+
+Output columns:
+spend_date, platform (mobile / desktop / both), total_amount, total_users
+`,
+    "dataset": [
+        {"user_id":1,"spend_date":"2019-07-01","platform":"mobile","amount":100},
+        {"user_id":1,"spend_date":"2019-07-01","platform":"desktop","amount":100},
+        {"user_id":2,"spend_date":"2019-07-01","platform":"mobile","amount":100},
+        {"user_id":2,"spend_date":"2019-07-02","platform":"mobile","amount":100},
+        {"user_id":3,"spend_date":"2019-07-01","platform":"desktop","amount":100},
+        {"user_id":3,"spend_date":"2019-07-02","platform":"desktop","amount":100}
+    ],
+    "output": [
+        {"spend_date":"2019-07-01","platform":"mobile","total_amount":100,"total_users":1},
+        {"spend_date":"2019-07-01","platform":"desktop","total_amount":100,"total_users":1},
+        {"spend_date":"2019-07-01","platform":"both","total_amount":200,"total_users":1},
+        {"spend_date":"2019-07-02","platform":"mobile","total_amount":100,"total_users":1},
+        {"spend_date":"2019-07-02","platform":"desktop","total_amount":100,"total_users":1},
+        {"spend_date":"2019-07-02","platform":"both","total_amount":0,"total_users":0}
+    ],
+    "answer_1": `
+-- Approach 1: User-level classification, then aggregation
+
+WITH user_level AS (
+    SELECT
+        spend_date,
+        user_id,
+        SUM(CASE WHEN platform = 'mobile' THEN amount ELSE 0 END) AS mobile_amt,
+        SUM(CASE WHEN platform = 'desktop' THEN amount ELSE 0 END) AS desktop_amt
+    FROM user_purchase_platform
+    GROUP BY spend_date, user_id
+),
+classified AS (
+    SELECT
+        spend_date,
+        user_id,
+        CASE
+            WHEN mobile_amt > 0 AND desktop_amt > 0 THEN 'both'
+            WHEN mobile_amt > 0 THEN 'mobile'
+            WHEN desktop_amt > 0 THEN 'desktop'
+        END AS platform,
+        mobile_amt + desktop_amt AS total_amount
+    FROM user_level
+)
+SELECT
+    spend_date,
+    platform,
+    SUM(total_amount) AS total_amount,
+    COUNT(DISTINCT user_id) AS total_users
+FROM classified
+GROUP BY spend_date, platform
+ORDER BY spend_date, platform;
+`,
+    "answer_2": `
+-- Approach 2: Generate all date-platform combinations to include zero rows
+
+WITH user_level AS (
+    SELECT
+        spend_date,
+        user_id,
+        SUM(CASE WHEN platform = 'mobile' THEN amount ELSE 0 END) AS mobile_amt,
+        SUM(CASE WHEN platform = 'desktop' THEN amount ELSE 0 END) AS desktop_amt
+    FROM user_purchase_platform
+    GROUP BY spend_date, user_id
+),
+classified AS (
+    SELECT
+        spend_date,
+        user_id,
+        CASE
+            WHEN mobile_amt > 0 AND desktop_amt > 0 THEN 'both'
+            WHEN mobile_amt > 0 THEN 'mobile'
+            WHEN desktop_amt > 0 THEN 'desktop'
+        END AS platform,
+        mobile_amt + desktop_amt AS total_amount
+    FROM user_level
+),
+agg AS (
+    SELECT
+        spend_date,
+        platform,
+        SUM(total_amount) AS total_amount,
+        COUNT(DISTINCT user_id) AS total_users
+    FROM classified
+    GROUP BY spend_date, platform
+),
+dates AS (
+    SELECT DISTINCT spend_date FROM user_purchase_platform
+),
+platforms AS (
+    SELECT 'mobile' AS platform
+    UNION ALL SELECT 'desktop'
+    UNION ALL SELECT 'both'
+)
+SELECT
+    d.spend_date,
+    p.platform,
+    COALESCE(a.total_amount, 0) AS total_amount,
+    COALESCE(a.total_users, 0) AS total_users
+FROM dates d
+CROSS JOIN platforms p
+LEFT JOIN agg a
+    ON a.spend_date = d.spend_date
+   AND a.platform = p.platform
+ORDER BY d.spend_date, p.platform;
+`,
+    "explanation": `
+Explanation:
+
+1. Users are first grouped by (user_id, spend_date) to determine which platforms they used.
+2. If a user has both mobile and desktop usage on the same date, they are classified as 'both'.
+3. Aggregation is then performed by spend_date and platform.
+4. In Answer 2, a CROSS JOIN between all dates and all platforms ensures that missing categories
+   (like 'both' on 2019-07-02) appear with 0 amount and 0 users.
+5. COALESCE is used to convert NULLs into zeros for total_amount and total_users.
+`
+}
+,
+    {
+    title: "SQL Server - Change Data Capture (CDC)",
+
+    question: `
+A company wants to implement Change Data Capture (CDC) on an EMPLOYEE table to support incremental ETL loads.
+
+Requirements:
+
+- Create a database named CDC_DEMO.
+- Enable CDC at the database level.
+- Create an EMPLOYEE table.
+- Enable CDC on the EMPLOYEE table.
+- Insert initial employee records.
+- Perform the following operations:
+  - Update one employee's salary.
+  - Delete one employee.
+  - Insert a new employee.
+- Query the CDC change table to view all captured changes.
+- Display the operation type (INSERT, DELETE, UPDATE BEFORE, UPDATE AFTER) instead of operation codes.
+- Use the CDC function to retrieve all captured changes between the minimum and maximum LSN.
+`,
+
+    dataset: [
+        {EMP_ID:1, EMP_NAME:"John", DEPARTMENT:"IT", SALARY:5000},
+        {EMP_ID:2, EMP_NAME:"Mary", DEPARTMENT:"HR", SALARY:6000},
+        {EMP_ID:3, EMP_NAME:"David", DEPARTMENT:"Finance", SALARY:7000}
+    ],
+
+    output: [
+        {EMP_ID:1, OPERATION:"INSERT"},
+        {EMP_ID:2, OPERATION:"INSERT"},
+        {EMP_ID:3, OPERATION:"INSERT"},
+        {EMP_ID:3, OPERATION:"UPDATE (Before)"},
+        {EMP_ID:3, OPERATION:"UPDATE (After)"},
+        {EMP_ID:2, OPERATION:"DELETE"},
+        {EMP_ID:4, OPERATION:"INSERT"}
+    ],
+
+    answer: `
+CREATE DATABASE CDC_DEMO;
+GO
+
+USE CDC_DEMO;
+GO
+
+EXEC sys.sp_cdc_enable_db;
+GO
+
+CREATE TABLE EMPLOYEE
+(
+    EMP_ID INT PRIMARY KEY,
+    EMP_NAME VARCHAR(100),
+    DEPARTMENT VARCHAR(50),
+    SALARY DECIMAL(10,2)
+);
+GO
+
+EXEC sys.sp_cdc_enable_table
+    @source_schema='dbo',
+    @source_name='EMPLOYEE',
+    @role_name=NULL;
+GO
+
+INSERT INTO EMPLOYEE
+VALUES
+(1,'John','IT',5000),
+(2,'Mary','HR',6000),
+(3,'David','Finance',7000);
+
+UPDATE EMPLOYEE
+SET SALARY = 7500
+WHERE EMP_ID = 3;
+
+DELETE
+FROM EMPLOYEE
+WHERE EMP_ID = 2;
+
+INSERT INTO EMPLOYEE
+VALUES
+(4,'Sai','IT',8000);
+
+SELECT
+    EMP_ID,
+    EMP_NAME,
+    DEPARTMENT,
+    SALARY,
+    CASE __$operation
+        WHEN 1 THEN 'DELETE'
+        WHEN 2 THEN 'INSERT'
+        WHEN 3 THEN 'UPDATE (Before)'
+        WHEN 4 THEN 'UPDATE (After)'
+    END AS OPERATION
+FROM cdc.dbo_EMPLOYEE_CT;
+
+DECLARE @from_lsn BINARY(10),
+        @to_lsn BINARY(10);
+
+SET @from_lsn = sys.fn_cdc_get_min_lsn('dbo_EMPLOYEE');
+SET @to_lsn = sys.fn_cdc_get_max_lsn();
+
+SELECT *
+FROM cdc.fn_cdc_get_all_changes_dbo_EMPLOYEE
+(
+    @from_lsn,
+    @to_lsn,
+    'all'
+);
+`
+},
+
+
+/* End of questions array */
+];
+
+/* ============================
+   UI & Rendering Helpers
+   ============================ */
+
+let currentQuestion = 0;
+
+function createJumpButtons() {
+    const container = document.getElementById('jumpButtons');
+    container.innerHTML = '';
+    questions.forEach((q, idx) => {
+        const btn = document.createElement('button');
+        btn.textContent = 'Q' + (idx + 1);
+        btn.title = 'Go to Question ' + (idx + 1);
+        btn.onclick = () => {
+            currentQuestion = idx;
+            renderQuestion(idx);
+        };
+        container.appendChild(btn);
+    });
+}
+
+function renderTableFromObjects(list) {
+    if (!list || list.length === 0) return '';
+    const cols = Object.keys(list[0]);
+    let html = '<table><thead><tr>';
+    cols.forEach(c => html += `<th>${c}</th>`);
+    html += '</tr></thead><tbody>';
+    list.forEach(r => {
+        html += '<tr>';
+        cols.forEach(c => html += `<td>${r[c]}</td>`);
+        html += '</tr>';
+    });
+    html += '</tbody></table>';
+    return html;
+}
+
+function renderQuestion(index) {
+    const q = questions[index];
+    // Question text
+    document.getElementById('questionBox').innerHTML = `<h3>Question ${index + 1}</h3><p>${q.question.replace(/\n\s+/g,'\n')}</p>`;
+
+    // Dataset
+    const datasetHtml = q.dataset && q.dataset.length ? renderTableFromObjects(q.dataset) : '<p>No dataset for this question.</p>';
+    document.getElementById('datasetBox').innerHTML = datasetHtml;
+
+    // Dataset2
+    const datasetHtml2 = q.dataset2 && q.dataset2.length ? renderTableFromObjects(q.dataset2) : '<p>No dataset for this question.</p>';
+    document.getElementById('datasetBox2').innerHTML = datasetHtml2;
+
+    // Dataset3
+    const datasetHtml3 = q.dataset3 && q.dataset3.length ? renderTableFromObjects(q.dataset3) : '<p>No dataset for this question.</p>';
+    document.getElementById('datasetBox3').innerHTML = datasetHtml3;
+
+    
+    // Output
+    const outputHtml = q.output && q.output.length ? renderTableFromObjects(q.output) : '<p>No output for this question.</p>';
+    document.getElementById('outputBox').innerHTML = outputHtml;
+
+    // Answers: combine answer, answer_1, answer_2, explanation
+    let answerText = '';
+    if (q.answer) answerText += q.answer.trim() + '\n\n';
+    if (q.answer_1) answerText += '-- Solution 1:\n' + q.answer_1.trim() + '\n\n';
+    if (q.answer_2) answerText += '-- Solution 2:\n' + q.answer_2.trim() + '\n\n';
+    if (q.explanation) answerText += '-- Explanation:\n' + q.explanation.trim();
+
+    document.getElementById('answerBox').textContent = answerText || '-- No answer provided --';
+
+    // update counter
+    document.getElementById('questionCounter').textContent = `Question ${index+1} of ${questions.length}`;
+}
+
+/* Navigation buttons */
+document.getElementById('prevBtn').addEventListener('click', () => {
+    if (currentQuestion > 0) {
+        currentQuestion--;
+        renderQuestion(currentQuestion);
+    }
+});
+document.getElementById('nextBtn').addEventListener('click', () => {
+    if (currentQuestion < questions.length - 1) {
+        currentQuestion++;
+        renderQuestion(currentQuestion);
+    }
+});
+
+/* Initialize UI */
+createJumpButtons();
+renderQuestion(0);
+
+</script>
+</body>
+</html>
