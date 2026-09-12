@@ -524,51 +524,287 @@ In simple words:
 `
 },
 
-    {
-title: "Stored Procedure - Fetch Customers By City",
+  /* QUESTION 3 — Airflow Fundamentals */
+{
+title: "Why Is Airflow Used?",
 
-question:`
-Create a stored procedure.
+question: `
+Why is Apache Airflow used?
 
-Input:
-City Name
-
-Return:
-All customers belonging to that city using RESULTSET.
+Explain:
+1. Why Airflow is needed.
+2. What problems Airflow solves.
+3. How Airflow helps in data engineering.
+4. Give a real-world example.
+5. Explain the benefits of using Airflow.
 `,
-dataset:[
-{ID:1,NAME:"John",CITY:"London"},
-{ID:2,NAME:"David",CITY:"Paris"},
-{ID:3,NAME:"Alex",CITY:"London"}
-],
-output:[
-{ID:1,NAME:"John",CITY:"London"},
-{ID:3,NAME:"Alex",CITY:"London"}
-],
+
+dataset:[],
+
+output:[],
+
 answer:`
-CREATE OR REPLACE PROCEDURE fetchCustomerByCity(p_city STRING)
-RETURNS TABLE()
-LANGUAGE SQL
-AS
-$$
+### Definition
 
-DECLARE
-rs RESULTSET;
+Apache Airflow is used to ORCHESTRATE workflows.
 
-BEGIN
+In simple words:
 
-rs:=(
-SELECT *
-FROM CUSTOMER_DIM
-WHERE CITY=:p_city
-);
+Airflow helps us manage multiple tasks that need to
+run at specific times and/or in a specific order.
 
-RETURN TABLE(rs);
+### Why Do We Need Airflow?
 
-END;
-$$;
+In a real-world data engineering project, we usually
+have many tasks.
 
-CALL fetchCustomerByCity('London');
+For example:
+
+📥 Get data from SQL Server
+      ↓
+🔄 Transform data
+      ↓
+❄️ Load data into Snowflake
+      ↓
+🔍 Validate data
+      ↓
+📊 Generate report
+
+Without a workflow orchestration tool, we would need
+to manually manage when each task runs and whether
+the previous task completed successfully.
+
+Airflow automates this process.
+
+### Problems Airflow Solves
+
+#### 1. Scheduling ⏰
+
+Airflow can automatically run workflows according
+to a schedule.
+
+For example:
+
+Every day at 6:00 AM
+        ↓
+     Run DAG
+        ↓
+  Execute pipeline
+
+We don't have to manually start the pipeline every day.
+
+#### 2. Task Dependencies 🔗
+
+Airflow allows us to define which task should run
+before another task.
+
+For example:
+
+Extract
+   ↓
+Transform
+   ↓
+Load
+
+Transform should not start until Extract has completed.
+
+#### 3. Failure Handling ❌
+
+If a task fails, Airflow can detect the failure.
+
+For example:
+
+Extract     ✅
+   ↓
+Transform   ❌
+   ↓
+Load        ⏸️
+
+Airflow can retry the failed task based on the
+configured retry settings.
+
+#### 4. Monitoring 👀
+
+Airflow provides a Web UI where we can monitor:
+
+- DAGs
+- Tasks
+- Task status
+- Execution history
+- Logs
+- Failures
+- Retries
+
+This makes it easier to identify where a pipeline
+failed.
+
+#### 5. Logging 📋
+
+Airflow maintains logs for task execution.
+
+For example:
+
+Task: load_to_snowflake
+
+Started: 06:00
+Completed: 06:08
+Status: Success
+
+If something goes wrong, we can check the task logs
+to understand the problem.
+
+#### 6. Automation ⚙️
+
+Once a DAG is configured, Airflow can automatically
+execute the workflow according to its schedule.
+
+This reduces manual intervention.
+
+#### 7. Managing Complex Workflows
+
+Airflow is useful when a pipeline contains many
+dependent tasks.
+
+For example:
+
+             📥 Extract
+                 │
+          ┌──────┴──────┐
+          ▼             ▼
+      🔄 Customer    🔄 Orders
+          │             │
+          └──────┬──────┘
+                 ▼
+          ❄️ Snowflake Load
+                 │
+                 ▼
+            🔍 Validate
+                 │
+                 ▼
+             📊 Report
+
+Airflow can manage these dependencies and execute
+the tasks in the correct order.
+
+### Real-World Data Engineering Example
+
+Suppose we have a daily Nordea-style data pipeline:
+
+⏰ 06:00 AM
+     ↓
+📥 Extract data
+     ↓
+🗄️ SQL Server processing
+     ↓
+🔄 Data transformation
+     ↓
+❄️ Snowflake load
+     ↓
+🔍 Reconciliation
+     ↓
+📊 Power BI data refresh
+
+Airflow can orchestrate this entire workflow.
+
+For example:
+
+If the Snowflake load fails:
+
+📥 Extract       ✅
+🗄️ Processing    ✅
+❄️ Snowflake     ❌
+🔍 Reconciliation ⏸️
+📊 Report         ⏸️
+
+Airflow can retry the Snowflake task.
+
+Once it succeeds:
+
+❄️ Snowflake     ✅
+       ↓
+🔍 Reconciliation ▶️
+       ↓
+📊 Report         ▶️
+
+### Visual Representation
+
+                    ✈️ AIRFLOW
+                        │
+                        ▼
+                   📋 DAG
+                        │
+             ┌──────────┴──────────┐
+             ▼                     ▼
+        📥 Extract             🔄 Transform
+             │                     │
+             └──────────┬──────────┘
+                        ▼
+                 ❄️ Load to
+                  Snowflake
+                        │
+                        ▼
+                  🔍 Validate
+                        │
+                        ▼
+                   📊 Report
+
+Airflow controls:
+
+⏰ When to run
+   ↓
+🔗 What runs first
+   ↓
+⚙️ What task to execute
+   ↓
+🔁 What to retry
+   ↓
+📋 Where to check logs
+   ↓
+👀 How to monitor the workflow
+
+### Key Benefits
+
+Airflow provides:
+
+⏰ Scheduling
+🔗 Dependency management
+⚙️ Automation
+🔁 Retry mechanism
+📋 Logging
+👀 Monitoring
+🚨 Failure handling
+📊 Workflow visibility
+
+### Key Takeaway
+
+💡 Airflow is used because real-world data pipelines
+usually contain multiple tasks that must execute
+at the right time and in the right order.
+
+Instead of manually managing those tasks:
+
+          Manual Process
+               ↓
+        😓 Difficult to manage
+
+Airflow provides:
+
+          ✈️ Airflow
+               ↓
+        ⚙️ Automated workflow
+               ↓
+        🔗 Dependencies
+               ↓
+        ⏰ Scheduling
+               ↓
+        👀 Monitoring
+               ↓
+        🔁 Retry / Recovery
+
+In simple words:
+
+👉 Airflow is used to AUTOMATE, SCHEDULE,
+   ORCHESTRATE, and MONITOR complex workflows.
 `
 },
     {
