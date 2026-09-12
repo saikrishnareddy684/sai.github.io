@@ -1881,56 +1881,369 @@ multiple systems."
 
 `
 },
- {
-        
-title: "Stored Procedure - insert rows to table by passing parameter ",
+ 
+/* QUESTION 7 — Airflow Fundamentals */
+{
+title: "What Is a DAG Run?",
 
-question:`
-Create a stored procedure.
+question: `
+What is a DAG Run in Apache Airflow?
 
-Input:
-Customer Id
-Customer Name
-City
-
-Insert a record into CUSTOMER_DIM.
-
-Return
-
-Customer Inserted Successfully.
+Explain:
+1. What a DAG Run is.
+2. How a DAG Run is different from a DAG.
+3. When a DAG Run is created.
+4. What happens when a DAG Run starts.
+5. Give a simple real-world example.
 `,
+
 dataset:[],
-output:[
-{"Result":"Customer Inserted Successfully"}
-],
+
+output:[],
+
 answer:`
-CREATE OR REPLACE PROCEDURE insertCustomer
-(
-p_id INT,
-p_name STRING,
-p_city STRING
-)
-RETURNS STRING
-LANGUAGE SQL
-AS
-$$
+### Definition
 
-BEGIN
+A DAG Run is ONE INSTANCE or ONE EXECUTION of a DAG.
 
-INSERT INTO CUSTOMER_DIM
-VALUES
-(
-:p_id,
-:p_name,
-:p_city
-);
+A DAG defines WHAT the workflow should do.
 
-RETURN 'Customer Inserted Successfully';
+A DAG Run represents ONE TIME that the workflow
+actually runs.
 
-END;
-$$;
+### Simple Example
+
+Suppose we have a DAG called:
+
+📋 daily_sales_pipeline
+
+The DAG is scheduled to run every day at 6:00 AM.
+
+The DAG itself is the workflow definition:
+
+📋 daily_sales_pipeline
+   │
+   ├── 📥 Extract
+   ├── 🔄 Transform
+   ├── ❄️ Load
+   └── 🔍 Validate
+
+
+When the DAG runs on September 12:
+
+📅 September 12, 2026
+       ↓
+📋 daily_sales_pipeline
+       ↓
+▶️ DAG Run
+
+
+When it runs again on September 13:
+
+📅 September 13, 2026
+       ↓
+📋 daily_sales_pipeline
+       ↓
+▶️ Another DAG Run
+
+
+So the SAME DAG can have MANY DAG Runs.
+
+### DAG vs DAG Run
+
+📋 DAG
+
+→ The definition/blueprint of a workflow.
+
+It describes:
+
+- What tasks exist
+- Task dependencies
+- Schedule
+- Configuration
+
+
+▶️ DAG Run
+
+→ One actual execution of that DAG.
+
+It represents:
+
+- A particular execution
+- The execution date/data interval
+- The state of the tasks
+- The overall status of that execution
+
+
+### Example
+
+Suppose this DAG is scheduled daily:
+
+📋 daily_sales_pipeline
+
+It runs for 3 days.
+
+Then we could have:
+
+📋 DAG
+     │
+     ├── ▶️ DAG Run — Sep 10
+     │
+     ├── ▶️ DAG Run — Sep 11
+     │
+     └── ▶️ DAG Run — Sep 12
+
+
+There is ONE DAG definition,
+but THREE DAG Runs.
+
+### What Happens During a DAG Run?
+
+Suppose our DAG contains:
+
+📋 daily_sales_pipeline
+
+        📥 Extract
+             ↓
+        🔄 Transform
+             ↓
+        ❄️ Load
+             ↓
+        🔍 Validate
+
+
+When the DAG Run starts:
+
+▶️ DAG Run
+     │
+     ▼
+📥 Extract      → Success
+     │
+     ▼
+🔄 Transform    → Success
+     │
+     ▼
+❄️ Load         → Success
+     │
+     ▼
+🔍 Validate     → Success
+     │
+     ▼
+✅ DAG Run completed
+
+
+If a task fails:
+
+▶️ DAG Run
+     │
+     ▼
+📥 Extract      → ✅
+     │
+     ▼
+🔄 Transform    → ❌
+     │
+     ▼
+❄️ Load         → ⏸️
+
+
+The DAG Run can have an overall state based on the
+states of its tasks.
+
+### How Is a DAG Run Created?
+
+A DAG Run can be created in different ways.
+
+#### 1. Scheduled
+
+The DAG has a schedule.
+
+For example:
+
+⏰ Every day at 6:00 AM
+        ↓
+⏰ Scheduler detects DAG is due
+        ↓
+▶️ DAG Run created
+
+
+#### 2. Manual
+
+A user can manually trigger a DAG from the Airflow UI.
+
+For example:
+
+Airflow UI
+    ↓
+📋 daily_sales_pipeline
+    ↓
+▶️ Trigger DAG
+    ↓
+▶️ DAG Run
+
+
+#### 3. Programmatically / Externally
+
+A DAG Run can also be triggered by another system
+or through an API/command.
+
+For example:
+
+External System
+      ↓
+Airflow
+      ↓
+📋 DAG
+      ↓
+▶️ DAG Run
+
+
+### DAG Run and Tasks
+
+A DAG Run contains the execution of the tasks defined
+in the DAG.
+
+For example:
+
+📋 DAG
+   │
+   ├── ⚙️ Task A
+   ├── ⚙️ Task B
+   └── ⚙️ Task C
+
+
+One DAG Run executes those tasks:
+
+▶️ DAG Run #1
+   │
+   ├── Task A → ✅
+   ├── Task B → ✅
+   └── Task C → ✅
+
+
+Another DAG Run has its own task executions:
+
+▶️ DAG Run #2
+   │
+   ├── Task A → ✅
+   ├── Task B → ❌
+   └── Task C → ⏸️
+
+
+The two DAG Runs are separate executions.
+
+### Important Concept
+
+A DAG is like a BLUEPRINT.
+
+A DAG Run is like an ACTUAL INSTANCE created
+from that blueprint.
+
+Think about a building:
+
+📐 Blueprint
+   ↓
+🏢 Building
+
+Similarly:
+
+📋 DAG
+   ↓
+▶️ DAG Run
+
+
+### Real-World Example
+
+Suppose:
+
+📋 customer_data_pipeline
+
+Schedule:
+
+⏰ Every day at 6:00 AM
+
+On September 12:
+
+▶️ DAG Run — September 12
+   ↓
+📥 Extract customer data
+   ↓
+🔄 Transform data
+   ↓
+❄️ Load to Snowflake
+   ↓
+🔍 Validate
+
+
+On September 13:
+
+▶️ DAG Run — September 13
+   ↓
+📥 Extract customer data
+   ↓
+🔄 Transform data
+   ↓
+❄️ Load to Snowflake
+   ↓
+🔍 Validate
+
+
+Each day's execution is a separate DAG Run.
+
+### Visual Representation
+
+                  📋 DAG
+          daily_sales_pipeline
+                    │
+          ┌─────────┼─────────┐
+          ▼         ▼         ▼
+        Sep 10    Sep 11    Sep 12
+        ▶️ Run    ▶️ Run    ▶️ Run
+          │         │         │
+          ▼         ▼         ▼
+        Tasks     Tasks     Tasks
+
+
+ONE DAG
+   ↓
+MANY DAG RUNS
+   ↓
+Each DAG Run has its own task executions.
+
+
+### Key Takeaway
+
+📋 DAG
+→ Defines the workflow.
+
+▶️ DAG Run
+→ One execution/instance of that workflow.
+
+⏰ Scheduler
+→ Detects when a scheduled DAG should run.
+
+⚙️ Tasks
+→ Execute as part of the DAG Run.
+
+💡 Remember:
+
+DAG = "What should happen?"
+
+DAG Run = "This workflow is happening NOW
+            for this particular execution."
+
+
+Example:
+
+📋 daily_sales_pipeline
+       │
+       ├── ▶️ DAG Run — Sep 10
+       ├── ▶️ DAG Run — Sep 11
+       └── ▶️ DAG Run — Sep 12
+
+ONE DAG can have MANY DAG Runs.
 `
 },
+
 {
 title: "Stored Procedure - Load Data from Stream to Target Table",
 
