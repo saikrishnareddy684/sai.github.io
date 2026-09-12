@@ -1171,63 +1171,229 @@ Therefore, Airflow does not necessarily mean
 It depends on the architecture and requirements.
 `
 },
-    {
-title: "Stored Procedure - Delete Customer If Exists",
+    /* QUESTION 5 — Airflow Scheduling */
+{
+title: "Are DAGs Scheduled or Is Airflow Scheduled?",
 
 question: `
-Create a SQL Stored Procedure named deleteifexistscustomer.
+Are DAGs scheduled in Apache Airflow, or is Airflow itself
+scheduled?
 
-Requirements:
-
-1. Accept Customer ID as an input parameter.
-2. Check whether the customer exists.
-3. If the customer exists:
-   - Delete the customer record.
-   - Return a success message.
-4. If the customer does not exist:
-   - Return a "Customer not found" message.
+Explain:
+1. Whether Airflow or DAGs are scheduled.
+2. What the Airflow Scheduler does.
+3. Where the schedule is defined.
+4. What happens when a DAG reaches its scheduled time.
+5. Give a simple example.
 `,
 
-dataset:[
-{ID:1,NAME:"John",CITY:"London"},
-{ID:2,NAME:"David",CITY:"Paris"},
-{ID:3,NAME:"Alex",CITY:"Tokyo"}
-],
+dataset:[],
 
-output:[
-{"Result":"Deleted the rows for Customer ID 1"}
-],
+output:[],
 
 answer:`
-CREATE OR REPLACE PROCEDURE deleteifexistscustomer(pid INT)
-RETURNS STRING
-LANGUAGE SQL
-AS
-$$
-BEGIN
+### Definition — Airflow
 
-    IF (EXISTS (
-        SELECT 1
-        FROM customers
-        WHERE id = :pid
-    )) THEN
+Apache Airflow is the PLATFORM that manages and
+orchestrates workflows.
 
-        DELETE
-        FROM customers
-        WHERE id = :pid;
+Airflow itself is not normally scheduled like a DAG.
 
-        RETURN 'Deleted the rows for Customer ID ' || :pid;
+### Definition — DAG
 
-    ELSE
+A DAG represents a specific workflow in Airflow.
 
-        RETURN 'Customer not found for Customer ID ' || :pid;
+A DAG can have a schedule that tells Airflow when
+that workflow should run.
 
-    END IF;
+### Definition — Schedule
 
-END;
-$$;
+A schedule defines WHEN a DAG should be triggered.
 
-CALL deleteifexistscustomer(1);
+For example:
+
+⏰ Every day at 6:00 AM
+
+or:
+
+⏰ Every hour
+
+or:
+
+⏰ Every Monday
+
+### Definition — Scheduler
+
+The Airflow Scheduler is an Airflow COMPONENT that
+continuously checks the DAGs and their schedules.
+
+When a DAG is due to run, the Scheduler creates a
+DAG Run and schedules its tasks for execution.
+
+### So, What Is Actually Scheduled?
+
+📋 DAG
+   → Has the schedule
+
+✈️ Airflow
+   → Manages the DAG
+
+⏰ Scheduler
+   → Checks the DAG schedule and triggers the DAG
+
+⚙️ Tasks
+   → Execute as part of the DAG Run
+
+
+### Simple Example
+
+Suppose we have a DAG called:
+
+📋 daily_sales_pipeline
+
+We configure:
+
+Schedule → Every day at 6:00 AM
+
+The process is:
+
+⏰ 6:00 AM
+    ↓
+📋 daily_sales_pipeline is due
+    ↓
+⏰ Airflow Scheduler detects it
+    ↓
+▶️ DAG Run is created
+    ↓
+⚙️ Tasks are executed
+    ↓
+✅ DAG Run completed
+
+
+### Visual Representation
+
+                 ✈️ AIRFLOW
+                     │
+          ┌──────────┴──────────┐
+          │                     │
+          ▼                     ▼
+      ⏰ Scheduler            📋 DAG
+          │                     │
+          │              Schedule defined
+          │                     │
+          └──────────►──────────┘
+                     │
+                     ▼
+              ⏰ Scheduled time
+                     │
+                     ▼
+                📋 DAG Run
+                     │
+              ┌──────┼──────┐
+              ▼      ▼      ▼
+             ⚙️     ⚙️     ⚙️
+           Task 1  Task 2  Task 3
+
+
+### Example Schedule
+
+Suppose the DAG has:
+
+schedule = "0 6 * * *"
+
+This represents:
+
+⏰ 06:00
+📅 Every day
+
+So:
+
+Monday    → 06:00 → DAG Run
+Tuesday   → 06:00 → DAG Run
+Wednesday → 06:00 → DAG Run
+Thursday  → 06:00 → DAG Run
+...
+
+
+### Important Distinction
+
+Do not confuse:
+
+⏰ Scheduler
+with
+📅 Schedule
+
+
+⏰ Scheduler
+→ An Airflow component
+
+📅 Schedule
+→ Defines when a DAG should run
+
+
+### Another Important Point
+
+The Scheduler does NOT perform all the actual work
+of the tasks.
+
+Its main responsibility is to determine which tasks
+are ready to run and arrange for them to be executed.
+
+For example:
+
+📋 DAG
+   │
+   ▼
+⏰ Scheduler
+   │
+   ▼
+⚙️ Task ready to run
+   │
+   ▼
+▶️ Task execution
+
+
+### Interview Answer
+
+If the interviewer asks:
+
+"Is Airflow scheduled or are DAGs scheduled?"
+
+A good answer is:
+
+"The schedule is defined for a DAG, not for Airflow
+itself. The Airflow Scheduler is a component of Airflow
+that continuously checks the schedules of DAGs. When a
+DAG is due, the Scheduler creates a DAG Run and schedules
+the tasks for execution."
+
+
+### Key Takeaway
+
+✈️ Airflow
+→ Platform
+
+📋 DAG
+→ Workflow
+
+📅 Schedule
+→ Defines when the DAG should run
+
+⏰ Scheduler
+→ Airflow component that checks the schedule
+
+📋 DAG Run
+→ One execution/instance of a DAG
+
+⚙️ Task
+→ Individual work within the DAG
+
+💡 Remember:
+
+DAG has the SCHEDULE.
+Scheduler checks the SCHEDULE.
+Scheduler triggers the DAG RUN.
+Tasks execute as part of the DAG RUN.
 `
 },
     {
