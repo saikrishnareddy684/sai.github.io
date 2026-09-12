@@ -1,0 +1,4072 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>python scenario Question & Answer — Full</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f4f4f9;
+            color: #222;
+        }
+        .container {
+            width: 95%;
+            max-width: 1100px;
+            margin: 0 auto;
+        } 
+        h1 { margin: 0 0 8px; font-size: 22px; }
+        h2 { margin: 18px 0 6px; font-size: 18px; color: #333; }
+        h3 { margin: 8px 0; font-size: 16px; color: #333; }
+        .box {
+            background: white;
+            padding: 18px;
+            margin-top: 14px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.06);
+        }
+        .jump-buttons {
+            margin-bottom: 12px;
+        }
+        /*
+        .jump-buttons button {
+            background-color: #008CBA;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            margin-right: 8px;
+            margin-bottom: 8px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 13px;
+        }
+        .jump-buttons button:hover { background-color: #007399; }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-top: 10px;
+        }
+        */
+        .jump-buttons button {
+
+    background-color:#008CBA;
+
+    color:white;
+
+    border:none;
+
+    padding:10px 14px;
+
+    margin:6px;
+
+    border-radius:6px;
+
+    cursor:pointer;
+
+    font-size:13px;
+
+    width:280px;
+
+    height:65px;
+
+    text-align:left;
+
+    white-space:normal;
+
+    line-height:18px;
+
+    vertical-align:top;
+
+}
+
+.jump-buttons button:hover {
+
+    background:#007399;
+
+}
+        table, th, td { border: 1px solid #ddd; }
+        th, td { padding: 8px; text-align: left; font-size: 13px; }
+        th { background: #fafafa; }
+        pre {
+            background: #272822;
+            color: #f8f8f2;
+            padding: 14px;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-size: 13px;
+            line-height: 1.45;
+        }
+        .nav-buttons {
+            margin-top: 14px;
+            display: flex;
+            justify-content: space-between;
+            gap: 8px;
+        }
+        .nav-controls button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+        .nav-controls button:hover { background-color: #45a049; }
+        .small-muted { color: #666; font-size: 13px; margin-top: 6px; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>📚 python scenario Questions & Answers</h1>
+    <div class="small-muted">Click any question button to jump directly to that question. Buttons are auto-generated from the `questions` array — add new question objects there and a button appears automatically.</div>
+
+    <!-- Jump buttons (auto-generated) -->
+    <div id="jumpButtons" class="jump-buttons"></div>
+
+    <!-- Question area -->
+    <div id="questionBox" class="box"></div>
+
+    <h3>Sample Dataset</h3>
+    <div id="datasetBox" class="box"></div>
+
+    <h3>Sample Dataset</h3>
+    <div id="datasetBox2" class="box"></div>
+
+    <h3>Sample Dataset</h3>
+    <div id="datasetBox3" class="box"></div>
+    
+    <h3>Expected Output</h3>
+    <div id="outputBox" class="box"></div>
+
+    <h2>🟢 SQL Answer</h2>
+    <div class="box">
+        <pre id="answerBox"></pre>
+    </div>
+
+    <div class="nav-buttons">
+        <div class="nav-controls">
+            <button id="prevBtn">⬅ Previous</button>
+            <button id="nextBtn">Next ➡</button>
+        </div>
+        <div class="small-muted" id="questionCounter"></div>
+    </div>
+</div>
+
+<script>
+/* ============================
+   QUESTIONS ARRAY (6 questions)
+   Keep the same object format when adding new questions.
+   Buttons will be generated automatically.
+   ============================ */
+const questions = [
+  {
+title: "Python Variable Declaration — Data Engineering Practice",
+
+question: `
+Create a Python program that declares variables for a simple data pipeline.
+
+The pipeline should have:
+
+source = SQL Server
+target = Snowflake
+table = FACT_PORTFOLIO
+records = 100000
+successful = True
+
+Then print one sentence describing the pipeline.
+`,
+
+dataset:[],
+
+output:[],
+
+answer:`
+Definition:
+
+A variable is a name used to store a value in Python.
+
+Python does not normally require us to declare the data type separately. Python identifies the data type from the value assigned to the variable.
+
+Basic syntax:
+
+variable_name = value
+
+For example:
+
+name = "Sai"
+age = 28
+
+Here:
+
+name is the variable.
+"Sai" is a string value.
+age is the variable.
+28 is an integer value.
+
+For this data-engineering example:
+
+source = "SQL Server"
+target = "Snowflake"
+table = "FACT_PORTFOLIO"
+records = 100000
+successful = True
+
+The data types are:
+
+source → string
+target → string
+table → string
+records → integer
+successful → boolean
+
+We can use an f-string to combine these variables into a sentence.
+
+Example:
+
+source = "SQL Server"
+target = "Snowflake"
+table = "FACT_PORTFOLIO"
+records = 100000
+successful = True
+
+print(f"Loaded {records} records from {source} to {target} for table {table}. Load successful: {successful}")
+
+Output:
+
+Loaded 100000 records from SQL Server to Snowflake for table FACT_PORTFOLIO. Load successful: True
+
+Visual:
+
+SQL Server
+|
+| 100000 records
+↓
+FACT_PORTFOLIO
+|
+↓
+Snowflake
+|
+↓
+Load successful = True
+
+Important points:
+
+1. Strings are written inside quotation marks.
+2. Numbers do not need quotation marks.
+3. True and False represent boolean values.
+4. Python automatically determines the data type.
+5. f-strings allow variables to be inserted into a sentence.
+
+This type of variable usage will become useful later when we create Airflow DAGs and pass information such as source tables, target tables, database names, and configuration values.
+`
+},
+
+/* QUESTION 2 — Airflow Fundamentals */
+{
+title: "What Is a DAG?",
+
+question: `
+What is a DAG in Apache Airflow?
+
+Explain:
+1. What DAG stands for.
+2. What a DAG represents in Airflow.
+3. What a task is.
+4. What task dependencies are.
+5. What Directed, Acyclic, and Graph mean.
+6. Why a DAG cannot contain a cycle.
+`,
+
+dataset:[],
+
+output:[],
+
+answer:`
+### Definition
+
+DAG stands for:
+
+D → Directed
+A → Acyclic
+G → Graph
+
+In Apache Airflow, a DAG represents a WORKFLOW.
+
+A DAG defines:
+
+1. The tasks that need to be executed
+2. The dependencies between those tasks
+3. The order in which tasks should execute
+4. The schedule/configuration of the workflow
+
+### What Is a Task?
+
+A Task is an individual unit of work inside a DAG.
+
+For example:
+
+📥 Extract Data → Task
+🔄 Transform Data → Task
+❄️ Load Data → Task
+🔍 Validate Data → Task
+
+### What Is a Dependency?
+
+A dependency defines the relationship between tasks
+and determines which task should execute before another.
+
+For example:
+
+Task A → Task B
+
+means:
+
+Task B should execute after Task A.
+
+In Airflow, this can be represented as:
+
+task_a >> task_b
+
+### What Does Directed Mean?
+
+Directed means that the workflow has a specific direction.
+
+For example:
+
+A → B → C
+
+The direction is:
+
+A first
+ ↓
+B second
+ ↓
+C third
+
+### What Does Acyclic Mean?
+
+Acyclic means that the workflow cannot contain a cycle.
+
+A valid DAG:
+
+A → B → C
+
+An invalid workflow:
+
+A → B → C
+↑         ↓
+└─────────┘
+
+Here, C eventually points back to A.
+
+This creates a cycle, so it is not a valid DAG.
+
+### What Does Graph Mean?
+
+A graph consists of:
+
+Nodes
+→ Tasks
+
+Edges
+→ Dependencies between tasks
+
+For example:
+
+        Task A
+           │
+           ▼
+        Task B
+           │
+           ▼
+        Task C
+
+Here:
+
+📦 Task A = Node
+📦 Task B = Node
+📦 Task C = Node
+
+➡️ Arrows = Dependencies
+
+### Real-World Example
+
+Suppose we need to load data into Snowflake.
+
+The workflow is:
+
+1. Extract data
+2. Transform data
+3. Load data
+4. Validate data
+
+Each step can become a task inside a DAG.
+
+### Visual Representation
+
+              📋 DAG
+               │
+               ▼
+        📥 Extract Data
+               │
+               ▼
+        🔄 Transform Data
+               │
+               ▼
+        ❄️ Load to Snowflake
+               │
+               ▼
+          🔍 Validate Data
+
+The arrows represent dependencies.
+
+Therefore:
+
+Extract
+   ↓
+Transform
+   ↓
+Load
+   ↓
+Validate
+
+### Airflow vs DAG vs Task
+
+✈️ Airflow
+   → Platform that manages workflows
+
+📋 DAG
+   → Definition/blueprint of one workflow
+
+⚙️ Task
+   → Individual unit of work inside the DAG
+
+🔗 Dependency
+   → Relationship that defines task execution order
+
+### Important Example
+
+One Airflow environment can contain multiple DAGs:
+
+             ✈️ AIRFLOW
+                  │
+        ┌─────────┼─────────┐
+        ▼         ▼         ▼
+      📋 DAG 1   📋 DAG 2   📋 DAG 3
+        │         │         │
+       Tasks     Tasks     Tasks
+
+For example:
+
+📋 customer_data_pipeline
+📋 sales_data_pipeline
+📋 risk_data_pipeline
+
+Each DAG can contain its own tasks and dependencies.
+
+### Key Takeaway
+
+💡 DAG = Directed Acyclic Graph
+
+📋 DAG = Defines a workflow
+
+⚙️ Task = Individual work inside the workflow
+
+🔗 Dependency = Defines the order between tasks
+
+➡️ Directed = Has a specific direction
+
+🚫 Acyclic = Cannot contain a cycle
+
+🔷 Graph = Collection of nodes and relationships
+
+In simple words:
+
+📋 A DAG is the blueprint of an Airflow workflow.
+`
+},
+
+  /* QUESTION 3 — Airflow Fundamentals */
+{
+title: "Why Is Airflow Used?",
+
+question: `
+Why is Apache Airflow used?
+
+Explain:
+1. Why Airflow is needed.
+2. What problems Airflow solves.
+3. How Airflow helps in data engineering.
+4. Give a real-world example.
+5. Explain the benefits of using Airflow.
+`,
+
+dataset:[],
+
+output:[],
+
+answer:`
+### Definition
+
+Apache Airflow is used to ORCHESTRATE workflows.
+
+In simple words:
+
+Airflow helps us manage multiple tasks that need to
+run at specific times and/or in a specific order.
+
+### Why Do We Need Airflow?
+
+In a real-world data engineering project, we usually
+have many tasks.
+
+For example:
+
+📥 Get data from SQL Server
+      ↓
+🔄 Transform data
+      ↓
+❄️ Load data into Snowflake
+      ↓
+🔍 Validate data
+      ↓
+📊 Generate report
+
+Without a workflow orchestration tool, we would need
+to manually manage when each task runs and whether
+the previous task completed successfully.
+
+Airflow automates this process.
+
+### Problems Airflow Solves
+
+#### 1. Scheduling ⏰
+
+Airflow can automatically run workflows according
+to a schedule.
+
+For example:
+
+Every day at 6:00 AM
+        ↓
+     Run DAG
+        ↓
+  Execute pipeline
+
+We don't have to manually start the pipeline every day.
+
+#### 2. Task Dependencies 🔗
+
+Airflow allows us to define which task should run
+before another task.
+
+For example:
+
+Extract
+   ↓
+Transform
+   ↓
+Load
+
+Transform should not start until Extract has completed.
+
+#### 3. Failure Handling ❌
+
+If a task fails, Airflow can detect the failure.
+
+For example:
+
+Extract     ✅
+   ↓
+Transform   ❌
+   ↓
+Load        ⏸️
+
+Airflow can retry the failed task based on the
+configured retry settings.
+
+#### 4. Monitoring 👀
+
+Airflow provides a Web UI where we can monitor:
+
+- DAGs
+- Tasks
+- Task status
+- Execution history
+- Logs
+- Failures
+- Retries
+
+This makes it easier to identify where a pipeline
+failed.
+
+#### 5. Logging 📋
+
+Airflow maintains logs for task execution.
+
+For example:
+
+Task: load_to_snowflake
+
+Started: 06:00
+Completed: 06:08
+Status: Success
+
+If something goes wrong, we can check the task logs
+to understand the problem.
+
+#### 6. Automation ⚙️
+
+Once a DAG is configured, Airflow can automatically
+execute the workflow according to its schedule.
+
+This reduces manual intervention.
+
+#### 7. Managing Complex Workflows
+
+Airflow is useful when a pipeline contains many
+dependent tasks.
+
+For example:
+
+             📥 Extract
+                 │
+          ┌──────┴──────┐
+          ▼             ▼
+      🔄 Customer    🔄 Orders
+          │             │
+          └──────┬──────┘
+                 ▼
+          ❄️ Snowflake Load
+                 │
+                 ▼
+            🔍 Validate
+                 │
+                 ▼
+             📊 Report
+
+Airflow can manage these dependencies and execute
+the tasks in the correct order.
+
+### Real-World Data Engineering Example
+
+Suppose we have a daily Nordea-style data pipeline:
+
+⏰ 06:00 AM
+     ↓
+📥 Extract data
+     ↓
+🗄️ SQL Server processing
+     ↓
+🔄 Data transformation
+     ↓
+❄️ Snowflake load
+     ↓
+🔍 Reconciliation
+     ↓
+📊 Power BI data refresh
+
+Airflow can orchestrate this entire workflow.
+
+For example:
+
+If the Snowflake load fails:
+
+📥 Extract       ✅
+🗄️ Processing    ✅
+❄️ Snowflake     ❌
+🔍 Reconciliation ⏸️
+📊 Report         ⏸️
+
+Airflow can retry the Snowflake task.
+
+Once it succeeds:
+
+❄️ Snowflake     ✅
+       ↓
+🔍 Reconciliation ▶️
+       ↓
+📊 Report         ▶️
+
+### Visual Representation
+
+                    ✈️ AIRFLOW
+                        │
+                        ▼
+                   📋 DAG
+                        │
+             ┌──────────┴──────────┐
+             ▼                     ▼
+        📥 Extract             🔄 Transform
+             │                     │
+             └──────────┬──────────┘
+                        ▼
+                 ❄️ Load to
+                  Snowflake
+                        │
+                        ▼
+                  🔍 Validate
+                        │
+                        ▼
+                   📊 Report
+
+Airflow controls:
+
+⏰ When to run
+   ↓
+🔗 What runs first
+   ↓
+⚙️ What task to execute
+   ↓
+🔁 What to retry
+   ↓
+📋 Where to check logs
+   ↓
+👀 How to monitor the workflow
+
+### Key Benefits
+
+Airflow provides:
+
+⏰ Scheduling
+🔗 Dependency management
+⚙️ Automation
+🔁 Retry mechanism
+📋 Logging
+👀 Monitoring
+🚨 Failure handling
+📊 Workflow visibility
+
+### Key Takeaway
+
+💡 Airflow is used because real-world data pipelines
+usually contain multiple tasks that must execute
+at the right time and in the right order.
+
+Instead of manually managing those tasks:
+
+          Manual Process
+               ↓
+        😓 Difficult to manage
+
+Airflow provides:
+
+          ✈️ Airflow
+               ↓
+        ⚙️ Automated workflow
+               ↓
+        🔗 Dependencies
+               ↓
+        ⏰ Scheduling
+               ↓
+        👀 Monitoring
+               ↓
+        🔁 Retry / Recovery
+
+In simple words:
+
+👉 Airflow is used to AUTOMATE, SCHEDULE,
+   ORCHESTRATE, and MONITOR complex workflows.
+`
+},
+   /* QUESTION 4 — Airflow vs SSIS */
+{
+title: "How Is SSIS Different From Airflow?",
+
+question: `
+How is SSIS different from Apache Airflow?
+
+Explain:
+1. What SSIS is.
+2. What Airflow is.
+3. The main difference between SSIS and Airflow.
+4. Compare them based on ETL, orchestration, scheduling,
+   transformation, monitoring, and deployment.
+5. Give a practical example.
+6. Can Airflow replace SSIS?
+`,
+
+dataset:[],
+
+output:[],
+
+answer:`
+### Definition — SSIS
+
+SSIS stands for:
+
+SQL Server Integration Services
+
+SSIS is a Microsoft ETL and data integration platform.
+
+It is commonly used to:
+
+📥 Extract data
+🔄 Transform data
+📤 Load data
+
+For example:
+
+SQL Server
+    ↓
+  SSIS
+    ↓
+Transform
+    ↓
+SQL Server / Other Target
+
+
+### Definition — Airflow
+
+Apache Airflow is an open-source WORKFLOW ORCHESTRATION
+platform.
+
+It is mainly used to:
+
+⏰ Schedule workflows
+🔗 Manage dependencies
+⚙️ Execute tasks
+🔁 Retry failed tasks
+📋 Maintain logs
+👀 Monitor workflows
+
+
+### Main Difference
+
+The biggest difference is:
+
+🔷 SSIS
+   → Primarily an ETL / Data Integration tool
+
+✈️ Airflow
+   → Primarily a Workflow Orchestration tool
+
+
+### What Does This Mean?
+
+SSIS can actually perform data transformation.
+
+For example, an SSIS package can:
+
+📥 Read data from SQL Server
+       ↓
+🔄 Lookup data
+       ↓
+🔄 Filter rows
+       ↓
+🔄 Aggregate data
+       ↓
+📤 Load data into another table
+
+
+Airflow normally does not perform these transformations
+itself.
+
+Instead, Airflow can ORCHESTRATE the tools that perform
+the work.
+
+For example:
+
+                    ✈️ AIRFLOW
+                         │
+            ┌────────────┼────────────┐
+            ▼            ▼            ▼
+        🗄️ SQL       🐍 Python     ❄️ Snowflake
+        Task          Task           Task
+            │            │            │
+            └────────────┼────────────┘
+                         ▼
+                      📊 Report
+
+
+### SSIS Example
+
+Suppose we need to move customer data:
+
+SQL Server
+    │
+    ▼
+📦 SSIS Package
+    │
+    ├── OLE DB Source
+    │
+    ├── Lookup
+    │
+    ├── Derived Column
+    │
+    ├── Conditional Split
+    │
+    └── OLE DB Destination
+            │
+            ▼
+       SQL Server
+
+
+Here, SSIS itself is doing the ETL work.
+
+
+### Airflow Example
+
+Suppose we have the same overall pipeline:
+
+                ✈️ AIRFLOW
+                     │
+                     ▼
+              📋 Customer DAG
+                     │
+          ┌──────────┼──────────┐
+          ▼          ▼          ▼
+       📥 Extract  🔄 Transform  ❄️ Load
+          │          │           │
+      SQL Server   Python      Snowflake
+                     │
+                     ▼
+                  🔍 Validate
+
+
+Here, Airflow controls the workflow.
+
+The actual work can be performed by:
+
+🗄️ SQL
+🐍 Python
+❄️ Snowflake
+📦 SSIS
+🔌 API
+etc.
+
+
+### Comparison
+
+| Area | SSIS | Airflow |
+|---|---|---|
+| Primary purpose | ETL / Data Integration | Workflow Orchestration |
+| Developed by | Microsoft | Apache Software Foundation / open-source community |
+| ETL transformation | Strong | Usually delegated to other tools |
+| Workflow orchestration | Available, but package-oriented | Core purpose |
+| Scheduling | Yes | Yes |
+| Dependencies | Yes | Strong workflow dependency management |
+| Monitoring | SSIS/SQL Server ecosystem | Airflow Web UI |
+| Logs | Yes | Yes |
+| Retry | Yes | Yes |
+| Python integration | Possible | Very strong |
+| Snowflake integration | Possible | Strong |
+| SQL Server integration | Strong | Possible |
+| Cloud/multi-system workflows | Possible | Very suitable |
+| GUI-based development | Yes | DAG/code-based |
+| Programming style | Mostly visual packages | Programmatic Python DAGs |
+
+### Important Difference in Approach
+
+SSIS is generally:
+
+📦 PACKAGE-ORIENTED
+
+You create an SSIS package containing:
+
+Tasks
++
+Data Flow
++
+Transformations
++
+Connections
+
+
+Airflow is generally:
+
+📋 WORKFLOW/DAG-ORIENTED
+
+You create a DAG containing:
+
+Tasks
++
+Dependencies
++
+Schedule
++
+Configuration
+
+
+### Simple Example
+
+Imagine you have:
+
+1️⃣ Load Customer Data
+2️⃣ Load Order Data
+3️⃣ Perform Validation
+4️⃣ Refresh Report
+
+
+With SSIS:
+
+📦 SSIS Package
+    │
+    ├── Customer Data Flow
+    ├── Order Data Flow
+    ├── Validation
+    └── Report Task
+
+
+With Airflow:
+
+📋 DAG
+ │
+ ├── ⚙️ load_customer
+ │
+ ├── ⚙️ load_orders
+ │
+ ├── ⚙️ validate
+ │
+ └── ⚙️ refresh_report
+
+
+And the dependencies could be:
+
+load_customer ──┐
+                ├──> validate ──> refresh_report
+load_orders ────┘
+
+
+### Can Airflow Replace SSIS?
+
+💡 Not always directly.
+
+Airflow and SSIS solve different problems.
+
+If you need to perform complex transformations using
+SSIS Data Flow components, SSIS may still be appropriate.
+
+If you need to coordinate many different systems and
+applications, Airflow may be more suitable.
+
+However, Airflow can ORCHESTRATE SSIS packages.
+
+For example:
+
+                ✈️ AIRFLOW
+                     │
+                     ▼
+              Run SSIS Package
+                     │
+                     ▼
+                 SQL Server
+                     │
+                     ▼
+                ❄️ Snowflake
+
+
+So Airflow can act as the ORCHESTRATOR while SSIS
+performs the ETL work.
+
+
+### Interview Answer
+
+If the interviewer asks:
+
+"What's the main difference between SSIS and Airflow?"
+
+
+A good answer is:
+
+"SSIS is primarily an ETL and data integration tool,
+where we can extract, transform, and load data using
+components such as Data Flow Tasks.
+
+Airflow, on the other hand, is primarily a workflow
+orchestration platform. It is used to schedule tasks,
+manage dependencies, execute workflows, monitor them,
+and handle retries.
+
+Airflow can orchestrate different technologies such
+as SQL, Python, Snowflake, APIs, and even SSIS packages.
+
+So, SSIS focuses more on performing ETL, whereas Airflow
+focuses more on orchestrating workflows."
+
+
+### Visual Summary
+
+             📦 SSIS
+                │
+       ETL / Data Integration
+                │
+       ┌────────┼────────┐
+       ▼        ▼        ▼
+    Extract  Transform   Load
+
+
+             ✈️ AIRFLOW
+                │
+          Orchestration
+                │
+       ┌────────┼────────┐
+       ▼        ▼        ▼
+      SQL     Python   Snowflake
+       │        │        │
+       └────────┼────────┘
+                ▼
+             Workflow
+
+
+### Key Takeaway
+
+📦 SSIS
+→ Mainly performs ETL/Data Integration
+
+✈️ Airflow
+→ Mainly orchestrates workflows
+
+💡 They can also work TOGETHER.
+
+Airflow
+   ↓
+Run SSIS
+   ↓
+Process data
+   ↓
+Continue next Airflow task
+
+Therefore, Airflow does not necessarily mean
+"SSIS is no longer needed."
+
+It depends on the architecture and requirements.
+`
+},
+    /* QUESTION 5 — Airflow Scheduling */
+{
+title: "Are DAGs Scheduled or Is Airflow Scheduled?",
+
+question: `
+Are DAGs scheduled in Apache Airflow, or is Airflow itself
+scheduled?
+
+Explain:
+1. Whether Airflow or DAGs are scheduled.
+2. What the Airflow Scheduler does.
+3. Where the schedule is defined.
+4. What happens when a DAG reaches its scheduled time.
+5. Give a simple example.
+`,
+
+dataset:[],
+
+output:[],
+
+answer:`
+### Definition — Airflow
+
+Apache Airflow is the PLATFORM that manages and
+orchestrates workflows.
+
+Airflow itself is not normally scheduled like a DAG.
+
+### Definition — DAG
+
+A DAG represents a specific workflow in Airflow.
+
+A DAG can have a schedule that tells Airflow when
+that workflow should run.
+
+### Definition — Schedule
+
+A schedule defines WHEN a DAG should be triggered.
+
+For example:
+
+⏰ Every day at 6:00 AM
+
+or:
+
+⏰ Every hour
+
+or:
+
+⏰ Every Monday
+
+### Definition — Scheduler
+
+The Airflow Scheduler is an Airflow COMPONENT that
+continuously checks the DAGs and their schedules.
+
+When a DAG is due to run, the Scheduler creates a
+DAG Run and schedules its tasks for execution.
+
+### So, What Is Actually Scheduled?
+
+📋 DAG
+   → Has the schedule
+
+✈️ Airflow
+   → Manages the DAG
+
+⏰ Scheduler
+   → Checks the DAG schedule and triggers the DAG
+
+⚙️ Tasks
+   → Execute as part of the DAG Run
+
+
+### Simple Example
+
+Suppose we have a DAG called:
+
+📋 daily_sales_pipeline
+
+We configure:
+
+Schedule → Every day at 6:00 AM
+
+The process is:
+
+⏰ 6:00 AM
+    ↓
+📋 daily_sales_pipeline is due
+    ↓
+⏰ Airflow Scheduler detects it
+    ↓
+▶️ DAG Run is created
+    ↓
+⚙️ Tasks are executed
+    ↓
+✅ DAG Run completed
+
+
+### Visual Representation
+
+                 ✈️ AIRFLOW
+                     │
+          ┌──────────┴──────────┐
+          │                     │
+          ▼                     ▼
+      ⏰ Scheduler            📋 DAG
+          │                     │
+          │              Schedule defined
+          │                     │
+          └──────────►──────────┘
+                     │
+                     ▼
+              ⏰ Scheduled time
+                     │
+                     ▼
+                📋 DAG Run
+                     │
+              ┌──────┼──────┐
+              ▼      ▼      ▼
+             ⚙️     ⚙️     ⚙️
+           Task 1  Task 2  Task 3
+
+
+### Example Schedule
+
+Suppose the DAG has:
+
+schedule = "0 6 * * *"
+
+This represents:
+
+⏰ 06:00
+📅 Every day
+
+So:
+
+Monday    → 06:00 → DAG Run
+Tuesday   → 06:00 → DAG Run
+Wednesday → 06:00 → DAG Run
+Thursday  → 06:00 → DAG Run
+...
+
+
+### Important Distinction
+
+Do not confuse:
+
+⏰ Scheduler
+with
+📅 Schedule
+
+
+⏰ Scheduler
+→ An Airflow component
+
+📅 Schedule
+→ Defines when a DAG should run
+
+
+### Another Important Point
+
+The Scheduler does NOT perform all the actual work
+of the tasks.
+
+Its main responsibility is to determine which tasks
+are ready to run and arrange for them to be executed.
+
+For example:
+
+📋 DAG
+   │
+   ▼
+⏰ Scheduler
+   │
+   ▼
+⚙️ Task ready to run
+   │
+   ▼
+▶️ Task execution
+
+
+### Interview Answer
+
+If the interviewer asks:
+
+"Is Airflow scheduled or are DAGs scheduled?"
+
+A good answer is:
+
+"The schedule is defined for a DAG, not for Airflow
+itself. The Airflow Scheduler is a component of Airflow
+that continuously checks the schedules of DAGs. When a
+DAG is due, the Scheduler creates a DAG Run and schedules
+the tasks for execution."
+
+
+### Key Takeaway
+
+✈️ Airflow
+→ Platform
+
+📋 DAG
+→ Workflow
+
+📅 Schedule
+→ Defines when the DAG should run
+
+⏰ Scheduler
+→ Airflow component that checks the schedule
+
+📋 DAG Run
+→ One execution/instance of a DAG
+
+⚙️ Task
+→ Individual work within the DAG
+
+💡 Remember:
+
+DAG has the SCHEDULE.
+Scheduler checks the SCHEDULE.
+Scheduler triggers the DAG RUN.
+Tasks execute as part of the DAG RUN.
+`
+},
+  /* QUESTION 6 — Airflow vs SQL Server Agent */
+{
+title: "Airflow vs SQL Server Agent",
+
+question: `
+What is the difference between Apache Airflow and
+SQL Server Agent?
+
+Explain:
+1. What SQL Server Agent is.
+2. What Airflow is.
+3. The main difference between them.
+4. Compare scheduling, task dependencies, ETL,
+   monitoring, integrations, and platform support.
+5. Give a practical example.
+6. When would you use SQL Server Agent and when
+   would you use Airflow?
+`,
+
+dataset:[],
+
+output:[],
+
+answer:`
+### Definition — SQL Server Agent
+
+SQL Server Agent is a Microsoft SQL Server service
+used to automate and schedule jobs.
+
+It is commonly used for:
+
+📅 Scheduling SQL jobs
+⚙️ Executing stored procedures
+📦 Running SSIS packages
+🔄 Performing database maintenance
+📋 Monitoring job execution
+🚨 Sending alerts when jobs fail
+
+
+### Definition — Apache Airflow
+
+Apache Airflow is an open-source platform used to
+programmatically author, schedule, and monitor
+workflows.
+
+It is mainly a WORKFLOW ORCHESTRATION platform.
+
+Airflow can orchestrate tasks across different
+technologies and systems.
+
+For example:
+
+✈️ Airflow
+   ├── SQL Server
+   ├── ❄️ Snowflake
+   ├── 🐍 Python
+   ├── 🔌 APIs
+   ├── 📦 SSIS
+   └── ☁️ Cloud services
+
+
+### Main Difference
+
+The simplest way to remember the difference is:
+
+🗄️ SQL Server Agent
+→ Mainly focused on SQL Server/database-related
+  job scheduling and automation.
+
+✈️ Airflow
+→ Mainly focused on orchestrating complex workflows
+  across multiple systems and technologies.
+
+
+### SQL Server Agent Example
+
+Suppose we need to run a stored procedure every day:
+
+⏰ 6:00 AM
+    ↓
+🗄️ SQL Server Agent
+    ↓
+▶️ Execute Stored Procedure
+    ↓
+✅ Job Completed
+
+
+SQL Server Agent can also execute:
+
+SQL Job
+   ↓
+Stored Procedure
+   ↓
+SSIS Package
+   ↓
+Maintenance Task
+
+
+### Airflow Example
+
+Suppose our pipeline uses multiple technologies:
+
+                 ✈️ AIRFLOW
+                     │
+                     ▼
+                📋 Daily DAG
+                     │
+             ┌───────┼───────┐
+             ▼       ▼       ▼
+        🗄️ SQL    🐍 Python  ❄️ Snowflake
+             │       │       │
+             └───────┼───────┘
+                     ▼
+                 🔍 Validate
+                     │
+                     ▼
+                  📊 Report
+
+
+Airflow can coordinate the complete workflow.
+
+
+### Scheduling
+
+Both tools support scheduling.
+
+SQL Server Agent:
+
+📅 Schedule
+   ↓
+🗄️ SQL Server Agent
+   ↓
+⚙️ Job
+
+
+Airflow:
+
+📅 DAG Schedule
+   ↓
+⏰ Airflow Scheduler
+   ↓
+📋 DAG Run
+   ↓
+⚙️ Tasks
+
+
+### Task Dependencies
+
+SQL Server Agent supports job steps and sequencing,
+but Airflow is designed specifically around workflow
+dependencies.
+
+For example:
+
+Extract
+   ↓
+Transform
+   ↓
+Load
+   ↓
+Validate
+
+
+In Airflow, these dependencies are explicitly defined
+in the DAG.
+
+For example:
+
+task_extract >> task_transform
+task_transform >> task_load
+task_load >> task_validate
+
+
+This makes complex workflows easier to represent.
+
+
+### ETL / Data Processing
+
+SQL Server Agent itself is NOT an ETL tool.
+
+It can schedule an SSIS package that performs ETL.
+
+For example:
+
+SQL Server Agent
+      ↓
+Run SSIS Package
+      ↓
+📥 Extract
+      ↓
+🔄 Transform
+      ↓
+📤 Load
+
+
+Similarly, Airflow itself is primarily NOT an ETL
+transformation engine.
+
+It can orchestrate tools that perform the ETL work.
+
+For example:
+
+Airflow
+   ↓
+Python
+   ↓
+SQL
+   ↓
+Snowflake
+   ↓
+Validation
+
+
+### Monitoring
+
+SQL Server Agent provides monitoring for SQL Server
+jobs.
+
+You can check:
+
+📋 Job history
+✅ Success
+❌ Failure
+⏰ Schedule
+🚨 Alerts
+
+
+Airflow provides a workflow-oriented UI where you can
+monitor:
+
+📋 DAGs
+⚙️ Tasks
+📅 DAG Runs
+🔗 Dependencies
+📋 Logs
+🔁 Retries
+❌ Failures
+⏱️ Execution times
+
+
+### Platform / Technology Support
+
+SQL Server Agent is strongly associated with the
+Microsoft SQL Server ecosystem.
+
+For example:
+
+🗄️ SQL Server
+📦 SSIS
+📋 T-SQL
+🔧 SQL Server maintenance
+
+
+Airflow is designed to work across many different
+technologies.
+
+For example:
+
+🗄️ SQL Server
+❄️ Snowflake
+🐍 Python
+☁️ AWS
+☁️ Azure
+🔌 REST APIs
+📦 SSIS
+📊 Data warehouses
+
+
+### Practical Example
+
+Suppose your pipeline is:
+
+SQL Server
+    ↓
+SSIS
+    ↓
+Snowflake
+    ↓
+Validation
+    ↓
+Power BI
+
+
+Using SQL Server Agent:
+
+🗄️ SQL Server Agent
+        ↓
+📦 Run SSIS
+        ↓
+❄️ Snowflake
+        ↓
+⚙️ Another SQL Agent Job
+        ↓
+📊 Report
+
+
+This can work, but managing a large cross-platform
+workflow can become more complicated.
+
+
+Using Airflow:
+
+                 ✈️ AIRFLOW
+                      │
+                      ▼
+                📋 Pipeline DAG
+                      │
+          ┌───────────┼───────────┐
+          ▼           ▼           ▼
+       🗄️ SQL       📦 SSIS    ❄️ Snowflake
+          │           │           │
+          └───────────┼───────────┘
+                      ▼
+                  🔍 Validate
+                      │
+                      ▼
+                  📊 Refresh
+
+
+Airflow acts as the central orchestrator.
+
+
+### Comparison
+
+| Feature | SQL Server Agent | Airflow |
+|---|---|---|
+| Primary purpose | Job scheduling/automation | Workflow orchestration |
+| Ecosystem | Microsoft / SQL Server | Multi-platform |
+| Scheduling | ✅ | ✅ |
+| Task dependencies | ✅ | ✅ Strong workflow model |
+| SQL Server | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐ |
+| SSIS | ⭐⭐⭐⭐⭐ | ✅ Can orchestrate |
+| Snowflake | Possible | ⭐⭐⭐⭐⭐ |
+| Python | Limited compared with Airflow | ⭐⭐⭐⭐⭐ |
+| APIs | Limited | ⭐⭐⭐⭐⭐ |
+| Cross-platform workflows | Limited | ⭐⭐⭐⭐⭐ |
+| Workflow visualization | Basic | Strong |
+| Task-level monitoring | ✅ | ✅ |
+| Logs | ✅ | ✅ |
+| Retry handling | ✅ | ✅ |
+| Complex workflows | Possible | Excellent |
+| DAG concept | ❌ | ✅ |
+
+
+### When Would You Use SQL Server Agent?
+
+SQL Server Agent is a good choice when:
+
+🗄️ Most of your workload is inside SQL Server.
+
+For example:
+
+SQL Server
+   ↓
+Stored Procedure
+   ↓
+SQL Server
+   ↓
+Report
+
+
+Or:
+
+SQL Server Agent
+   ↓
+SSIS Package
+   ↓
+SQL Server
+
+
+For a Microsoft SQL Server-centric environment,
+SQL Server Agent can be simple and effective.
+
+
+### When Would You Use Airflow?
+
+Airflow becomes more attractive when:
+
+🌐 Multiple technologies are involved.
+
+For example:
+
+SQL Server
+   +
+Snowflake
+   +
+Python
+   +
+APIs
+   +
+Cloud services
+
+
+And you need:
+
+📅 Scheduling
+🔗 Complex dependencies
+🔁 Retries
+📋 Centralized logs
+👀 Monitoring
+⚙️ Workflow orchestration
+
+
+### Important Point
+
+Airflow does NOT automatically make SQL Server Agent
+obsolete.
+
+They can even work together.
+
+For example:
+
+                 ✈️ AIRFLOW
+                      │
+                      ▼
+             🗄️ SQL Server Agent
+                      │
+                      ▼
+                 📦 SSIS
+                      │
+                      ▼
+                 🗄️ SQL Server
+
+
+Airflow can act as the higher-level orchestrator,
+while SQL Server Agent continues to manage
+SQL Server-specific jobs.
+
+
+### Interview Answer
+
+If the interviewer asks:
+
+"What's the difference between Airflow and SQL Server
+Agent?"
+
+
+A good answer is:
+
+"SQL Server Agent is primarily a job scheduling and
+automation service within the SQL Server ecosystem.
+It is commonly used to schedule T-SQL jobs, stored
+procedures, SSIS packages, and database maintenance.
+
+Airflow is an open-source workflow orchestration
+platform. It is designed to manage workflows across
+multiple technologies such as SQL Server, Snowflake,
+Python, APIs, and cloud services.
+
+Both can schedule and monitor jobs, but Airflow is
+more suitable for complex, cross-platform workflows,
+while SQL Server Agent is very convenient for
+SQL Server-centric workloads."
+
+
+### Key Takeaway
+
+🗄️ SQL Server Agent
+→ SQL Server-focused job scheduler
+
+✈️ Airflow
+→ Cross-platform workflow orchestrator
+
+📦 SSIS
+→ ETL / Data Integration
+
+📋 DAG
+→ Workflow definition in Airflow
+
+⏰ Scheduler
+→ Airflow component that triggers DAG runs
+
+💡 Easy way to remember:
+
+SQL Server Agent
+      ↓
+"Run this SQL/SSIS job."
+
+Airflow
+      ↓
+"Manage this entire workflow across
+multiple systems."
+
+`
+},
+ 
+/* QUESTION 7 — Airflow Fundamentals */
+{
+title: "What Is a DAG Run?",
+
+question: `
+What is a DAG Run in Apache Airflow?
+
+Explain:
+1. What a DAG Run is.
+2. How a DAG Run is different from a DAG.
+3. When a DAG Run is created.
+4. What happens when a DAG Run starts.
+5. Give a simple real-world example.
+`,
+
+dataset:[],
+
+output:[],
+
+answer:`
+### Definition
+
+A DAG Run is ONE INSTANCE or ONE EXECUTION of a DAG.
+
+A DAG defines WHAT the workflow should do.
+
+A DAG Run represents ONE TIME that the workflow
+actually runs.
+
+### Simple Example
+
+Suppose we have a DAG called:
+
+📋 daily_sales_pipeline
+
+The DAG is scheduled to run every day at 6:00 AM.
+
+The DAG itself is the workflow definition:
+
+📋 daily_sales_pipeline
+   │
+   ├── 📥 Extract
+   ├── 🔄 Transform
+   ├── ❄️ Load
+   └── 🔍 Validate
+
+
+When the DAG runs on September 12:
+
+📅 September 12, 2026
+       ↓
+📋 daily_sales_pipeline
+       ↓
+▶️ DAG Run
+
+
+When it runs again on September 13:
+
+📅 September 13, 2026
+       ↓
+📋 daily_sales_pipeline
+       ↓
+▶️ Another DAG Run
+
+
+So the SAME DAG can have MANY DAG Runs.
+
+### DAG vs DAG Run
+
+📋 DAG
+
+→ The definition/blueprint of a workflow.
+
+It describes:
+
+- What tasks exist
+- Task dependencies
+- Schedule
+- Configuration
+
+
+▶️ DAG Run
+
+→ One actual execution of that DAG.
+
+It represents:
+
+- A particular execution
+- The execution date/data interval
+- The state of the tasks
+- The overall status of that execution
+
+
+### Example
+
+Suppose this DAG is scheduled daily:
+
+📋 daily_sales_pipeline
+
+It runs for 3 days.
+
+Then we could have:
+
+📋 DAG
+     │
+     ├── ▶️ DAG Run — Sep 10
+     │
+     ├── ▶️ DAG Run — Sep 11
+     │
+     └── ▶️ DAG Run — Sep 12
+
+
+There is ONE DAG definition,
+but THREE DAG Runs.
+
+### What Happens During a DAG Run?
+
+Suppose our DAG contains:
+
+📋 daily_sales_pipeline
+
+        📥 Extract
+             ↓
+        🔄 Transform
+             ↓
+        ❄️ Load
+             ↓
+        🔍 Validate
+
+
+When the DAG Run starts:
+
+▶️ DAG Run
+     │
+     ▼
+📥 Extract      → Success
+     │
+     ▼
+🔄 Transform    → Success
+     │
+     ▼
+❄️ Load         → Success
+     │
+     ▼
+🔍 Validate     → Success
+     │
+     ▼
+✅ DAG Run completed
+
+
+If a task fails:
+
+▶️ DAG Run
+     │
+     ▼
+📥 Extract      → ✅
+     │
+     ▼
+🔄 Transform    → ❌
+     │
+     ▼
+❄️ Load         → ⏸️
+
+
+The DAG Run can have an overall state based on the
+states of its tasks.
+
+### How Is a DAG Run Created?
+
+A DAG Run can be created in different ways.
+
+#### 1. Scheduled
+
+The DAG has a schedule.
+
+For example:
+
+⏰ Every day at 6:00 AM
+        ↓
+⏰ Scheduler detects DAG is due
+        ↓
+▶️ DAG Run created
+
+
+#### 2. Manual
+
+A user can manually trigger a DAG from the Airflow UI.
+
+For example:
+
+Airflow UI
+    ↓
+📋 daily_sales_pipeline
+    ↓
+▶️ Trigger DAG
+    ↓
+▶️ DAG Run
+
+
+#### 3. Programmatically / Externally
+
+A DAG Run can also be triggered by another system
+or through an API/command.
+
+For example:
+
+External System
+      ↓
+Airflow
+      ↓
+📋 DAG
+      ↓
+▶️ DAG Run
+
+
+### DAG Run and Tasks
+
+A DAG Run contains the execution of the tasks defined
+in the DAG.
+
+For example:
+
+📋 DAG
+   │
+   ├── ⚙️ Task A
+   ├── ⚙️ Task B
+   └── ⚙️ Task C
+
+
+One DAG Run executes those tasks:
+
+▶️ DAG Run #1
+   │
+   ├── Task A → ✅
+   ├── Task B → ✅
+   └── Task C → ✅
+
+
+Another DAG Run has its own task executions:
+
+▶️ DAG Run #2
+   │
+   ├── Task A → ✅
+   ├── Task B → ❌
+   └── Task C → ⏸️
+
+
+The two DAG Runs are separate executions.
+
+### Important Concept
+
+A DAG is like a BLUEPRINT.
+
+A DAG Run is like an ACTUAL INSTANCE created
+from that blueprint.
+
+Think about a building:
+
+📐 Blueprint
+   ↓
+🏢 Building
+
+Similarly:
+
+📋 DAG
+   ↓
+▶️ DAG Run
+
+
+### Real-World Example
+
+Suppose:
+
+📋 customer_data_pipeline
+
+Schedule:
+
+⏰ Every day at 6:00 AM
+
+On September 12:
+
+▶️ DAG Run — September 12
+   ↓
+📥 Extract customer data
+   ↓
+🔄 Transform data
+   ↓
+❄️ Load to Snowflake
+   ↓
+🔍 Validate
+
+
+On September 13:
+
+▶️ DAG Run — September 13
+   ↓
+📥 Extract customer data
+   ↓
+🔄 Transform data
+   ↓
+❄️ Load to Snowflake
+   ↓
+🔍 Validate
+
+
+Each day's execution is a separate DAG Run.
+
+### Visual Representation
+
+                  📋 DAG
+          daily_sales_pipeline
+                    │
+          ┌─────────┼─────────┐
+          ▼         ▼         ▼
+        Sep 10    Sep 11    Sep 12
+        ▶️ Run    ▶️ Run    ▶️ Run
+          │         │         │
+          ▼         ▼         ▼
+        Tasks     Tasks     Tasks
+
+
+ONE DAG
+   ↓
+MANY DAG RUNS
+   ↓
+Each DAG Run has its own task executions.
+
+
+### Key Takeaway
+
+📋 DAG
+→ Defines the workflow.
+
+▶️ DAG Run
+→ One execution/instance of that workflow.
+
+⏰ Scheduler
+→ Detects when a scheduled DAG should run.
+
+⚙️ Tasks
+→ Execute as part of the DAG Run.
+
+💡 Remember:
+
+DAG = "What should happen?"
+
+DAG Run = "This workflow is happening NOW
+            for this particular execution."
+
+
+Example:
+
+📋 daily_sales_pipeline
+       │
+       ├── ▶️ DAG Run — Sep 10
+       ├── ▶️ DAG Run — Sep 11
+       └── ▶️ DAG Run — Sep 12
+
+ONE DAG can have MANY DAG Runs.
+`
+},
+
+{
+title: "What Is Docker?",
+
+question: `
+What is Docker?
+
+Explain:
+1. What Docker is.
+2. What a Docker container is.
+3. What a Docker image is.
+4. What Docker Compose is.
+5. Why Docker is used with Airflow.
+6. Give a simple real-world example.
+7. Explain Docker vs Virtual Machine.
+`,
+
+dataset:[],
+
+output:[],
+
+answer:`
+### Definition
+
+🐳 Docker is a platform used to package and run applications
+inside isolated environments called CONTAINERS.
+
+In simple words:
+
+Docker allows an application to run together with the
+software and dependencies it needs, in a consistent
+environment.
+
+### What Is a Container?
+
+📦 A Container is an isolated environment in which an
+application runs.
+
+For example:
+
+📦 Airflow Container
+      │
+      ├── Airflow
+      ├── Python
+      └── Required libraries
+
+
+The container keeps the application's environment
+separate from other applications running on the computer.
+
+### What Is a Docker Image?
+
+🖼️ A Docker Image is a TEMPLATE used to create a
+Docker Container.
+
+Think of it like this:
+
+🖼️ Docker Image
+       │
+       │ creates
+       ▼
+📦 Docker Container
+
+
+For example:
+
+Airflow Docker Image
+       │
+       ▼
+Airflow Container
+
+
+The image contains the application and the required
+software/configuration needed to create the container.
+
+### Image vs Container
+
+🖼️ IMAGE
+→ Template/blueprint.
+
+📦 CONTAINER
+→ Running instance created from the image.
+
+
+Simple analogy:
+
+🏠 House Blueprint
+       ↓
+🏠 Actual House
+
+
+Similarly:
+
+🖼️ Docker Image
+       ↓
+📦 Docker Container
+
+
+### What Is Docker Compose?
+
+🐳 Docker Compose is a tool used to define and run
+multiple related containers together.
+
+Airflow usually needs more than one component.
+
+For example:
+
+🐳 Docker Compose
+       │
+       ├── 📦 Airflow Scheduler
+       ├── 📦 Airflow Webserver
+       ├── 📦 Airflow Worker
+       └── 📦 PostgreSQL
+
+
+Instead of manually starting every container,
+Docker Compose can manage them together.
+
+### Why Is Docker Used With Airflow?
+
+Airflow has several components and dependencies.
+
+Installing everything directly on Windows can be
+complicated.
+
+Without Docker:
+
+Windows
+   │
+   ├── Python
+   ├── Airflow
+   ├── Airflow dependencies
+   ├── Database
+   ├── Configuration
+   └── Other required services
+
+
+With Docker:
+
+Windows
+   │
+   ▼
+🐳 Docker
+   │
+   ├── 📦 Airflow
+   ├── 📦 Database
+   └── 📦 Other services
+
+
+Docker makes it easier to create a consistent Airflow
+environment.
+
+### Your Airflow Setup
+
+In your current setup, you have:
+
+Windows
+   │
+   ▼
+WSL2
+   │
+   ▼
+🐳 Docker
+   │
+   ▼
+📋 Airflow
+   │
+   ▼
+🌐 Airflow UI
+   │
+   ▼
+localhost:8080
+
+
+When you started your airflow-practice project using
+Docker Compose, Docker created and ran the required
+Airflow containers.
+
+You can then access the Airflow UI through:
+
+http://localhost:8080
+
+
+### Simple Airflow Example
+
+Suppose you have an Airflow workflow:
+
+📋 sales_pipeline
+       │
+       ▼
+📥 Extract data
+       │
+       ▼
+🔄 Transform data
+       │
+       ▼
+❄️ Load to Snowflake
+       │
+       ▼
+🔍 Validate
+
+
+Docker provides the environment in which Airflow
+components can run.
+
+So:
+
+🐳 Docker
+   ↓
+📋 Airflow
+   ↓
+📋 DAG
+   ↓
+⚙️ Tasks
+   ↓
+❄️ Snowflake
+
+
+### Docker vs Virtual Machine
+
+A Virtual Machine generally contains a complete
+guest operating system.
+
+A Docker Container shares the host operating system's
+kernel and isolates the application and its dependencies.
+
+Simple view:
+
+### Virtual Machine
+
+💻 Your Computer
+       ↓
+🖥️ Virtual Machine
+       ↓
+💿 Complete Operating System
+       ↓
+📋 Application
+
+
+### Docker
+
+💻 Your Computer
+       ↓
+🐳 Docker
+       ↓
+📦 Container
+       ↓
+📋 Application
+
+
+Containers are generally lighter and faster to start
+than full virtual machines.
+
+### Important Docker Terms
+
+🐳 Docker
+→ Platform for running containers.
+
+📦 Container
+→ Isolated environment where an application runs.
+
+🖼️ Docker Image
+→ Template used to create containers.
+
+🐳 Docker Compose
+→ Tool used to define and run multiple related
+  containers together.
+
+
+### Easy Analogy
+
+Think about a food delivery package.
+
+📝 Recipe
+   ↓
+🖼️ Docker Image
+   ↓
+📦 Docker Container
+   ↓
+🍱 Running Application
+
+
+The image is the template.
+
+The container is the actual running environment.
+
+### Key Takeaway
+
+Remember these four terms:
+
+🐳 Docker
+→ Platform.
+
+🖼️ Image
+→ Template.
+
+📦 Container
+→ Running instance of an image.
+
+🐳 Docker Compose
+→ Manages multiple related containers.
+
+For Airflow:
+
+🐳 Docker
+      ↓
+📦 Airflow Containers
+      ↓
+📋 Airflow
+      ↓
+📋 DAG
+      ↓
+⚙️ Tasks
+
+
+💡 For your Airflow learning, you don't need to become
+a Docker expert.
+
+Initially, understand:
+
+Docker
+→ Image
+→ Container
+→ Docker Compose
+
+These concepts are enough to understand how your
+Airflow environment is running.
+`
+},
+    {
+title: "Stored Procedure - Load SCD Type 2 Using Stream and Merge",
+
+question: `
+Create a SQL Stored Procedure named LOAD_SCD2.
+
+Requirements:
+
+1. Read changed records from the STG_CUSTOMER_STREAM stream.
+2. Process only INSERT operations using the METADATA$ACTION column.
+3. Store the changed records in a temporary table.
+4. Perform SCD Type 2 processing:
+   - If CUSTOMER_NAME or SALARY has changed, mark the existing record as CURRENT_FLAG='N' and set the END_DATE.
+   - Insert the new version of the customer record with CURRENT_FLAG='Y'.
+5. Capture the number of rows updated using SQLROWCOUNT.
+6. Capture the number of rows inserted using SQLROWCOUNT.
+7. Return a message in the format:
+   Updated = <updated_rows>, Inserted = <inserted_rows>
+`,
+
+dataset:[
+{CUSTOMER_ID:101,CUSTOMER_NAME:"John",SALARY:5000,CURRENT_FLAG:"Y",START_DATE:"2025-01-01",END_DATE:null},
+{CUSTOMER_ID:102,CUSTOMER_NAME:"David",SALARY:7000,CURRENT_FLAG:"Y",START_DATE:"2025-01-01",END_DATE:null}
+],
+
+dataset2:[
+{CUSTOMER_ID:101,CUSTOMER_NAME:"John",SALARY:6500,METADATA_ACTION:"INSERT"},
+{CUSTOMER_ID:102,CUSTOMER_NAME:"David",SALARY:7000,METADATA_ACTION:"INSERT"}
+],
+
+output:[
+{CUSTOMER_ID:101,CUSTOMER_NAME:"John",SALARY:5000,CURRENT_FLAG:"N"},
+{CUSTOMER_ID:101,CUSTOMER_NAME:"John",SALARY:6500,CURRENT_FLAG:"Y"},
+{"Result":"Updated = 1, Inserted = 1"}
+],
+
+answer:`
+CREATE OR REPLACE PROCEDURE LOAD_SCD2()
+RETURNS STRING
+LANGUAGE SQL
+AS
+$$
+DECLARE
+    V_UPDATED NUMBER;
+    V_INSERTED NUMBER;
+BEGIN
+
+    CREATE OR REPLACE TEMP TABLE TMP_CHANGES AS
+    SELECT
+        CUSTOMER_ID,
+        CUSTOMER_NAME,
+        SALARY
+    FROM STG_CUSTOMER_STREAM
+    WHERE METADATA$ACTION='INSERT';
+
+    MERGE INTO DIM_CUSTOMER T
+    USING TMP_CHANGES S
+    ON T.CUSTOMER_ID=S.CUSTOMER_ID
+    AND T.CURRENT_FLAG='Y'
+
+    WHEN MATCHED
+    AND (
+            T.CUSTOMER_NAME<>S.CUSTOMER_NAME
+         OR T.SALARY<>S.SALARY
+    )
+
+    THEN UPDATE
+    SET
+        CURRENT_FLAG='N',
+        END_DATE=CURRENT_DATE();
+
+    V_UPDATED:=SQLROWCOUNT;
+
+    INSERT INTO DIM_CUSTOMER
+    (
+        CUSTOMER_ID,
+        CUSTOMER_NAME,
+        SALARY,
+        START_DATE,
+        END_DATE,
+        CURRENT_FLAG
+    )
+
+    SELECT
+        S.CUSTOMER_ID,
+        S.CUSTOMER_NAME,
+        S.SALARY,
+        CURRENT_DATE(),
+        NULL,
+        'Y'
+
+    FROM TMP_CHANGES S
+
+    LEFT JOIN DIM_CUSTOMER D
+
+    ON S.CUSTOMER_ID=D.CUSTOMER_ID
+    AND S.CUSTOMER_NAME=D.CUSTOMER_NAME
+    AND S.SALARY=D.SALARY
+    AND D.CURRENT_FLAG='Y'
+
+    WHERE D.CUSTOMER_ID IS NULL;
+
+    V_INSERTED:=SQLROWCOUNT;
+
+    RETURN
+    'Updated = '
+    ||V_UPDATED
+    ||', Inserted = '
+    ||V_INSERTED;
+
+END;
+$$;
+
+CALL LOAD_SCD2();
+`,
+
+explanation:`
+Concepts Covered:
+
+• Snowflake Streams
+• METADATA$ACTION
+• Temporary Tables
+• MERGE Statement
+• Slowly Changing Dimension (SCD Type 2)
+• SQLROWCOUNT
+• CURRENT_FLAG
+• START_DATE / END_DATE
+• INSERT ... SELECT
+• Stored Procedures
+• RETURN STRING
+
+Note:
+This is a common Snowflake ETL pattern for implementing SCD Type 2. The MERGE statement expires the current version of a record, while the INSERT statement creates the new current version. SQLROWCOUNT is used after each DML operation to report the number of rows updated and inserted.
+`
+},
+    {
+title: "External Stage - Load CSV File from Amazon S3 into Snowflake",
+
+question:`
+A CSV file named employees.csv has already been uploaded to the following S3 bucket:
+
+s3://company-data/employees/
+
+The CSV contains the following data:
+
+EMP_ID,EMP_NAME,DEPARTMENT,SALARY
+1,John,IT,60000
+2,Alice,HR,55000
+3,Bob,Finance,70000
+
+Perform the following tasks:
+
+1. Create a target table named EMPLOYEES.
+2. Create a CSV file format.
+3. Create a Storage Integration for the S3 bucket.
+4. Create an External Stage using the Storage Integration.
+5. Verify that the file exists in the stage.
+6. Validate the file without loading data.
+7. Load the data into the table.
+8. Reload the file even if it has already been loaded.
+9. Load only employees.csv.
+10. Load only CSV files matching a pattern.
+11. Skip invalid rows while loading.
+12. Remove the source file after successful loading.
+13. Display the loaded data.
+
+Also demonstrate how to create the same External Stage using AWS_ACCESS_KEY_ID and AWS_SECRET_KEY instead of Storage Integration.
+`,
+
+dataset:[
+{"EMP_ID":1,"EMP_NAME":"John","DEPARTMENT":"IT","SALARY":60000},
+{"EMP_ID":2,"EMP_NAME":"Alice","DEPARTMENT":"HR","SALARY":55000},
+{"EMP_ID":3,"EMP_NAME":"Bob","DEPARTMENT":"Finance","SALARY":70000}
+],
+
+output:[
+{"EMP_ID":1,"EMP_NAME":"John","DEPARTMENT":"IT","SALARY":60000},
+{"EMP_ID":2,"EMP_NAME":"Alice","DEPARTMENT":"HR","SALARY":55000},
+{"EMP_ID":3,"EMP_NAME":"Bob","DEPARTMENT":"Finance","SALARY":70000}
+],
+
+answer:`
+
+--------------------------------------------------------
+-- Step 1 : Create Target Table
+--------------------------------------------------------
+
+CREATE OR REPLACE TABLE EMPLOYEES
+(
+EMP_ID NUMBER,
+EMP_NAME STRING,
+DEPARTMENT STRING,
+SALARY NUMBER
+);
+
+--------------------------------------------------------
+-- Step 2 : Create File Format
+--------------------------------------------------------
+
+CREATE OR REPLACE FILE FORMAT CSV_FORMAT
+TYPE = CSV
+FIELD_DELIMITER=','
+SKIP_HEADER=1
+FIELD_OPTIONALLY_ENCLOSED_BY='"'
+NULL_IF=('NULL','');
+
+--------------------------------------------------------
+-- Step 3 : Create Storage Integration
+--------------------------------------------------------
+
+CREATE OR REPLACE STORAGE INTEGRATION S3_INT
+TYPE = EXTERNAL_STAGE
+STORAGE_PROVIDER = S3
+ENABLED = TRUE
+STORAGE_AWS_ROLE_ARN='arn:aws:iam::123456789012:role/SnowflakeRole'
+STORAGE_ALLOWED_LOCATIONS=('s3://company-data/');
+
+--------------------------------------------------------
+-- Step 4 : Describe Storage Integration
+--------------------------------------------------------
+
+DESC INTEGRATION S3_INT;
+
+--------------------------------------------------------
+-- Step 5 : Create External Stage using Storage Integration
+--------------------------------------------------------
+
+CREATE OR REPLACE STAGE EMP_STAGE
+URL='s3://company-data/employees/'
+STORAGE_INTEGRATION=S3_INT
+FILE_FORMAT=CSV_FORMAT;
+
+--------------------------------------------------------
+-- Alternative Method
+-- Create Stage using AWS Keys
+--------------------------------------------------------
+
+CREATE OR REPLACE STAGE EMP_STAGE_KEY
+URL='s3://company-data/employees/'
+CREDENTIALS=(
+AWS_KEY_ID='YOUR_ACCESS_KEY'
+AWS_SECRET_KEY='YOUR_SECRET_KEY'
+)
+FILE_FORMAT=CSV_FORMAT;
+
+--------------------------------------------------------
+-- Step 6 : Verify Files
+--------------------------------------------------------
+
+LIST @EMP_STAGE;
+
+--------------------------------------------------------
+-- Step 7 : Validate without Loading
+--------------------------------------------------------
+
+COPY INTO EMPLOYEES
+FROM @EMP_STAGE
+VALIDATION_MODE='RETURN_ERRORS';
+
+--------------------------------------------------------
+-- Return All Errors
+--------------------------------------------------------
+
+COPY INTO EMPLOYEES
+FROM @EMP_STAGE
+VALIDATION_MODE='RETURN_ALL_ERRORS';
+
+--------------------------------------------------------
+-- Step 8 : Load Data
+--------------------------------------------------------
+
+COPY INTO EMPLOYEES
+FROM @EMP_STAGE;
+
+--------------------------------------------------------
+-- Step 9 : Load only Specific File
+--------------------------------------------------------
+
+COPY INTO EMPLOYEES
+FROM @EMP_STAGE
+FILES=('employees.csv');
+
+--------------------------------------------------------
+-- Step 10 : Load using Pattern
+--------------------------------------------------------
+
+COPY INTO EMPLOYEES
+FROM @EMP_STAGE
+PATTERN='.*employees.*\\.csv';
+
+--------------------------------------------------------
+-- Step 11 : Skip Bad Records
+--------------------------------------------------------
+
+COPY INTO EMPLOYEES
+FROM @EMP_STAGE
+ON_ERROR='CONTINUE';
+
+--------------------------------------------------------
+-- Step 12 : Force Reload
+--------------------------------------------------------
+
+COPY INTO EMPLOYEES
+FROM @EMP_STAGE
+FORCE=TRUE;
+
+--------------------------------------------------------
+-- Step 13 : Purge Files
+--------------------------------------------------------
+
+COPY INTO EMPLOYEES
+FROM @EMP_STAGE
+PURGE=TRUE;
+
+--------------------------------------------------------
+-- Step 14 : Combine Multiple Parameters
+--------------------------------------------------------
+
+COPY INTO EMPLOYEES
+FROM @EMP_STAGE
+FILES=('employees.csv')
+ON_ERROR='CONTINUE'
+FORCE=TRUE
+PURGE=TRUE;
+
+--------------------------------------------------------
+-- Step 15 : View Loaded Data
+--------------------------------------------------------
+
+SELECT *
+FROM EMPLOYEES;
+
+`
+},
+    {
+title: "Snowpipe - Load CSV from S3 Stage into Raw Table",
+
+question: `
+A file named employee.csv is uploaded into the following S3 bucket:
+
+s3://my-practice-bucket-sai-123/
+
+Requirements:
+
+1. Create a CSV File Format.
+2. Create a Storage Integration.
+3. Create an External Stage using the Storage Integration.
+4. Create a table named EMPLOYEE_RAW.
+5. Create a Snowpipe named EMPLOYEE_PIPE to automatically load only employee CSV files into EMPLOYEE_RAW.
+6. Manually trigger the pipe using ALTER PIPE ... REFRESH.
+7. Verify that the data has been loaded into EMPLOYEE_RAW.
+`,
+
+dataset:[
+{EMP_ID:101,EMP_NAME:"John"},
+{EMP_ID:102,EMP_NAME:"Alice"}
+],
+
+output:[
+{EMP_ID:101,EMP_NAME:"John"},
+{EMP_ID:102,EMP_NAME:"Alice"}
+],
+
+answer:`
+
+CREATE OR REPLACE FILE FORMAT CSV_FORMAT
+TYPE=CSV
+SKIP_HEADER=1
+FIELD_DELIMITER=',';
+
+CREATE OR REPLACE STORAGE INTEGRATION S3_INT
+TYPE=EXTERNAL_STAGE
+STORAGE_PROVIDER=S3
+ENABLED=TRUE
+STORAGE_AWS_ROLE_ARN='YOUR_ROLE_ARN'
+STORAGE_ALLOWED_LOCATIONS=('s3://my-practice-bucket-sai-123/');
+
+CREATE OR REPLACE STAGE EMP_STAGE
+URL='s3://my-practice-bucket-sai-123/'
+STORAGE_INTEGRATION=S3_INT
+FILE_FORMAT=CSV_FORMAT;
+
+CREATE OR REPLACE TABLE EMPLOYEE_RAW
+(
+EMP_ID NUMBER,
+EMP_NAME STRING
+);
+
+CREATE OR REPLACE PIPE EMPLOYEE_PIPE
+AS
+COPY INTO EMPLOYEE_RAW
+FROM @EMP_STAGE
+PATTERN='.*employee.*\\.csv'
+FILE_FORMAT=(FORMAT_NAME='CSV_FORMAT');
+
+ALTER PIPE EMPLOYEE_PIPE REFRESH;
+
+SELECT *
+FROM EMPLOYEE_RAW;
+
+`
+},
+    {
+title: "External Table - Query CSV Files from Amazon S3",
+
+question: `
+A CSV file named customers.csv is stored in the following S3 bucket:
+
+s3://my-practice-bucket-sai-123/
+
+Requirements:
+
+1. Create a CSV File Format.
+2. Create a Storage Integration.
+3. Create an External Stage.
+4. Create an External Table named EXT_CUSTOMERS.
+5. Read the data directly from S3 without loading it into Snowflake.
+6. Refresh the External Table after a new file is uploaded.
+7. Query the External Table.
+`,
+
+dataset:[
+{CUSTOMER_ID:1,CUSTOMER_NAME:"John",CITY:"London"},
+{CUSTOMER_ID:2,CUSTOMER_NAME:"David",CITY:"Paris"},
+{CUSTOMER_ID:3,CUSTOMER_NAME:"Alex",CITY:"Tokyo"}
+],
+
+output:[
+{CUSTOMER_ID:1,CUSTOMER_NAME:"John",CITY:"London"},
+{CUSTOMER_ID:2,CUSTOMER_NAME:"David",CITY:"Paris"},
+{CUSTOMER_ID:3,CUSTOMER_NAME:"Alex",CITY:"Tokyo"}
+],
+
+answer:`
+
+CREATE OR REPLACE FILE FORMAT CSV_FORMAT
+TYPE=CSV
+SKIP_HEADER=1;
+
+CREATE OR REPLACE STORAGE INTEGRATION S3_INT
+TYPE=EXTERNAL_STAGE
+STORAGE_PROVIDER=S3
+ENABLED=TRUE
+STORAGE_AWS_ROLE_ARN='YOUR_ROLE_ARN'
+STORAGE_ALLOWED_LOCATIONS=('s3://my-practice-bucket-sai-123/');
+
+CREATE OR REPLACE STAGE CUSTOMER_STAGE
+URL='s3://my-practice-bucket-sai-123/'
+STORAGE_INTEGRATION=S3_INT
+FILE_FORMAT=CSV_FORMAT;
+
+CREATE OR REPLACE EXTERNAL TABLE EXT_CUSTOMERS
+(
+CUSTOMER_ID NUMBER AS (VALUE:c1::NUMBER),
+CUSTOMER_NAME STRING AS (VALUE:c2::STRING),
+CITY STRING AS (VALUE:c3::STRING)
+)
+LOCATION=@CUSTOMER_STAGE
+PATTERN='.*customers\\.csv'
+AUTO_REFRESH=FALSE
+FILE_FORMAT=(FORMAT_NAME='CSV_FORMAT');
+
+ALTER EXTERNAL TABLE EXT_CUSTOMERS REFRESH;
+
+SELECT *
+FROM EXT_CUSTOMERS;
+
+`
+},
+
+    {
+title: "Snowpipe + Stream + Task - Incremental Employee Load",
+
+question: `
+An employee.csv file is uploaded to Amazon S3.
+
+Requirements:
+
+1. Create a CSV File Format.
+2. Create a Storage Integration.
+3. Create an External Stage.
+4. Create a RAW table named EMPLOYEE_RAW.
+5. Create a Snowpipe to load files into EMPLOYEE_RAW.
+6. Trigger the Snowpipe manually.
+7. Create a Stream on EMPLOYEE_RAW.
+8. Create a target table named EMPLOYEE_DIM.
+9. Create a Task that performs a MERGE from the Stream into EMPLOYEE_DIM.
+10. Resume the Task.
+11. Verify the final data in EMPLOYEE_DIM.
+`,
+
+dataset:[
+{EMP_ID:101,EMP_NAME:"John"},
+{EMP_ID:102,EMP_NAME:"Alice"}
+],
+
+output:[
+{EMP_ID:101,EMP_NAME:"John"},
+{EMP_ID:102,EMP_NAME:"Alice"}
+],
+
+answer:`
+
+CREATE FILE FORMAT CSV_FORMAT
+TYPE=CSV
+SKIP_HEADER=1;
+
+CREATE STORAGE INTEGRATION S3_INT
+TYPE=EXTERNAL_STAGE
+STORAGE_PROVIDER=S3
+ENABLED=TRUE
+STORAGE_AWS_ROLE_ARN='YOUR_ROLE_ARN'
+STORAGE_ALLOWED_LOCATIONS=('s3://my-practice-bucket-sai-123/');
+
+CREATE STAGE EMP_STAGE
+URL='s3://my-practice-bucket-sai-123/'
+STORAGE_INTEGRATION=S3_INT
+FILE_FORMAT=CSV_FORMAT;
+
+CREATE TABLE EMPLOYEE_RAW
+(
+EMP_ID NUMBER,
+EMP_NAME STRING
+);
+
+CREATE PIPE EMPLOYEE_PIPE
+AS
+COPY INTO EMPLOYEE_RAW
+FROM @EMP_STAGE
+PATTERN='.*employee.*\\.csv';
+
+ALTER PIPE EMPLOYEE_PIPE REFRESH;
+
+CREATE STREAM EMPLOYEE_STREAM
+ON TABLE EMPLOYEE_RAW;
+
+CREATE TABLE EMPLOYEE_DIM
+(
+EMP_ID NUMBER,
+EMP_NAME STRING
+);
+
+CREATE TASK EMPLOYEE_TASK
+WAREHOUSE=COMPUTE_WH
+SCHEDULE='1 MINUTE'
+WHEN SYSTEM$STREAM_HAS_DATA('EMPLOYEE_STREAM')
+AS
+
+MERGE INTO EMPLOYEE_DIM T
+USING EMPLOYEE_STREAM S
+ON T.EMP_ID=S.EMP_ID
+
+WHEN MATCHED THEN
+UPDATE SET
+T.EMP_NAME=S.EMP_NAME
+
+WHEN NOT MATCHED THEN
+INSERT
+(
+EMP_ID,
+EMP_NAME
+)
+VALUES
+(
+S.EMP_ID,
+S.EMP_NAME
+);
+
+ALTER TASK EMPLOYEE_TASK RESUME;
+
+SELECT *
+FROM EMPLOYEE_DIM;
+
+`
+},
+
+    {
+title: "External Table - Query CSV Files from Amazon S3",
+
+question: `
+A CSV file named customers.csv is stored in the following S3 bucket:
+
+s3://my-practice-bucket-sai-123/
+
+Requirements:
+
+1. Create a CSV File Format.
+2. Create a Storage Integration.
+3. Create an External Stage.
+4. Create an External Table named EXT_CUSTOMERS.
+5. Read the data directly from S3 without loading it into Snowflake.
+6. Refresh the External Table after a new file is uploaded.
+7. Query the External Table.
+`,
+
+dataset:[
+{CUSTOMER_ID:1,CUSTOMER_NAME:"John",CITY:"London"},
+{CUSTOMER_ID:2,CUSTOMER_NAME:"David",CITY:"Paris"},
+{CUSTOMER_ID:3,CUSTOMER_NAME:"Alex",CITY:"Tokyo"}
+],
+
+output:[
+{CUSTOMER_ID:1,CUSTOMER_NAME:"John",CITY:"London"},
+{CUSTOMER_ID:2,CUSTOMER_NAME:"David",CITY:"Paris"},
+{CUSTOMER_ID:3,CUSTOMER_NAME:"Alex",CITY:"Tokyo"}
+],
+
+answer:`
+
+CREATE OR REPLACE FILE FORMAT CSV_FORMAT
+TYPE=CSV
+SKIP_HEADER=1;
+
+CREATE OR REPLACE STORAGE INTEGRATION S3_INT
+TYPE=EXTERNAL_STAGE
+STORAGE_PROVIDER=S3
+ENABLED=TRUE
+STORAGE_AWS_ROLE_ARN='YOUR_ROLE_ARN'
+STORAGE_ALLOWED_LOCATIONS=('s3://my-practice-bucket-sai-123/');
+
+CREATE OR REPLACE STAGE CUSTOMER_STAGE
+URL='s3://my-practice-bucket-sai-123/'
+STORAGE_INTEGRATION=S3_INT
+FILE_FORMAT=CSV_FORMAT;
+
+CREATE OR REPLACE EXTERNAL TABLE EXT_CUSTOMERS
+(
+CUSTOMER_ID NUMBER AS (VALUE:c1::NUMBER),
+CUSTOMER_NAME STRING AS (VALUE:c2::STRING),
+CITY STRING AS (VALUE:c3::STRING)
+)
+LOCATION=@CUSTOMER_STAGE
+PATTERN='.*customers\\.csv'
+AUTO_REFRESH=FALSE
+FILE_FORMAT=(FORMAT_NAME='CSV_FORMAT');
+
+ALTER EXTERNAL TABLE EXT_CUSTOMERS REFRESH;
+
+SELECT *
+FROM EXT_CUSTOMERS;
+
+`
+},
+
+    {
+title: "Snowpipe + Stream + Task - Incremental Employee Load",
+
+question: `
+An employee.csv file is uploaded to Amazon S3.
+
+Requirements:
+
+1. Create a CSV File Format.
+2. Create a Storage Integration.
+3. Create an External Stage.
+4. Create a RAW table named EMPLOYEE_RAW.
+5. Create a Snowpipe to load files into EMPLOYEE_RAW.
+6. Trigger the Snowpipe manually.
+7. Create a Stream on EMPLOYEE_RAW.
+8. Create a target table named EMPLOYEE_DIM.
+9. Create a Task that performs a MERGE from the Stream into EMPLOYEE_DIM.
+10. Resume the Task.
+11. Verify the final data in EMPLOYEE_DIM.
+`,
+
+dataset:[
+{EMP_ID:101,EMP_NAME:"John"},
+{EMP_ID:102,EMP_NAME:"Alice"}
+],
+
+output:[
+{EMP_ID:101,EMP_NAME:"John"},
+{EMP_ID:102,EMP_NAME:"Alice"}
+],
+
+answer:`
+
+CREATE FILE FORMAT CSV_FORMAT
+TYPE=CSV
+SKIP_HEADER=1;
+
+CREATE STORAGE INTEGRATION S3_INT
+TYPE=EXTERNAL_STAGE
+STORAGE_PROVIDER=S3
+ENABLED=TRUE
+STORAGE_AWS_ROLE_ARN='YOUR_ROLE_ARN'
+STORAGE_ALLOWED_LOCATIONS=('s3://my-practice-bucket-sai-123/');
+
+CREATE STAGE EMP_STAGE
+URL='s3://my-practice-bucket-sai-123/'
+STORAGE_INTEGRATION=S3_INT
+FILE_FORMAT=CSV_FORMAT;
+
+CREATE TABLE EMPLOYEE_RAW
+(
+EMP_ID NUMBER,
+EMP_NAME STRING
+);
+
+CREATE PIPE EMPLOYEE_PIPE
+AS
+COPY INTO EMPLOYEE_RAW
+FROM @EMP_STAGE
+PATTERN='.*employee.*\\.csv';
+
+ALTER PIPE EMPLOYEE_PIPE REFRESH;
+
+CREATE STREAM EMPLOYEE_STREAM
+ON TABLE EMPLOYEE_RAW;
+
+CREATE TABLE EMPLOYEE_DIM
+(
+EMP_ID NUMBER,
+EMP_NAME STRING
+);
+
+CREATE TASK EMPLOYEE_TASK
+WAREHOUSE=COMPUTE_WH
+SCHEDULE='1 MINUTE'
+WHEN SYSTEM$STREAM_HAS_DATA('EMPLOYEE_STREAM')
+AS
+
+MERGE INTO EMPLOYEE_DIM T
+USING EMPLOYEE_STREAM S
+ON T.EMP_ID=S.EMP_ID
+
+WHEN MATCHED THEN
+UPDATE SET
+T.EMP_NAME=S.EMP_NAME
+
+WHEN NOT MATCHED THEN
+INSERT
+(
+EMP_ID,
+EMP_NAME
+)
+VALUES
+(
+S.EMP_ID,
+S.EMP_NAME
+);
+
+ALTER TASK EMPLOYEE_TASK RESUME;
+
+SELECT *
+FROM EMPLOYEE_DIM;
+
+`
+},
+
+    {
+title: "Surrogate Key Creation for Dimension and Fact Tables using SCD Type 2",
+
+question: `
+Implement a Slowly Changing Dimension (SCD Type 2) process for CUSTOMER_DIM and load the FACT_SALES table.
+
+Requirements:
+
+1. Create a source customer table (SRC_CUSTOMER).
+2. Create a source sales table (SRC_SALES).
+3. Create a dimension table (DIM_CUSTOMER) with:
+   - CUSTOMER_SK
+   - CUSTOMER_ID
+   - CUSTOMER_NAME
+   - CITY
+   - START_DATE
+   - END_DATE
+   - IS_CURRENT
+4. Perform an initial load into DIM_CUSTOMER.
+5. Simulate a customer city change.
+6. Expire the existing dimension record.
+7. Insert a new dimension record with a new surrogate key.
+8. Create FACT_SALES.
+9. Load FACT_SALES by looking up the correct CUSTOMER_SK using CUSTOMER_ID and SALES_DATE.
+10. Verify that historical sales point to the old surrogate key and new sales point to the latest surrogate key.
+`,
+
+dataset:{
+
+SRC_CUSTOMER:[
+{CUSTOMER_ID:101,CUSTOMER_NAME:"Sai",CITY:"Bangalore"},
+{CUSTOMER_ID:102,CUSTOMER_NAME:"John",CITY:"Hyderabad"}
+],
+
+SRC_SALES:[
+{ORDER_ID:1001,CUSTOMER_ID:101,SALES_AMOUNT:500,SALES_DATE:"2026-03-15"},
+{ORDER_ID:1002,CUSTOMER_ID:101,SALES_AMOUNT:800,SALES_DATE:"2026-08-10"},
+{ORDER_ID:1003,CUSTOMER_ID:102,SALES_AMOUNT:600,SALES_DATE:"2026-04-20"}
+]
+
+},
+
+output:{
+
+DIM_CUSTOMER:[
+{
+CUSTOMER_SK:1011,
+CUSTOMER_ID:101,
+CUSTOMER_NAME:"Sai",
+CITY:"Bangalore",
+START_DATE:"2026-01-01",
+END_DATE:"2026-06-30",
+IS_CURRENT:"N"
+},
+{
+CUSTOMER_SK:1012,
+CUSTOMER_ID:101,
+CUSTOMER_NAME:"Sai",
+CITY:"Hyderabad",
+START_DATE:"2026-07-01",
+END_DATE:null,
+IS_CURRENT:"Y"
+},
+{
+CUSTOMER_SK:1021,
+CUSTOMER_ID:102,
+CUSTOMER_NAME:"John",
+CITY:"Hyderabad",
+START_DATE:"2026-01-01",
+END_DATE:null,
+IS_CURRENT:"Y"
+}
+],
+
+FACT_SALES:[
+{
+ORDER_ID:1001,
+CUSTOMER_SK:1011,
+SALES_AMOUNT:500,
+SALES_DATE:"2026-03-15"
+},
+{
+ORDER_ID:1002,
+CUSTOMER_SK:1012,
+SALES_AMOUNT:800,
+SALES_DATE:"2026-08-10"
+},
+{
+ORDER_ID:1003,
+CUSTOMER_SK:1021,
+SALES_AMOUNT:600,
+SALES_DATE:"2026-04-20"
+}
+]
+
+},
+
+answer:`
+
+--------------------------------------------
+STEP 1 - Create Source Tables
+--------------------------------------------
+
+CREATE OR REPLACE TABLE SRC_CUSTOMER
+(
+CUSTOMER_ID NUMBER,
+CUSTOMER_NAME STRING,
+CITY STRING
+);
+
+CREATE OR REPLACE TABLE SRC_SALES
+(
+ORDER_ID NUMBER,
+CUSTOMER_ID NUMBER,
+SALES_AMOUNT NUMBER(10,2),
+SALES_DATE DATE
+);
+
+--------------------------------------------
+STEP 2 - Create Dimension Table
+--------------------------------------------
+
+CREATE OR REPLACE TABLE DIM_CUSTOMER
+(
+CUSTOMER_SK NUMBER,
+CUSTOMER_ID NUMBER,
+CUSTOMER_NAME STRING,
+CITY STRING,
+START_DATE DATE,
+END_DATE DATE,
+IS_CURRENT STRING
+);
+
+--------------------------------------------
+STEP 3 - Create Fact Table
+--------------------------------------------
+
+CREATE OR REPLACE TABLE FACT_SALES
+(
+ORDER_ID NUMBER,
+CUSTOMER_SK NUMBER,
+SALES_AMOUNT NUMBER(10,2),
+SALES_DATE DATE
+);
+
+--------------------------------------------
+STEP 4 - Initial Load
+--------------------------------------------
+
+INSERT INTO DIM_CUSTOMER VALUES
+(1011,101,'Sai','Bangalore','2026-01-01','2026-06-30','N'),
+(1012,101,'Sai','Hyderabad','2026-07-01',NULL,'Y'),
+(1021,102,'John','Hyderabad','2026-01-01',NULL,'Y');
+
+--------------------------------------------
+STEP 5 - Load Sales
+--------------------------------------------
+
+INSERT INTO SRC_SALES VALUES
+(1001,101,500,'2026-03-15'),
+(1002,101,800,'2026-08-10'),
+(1003,102,600,'2026-04-20');
+
+--------------------------------------------
+STEP 6 - Load Fact Table
+--------------------------------------------
+
+INSERT INTO FACT_SALES
+
+SELECT
+
+S.ORDER_ID,
+D.CUSTOMER_SK,
+S.SALES_AMOUNT,
+S.SALES_DATE
+
+FROM SRC_SALES S
+
+JOIN DIM_CUSTOMER D
+
+ON S.CUSTOMER_ID=D.CUSTOMER_ID
+
+AND S.SALES_DATE BETWEEN D.START_DATE
+AND COALESCE(D.END_DATE,'9999-12-31');
+
+--------------------------------------------
+STEP 7 - Verify
+--------------------------------------------
+
+SELECT *
+FROM DIM_CUSTOMER;
+
+SELECT *
+FROM FACT_SALES;
+
+SELECT
+
+F.ORDER_ID,
+D.CUSTOMER_NAME,
+D.CITY,
+F.SALES_AMOUNT,
+F.SALES_DATE
+
+FROM FACT_SALES F
+
+JOIN DIM_CUSTOMER D
+
+ON F.CUSTOMER_SK=D.CUSTOMER_SK;
+
+`
+}
+    ,
+    {
+title: "Conformed Dimension - Shared Dimension Across Multiple Fact Tables",
+
+question: `
+Implement a Conformed Dimension in a Data Warehouse.
+
+Requirements:
+
+1. Create a shared dimension table named DIM_CUSTOMER.
+2. Create two fact tables:
+   - FACT_SALES
+   - FACT_RETURNS
+3. Insert sample data into all three tables.
+4. Ensure both fact tables reference the same CUSTOMER_SK from DIM_CUSTOMER.
+5. Retrieve sales data along with customer information.
+6. Retrieve returns data along with customer information.
+7. Generate a report showing the total sales and total refunds for each customer.
+`,
+
+dataset:{
+
+DIM_CUSTOMER:[
+{CUSTOMER_SK:1,CUSTOMER_ID:101,CUSTOMER_NAME:"Sai",CITY:"Bangalore"},
+{CUSTOMER_SK:2,CUSTOMER_ID:102,CUSTOMER_NAME:"John",CITY:"Hyderabad"},
+{CUSTOMER_SK:3,CUSTOMER_ID:103,CUSTOMER_NAME:"David",CITY:"Chennai"}
+],
+
+FACT_SALES:[
+{ORDER_ID:1001,CUSTOMER_SK:1,SALES_AMOUNT:500},
+{ORDER_ID:1002,CUSTOMER_SK:2,SALES_AMOUNT:700},
+{ORDER_ID:1003,CUSTOMER_SK:3,SALES_AMOUNT:900}
+],
+
+FACT_RETURNS:[
+{RETURN_ID:2001,CUSTOMER_SK:1,REFUND_AMOUNT:500},
+{RETURN_ID:2002,CUSTOMER_SK:3,REFUND_AMOUNT:900}
+]
+
+},
+
+output:{
+
+SALES_REPORT:[
+{ORDER_ID:1001,CUSTOMER_NAME:"Sai",CITY:"Bangalore",SALES_AMOUNT:500},
+{ORDER_ID:1002,CUSTOMER_NAME:"John",CITY:"Hyderabad",SALES_AMOUNT:700},
+{ORDER_ID:1003,CUSTOMER_NAME:"David",CITY:"Chennai",SALES_AMOUNT:900}
+],
+
+RETURNS_REPORT:[
+{RETURN_ID:2001,CUSTOMER_NAME:"Sai",CITY:"Bangalore",REFUND_AMOUNT:500},
+{RETURN_ID:2002,CUSTOMER_NAME:"David",CITY:"Chennai",REFUND_AMOUNT:900}
+]
+
+},
+
+answer:`
+
+--------------------------------------------
+STEP 1 - Create Customer Dimension
+--------------------------------------------
+
+CREATE OR REPLACE TABLE DIM_CUSTOMER
+(
+    CUSTOMER_SK NUMBER,
+    CUSTOMER_ID NUMBER,
+    CUSTOMER_NAME STRING,
+    CITY STRING
+);
+
+INSERT INTO DIM_CUSTOMER VALUES
+(1,101,'Sai','Bangalore'),
+(2,102,'John','Hyderabad'),
+(3,103,'David','Chennai');
+
+--------------------------------------------
+STEP 2 - Create Sales Fact
+--------------------------------------------
+
+CREATE OR REPLACE TABLE FACT_SALES
+(
+    ORDER_ID NUMBER,
+    CUSTOMER_SK NUMBER,
+    SALES_AMOUNT NUMBER(10,2)
+);
+
+INSERT INTO FACT_SALES VALUES
+(1001,1,500),
+(1002,2,700),
+(1003,3,900);
+
+--------------------------------------------
+STEP 3 - Create Returns Fact
+--------------------------------------------
+
+CREATE OR REPLACE TABLE FACT_RETURNS
+(
+    RETURN_ID NUMBER,
+    CUSTOMER_SK NUMBER,
+    REFUND_AMOUNT NUMBER(10,2)
+);
+
+INSERT INTO FACT_RETURNS VALUES
+(2001,1,500),
+(2002,3,900);
+
+--------------------------------------------
+STEP 4 - Sales Report
+--------------------------------------------
+
+SELECT
+S.ORDER_ID,
+C.CUSTOMER_NAME,
+C.CITY,
+S.SALES_AMOUNT
+FROM FACT_SALES S
+JOIN DIM_CUSTOMER C
+ON S.CUSTOMER_SK=C.CUSTOMER_SK;
+
+--------------------------------------------
+STEP 5 - Returns Report
+--------------------------------------------
+
+SELECT
+R.RETURN_ID,
+C.CUSTOMER_NAME,
+C.CITY,
+R.REFUND_AMOUNT
+FROM FACT_RETURNS R
+JOIN DIM_CUSTOMER C
+ON R.CUSTOMER_SK=C.CUSTOMER_SK;
+
+--------------------------------------------
+STEP 6 - Customer-wise Sales and Refund Report
+--------------------------------------------
+
+WITH SALES AS
+(
+SELECT
+CUSTOMER_SK,
+SUM(SALES_AMOUNT) TOTAL_SALES
+FROM FACT_SALES
+GROUP BY CUSTOMER_SK
+),
+RETURNS AS
+(
+SELECT
+CUSTOMER_SK,
+SUM(REFUND_AMOUNT) TOTAL_REFUNDS
+FROM FACT_RETURNS
+GROUP BY CUSTOMER_SK
+)
+
+SELECT
+C.CUSTOMER_NAME,
+COALESCE(S.TOTAL_SALES,0) TOTAL_SALES,
+COALESCE(R.TOTAL_REFUNDS,0) TOTAL_REFUNDS
+FROM DIM_CUSTOMER C
+LEFT JOIN SALES S
+ON C.CUSTOMER_SK=S.CUSTOMER_SK
+LEFT JOIN RETURNS R
+ON C.CUSTOMER_SK=R.CUSTOMER_SK;
+
+`
+},
+    {
+title: "Degenerate Dimension - Store Transaction Identifier in the Fact Table",
+
+question: `
+Implement a Degenerate Dimension in a Data Warehouse.
+
+Requirements:
+
+1. Create a customer dimension table named DIM_CUSTOMER.
+2. Create a product dimension table named DIM_PRODUCT.
+3. Create a fact table named FACT_SALES.
+4. Store ORDER_ID directly in FACT_SALES without creating a DIM_ORDER table.
+5. Insert sample data into all tables.
+6. Join the fact table with the customer and product dimensions.
+7. Retrieve Order ID, Customer Name, Product Name, and Sales Amount.
+8. Explain why ORDER_ID is considered a Degenerate Dimension.
+`,
+
+dataset:{
+
+DIM_CUSTOMER:[
+{CUSTOMER_SK:1,CUSTOMER_NAME:"Sai"},
+{CUSTOMER_SK:2,CUSTOMER_NAME:"John"}
+],
+
+DIM_PRODUCT:[
+{PRODUCT_SK:11,PRODUCT_NAME:"Laptop"},
+{PRODUCT_SK:12,PRODUCT_NAME:"Mobile"}
+],
+
+FACT_SALES:[
+{ORDER_ID:1001,CUSTOMER_SK:1,PRODUCT_SK:11,SALES_AMOUNT:500},
+{ORDER_ID:1002,CUSTOMER_SK:2,PRODUCT_SK:12,SALES_AMOUNT:800},
+{ORDER_ID:1003,CUSTOMER_SK:1,PRODUCT_SK:12,SALES_AMOUNT:700}
+]
+
+},
+
+output:[
+{ORDER_ID:1001,CUSTOMER_NAME:"Sai",PRODUCT_NAME:"Laptop",SALES_AMOUNT:500},
+{ORDER_ID:1002,CUSTOMER_NAME:"John",PRODUCT_NAME:"Mobile",SALES_AMOUNT:800},
+{ORDER_ID:1003,CUSTOMER_NAME:"Sai",PRODUCT_NAME:"Mobile",SALES_AMOUNT:700}
+],
+
+answer:`
+
+--------------------------------------------
+STEP 1 - Create Customer Dimension
+--------------------------------------------
+
+CREATE OR REPLACE TABLE DIM_CUSTOMER
+(
+    CUSTOMER_SK NUMBER,
+    CUSTOMER_NAME STRING
+);
+
+INSERT INTO DIM_CUSTOMER VALUES
+(1,'Sai'),
+(2,'John');
+
+--------------------------------------------
+STEP 2 - Create Product Dimension
+--------------------------------------------
+
+CREATE OR REPLACE TABLE DIM_PRODUCT
+(
+    PRODUCT_SK NUMBER,
+    PRODUCT_NAME STRING
+);
+
+INSERT INTO DIM_PRODUCT VALUES
+(11,'Laptop'),
+(12,'Mobile');
+
+--------------------------------------------
+STEP 3 - Create Fact Table
+--------------------------------------------
+
+CREATE OR REPLACE TABLE FACT_SALES
+(
+    ORDER_ID NUMBER,
+    CUSTOMER_SK NUMBER,
+    PRODUCT_SK NUMBER,
+    SALES_AMOUNT NUMBER(10,2)
+);
+
+INSERT INTO FACT_SALES VALUES
+(1001,1,11,500),
+(1002,2,12,800),
+(1003,1,12,700);
+
+--------------------------------------------
+STEP 4 - Retrieve Sales Report
+--------------------------------------------
+
+SELECT
+    F.ORDER_ID,
+    C.CUSTOMER_NAME,
+    P.PRODUCT_NAME,
+    F.SALES_AMOUNT
+FROM FACT_SALES F
+JOIN DIM_CUSTOMER C
+    ON F.CUSTOMER_SK = C.CUSTOMER_SK
+JOIN DIM_PRODUCT P
+    ON F.PRODUCT_SK = P.PRODUCT_SK;
+
+--------------------------------------------
+STEP 5 - Explanation
+--------------------------------------------
+
+-- ORDER_ID is stored directly in FACT_SALES.
+-- No DIM_ORDER table is created because ORDER_ID is only a
+-- transaction identifier and has no descriptive attributes.
+-- Therefore, ORDER_ID is called a Degenerate Dimension.
+
+`
+},
+    {
+title: "Junk Dimension - Create and Load Fact Table",
+
+question:`
+You are given a source table named SALES_RAW.
+
+Requirements:
+
+1. Create a Junk Dimension named DIM_JUNK.
+2. Generate a surrogate key named JUNK_KEY using an IDENTITY column.
+3. Store only the distinct combinations of:
+   - IS_PROMOTION
+   - PAYMENT_MODE
+   - IS_ONLINE
+   - IS_RETURNED
+4. Create a FACT_SALES table with the following columns:
+   - SALES_ID
+   - PRODUCT_KEY
+   - CUSTOMER_KEY
+   - JUNK_KEY
+   - SALES_AMOUNT
+5. Load FACT_SALES by replacing the four low-cardinality columns with JUNK_KEY.
+6. Finally, write a query to display FACT_SALES along with DIM_JUNK to verify the mapping.
+`,
+
+dataset:[
+{
+SALES_ID:1,
+PRODUCT_KEY:101,
+CUSTOMER_KEY:1001,
+IS_PROMOTION:"Y",
+PAYMENT_MODE:"Card",
+IS_ONLINE:"Y",
+IS_RETURNED:"N",
+SALES_AMOUNT:1500
+},
+{
+SALES_ID:2,
+PRODUCT_KEY:102,
+CUSTOMER_KEY:1002,
+IS_PROMOTION:"N",
+PAYMENT_MODE:"Cash",
+IS_ONLINE:"N",
+IS_RETURNED:"N",
+SALES_AMOUNT:2200
+},
+{
+SALES_ID:3,
+PRODUCT_KEY:103,
+CUSTOMER_KEY:1003,
+IS_PROMOTION:"Y",
+PAYMENT_MODE:"UPI",
+IS_ONLINE:"Y",
+IS_RETURNED:"Y",
+SALES_AMOUNT:1750
+},
+{
+SALES_ID:4,
+PRODUCT_KEY:101,
+CUSTOMER_KEY:1004,
+IS_PROMOTION:"Y",
+PAYMENT_MODE:"Card",
+IS_ONLINE:"Y",
+IS_RETURNED:"N",
+SALES_AMOUNT:900
+},
+{
+SALES_ID:5,
+PRODUCT_KEY:105,
+CUSTOMER_KEY:1005,
+IS_PROMOTION:"N",
+PAYMENT_MODE:"Card",
+IS_ONLINE:"N",
+IS_RETURNED:"N",
+SALES_AMOUNT:3200
+},
+{
+SALES_ID:6,
+PRODUCT_KEY:106,
+CUSTOMER_KEY:1006,
+IS_PROMOTION:"Y",
+PAYMENT_MODE:"Cash",
+IS_ONLINE:"Y",
+IS_RETURNED:"N",
+SALES_AMOUNT:1100
+}
+],
+
+output:[
+{
+FACT_SALES:[
+{"SALES_ID":1,"PRODUCT_KEY":101,"CUSTOMER_KEY":1001,"JUNK_KEY":1,"SALES_AMOUNT":1500},
+{"SALES_ID":2,"PRODUCT_KEY":102,"CUSTOMER_KEY":1002,"JUNK_KEY":2,"SALES_AMOUNT":2200},
+{"SALES_ID":3,"PRODUCT_KEY":103,"CUSTOMER_KEY":1003,"JUNK_KEY":3,"SALES_AMOUNT":1750},
+{"SALES_ID":4,"PRODUCT_KEY":101,"CUSTOMER_KEY":1004,"JUNK_KEY":1,"SALES_AMOUNT":900},
+{"SALES_ID":5,"PRODUCT_KEY":105,"CUSTOMER_KEY":1005,"JUNK_KEY":4,"SALES_AMOUNT":3200},
+{"SALES_ID":6,"PRODUCT_KEY":106,"CUSTOMER_KEY":1006,"JUNK_KEY":5,"SALES_AMOUNT":1100}
+]
+}
+],
+
+answer:`
+CREATE OR REPLACE TABLE DIM_JUNK
+(
+    JUNK_KEY INT IDENTITY(1,1),
+    IS_PROMOTION STRING,
+    PAYMENT_MODE STRING,
+    IS_ONLINE STRING,
+    IS_RETURNED STRING
+);
+
+INSERT INTO DIM_JUNK
+(
+    IS_PROMOTION,
+    PAYMENT_MODE,
+    IS_ONLINE,
+    IS_RETURNED
+)
+SELECT DISTINCT
+    IS_PROMOTION,
+    PAYMENT_MODE,
+    IS_ONLINE,
+    IS_RETURNED
+FROM SALES_RAW;
+
+CREATE OR REPLACE TABLE FACT_SALES
+(
+    SALES_ID INT,
+    PRODUCT_KEY INT,
+    CUSTOMER_KEY INT,
+    JUNK_KEY INT,
+    SALES_AMOUNT NUMBER(10,2)
+);
+
+INSERT INTO FACT_SALES
+(
+    SALES_ID,
+    PRODUCT_KEY,
+    CUSTOMER_KEY,
+    JUNK_KEY,
+    SALES_AMOUNT
+)
+SELECT
+    S.SALES_ID,
+    S.PRODUCT_KEY,
+    S.CUSTOMER_KEY,
+    J.JUNK_KEY,
+    S.SALES_AMOUNT
+FROM SALES_RAW S
+JOIN DIM_JUNK J
+ON S.IS_PROMOTION = J.IS_PROMOTION
+AND S.PAYMENT_MODE = J.PAYMENT_MODE
+AND S.IS_ONLINE = J.IS_ONLINE
+AND S.IS_RETURNED = J.IS_RETURNED;
+
+SELECT
+    F.SALES_ID,
+    F.PRODUCT_KEY,
+    F.CUSTOMER_KEY,
+    J.IS_PROMOTION,
+    J.PAYMENT_MODE,
+    J.IS_ONLINE,
+    J.IS_RETURNED,
+    F.SALES_AMOUNT
+FROM FACT_SALES F
+JOIN DIM_JUNK J
+ON F.JUNK_KEY = J.JUNK_KEY
+ORDER BY F.SALES_ID;
+`
+},
+/* End of questions array */
+];
+
+/* ============================
+   UI & Rendering Helpers
+   ============================ */
+
+let currentQuestion = 0;
+/*
+function createJumpButtons() {
+    const container = document.getElementById('jumpButtons');
+    container.innerHTML = '';
+    questions.forEach((q, idx) => {
+        const btn = document.createElement('button');
+        btn.textContent = 'Q' + (idx + 1);
+        btn.title = 'Go to Question ' + (idx + 1);
+        btn.onclick = () => {
+            currentQuestion = idx;
+            renderQuestion(idx);
+        };
+        container.appendChild(btn);
+    });
+}
+    */
+    function createJumpButtons() {
+
+    const container = document.getElementById('jumpButtons');
+
+    container.innerHTML = '';
+
+    questions.forEach((q, idx) => {
+
+        const btn = document.createElement('button');
+
+        btn.textContent = q.title;
+
+        btn.title = q.title;
+
+        btn.onclick = () => {
+
+            currentQuestion = idx;
+
+            renderQuestion(idx);
+
+        };
+
+        container.appendChild(btn);
+
+    });
+
+}
+
+function renderTableFromObjects(list) {
+    if (!list || list.length === 0) return '';
+    const cols = Object.keys(list[0]);
+    let html = '<table><thead><tr>';
+    cols.forEach(c => html += `<th>${c}</th>`);
+    html += '</tr></thead><tbody>';
+    list.forEach(r => {
+        html += '<tr>';
+        cols.forEach(c => html += `<td>${r[c]}</td>`);
+        html += '</tr>';
+    });
+    html += '</tbody></table>';
+    return html;
+}
+
+function renderQuestion(index) {
+    const q = questions[index];
+    // Question text
+    document.getElementById('questionBox').innerHTML = `<h3>Question ${index + 1}</h3><p>${q.question.replace(/\n\s+/g,'\n')}</p>`;
+
+    // Dataset
+    const datasetHtml = q.dataset && q.dataset.length ? renderTableFromObjects(q.dataset) : '<p>No dataset for this question.</p>';
+    document.getElementById('datasetBox').innerHTML = datasetHtml;
+
+    // Dataset2
+    const datasetHtml2 = q.dataset2 && q.dataset2.length ? renderTableFromObjects(q.dataset2) : '<p>No dataset for this question.</p>';
+    document.getElementById('datasetBox2').innerHTML = datasetHtml2;
+
+    // Dataset3
+    const datasetHtml3 = q.dataset3 && q.dataset3.length ? renderTableFromObjects(q.dataset3) : '<p>No dataset for this question.</p>';
+    document.getElementById('datasetBox3').innerHTML = datasetHtml3;
+
+    
+    // Output
+    const outputHtml = q.output && q.output.length ? renderTableFromObjects(q.output) : '<p>No output for this question.</p>';
+    document.getElementById('outputBox').innerHTML = outputHtml;
+
+    // Answers: combine answer, answer_1, answer_2, explanation
+    let answerText = '';
+    if (q.answer) answerText += q.answer.trim() + '\n\n';
+    if (q.answer_1) answerText += '-- Solution 1:\n' + q.answer_1.trim() + '\n\n';
+    if (q.answer_2) answerText += '-- Solution 2:\n' + q.answer_2.trim() + '\n\n';
+    if (q.explanation) answerText += '-- Explanation:\n' + q.explanation.trim();
+
+    document.getElementById('answerBox').textContent = answerText || '-- No answer provided --';
+
+    // update counter
+    document.getElementById('questionCounter').textContent = `Question ${index+1} of ${questions.length}`;
+}
+
+/* Navigation buttons */
+document.getElementById('prevBtn').addEventListener('click', () => {
+    if (currentQuestion > 0) {
+        currentQuestion--;
+        renderQuestion(currentQuestion);
+    }
+});
+document.getElementById('nextBtn').addEventListener('click', () => {
+    if (currentQuestion < questions.length - 1) {
+        currentQuestion++;
+        renderQuestion(currentQuestion);
+    }
+});
+
+/* Initialize UI */
+createJumpButtons();
+renderQuestion(0);
+
+</script>
+</body>
+</html>
