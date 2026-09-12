@@ -840,31 +840,28 @@ CUSTOMER      ACCOUNT   FACT_PORTFOLIO   DIM_TRANSACTION     RATING
 
 tables[0:3]
 
-```
         └───────────────┘
       CUSTOMER ACCOUNT FACT_PORTFOLIO
-```
 
 tables[1:4]
 
-```
+
               └────────────────────────┘
               ACCOUNT FACT_PORTFOLIO DIM_TRANSACTION
-```
+
 
 tables[-2:]
 
-```
                                           └──────────────────┘
                                           DIM_TRANSACTION RATING
-```
+
 
 tables[::2]
 
-```
+
         ↓                        ↓                           ↓
       CUSTOMER             FACT_PORTFOLIO                   RATING
-```
+
 
 Important rule:
 
