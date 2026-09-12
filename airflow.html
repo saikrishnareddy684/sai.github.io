@@ -1,0 +1,2244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>Airflow scenario Question & Answer — Full</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f4f4f9;
+            color: #222;
+        }
+        .container {
+            width: 95%;
+            max-width: 1100px;
+            margin: 0 auto;
+        } 
+        h1 { margin: 0 0 8px; font-size: 22px; }
+        h2 { margin: 18px 0 6px; font-size: 18px; color: #333; }
+        h3 { margin: 8px 0; font-size: 16px; color: #333; }
+        .box {
+            background: white;
+            padding: 18px;
+            margin-top: 14px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.06);
+        }
+        .jump-buttons {
+            margin-bottom: 12px;
+        }
+        /*
+        .jump-buttons button {
+            background-color: #008CBA;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            margin-right: 8px;
+            margin-bottom: 8px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 13px;
+        }
+        .jump-buttons button:hover { background-color: #007399; }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-top: 10px;
+        }
+        */
+        .jump-buttons button {
+
+    background-color:#008CBA;
+
+    color:white;
+
+    border:none;
+
+    padding:10px 14px;
+
+    margin:6px;
+
+    border-radius:6px;
+
+    cursor:pointer;
+
+    font-size:13px;
+
+    width:280px;
+
+    height:65px;
+
+    text-align:left;
+
+    white-space:normal;
+
+    line-height:18px;
+
+    vertical-align:top;
+
+}
+
+.jump-buttons button:hover {
+
+    background:#007399;
+
+}
+        table, th, td { border: 1px solid #ddd; }
+        th, td { padding: 8px; text-align: left; font-size: 13px; }
+        th { background: #fafafa; }
+        pre {
+            background: #272822;
+            color: #f8f8f2;
+            padding: 14px;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-size: 13px;
+            line-height: 1.45;
+        }
+        .nav-buttons {
+            margin-top: 14px;
+            display: flex;
+            justify-content: space-between;
+            gap: 8px;
+        }
+        .nav-controls button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+        .nav-controls button:hover { background-color: #45a049; }
+        .small-muted { color: #666; font-size: 13px; margin-top: 6px; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>📚 Airflow scenario Questions & Answers</h1>
+    <div class="small-muted">Click any question button to jump directly to that question. Buttons are auto-generated from the `questions` array — add new question objects there and a button appears automatically.</div>
+
+    <!-- Jump buttons (auto-generated) -->
+    <div id="jumpButtons" class="jump-buttons"></div>
+
+    <!-- Question area -->
+    <div id="questionBox" class="box"></div>
+
+    <h3>Sample Dataset</h3>
+    <div id="datasetBox" class="box"></div>
+
+    <h3>Sample Dataset</h3>
+    <div id="datasetBox2" class="box"></div>
+
+    <h3>Sample Dataset</h3>
+    <div id="datasetBox3" class="box"></div>
+    
+    <h3>Expected Output</h3>
+    <div id="outputBox" class="box"></div>
+
+    <h2>🟢 SQL Answer</h2>
+    <div class="box">
+        <pre id="answerBox"></pre>
+    </div>
+
+    <div class="nav-buttons">
+        <div class="nav-controls">
+            <button id="prevBtn">⬅ Previous</button>
+            <button id="nextBtn">Next ➡</button>
+        </div>
+        <div class="small-muted" id="questionCounter"></div>
+    </div>
+</div>
+
+<script>
+/* ============================
+   QUESTIONS ARRAY (6 questions)
+   Keep the same object format when adding new questions.
+   Buttons will be generated automatically.
+   ============================ */
+const questions = [
+ 
+/* QUESTION 1 — Airflow Fundamentals */
+{
+title: "What Is Apache Airflow?",
+
+question: `
+What is Apache Airflow?
+
+Explain:
+1. What Airflow is.
+2. Why it is used.
+3. Where it is commonly used.
+4. Give a simple real-world example.
+`,
+
+dataset:[],
+
+output:[],
+
+answer:`
+🔷 APACHE AIRFLOW
+
+Apache Airflow is an open-source platform used to
+📅 schedule,
+⚙️ execute, and
+👀 monitor
+workflows.
+
+Think of Airflow as a WORKFLOW MANAGER.
+
+        📥 Extract
+            ↓
+        🔄 Transform
+            ↓
+        📤 Load
+            ↓
+        ✅ Validate
+
+For example, suppose we have a daily data pipeline:
+
+⏰ 6:00 AM
+    ↓
+📥 Get data from source
+    ↓
+🧹 Clean / transform data
+    ↓
+❄️ Load data into Snowflake
+    ↓
+🔍 Validate the data
+    ↓
+📊 Generate report
+    ↓
+✅ Pipeline completed
+
+Airflow controls this entire flow.
+
+It can also handle:
+
+🔁 Retry
+❌ Failure
+⏰ Scheduling
+🔗 Dependencies
+📋 Logging
+👀 Monitoring
+
+Example:
+
+Task A → Task B → Task C
+
+If Task B fails:
+
+Task A ✅
+   ↓
+Task B ❌
+   ↓
+Task C ⏸️
+
+Airflow can retry Task B 🔁.
+
+Only after Task B succeeds:
+
+Task B ✅
+   ↓
+Task C ▶️
+
+Therefore:
+
+💡 Airflow = Workflow Orchestration Tool
+
+It does not mainly perform the actual data
+transformation itself. Instead, it coordinates
+different tasks and makes sure they execute in
+the required order.
+`
+},
+{
+title: "Stored Procedure - Get Customer Count",
+
+question:`
+Create a stored procedure named getCustomerCount.
+
+Requirements:
+
+1. Count customers in CUSTOMER_DIM.
+2. Store count in a variable.
+3. Return a string like:
+
+Total Customers : 500
+`,
+dataset:[
+{ID:1},
+{ID:2},
+{ID:3},
+{ID:4}
+],
+output:[
+{"Result":"Total Customers : 4"}
+],
+answer:`
+CREATE OR REPLACE PROCEDURE getCustomerCount()
+RETURNS STRING
+LANGUAGE SQL
+AS
+$$
+
+DECLARE
+v_count NUMBER;
+
+BEGIN
+
+SELECT COUNT(*)
+INTO :v_count
+FROM CUSTOMER_DIM;
+
+RETURN 'Total Customers : '||v_count;
+
+END;
+$$;
+
+CALL getCustomerCount();
+`
+},
+
+    {
+title: "Stored Procedure - Fetch Customers By City",
+
+question:`
+Create a stored procedure.
+
+Input:
+City Name
+
+Return:
+All customers belonging to that city using RESULTSET.
+`,
+dataset:[
+{ID:1,NAME:"John",CITY:"London"},
+{ID:2,NAME:"David",CITY:"Paris"},
+{ID:3,NAME:"Alex",CITY:"London"}
+],
+output:[
+{ID:1,NAME:"John",CITY:"London"},
+{ID:3,NAME:"Alex",CITY:"London"}
+],
+answer:`
+CREATE OR REPLACE PROCEDURE fetchCustomerByCity(p_city STRING)
+RETURNS TABLE()
+LANGUAGE SQL
+AS
+$$
+
+DECLARE
+rs RESULTSET;
+
+BEGIN
+
+rs:=(
+SELECT *
+FROM CUSTOMER_DIM
+WHERE CITY=:p_city
+);
+
+RETURN TABLE(rs);
+
+END;
+$$;
+
+CALL fetchCustomerByCity('London');
+`
+},
+    {
+title: "Stored Procedure - Update Salary If Customer Exists",
+
+question: `
+Create a SQL Stored Procedure named updatecustomer.
+
+Requirements:
+
+1. Accept Customer ID as an input parameter.
+2. Check whether the customer exists.
+3. If the customer exists:
+   - Increase the salary by 10%.
+   - If salary is NULL, treat it as 10 before increasing.
+4. Return a success message.
+5. If the customer does not exist, return a "Customer not found" message.
+`,
+
+dataset:[
+{ID:1,NAME:"John",SALARY:50000},
+{ID:2,NAME:"David",SALARY:null},
+{ID:3,NAME:"Alex",SALARY:75000}
+],
+
+output:[
+{"Result":"Salary updated for ID 1"}
+],
+
+answer:`
+CREATE OR REPLACE PROCEDURE updatecustomer(pid INT)
+RETURNS STRING
+LANGUAGE SQL
+AS
+$$
+BEGIN
+
+    IF (EXISTS (
+        SELECT 1
+        FROM customers
+        WHERE id = :pid
+    )) THEN
+
+        UPDATE customers
+        SET salary = COALESCE(salary,10) * 1.10
+        WHERE id = :pid;
+
+        RETURN 'Salary updated for ID ' || :pid;
+
+    ELSE
+
+        RETURN 'Customer ID ' || :pid || ' not found';
+
+    END IF;
+
+END;
+$$;
+
+CALL updatecustomer(1);
+`
+},
+    {
+title: "Stored Procedure - Delete Customer If Exists",
+
+question: `
+Create a SQL Stored Procedure named deleteifexistscustomer.
+
+Requirements:
+
+1. Accept Customer ID as an input parameter.
+2. Check whether the customer exists.
+3. If the customer exists:
+   - Delete the customer record.
+   - Return a success message.
+4. If the customer does not exist:
+   - Return a "Customer not found" message.
+`,
+
+dataset:[
+{ID:1,NAME:"John",CITY:"London"},
+{ID:2,NAME:"David",CITY:"Paris"},
+{ID:3,NAME:"Alex",CITY:"Tokyo"}
+],
+
+output:[
+{"Result":"Deleted the rows for Customer ID 1"}
+],
+
+answer:`
+CREATE OR REPLACE PROCEDURE deleteifexistscustomer(pid INT)
+RETURNS STRING
+LANGUAGE SQL
+AS
+$$
+BEGIN
+
+    IF (EXISTS (
+        SELECT 1
+        FROM customers
+        WHERE id = :pid
+    )) THEN
+
+        DELETE
+        FROM customers
+        WHERE id = :pid;
+
+        RETURN 'Deleted the rows for Customer ID ' || :pid;
+
+    ELSE
+
+        RETURN 'Customer not found for Customer ID ' || :pid;
+
+    END IF;
+
+END;
+$$;
+
+CALL deleteifexistscustomer(1);
+`
+},
+    {
+title: "Stored Procedure - Delete Customer and Return Rows Deleted",
+
+question: `
+Create a SQL Stored Procedure named deleteifexistscustomer.
+
+Requirements:
+
+1. Accept Customer ID as an input parameter.
+2. Check whether the customer exists.
+3. If the customer exists:
+   - Delete the customer record.
+   - Return a message containing:
+     - Customer ID
+     - Number of rows deleted using SQLROWCOUNT.
+4. If the customer does not exist:
+   - Return a "Customer not found" message.
+`,
+
+dataset:[
+{ID:1,NAME:"John",CITY:"London"},
+{ID:2,NAME:"David",CITY:"Paris"},
+{ID:3,NAME:"Alex",CITY:"Tokyo"}
+],
+
+output:[
+{"Result":"Deleted Customer ID 1. Rows Deleted = 1"}
+],
+
+answer:`
+CREATE OR REPLACE PROCEDURE deleteifexistscustomer(pid INT)
+RETURNS STRING
+LANGUAGE SQL
+AS
+$$
+BEGIN
+
+    IF EXISTS (
+        SELECT 1
+        FROM customers
+        WHERE id = :pid
+    ) THEN
+
+        DELETE
+        FROM customers
+        WHERE id = :pid;
+
+        RETURN 'Deleted Customer ID '
+            || :pid
+            || '. Rows Deleted = '
+            || SQLROWCOUNT;
+
+    ELSE
+
+        RETURN 'Customer ID '
+            || :pid
+            || ' not found.';
+
+    END IF;
+
+END;
+$$;
+
+CALL deleteifexistscustomer(1);
+`
+},
+ {
+        
+title: "Stored Procedure - insert rows to table by passing parameter ",
+
+question:`
+Create a stored procedure.
+
+Input:
+Customer Id
+Customer Name
+City
+
+Insert a record into CUSTOMER_DIM.
+
+Return
+
+Customer Inserted Successfully.
+`,
+dataset:[],
+output:[
+{"Result":"Customer Inserted Successfully"}
+],
+answer:`
+CREATE OR REPLACE PROCEDURE insertCustomer
+(
+p_id INT,
+p_name STRING,
+p_city STRING
+)
+RETURNS STRING
+LANGUAGE SQL
+AS
+$$
+
+BEGIN
+
+INSERT INTO CUSTOMER_DIM
+VALUES
+(
+:p_id,
+:p_name,
+:p_city
+);
+
+RETURN 'Customer Inserted Successfully';
+
+END;
+$$;
+`
+},
+{
+title: "Stored Procedure - Load Data from Stream to Target Table",
+
+question: `
+Create a SQL Stored Procedure named insertsp.
+
+Requirements:
+
+1. Read data from the STREAMCUSTOMER stream.
+2. Insert only INSERT operations into the CUSTOMERS table.
+3. Use the metadata column METADATA$ACTION to filter INSERT records.
+4. Insert the ID, NAME and SALARY columns into the CUSTOMERS table.
+5. Return a message displaying the number of rows inserted using SQLROWCOUNT.
+`,
+
+dataset:[
+{ID:1,NAME:"John",SALARY:50000,METADATA_ACTION:"INSERT"},
+{ID:2,NAME:"David",SALARY:65000,METADATA_ACTION:"INSERT"},
+{ID:3,NAME:"Alex",SALARY:70000,METADATA_ACTION:"DELETE"},
+{ID:4,NAME:"Scott",SALARY:80000,METADATA_ACTION:"INSERT"}
+],
+
+output:[
+{"Result":"Inserts 3 rows to customer table"}
+],
+
+answer:`
+CREATE OR REPLACE PROCEDURE insertsp()
+RETURNS STRING
+LANGUAGE SQL
+AS
+$$
+BEGIN
+
+    INSERT INTO customers
+    (
+        id,
+        name,
+        salary
+    )
+    SELECT
+        id,
+        name,
+        salary
+    FROM streamcustomer
+    WHERE METADATA$ACTION='INSERT';
+
+    RETURN 'Inserts '
+           || SQLROWCOUNT
+           || ' rows to customer table';
+
+END;
+$$;
+
+CALL insertsp();
+`
+},
+   
+    {
+title: "Table Function - Return Table Data",
+
+question: `
+You need to return all customer records from the CUSTOMER_DIM table.
+
+Requirements:
+
+1. Return the CUSTOMER_ID and CUSTOMER_NAME columns.
+2. The object should return the rows so that they can be queried using a SELECT statement.
+3. Write the appropriate Snowflake object and demonstrate how to call it.
+`,
+
+dataset:[
+{CUSTOMER_ID:1,CUSTOMER_NAME:"John"},
+{CUSTOMER_ID:2,CUSTOMER_NAME:"David"},
+{CUSTOMER_ID:3,CUSTOMER_NAME:"Alex"}
+],
+
+output:[
+{CUSTOMER_ID:1,CUSTOMER_NAME:"John"},
+{CUSTOMER_ID:2,CUSTOMER_NAME:"David"},
+{CUSTOMER_ID:3,CUSTOMER_NAME:"Alex"}
+],
+
+answer:`
+CREATE OR REPLACE FUNCTION sdf()
+RETURNS TABLE
+(
+    CUSTOMER_ID NUMBER,
+    CUSTOMER_NAME STRING
+)
+AS
+$$
+SELECT
+    CUSTOMER_ID,
+    CUSTOMER_NAME
+FROM CUSTOMER_DIM
+$$;
+
+-- Call the function
+
+SELECT *
+FROM TABLE(sdf());
+
+/*
+Note:
+
+Unlike SQL Server, a Snowflake SQL Stored Procedure cannot directly
+return a table or result set using a simple SELECT statement.
+
+If your requirement is to return rows that can be queried using
+SELECT * FROM ..., you should create a TABLE FUNCTION instead.
+
+Stored Procedures are generally used for:
+- INSERT
+- UPDATE
+- DELETE
+- MERGE
+- Administrative or ETL tasks
+
+Table Functions are used when the requirement is to return tabular data.
+*/
+`
+},
+    {
+title: "Stored Procedure - Load SCD Type 2 Using Stream and Merge",
+
+question: `
+Create a SQL Stored Procedure named LOAD_SCD2.
+
+Requirements:
+
+1. Read changed records from the STG_CUSTOMER_STREAM stream.
+2. Process only INSERT operations using the METADATA$ACTION column.
+3. Store the changed records in a temporary table.
+4. Perform SCD Type 2 processing:
+   - If CUSTOMER_NAME or SALARY has changed, mark the existing record as CURRENT_FLAG='N' and set the END_DATE.
+   - Insert the new version of the customer record with CURRENT_FLAG='Y'.
+5. Capture the number of rows updated using SQLROWCOUNT.
+6. Capture the number of rows inserted using SQLROWCOUNT.
+7. Return a message in the format:
+   Updated = <updated_rows>, Inserted = <inserted_rows>
+`,
+
+dataset:[
+{CUSTOMER_ID:101,CUSTOMER_NAME:"John",SALARY:5000,CURRENT_FLAG:"Y",START_DATE:"2025-01-01",END_DATE:null},
+{CUSTOMER_ID:102,CUSTOMER_NAME:"David",SALARY:7000,CURRENT_FLAG:"Y",START_DATE:"2025-01-01",END_DATE:null}
+],
+
+dataset2:[
+{CUSTOMER_ID:101,CUSTOMER_NAME:"John",SALARY:6500,METADATA_ACTION:"INSERT"},
+{CUSTOMER_ID:102,CUSTOMER_NAME:"David",SALARY:7000,METADATA_ACTION:"INSERT"}
+],
+
+output:[
+{CUSTOMER_ID:101,CUSTOMER_NAME:"John",SALARY:5000,CURRENT_FLAG:"N"},
+{CUSTOMER_ID:101,CUSTOMER_NAME:"John",SALARY:6500,CURRENT_FLAG:"Y"},
+{"Result":"Updated = 1, Inserted = 1"}
+],
+
+answer:`
+CREATE OR REPLACE PROCEDURE LOAD_SCD2()
+RETURNS STRING
+LANGUAGE SQL
+AS
+$$
+DECLARE
+    V_UPDATED NUMBER;
+    V_INSERTED NUMBER;
+BEGIN
+
+    CREATE OR REPLACE TEMP TABLE TMP_CHANGES AS
+    SELECT
+        CUSTOMER_ID,
+        CUSTOMER_NAME,
+        SALARY
+    FROM STG_CUSTOMER_STREAM
+    WHERE METADATA$ACTION='INSERT';
+
+    MERGE INTO DIM_CUSTOMER T
+    USING TMP_CHANGES S
+    ON T.CUSTOMER_ID=S.CUSTOMER_ID
+    AND T.CURRENT_FLAG='Y'
+
+    WHEN MATCHED
+    AND (
+            T.CUSTOMER_NAME<>S.CUSTOMER_NAME
+         OR T.SALARY<>S.SALARY
+    )
+
+    THEN UPDATE
+    SET
+        CURRENT_FLAG='N',
+        END_DATE=CURRENT_DATE();
+
+    V_UPDATED:=SQLROWCOUNT;
+
+    INSERT INTO DIM_CUSTOMER
+    (
+        CUSTOMER_ID,
+        CUSTOMER_NAME,
+        SALARY,
+        START_DATE,
+        END_DATE,
+        CURRENT_FLAG
+    )
+
+    SELECT
+        S.CUSTOMER_ID,
+        S.CUSTOMER_NAME,
+        S.SALARY,
+        CURRENT_DATE(),
+        NULL,
+        'Y'
+
+    FROM TMP_CHANGES S
+
+    LEFT JOIN DIM_CUSTOMER D
+
+    ON S.CUSTOMER_ID=D.CUSTOMER_ID
+    AND S.CUSTOMER_NAME=D.CUSTOMER_NAME
+    AND S.SALARY=D.SALARY
+    AND D.CURRENT_FLAG='Y'
+
+    WHERE D.CUSTOMER_ID IS NULL;
+
+    V_INSERTED:=SQLROWCOUNT;
+
+    RETURN
+    'Updated = '
+    ||V_UPDATED
+    ||', Inserted = '
+    ||V_INSERTED;
+
+END;
+$$;
+
+CALL LOAD_SCD2();
+`,
+
+explanation:`
+Concepts Covered:
+
+• Snowflake Streams
+• METADATA$ACTION
+• Temporary Tables
+• MERGE Statement
+• Slowly Changing Dimension (SCD Type 2)
+• SQLROWCOUNT
+• CURRENT_FLAG
+• START_DATE / END_DATE
+• INSERT ... SELECT
+• Stored Procedures
+• RETURN STRING
+
+Note:
+This is a common Snowflake ETL pattern for implementing SCD Type 2. The MERGE statement expires the current version of a record, while the INSERT statement creates the new current version. SQLROWCOUNT is used after each DML operation to report the number of rows updated and inserted.
+`
+},
+    {
+title: "External Stage - Load CSV File from Amazon S3 into Snowflake",
+
+question:`
+A CSV file named employees.csv has already been uploaded to the following S3 bucket:
+
+s3://company-data/employees/
+
+The CSV contains the following data:
+
+EMP_ID,EMP_NAME,DEPARTMENT,SALARY
+1,John,IT,60000
+2,Alice,HR,55000
+3,Bob,Finance,70000
+
+Perform the following tasks:
+
+1. Create a target table named EMPLOYEES.
+2. Create a CSV file format.
+3. Create a Storage Integration for the S3 bucket.
+4. Create an External Stage using the Storage Integration.
+5. Verify that the file exists in the stage.
+6. Validate the file without loading data.
+7. Load the data into the table.
+8. Reload the file even if it has already been loaded.
+9. Load only employees.csv.
+10. Load only CSV files matching a pattern.
+11. Skip invalid rows while loading.
+12. Remove the source file after successful loading.
+13. Display the loaded data.
+
+Also demonstrate how to create the same External Stage using AWS_ACCESS_KEY_ID and AWS_SECRET_KEY instead of Storage Integration.
+`,
+
+dataset:[
+{"EMP_ID":1,"EMP_NAME":"John","DEPARTMENT":"IT","SALARY":60000},
+{"EMP_ID":2,"EMP_NAME":"Alice","DEPARTMENT":"HR","SALARY":55000},
+{"EMP_ID":3,"EMP_NAME":"Bob","DEPARTMENT":"Finance","SALARY":70000}
+],
+
+output:[
+{"EMP_ID":1,"EMP_NAME":"John","DEPARTMENT":"IT","SALARY":60000},
+{"EMP_ID":2,"EMP_NAME":"Alice","DEPARTMENT":"HR","SALARY":55000},
+{"EMP_ID":3,"EMP_NAME":"Bob","DEPARTMENT":"Finance","SALARY":70000}
+],
+
+answer:`
+
+--------------------------------------------------------
+-- Step 1 : Create Target Table
+--------------------------------------------------------
+
+CREATE OR REPLACE TABLE EMPLOYEES
+(
+EMP_ID NUMBER,
+EMP_NAME STRING,
+DEPARTMENT STRING,
+SALARY NUMBER
+);
+
+--------------------------------------------------------
+-- Step 2 : Create File Format
+--------------------------------------------------------
+
+CREATE OR REPLACE FILE FORMAT CSV_FORMAT
+TYPE = CSV
+FIELD_DELIMITER=','
+SKIP_HEADER=1
+FIELD_OPTIONALLY_ENCLOSED_BY='"'
+NULL_IF=('NULL','');
+
+--------------------------------------------------------
+-- Step 3 : Create Storage Integration
+--------------------------------------------------------
+
+CREATE OR REPLACE STORAGE INTEGRATION S3_INT
+TYPE = EXTERNAL_STAGE
+STORAGE_PROVIDER = S3
+ENABLED = TRUE
+STORAGE_AWS_ROLE_ARN='arn:aws:iam::123456789012:role/SnowflakeRole'
+STORAGE_ALLOWED_LOCATIONS=('s3://company-data/');
+
+--------------------------------------------------------
+-- Step 4 : Describe Storage Integration
+--------------------------------------------------------
+
+DESC INTEGRATION S3_INT;
+
+--------------------------------------------------------
+-- Step 5 : Create External Stage using Storage Integration
+--------------------------------------------------------
+
+CREATE OR REPLACE STAGE EMP_STAGE
+URL='s3://company-data/employees/'
+STORAGE_INTEGRATION=S3_INT
+FILE_FORMAT=CSV_FORMAT;
+
+--------------------------------------------------------
+-- Alternative Method
+-- Create Stage using AWS Keys
+--------------------------------------------------------
+
+CREATE OR REPLACE STAGE EMP_STAGE_KEY
+URL='s3://company-data/employees/'
+CREDENTIALS=(
+AWS_KEY_ID='YOUR_ACCESS_KEY'
+AWS_SECRET_KEY='YOUR_SECRET_KEY'
+)
+FILE_FORMAT=CSV_FORMAT;
+
+--------------------------------------------------------
+-- Step 6 : Verify Files
+--------------------------------------------------------
+
+LIST @EMP_STAGE;
+
+--------------------------------------------------------
+-- Step 7 : Validate without Loading
+--------------------------------------------------------
+
+COPY INTO EMPLOYEES
+FROM @EMP_STAGE
+VALIDATION_MODE='RETURN_ERRORS';
+
+--------------------------------------------------------
+-- Return All Errors
+--------------------------------------------------------
+
+COPY INTO EMPLOYEES
+FROM @EMP_STAGE
+VALIDATION_MODE='RETURN_ALL_ERRORS';
+
+--------------------------------------------------------
+-- Step 8 : Load Data
+--------------------------------------------------------
+
+COPY INTO EMPLOYEES
+FROM @EMP_STAGE;
+
+--------------------------------------------------------
+-- Step 9 : Load only Specific File
+--------------------------------------------------------
+
+COPY INTO EMPLOYEES
+FROM @EMP_STAGE
+FILES=('employees.csv');
+
+--------------------------------------------------------
+-- Step 10 : Load using Pattern
+--------------------------------------------------------
+
+COPY INTO EMPLOYEES
+FROM @EMP_STAGE
+PATTERN='.*employees.*\\.csv';
+
+--------------------------------------------------------
+-- Step 11 : Skip Bad Records
+--------------------------------------------------------
+
+COPY INTO EMPLOYEES
+FROM @EMP_STAGE
+ON_ERROR='CONTINUE';
+
+--------------------------------------------------------
+-- Step 12 : Force Reload
+--------------------------------------------------------
+
+COPY INTO EMPLOYEES
+FROM @EMP_STAGE
+FORCE=TRUE;
+
+--------------------------------------------------------
+-- Step 13 : Purge Files
+--------------------------------------------------------
+
+COPY INTO EMPLOYEES
+FROM @EMP_STAGE
+PURGE=TRUE;
+
+--------------------------------------------------------
+-- Step 14 : Combine Multiple Parameters
+--------------------------------------------------------
+
+COPY INTO EMPLOYEES
+FROM @EMP_STAGE
+FILES=('employees.csv')
+ON_ERROR='CONTINUE'
+FORCE=TRUE
+PURGE=TRUE;
+
+--------------------------------------------------------
+-- Step 15 : View Loaded Data
+--------------------------------------------------------
+
+SELECT *
+FROM EMPLOYEES;
+
+`
+},
+    {
+title: "Snowpipe - Load CSV from S3 Stage into Raw Table",
+
+question: `
+A file named employee.csv is uploaded into the following S3 bucket:
+
+s3://my-practice-bucket-sai-123/
+
+Requirements:
+
+1. Create a CSV File Format.
+2. Create a Storage Integration.
+3. Create an External Stage using the Storage Integration.
+4. Create a table named EMPLOYEE_RAW.
+5. Create a Snowpipe named EMPLOYEE_PIPE to automatically load only employee CSV files into EMPLOYEE_RAW.
+6. Manually trigger the pipe using ALTER PIPE ... REFRESH.
+7. Verify that the data has been loaded into EMPLOYEE_RAW.
+`,
+
+dataset:[
+{EMP_ID:101,EMP_NAME:"John"},
+{EMP_ID:102,EMP_NAME:"Alice"}
+],
+
+output:[
+{EMP_ID:101,EMP_NAME:"John"},
+{EMP_ID:102,EMP_NAME:"Alice"}
+],
+
+answer:`
+
+CREATE OR REPLACE FILE FORMAT CSV_FORMAT
+TYPE=CSV
+SKIP_HEADER=1
+FIELD_DELIMITER=',';
+
+CREATE OR REPLACE STORAGE INTEGRATION S3_INT
+TYPE=EXTERNAL_STAGE
+STORAGE_PROVIDER=S3
+ENABLED=TRUE
+STORAGE_AWS_ROLE_ARN='YOUR_ROLE_ARN'
+STORAGE_ALLOWED_LOCATIONS=('s3://my-practice-bucket-sai-123/');
+
+CREATE OR REPLACE STAGE EMP_STAGE
+URL='s3://my-practice-bucket-sai-123/'
+STORAGE_INTEGRATION=S3_INT
+FILE_FORMAT=CSV_FORMAT;
+
+CREATE OR REPLACE TABLE EMPLOYEE_RAW
+(
+EMP_ID NUMBER,
+EMP_NAME STRING
+);
+
+CREATE OR REPLACE PIPE EMPLOYEE_PIPE
+AS
+COPY INTO EMPLOYEE_RAW
+FROM @EMP_STAGE
+PATTERN='.*employee.*\\.csv'
+FILE_FORMAT=(FORMAT_NAME='CSV_FORMAT');
+
+ALTER PIPE EMPLOYEE_PIPE REFRESH;
+
+SELECT *
+FROM EMPLOYEE_RAW;
+
+`
+},
+    {
+title: "External Table - Query CSV Files from Amazon S3",
+
+question: `
+A CSV file named customers.csv is stored in the following S3 bucket:
+
+s3://my-practice-bucket-sai-123/
+
+Requirements:
+
+1. Create a CSV File Format.
+2. Create a Storage Integration.
+3. Create an External Stage.
+4. Create an External Table named EXT_CUSTOMERS.
+5. Read the data directly from S3 without loading it into Snowflake.
+6. Refresh the External Table after a new file is uploaded.
+7. Query the External Table.
+`,
+
+dataset:[
+{CUSTOMER_ID:1,CUSTOMER_NAME:"John",CITY:"London"},
+{CUSTOMER_ID:2,CUSTOMER_NAME:"David",CITY:"Paris"},
+{CUSTOMER_ID:3,CUSTOMER_NAME:"Alex",CITY:"Tokyo"}
+],
+
+output:[
+{CUSTOMER_ID:1,CUSTOMER_NAME:"John",CITY:"London"},
+{CUSTOMER_ID:2,CUSTOMER_NAME:"David",CITY:"Paris"},
+{CUSTOMER_ID:3,CUSTOMER_NAME:"Alex",CITY:"Tokyo"}
+],
+
+answer:`
+
+CREATE OR REPLACE FILE FORMAT CSV_FORMAT
+TYPE=CSV
+SKIP_HEADER=1;
+
+CREATE OR REPLACE STORAGE INTEGRATION S3_INT
+TYPE=EXTERNAL_STAGE
+STORAGE_PROVIDER=S3
+ENABLED=TRUE
+STORAGE_AWS_ROLE_ARN='YOUR_ROLE_ARN'
+STORAGE_ALLOWED_LOCATIONS=('s3://my-practice-bucket-sai-123/');
+
+CREATE OR REPLACE STAGE CUSTOMER_STAGE
+URL='s3://my-practice-bucket-sai-123/'
+STORAGE_INTEGRATION=S3_INT
+FILE_FORMAT=CSV_FORMAT;
+
+CREATE OR REPLACE EXTERNAL TABLE EXT_CUSTOMERS
+(
+CUSTOMER_ID NUMBER AS (VALUE:c1::NUMBER),
+CUSTOMER_NAME STRING AS (VALUE:c2::STRING),
+CITY STRING AS (VALUE:c3::STRING)
+)
+LOCATION=@CUSTOMER_STAGE
+PATTERN='.*customers\\.csv'
+AUTO_REFRESH=FALSE
+FILE_FORMAT=(FORMAT_NAME='CSV_FORMAT');
+
+ALTER EXTERNAL TABLE EXT_CUSTOMERS REFRESH;
+
+SELECT *
+FROM EXT_CUSTOMERS;
+
+`
+},
+
+    {
+title: "Snowpipe + Stream + Task - Incremental Employee Load",
+
+question: `
+An employee.csv file is uploaded to Amazon S3.
+
+Requirements:
+
+1. Create a CSV File Format.
+2. Create a Storage Integration.
+3. Create an External Stage.
+4. Create a RAW table named EMPLOYEE_RAW.
+5. Create a Snowpipe to load files into EMPLOYEE_RAW.
+6. Trigger the Snowpipe manually.
+7. Create a Stream on EMPLOYEE_RAW.
+8. Create a target table named EMPLOYEE_DIM.
+9. Create a Task that performs a MERGE from the Stream into EMPLOYEE_DIM.
+10. Resume the Task.
+11. Verify the final data in EMPLOYEE_DIM.
+`,
+
+dataset:[
+{EMP_ID:101,EMP_NAME:"John"},
+{EMP_ID:102,EMP_NAME:"Alice"}
+],
+
+output:[
+{EMP_ID:101,EMP_NAME:"John"},
+{EMP_ID:102,EMP_NAME:"Alice"}
+],
+
+answer:`
+
+CREATE FILE FORMAT CSV_FORMAT
+TYPE=CSV
+SKIP_HEADER=1;
+
+CREATE STORAGE INTEGRATION S3_INT
+TYPE=EXTERNAL_STAGE
+STORAGE_PROVIDER=S3
+ENABLED=TRUE
+STORAGE_AWS_ROLE_ARN='YOUR_ROLE_ARN'
+STORAGE_ALLOWED_LOCATIONS=('s3://my-practice-bucket-sai-123/');
+
+CREATE STAGE EMP_STAGE
+URL='s3://my-practice-bucket-sai-123/'
+STORAGE_INTEGRATION=S3_INT
+FILE_FORMAT=CSV_FORMAT;
+
+CREATE TABLE EMPLOYEE_RAW
+(
+EMP_ID NUMBER,
+EMP_NAME STRING
+);
+
+CREATE PIPE EMPLOYEE_PIPE
+AS
+COPY INTO EMPLOYEE_RAW
+FROM @EMP_STAGE
+PATTERN='.*employee.*\\.csv';
+
+ALTER PIPE EMPLOYEE_PIPE REFRESH;
+
+CREATE STREAM EMPLOYEE_STREAM
+ON TABLE EMPLOYEE_RAW;
+
+CREATE TABLE EMPLOYEE_DIM
+(
+EMP_ID NUMBER,
+EMP_NAME STRING
+);
+
+CREATE TASK EMPLOYEE_TASK
+WAREHOUSE=COMPUTE_WH
+SCHEDULE='1 MINUTE'
+WHEN SYSTEM$STREAM_HAS_DATA('EMPLOYEE_STREAM')
+AS
+
+MERGE INTO EMPLOYEE_DIM T
+USING EMPLOYEE_STREAM S
+ON T.EMP_ID=S.EMP_ID
+
+WHEN MATCHED THEN
+UPDATE SET
+T.EMP_NAME=S.EMP_NAME
+
+WHEN NOT MATCHED THEN
+INSERT
+(
+EMP_ID,
+EMP_NAME
+)
+VALUES
+(
+S.EMP_ID,
+S.EMP_NAME
+);
+
+ALTER TASK EMPLOYEE_TASK RESUME;
+
+SELECT *
+FROM EMPLOYEE_DIM;
+
+`
+},
+
+    {
+title: "External Table - Query CSV Files from Amazon S3",
+
+question: `
+A CSV file named customers.csv is stored in the following S3 bucket:
+
+s3://my-practice-bucket-sai-123/
+
+Requirements:
+
+1. Create a CSV File Format.
+2. Create a Storage Integration.
+3. Create an External Stage.
+4. Create an External Table named EXT_CUSTOMERS.
+5. Read the data directly from S3 without loading it into Snowflake.
+6. Refresh the External Table after a new file is uploaded.
+7. Query the External Table.
+`,
+
+dataset:[
+{CUSTOMER_ID:1,CUSTOMER_NAME:"John",CITY:"London"},
+{CUSTOMER_ID:2,CUSTOMER_NAME:"David",CITY:"Paris"},
+{CUSTOMER_ID:3,CUSTOMER_NAME:"Alex",CITY:"Tokyo"}
+],
+
+output:[
+{CUSTOMER_ID:1,CUSTOMER_NAME:"John",CITY:"London"},
+{CUSTOMER_ID:2,CUSTOMER_NAME:"David",CITY:"Paris"},
+{CUSTOMER_ID:3,CUSTOMER_NAME:"Alex",CITY:"Tokyo"}
+],
+
+answer:`
+
+CREATE OR REPLACE FILE FORMAT CSV_FORMAT
+TYPE=CSV
+SKIP_HEADER=1;
+
+CREATE OR REPLACE STORAGE INTEGRATION S3_INT
+TYPE=EXTERNAL_STAGE
+STORAGE_PROVIDER=S3
+ENABLED=TRUE
+STORAGE_AWS_ROLE_ARN='YOUR_ROLE_ARN'
+STORAGE_ALLOWED_LOCATIONS=('s3://my-practice-bucket-sai-123/');
+
+CREATE OR REPLACE STAGE CUSTOMER_STAGE
+URL='s3://my-practice-bucket-sai-123/'
+STORAGE_INTEGRATION=S3_INT
+FILE_FORMAT=CSV_FORMAT;
+
+CREATE OR REPLACE EXTERNAL TABLE EXT_CUSTOMERS
+(
+CUSTOMER_ID NUMBER AS (VALUE:c1::NUMBER),
+CUSTOMER_NAME STRING AS (VALUE:c2::STRING),
+CITY STRING AS (VALUE:c3::STRING)
+)
+LOCATION=@CUSTOMER_STAGE
+PATTERN='.*customers\\.csv'
+AUTO_REFRESH=FALSE
+FILE_FORMAT=(FORMAT_NAME='CSV_FORMAT');
+
+ALTER EXTERNAL TABLE EXT_CUSTOMERS REFRESH;
+
+SELECT *
+FROM EXT_CUSTOMERS;
+
+`
+},
+
+    {
+title: "Snowpipe + Stream + Task - Incremental Employee Load",
+
+question: `
+An employee.csv file is uploaded to Amazon S3.
+
+Requirements:
+
+1. Create a CSV File Format.
+2. Create a Storage Integration.
+3. Create an External Stage.
+4. Create a RAW table named EMPLOYEE_RAW.
+5. Create a Snowpipe to load files into EMPLOYEE_RAW.
+6. Trigger the Snowpipe manually.
+7. Create a Stream on EMPLOYEE_RAW.
+8. Create a target table named EMPLOYEE_DIM.
+9. Create a Task that performs a MERGE from the Stream into EMPLOYEE_DIM.
+10. Resume the Task.
+11. Verify the final data in EMPLOYEE_DIM.
+`,
+
+dataset:[
+{EMP_ID:101,EMP_NAME:"John"},
+{EMP_ID:102,EMP_NAME:"Alice"}
+],
+
+output:[
+{EMP_ID:101,EMP_NAME:"John"},
+{EMP_ID:102,EMP_NAME:"Alice"}
+],
+
+answer:`
+
+CREATE FILE FORMAT CSV_FORMAT
+TYPE=CSV
+SKIP_HEADER=1;
+
+CREATE STORAGE INTEGRATION S3_INT
+TYPE=EXTERNAL_STAGE
+STORAGE_PROVIDER=S3
+ENABLED=TRUE
+STORAGE_AWS_ROLE_ARN='YOUR_ROLE_ARN'
+STORAGE_ALLOWED_LOCATIONS=('s3://my-practice-bucket-sai-123/');
+
+CREATE STAGE EMP_STAGE
+URL='s3://my-practice-bucket-sai-123/'
+STORAGE_INTEGRATION=S3_INT
+FILE_FORMAT=CSV_FORMAT;
+
+CREATE TABLE EMPLOYEE_RAW
+(
+EMP_ID NUMBER,
+EMP_NAME STRING
+);
+
+CREATE PIPE EMPLOYEE_PIPE
+AS
+COPY INTO EMPLOYEE_RAW
+FROM @EMP_STAGE
+PATTERN='.*employee.*\\.csv';
+
+ALTER PIPE EMPLOYEE_PIPE REFRESH;
+
+CREATE STREAM EMPLOYEE_STREAM
+ON TABLE EMPLOYEE_RAW;
+
+CREATE TABLE EMPLOYEE_DIM
+(
+EMP_ID NUMBER,
+EMP_NAME STRING
+);
+
+CREATE TASK EMPLOYEE_TASK
+WAREHOUSE=COMPUTE_WH
+SCHEDULE='1 MINUTE'
+WHEN SYSTEM$STREAM_HAS_DATA('EMPLOYEE_STREAM')
+AS
+
+MERGE INTO EMPLOYEE_DIM T
+USING EMPLOYEE_STREAM S
+ON T.EMP_ID=S.EMP_ID
+
+WHEN MATCHED THEN
+UPDATE SET
+T.EMP_NAME=S.EMP_NAME
+
+WHEN NOT MATCHED THEN
+INSERT
+(
+EMP_ID,
+EMP_NAME
+)
+VALUES
+(
+S.EMP_ID,
+S.EMP_NAME
+);
+
+ALTER TASK EMPLOYEE_TASK RESUME;
+
+SELECT *
+FROM EMPLOYEE_DIM;
+
+`
+},
+
+    {
+title: "Surrogate Key Creation for Dimension and Fact Tables using SCD Type 2",
+
+question: `
+Implement a Slowly Changing Dimension (SCD Type 2) process for CUSTOMER_DIM and load the FACT_SALES table.
+
+Requirements:
+
+1. Create a source customer table (SRC_CUSTOMER).
+2. Create a source sales table (SRC_SALES).
+3. Create a dimension table (DIM_CUSTOMER) with:
+   - CUSTOMER_SK
+   - CUSTOMER_ID
+   - CUSTOMER_NAME
+   - CITY
+   - START_DATE
+   - END_DATE
+   - IS_CURRENT
+4. Perform an initial load into DIM_CUSTOMER.
+5. Simulate a customer city change.
+6. Expire the existing dimension record.
+7. Insert a new dimension record with a new surrogate key.
+8. Create FACT_SALES.
+9. Load FACT_SALES by looking up the correct CUSTOMER_SK using CUSTOMER_ID and SALES_DATE.
+10. Verify that historical sales point to the old surrogate key and new sales point to the latest surrogate key.
+`,
+
+dataset:{
+
+SRC_CUSTOMER:[
+{CUSTOMER_ID:101,CUSTOMER_NAME:"Sai",CITY:"Bangalore"},
+{CUSTOMER_ID:102,CUSTOMER_NAME:"John",CITY:"Hyderabad"}
+],
+
+SRC_SALES:[
+{ORDER_ID:1001,CUSTOMER_ID:101,SALES_AMOUNT:500,SALES_DATE:"2026-03-15"},
+{ORDER_ID:1002,CUSTOMER_ID:101,SALES_AMOUNT:800,SALES_DATE:"2026-08-10"},
+{ORDER_ID:1003,CUSTOMER_ID:102,SALES_AMOUNT:600,SALES_DATE:"2026-04-20"}
+]
+
+},
+
+output:{
+
+DIM_CUSTOMER:[
+{
+CUSTOMER_SK:1011,
+CUSTOMER_ID:101,
+CUSTOMER_NAME:"Sai",
+CITY:"Bangalore",
+START_DATE:"2026-01-01",
+END_DATE:"2026-06-30",
+IS_CURRENT:"N"
+},
+{
+CUSTOMER_SK:1012,
+CUSTOMER_ID:101,
+CUSTOMER_NAME:"Sai",
+CITY:"Hyderabad",
+START_DATE:"2026-07-01",
+END_DATE:null,
+IS_CURRENT:"Y"
+},
+{
+CUSTOMER_SK:1021,
+CUSTOMER_ID:102,
+CUSTOMER_NAME:"John",
+CITY:"Hyderabad",
+START_DATE:"2026-01-01",
+END_DATE:null,
+IS_CURRENT:"Y"
+}
+],
+
+FACT_SALES:[
+{
+ORDER_ID:1001,
+CUSTOMER_SK:1011,
+SALES_AMOUNT:500,
+SALES_DATE:"2026-03-15"
+},
+{
+ORDER_ID:1002,
+CUSTOMER_SK:1012,
+SALES_AMOUNT:800,
+SALES_DATE:"2026-08-10"
+},
+{
+ORDER_ID:1003,
+CUSTOMER_SK:1021,
+SALES_AMOUNT:600,
+SALES_DATE:"2026-04-20"
+}
+]
+
+},
+
+answer:`
+
+--------------------------------------------
+STEP 1 - Create Source Tables
+--------------------------------------------
+
+CREATE OR REPLACE TABLE SRC_CUSTOMER
+(
+CUSTOMER_ID NUMBER,
+CUSTOMER_NAME STRING,
+CITY STRING
+);
+
+CREATE OR REPLACE TABLE SRC_SALES
+(
+ORDER_ID NUMBER,
+CUSTOMER_ID NUMBER,
+SALES_AMOUNT NUMBER(10,2),
+SALES_DATE DATE
+);
+
+--------------------------------------------
+STEP 2 - Create Dimension Table
+--------------------------------------------
+
+CREATE OR REPLACE TABLE DIM_CUSTOMER
+(
+CUSTOMER_SK NUMBER,
+CUSTOMER_ID NUMBER,
+CUSTOMER_NAME STRING,
+CITY STRING,
+START_DATE DATE,
+END_DATE DATE,
+IS_CURRENT STRING
+);
+
+--------------------------------------------
+STEP 3 - Create Fact Table
+--------------------------------------------
+
+CREATE OR REPLACE TABLE FACT_SALES
+(
+ORDER_ID NUMBER,
+CUSTOMER_SK NUMBER,
+SALES_AMOUNT NUMBER(10,2),
+SALES_DATE DATE
+);
+
+--------------------------------------------
+STEP 4 - Initial Load
+--------------------------------------------
+
+INSERT INTO DIM_CUSTOMER VALUES
+(1011,101,'Sai','Bangalore','2026-01-01','2026-06-30','N'),
+(1012,101,'Sai','Hyderabad','2026-07-01',NULL,'Y'),
+(1021,102,'John','Hyderabad','2026-01-01',NULL,'Y');
+
+--------------------------------------------
+STEP 5 - Load Sales
+--------------------------------------------
+
+INSERT INTO SRC_SALES VALUES
+(1001,101,500,'2026-03-15'),
+(1002,101,800,'2026-08-10'),
+(1003,102,600,'2026-04-20');
+
+--------------------------------------------
+STEP 6 - Load Fact Table
+--------------------------------------------
+
+INSERT INTO FACT_SALES
+
+SELECT
+
+S.ORDER_ID,
+D.CUSTOMER_SK,
+S.SALES_AMOUNT,
+S.SALES_DATE
+
+FROM SRC_SALES S
+
+JOIN DIM_CUSTOMER D
+
+ON S.CUSTOMER_ID=D.CUSTOMER_ID
+
+AND S.SALES_DATE BETWEEN D.START_DATE
+AND COALESCE(D.END_DATE,'9999-12-31');
+
+--------------------------------------------
+STEP 7 - Verify
+--------------------------------------------
+
+SELECT *
+FROM DIM_CUSTOMER;
+
+SELECT *
+FROM FACT_SALES;
+
+SELECT
+
+F.ORDER_ID,
+D.CUSTOMER_NAME,
+D.CITY,
+F.SALES_AMOUNT,
+F.SALES_DATE
+
+FROM FACT_SALES F
+
+JOIN DIM_CUSTOMER D
+
+ON F.CUSTOMER_SK=D.CUSTOMER_SK;
+
+`
+}
+    ,
+    {
+title: "Conformed Dimension - Shared Dimension Across Multiple Fact Tables",
+
+question: `
+Implement a Conformed Dimension in a Data Warehouse.
+
+Requirements:
+
+1. Create a shared dimension table named DIM_CUSTOMER.
+2. Create two fact tables:
+   - FACT_SALES
+   - FACT_RETURNS
+3. Insert sample data into all three tables.
+4. Ensure both fact tables reference the same CUSTOMER_SK from DIM_CUSTOMER.
+5. Retrieve sales data along with customer information.
+6. Retrieve returns data along with customer information.
+7. Generate a report showing the total sales and total refunds for each customer.
+`,
+
+dataset:{
+
+DIM_CUSTOMER:[
+{CUSTOMER_SK:1,CUSTOMER_ID:101,CUSTOMER_NAME:"Sai",CITY:"Bangalore"},
+{CUSTOMER_SK:2,CUSTOMER_ID:102,CUSTOMER_NAME:"John",CITY:"Hyderabad"},
+{CUSTOMER_SK:3,CUSTOMER_ID:103,CUSTOMER_NAME:"David",CITY:"Chennai"}
+],
+
+FACT_SALES:[
+{ORDER_ID:1001,CUSTOMER_SK:1,SALES_AMOUNT:500},
+{ORDER_ID:1002,CUSTOMER_SK:2,SALES_AMOUNT:700},
+{ORDER_ID:1003,CUSTOMER_SK:3,SALES_AMOUNT:900}
+],
+
+FACT_RETURNS:[
+{RETURN_ID:2001,CUSTOMER_SK:1,REFUND_AMOUNT:500},
+{RETURN_ID:2002,CUSTOMER_SK:3,REFUND_AMOUNT:900}
+]
+
+},
+
+output:{
+
+SALES_REPORT:[
+{ORDER_ID:1001,CUSTOMER_NAME:"Sai",CITY:"Bangalore",SALES_AMOUNT:500},
+{ORDER_ID:1002,CUSTOMER_NAME:"John",CITY:"Hyderabad",SALES_AMOUNT:700},
+{ORDER_ID:1003,CUSTOMER_NAME:"David",CITY:"Chennai",SALES_AMOUNT:900}
+],
+
+RETURNS_REPORT:[
+{RETURN_ID:2001,CUSTOMER_NAME:"Sai",CITY:"Bangalore",REFUND_AMOUNT:500},
+{RETURN_ID:2002,CUSTOMER_NAME:"David",CITY:"Chennai",REFUND_AMOUNT:900}
+]
+
+},
+
+answer:`
+
+--------------------------------------------
+STEP 1 - Create Customer Dimension
+--------------------------------------------
+
+CREATE OR REPLACE TABLE DIM_CUSTOMER
+(
+    CUSTOMER_SK NUMBER,
+    CUSTOMER_ID NUMBER,
+    CUSTOMER_NAME STRING,
+    CITY STRING
+);
+
+INSERT INTO DIM_CUSTOMER VALUES
+(1,101,'Sai','Bangalore'),
+(2,102,'John','Hyderabad'),
+(3,103,'David','Chennai');
+
+--------------------------------------------
+STEP 2 - Create Sales Fact
+--------------------------------------------
+
+CREATE OR REPLACE TABLE FACT_SALES
+(
+    ORDER_ID NUMBER,
+    CUSTOMER_SK NUMBER,
+    SALES_AMOUNT NUMBER(10,2)
+);
+
+INSERT INTO FACT_SALES VALUES
+(1001,1,500),
+(1002,2,700),
+(1003,3,900);
+
+--------------------------------------------
+STEP 3 - Create Returns Fact
+--------------------------------------------
+
+CREATE OR REPLACE TABLE FACT_RETURNS
+(
+    RETURN_ID NUMBER,
+    CUSTOMER_SK NUMBER,
+    REFUND_AMOUNT NUMBER(10,2)
+);
+
+INSERT INTO FACT_RETURNS VALUES
+(2001,1,500),
+(2002,3,900);
+
+--------------------------------------------
+STEP 4 - Sales Report
+--------------------------------------------
+
+SELECT
+S.ORDER_ID,
+C.CUSTOMER_NAME,
+C.CITY,
+S.SALES_AMOUNT
+FROM FACT_SALES S
+JOIN DIM_CUSTOMER C
+ON S.CUSTOMER_SK=C.CUSTOMER_SK;
+
+--------------------------------------------
+STEP 5 - Returns Report
+--------------------------------------------
+
+SELECT
+R.RETURN_ID,
+C.CUSTOMER_NAME,
+C.CITY,
+R.REFUND_AMOUNT
+FROM FACT_RETURNS R
+JOIN DIM_CUSTOMER C
+ON R.CUSTOMER_SK=C.CUSTOMER_SK;
+
+--------------------------------------------
+STEP 6 - Customer-wise Sales and Refund Report
+--------------------------------------------
+
+WITH SALES AS
+(
+SELECT
+CUSTOMER_SK,
+SUM(SALES_AMOUNT) TOTAL_SALES
+FROM FACT_SALES
+GROUP BY CUSTOMER_SK
+),
+RETURNS AS
+(
+SELECT
+CUSTOMER_SK,
+SUM(REFUND_AMOUNT) TOTAL_REFUNDS
+FROM FACT_RETURNS
+GROUP BY CUSTOMER_SK
+)
+
+SELECT
+C.CUSTOMER_NAME,
+COALESCE(S.TOTAL_SALES,0) TOTAL_SALES,
+COALESCE(R.TOTAL_REFUNDS,0) TOTAL_REFUNDS
+FROM DIM_CUSTOMER C
+LEFT JOIN SALES S
+ON C.CUSTOMER_SK=S.CUSTOMER_SK
+LEFT JOIN RETURNS R
+ON C.CUSTOMER_SK=R.CUSTOMER_SK;
+
+`
+},
+    {
+title: "Degenerate Dimension - Store Transaction Identifier in the Fact Table",
+
+question: `
+Implement a Degenerate Dimension in a Data Warehouse.
+
+Requirements:
+
+1. Create a customer dimension table named DIM_CUSTOMER.
+2. Create a product dimension table named DIM_PRODUCT.
+3. Create a fact table named FACT_SALES.
+4. Store ORDER_ID directly in FACT_SALES without creating a DIM_ORDER table.
+5. Insert sample data into all tables.
+6. Join the fact table with the customer and product dimensions.
+7. Retrieve Order ID, Customer Name, Product Name, and Sales Amount.
+8. Explain why ORDER_ID is considered a Degenerate Dimension.
+`,
+
+dataset:{
+
+DIM_CUSTOMER:[
+{CUSTOMER_SK:1,CUSTOMER_NAME:"Sai"},
+{CUSTOMER_SK:2,CUSTOMER_NAME:"John"}
+],
+
+DIM_PRODUCT:[
+{PRODUCT_SK:11,PRODUCT_NAME:"Laptop"},
+{PRODUCT_SK:12,PRODUCT_NAME:"Mobile"}
+],
+
+FACT_SALES:[
+{ORDER_ID:1001,CUSTOMER_SK:1,PRODUCT_SK:11,SALES_AMOUNT:500},
+{ORDER_ID:1002,CUSTOMER_SK:2,PRODUCT_SK:12,SALES_AMOUNT:800},
+{ORDER_ID:1003,CUSTOMER_SK:1,PRODUCT_SK:12,SALES_AMOUNT:700}
+]
+
+},
+
+output:[
+{ORDER_ID:1001,CUSTOMER_NAME:"Sai",PRODUCT_NAME:"Laptop",SALES_AMOUNT:500},
+{ORDER_ID:1002,CUSTOMER_NAME:"John",PRODUCT_NAME:"Mobile",SALES_AMOUNT:800},
+{ORDER_ID:1003,CUSTOMER_NAME:"Sai",PRODUCT_NAME:"Mobile",SALES_AMOUNT:700}
+],
+
+answer:`
+
+--------------------------------------------
+STEP 1 - Create Customer Dimension
+--------------------------------------------
+
+CREATE OR REPLACE TABLE DIM_CUSTOMER
+(
+    CUSTOMER_SK NUMBER,
+    CUSTOMER_NAME STRING
+);
+
+INSERT INTO DIM_CUSTOMER VALUES
+(1,'Sai'),
+(2,'John');
+
+--------------------------------------------
+STEP 2 - Create Product Dimension
+--------------------------------------------
+
+CREATE OR REPLACE TABLE DIM_PRODUCT
+(
+    PRODUCT_SK NUMBER,
+    PRODUCT_NAME STRING
+);
+
+INSERT INTO DIM_PRODUCT VALUES
+(11,'Laptop'),
+(12,'Mobile');
+
+--------------------------------------------
+STEP 3 - Create Fact Table
+--------------------------------------------
+
+CREATE OR REPLACE TABLE FACT_SALES
+(
+    ORDER_ID NUMBER,
+    CUSTOMER_SK NUMBER,
+    PRODUCT_SK NUMBER,
+    SALES_AMOUNT NUMBER(10,2)
+);
+
+INSERT INTO FACT_SALES VALUES
+(1001,1,11,500),
+(1002,2,12,800),
+(1003,1,12,700);
+
+--------------------------------------------
+STEP 4 - Retrieve Sales Report
+--------------------------------------------
+
+SELECT
+    F.ORDER_ID,
+    C.CUSTOMER_NAME,
+    P.PRODUCT_NAME,
+    F.SALES_AMOUNT
+FROM FACT_SALES F
+JOIN DIM_CUSTOMER C
+    ON F.CUSTOMER_SK = C.CUSTOMER_SK
+JOIN DIM_PRODUCT P
+    ON F.PRODUCT_SK = P.PRODUCT_SK;
+
+--------------------------------------------
+STEP 5 - Explanation
+--------------------------------------------
+
+-- ORDER_ID is stored directly in FACT_SALES.
+-- No DIM_ORDER table is created because ORDER_ID is only a
+-- transaction identifier and has no descriptive attributes.
+-- Therefore, ORDER_ID is called a Degenerate Dimension.
+
+`
+},
+    {
+title: "Junk Dimension - Create and Load Fact Table",
+
+question:`
+You are given a source table named SALES_RAW.
+
+Requirements:
+
+1. Create a Junk Dimension named DIM_JUNK.
+2. Generate a surrogate key named JUNK_KEY using an IDENTITY column.
+3. Store only the distinct combinations of:
+   - IS_PROMOTION
+   - PAYMENT_MODE
+   - IS_ONLINE
+   - IS_RETURNED
+4. Create a FACT_SALES table with the following columns:
+   - SALES_ID
+   - PRODUCT_KEY
+   - CUSTOMER_KEY
+   - JUNK_KEY
+   - SALES_AMOUNT
+5. Load FACT_SALES by replacing the four low-cardinality columns with JUNK_KEY.
+6. Finally, write a query to display FACT_SALES along with DIM_JUNK to verify the mapping.
+`,
+
+dataset:[
+{
+SALES_ID:1,
+PRODUCT_KEY:101,
+CUSTOMER_KEY:1001,
+IS_PROMOTION:"Y",
+PAYMENT_MODE:"Card",
+IS_ONLINE:"Y",
+IS_RETURNED:"N",
+SALES_AMOUNT:1500
+},
+{
+SALES_ID:2,
+PRODUCT_KEY:102,
+CUSTOMER_KEY:1002,
+IS_PROMOTION:"N",
+PAYMENT_MODE:"Cash",
+IS_ONLINE:"N",
+IS_RETURNED:"N",
+SALES_AMOUNT:2200
+},
+{
+SALES_ID:3,
+PRODUCT_KEY:103,
+CUSTOMER_KEY:1003,
+IS_PROMOTION:"Y",
+PAYMENT_MODE:"UPI",
+IS_ONLINE:"Y",
+IS_RETURNED:"Y",
+SALES_AMOUNT:1750
+},
+{
+SALES_ID:4,
+PRODUCT_KEY:101,
+CUSTOMER_KEY:1004,
+IS_PROMOTION:"Y",
+PAYMENT_MODE:"Card",
+IS_ONLINE:"Y",
+IS_RETURNED:"N",
+SALES_AMOUNT:900
+},
+{
+SALES_ID:5,
+PRODUCT_KEY:105,
+CUSTOMER_KEY:1005,
+IS_PROMOTION:"N",
+PAYMENT_MODE:"Card",
+IS_ONLINE:"N",
+IS_RETURNED:"N",
+SALES_AMOUNT:3200
+},
+{
+SALES_ID:6,
+PRODUCT_KEY:106,
+CUSTOMER_KEY:1006,
+IS_PROMOTION:"Y",
+PAYMENT_MODE:"Cash",
+IS_ONLINE:"Y",
+IS_RETURNED:"N",
+SALES_AMOUNT:1100
+}
+],
+
+output:[
+{
+FACT_SALES:[
+{"SALES_ID":1,"PRODUCT_KEY":101,"CUSTOMER_KEY":1001,"JUNK_KEY":1,"SALES_AMOUNT":1500},
+{"SALES_ID":2,"PRODUCT_KEY":102,"CUSTOMER_KEY":1002,"JUNK_KEY":2,"SALES_AMOUNT":2200},
+{"SALES_ID":3,"PRODUCT_KEY":103,"CUSTOMER_KEY":1003,"JUNK_KEY":3,"SALES_AMOUNT":1750},
+{"SALES_ID":4,"PRODUCT_KEY":101,"CUSTOMER_KEY":1004,"JUNK_KEY":1,"SALES_AMOUNT":900},
+{"SALES_ID":5,"PRODUCT_KEY":105,"CUSTOMER_KEY":1005,"JUNK_KEY":4,"SALES_AMOUNT":3200},
+{"SALES_ID":6,"PRODUCT_KEY":106,"CUSTOMER_KEY":1006,"JUNK_KEY":5,"SALES_AMOUNT":1100}
+]
+}
+],
+
+answer:`
+CREATE OR REPLACE TABLE DIM_JUNK
+(
+    JUNK_KEY INT IDENTITY(1,1),
+    IS_PROMOTION STRING,
+    PAYMENT_MODE STRING,
+    IS_ONLINE STRING,
+    IS_RETURNED STRING
+);
+
+INSERT INTO DIM_JUNK
+(
+    IS_PROMOTION,
+    PAYMENT_MODE,
+    IS_ONLINE,
+    IS_RETURNED
+)
+SELECT DISTINCT
+    IS_PROMOTION,
+    PAYMENT_MODE,
+    IS_ONLINE,
+    IS_RETURNED
+FROM SALES_RAW;
+
+CREATE OR REPLACE TABLE FACT_SALES
+(
+    SALES_ID INT,
+    PRODUCT_KEY INT,
+    CUSTOMER_KEY INT,
+    JUNK_KEY INT,
+    SALES_AMOUNT NUMBER(10,2)
+);
+
+INSERT INTO FACT_SALES
+(
+    SALES_ID,
+    PRODUCT_KEY,
+    CUSTOMER_KEY,
+    JUNK_KEY,
+    SALES_AMOUNT
+)
+SELECT
+    S.SALES_ID,
+    S.PRODUCT_KEY,
+    S.CUSTOMER_KEY,
+    J.JUNK_KEY,
+    S.SALES_AMOUNT
+FROM SALES_RAW S
+JOIN DIM_JUNK J
+ON S.IS_PROMOTION = J.IS_PROMOTION
+AND S.PAYMENT_MODE = J.PAYMENT_MODE
+AND S.IS_ONLINE = J.IS_ONLINE
+AND S.IS_RETURNED = J.IS_RETURNED;
+
+SELECT
+    F.SALES_ID,
+    F.PRODUCT_KEY,
+    F.CUSTOMER_KEY,
+    J.IS_PROMOTION,
+    J.PAYMENT_MODE,
+    J.IS_ONLINE,
+    J.IS_RETURNED,
+    F.SALES_AMOUNT
+FROM FACT_SALES F
+JOIN DIM_JUNK J
+ON F.JUNK_KEY = J.JUNK_KEY
+ORDER BY F.SALES_ID;
+`
+},
+/* End of questions array */
+];
+
+/* ============================
+   UI & Rendering Helpers
+   ============================ */
+
+let currentQuestion = 0;
+/*
+function createJumpButtons() {
+    const container = document.getElementById('jumpButtons');
+    container.innerHTML = '';
+    questions.forEach((q, idx) => {
+        const btn = document.createElement('button');
+        btn.textContent = 'Q' + (idx + 1);
+        btn.title = 'Go to Question ' + (idx + 1);
+        btn.onclick = () => {
+            currentQuestion = idx;
+            renderQuestion(idx);
+        };
+        container.appendChild(btn);
+    });
+}
+    */
+    function createJumpButtons() {
+
+    const container = document.getElementById('jumpButtons');
+
+    container.innerHTML = '';
+
+    questions.forEach((q, idx) => {
+
+        const btn = document.createElement('button');
+
+        btn.textContent = q.title;
+
+        btn.title = q.title;
+
+        btn.onclick = () => {
+
+            currentQuestion = idx;
+
+            renderQuestion(idx);
+
+        };
+
+        container.appendChild(btn);
+
+    });
+
+}
+
+function renderTableFromObjects(list) {
+    if (!list || list.length === 0) return '';
+    const cols = Object.keys(list[0]);
+    let html = '<table><thead><tr>';
+    cols.forEach(c => html += `<th>${c}</th>`);
+    html += '</tr></thead><tbody>';
+    list.forEach(r => {
+        html += '<tr>';
+        cols.forEach(c => html += `<td>${r[c]}</td>`);
+        html += '</tr>';
+    });
+    html += '</tbody></table>';
+    return html;
+}
+
+function renderQuestion(index) {
+    const q = questions[index];
+    // Question text
+    document.getElementById('questionBox').innerHTML = `<h3>Question ${index + 1}</h3><p>${q.question.replace(/\n\s+/g,'\n')}</p>`;
+
+    // Dataset
+    const datasetHtml = q.dataset && q.dataset.length ? renderTableFromObjects(q.dataset) : '<p>No dataset for this question.</p>';
+    document.getElementById('datasetBox').innerHTML = datasetHtml;
+
+    // Dataset2
+    const datasetHtml2 = q.dataset2 && q.dataset2.length ? renderTableFromObjects(q.dataset2) : '<p>No dataset for this question.</p>';
+    document.getElementById('datasetBox2').innerHTML = datasetHtml2;
+
+    // Dataset3
+    const datasetHtml3 = q.dataset3 && q.dataset3.length ? renderTableFromObjects(q.dataset3) : '<p>No dataset for this question.</p>';
+    document.getElementById('datasetBox3').innerHTML = datasetHtml3;
+
+    
+    // Output
+    const outputHtml = q.output && q.output.length ? renderTableFromObjects(q.output) : '<p>No output for this question.</p>';
+    document.getElementById('outputBox').innerHTML = outputHtml;
+
+    // Answers: combine answer, answer_1, answer_2, explanation
+    let answerText = '';
+    if (q.answer) answerText += q.answer.trim() + '\n\n';
+    if (q.answer_1) answerText += '-- Solution 1:\n' + q.answer_1.trim() + '\n\n';
+    if (q.answer_2) answerText += '-- Solution 2:\n' + q.answer_2.trim() + '\n\n';
+    if (q.explanation) answerText += '-- Explanation:\n' + q.explanation.trim();
+
+    document.getElementById('answerBox').textContent = answerText || '-- No answer provided --';
+
+    // update counter
+    document.getElementById('questionCounter').textContent = `Question ${index+1} of ${questions.length}`;
+}
+
+/* Navigation buttons */
+document.getElementById('prevBtn').addEventListener('click', () => {
+    if (currentQuestion > 0) {
+        currentQuestion--;
+        renderQuestion(currentQuestion);
+    }
+});
+document.getElementById('nextBtn').addEventListener('click', () => {
+    if (currentQuestion < questions.length - 1) {
+        currentQuestion++;
+        renderQuestion(currentQuestion);
+    }
+});
+
+/* Initialize UI */
+createJumpButtons();
+renderQuestion(0);
+
+</script>
+</body>
+</html>
