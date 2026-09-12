@@ -723,141 +723,239 @@ remove() removes the first matching value.
 If the value passed to remove() does not exist in the list, Python raises a ValueError.
 `
 },
-  {
-title: "Stored Procedure - Load SCD Type 2 Using Stream and Merge",
+ {
+title: "Python Lists — List Slicing",
 
 question: `
-Create a SQL Stored Procedure named LOAD_SCD2.
+Given the following list:
 
-Requirements:
+tables = ["CUSTOMER", "ACCOUNT", "FACT_PORTFOLIO", "DIM_TRANSACTION", "RATING"]
 
-1. Read changed records from the STG_CUSTOMER_STREAM stream.
-2. Process only INSERT operations using the METADATA$ACTION column.
-3. Store the changed records in a temporary table.
-4. Perform SCD Type 2 processing:
-   - If CUSTOMER_NAME or SALARY has changed, mark the existing record as CURRENT_FLAG='N' and set the END_DATE.
-   - Insert the new version of the customer record with CURRENT_FLAG='Y'.
-5. Capture the number of rows updated using SQLROWCOUNT.
-6. Capture the number of rows inserted using SQLROWCOUNT.
-7. Return a message in the format:
-   Updated = <updated_rows>, Inserted = <inserted_rows>
-`,
+Use list slicing to:
 
-dataset:[
-{CUSTOMER_ID:101,CUSTOMER_NAME:"John",SALARY:5000,CURRENT_FLAG:"Y",START_DATE:"2025-01-01",END_DATE:null},
-{CUSTOMER_ID:102,CUSTOMER_NAME:"David",SALARY:7000,CURRENT_FLAG:"Y",START_DATE:"2025-01-01",END_DATE:null}
-],
+1. Get the first three tables.
+2. Get ACCOUNT through DIM_TRANSACTION.
+3. Get the last two tables.
+4. Get every second table.
+   `,
 
-dataset2:[
-{CUSTOMER_ID:101,CUSTOMER_NAME:"John",SALARY:6500,METADATA_ACTION:"INSERT"},
-{CUSTOMER_ID:102,CUSTOMER_NAME:"David",SALARY:7000,METADATA_ACTION:"INSERT"}
-],
+dataset:[],
 
-output:[
-{CUSTOMER_ID:101,CUSTOMER_NAME:"John",SALARY:5000,CURRENT_FLAG:"N"},
-{CUSTOMER_ID:101,CUSTOMER_NAME:"John",SALARY:6500,CURRENT_FLAG:"Y"},
-{"Result":"Updated = 1, Inserted = 1"}
-],
+output:[],
 
 answer:`
-CREATE OR REPLACE PROCEDURE LOAD_SCD2()
-RETURNS STRING
-LANGUAGE SQL
-AS
-$$
-DECLARE
-    V_UPDATED NUMBER;
-    V_INSERTED NUMBER;
-BEGIN
+Definition:
 
-    CREATE OR REPLACE TEMP TABLE TMP_CHANGES AS
-    SELECT
-        CUSTOMER_ID,
-        CUSTOMER_NAME,
-        SALARY
-    FROM STG_CUSTOMER_STREAM
-    WHERE METADATA$ACTION='INSERT';
+List slicing means extracting a portion of a list without changing the original list.
 
-    MERGE INTO DIM_CUSTOMER T
-    USING TMP_CHANGES S
-    ON T.CUSTOMER_ID=S.CUSTOMER_ID
-    AND T.CURRENT_FLAG='Y'
+The basic syntax is:
 
-    WHEN MATCHED
-    AND (
-            T.CUSTOMER_NAME<>S.CUSTOMER_NAME
-         OR T.SALARY<>S.SALARY
-    )
+list[start:stop]
 
-    THEN UPDATE
-    SET
-        CURRENT_FLAG='N',
-        END_DATE=CURRENT_DATE();
+The start position is included.
 
-    V_UPDATED:=SQLROWCOUNT;
+The stop position is excluded.
 
-    INSERT INTO DIM_CUSTOMER
-    (
-        CUSTOMER_ID,
-        CUSTOMER_NAME,
-        SALARY,
-        START_DATE,
-        END_DATE,
-        CURRENT_FLAG
-    )
+For example:
 
-    SELECT
-        S.CUSTOMER_ID,
-        S.CUSTOMER_NAME,
-        S.SALARY,
-        CURRENT_DATE(),
-        NULL,
-        'Y'
+tables = ["CUSTOMER", "ACCOUNT", "FACT_PORTFOLIO", "DIM_TRANSACTION", "RATING"]
 
-    FROM TMP_CHANGES S
+The indexes are:
 
-    LEFT JOIN DIM_CUSTOMER D
+Index 0 → CUSTOMER
+Index 1 → ACCOUNT
+Index 2 → FACT_PORTFOLIO
+Index 3 → DIM_TRANSACTION
+Index 4 → RATING
 
-    ON S.CUSTOMER_ID=D.CUSTOMER_ID
-    AND S.CUSTOMER_NAME=D.CUSTOMER_NAME
-    AND S.SALARY=D.SALARY
-    AND D.CURRENT_FLAG='Y'
+1. Get the first three tables:
 
-    WHERE D.CUSTOMER_ID IS NULL;
+print(tables[0:3])
 
-    V_INSERTED:=SQLROWCOUNT;
+Output:
 
-    RETURN
-    'Updated = '
-    ||V_UPDATED
-    ||', Inserted = '
-    ||V_INSERTED;
+["CUSTOMER", "ACCOUNT", "FACT_PORTFOLIO"]
 
-END;
-$$;
+Why?
 
-CALL LOAD_SCD2();
-`,
+Start at index 0.
 
-explanation:`
-Concepts Covered:
+Stop before index 3.
 
-• Snowflake Streams
-• METADATA$ACTION
-• Temporary Tables
-• MERGE Statement
-• Slowly Changing Dimension (SCD Type 2)
-• SQLROWCOUNT
-• CURRENT_FLAG
-• START_DATE / END_DATE
-• INSERT ... SELECT
-• Stored Procedures
-• RETURN STRING
+Therefore indexes 0, 1, and 2 are returned.
 
-Note:
-This is a common Snowflake ETL pattern for implementing SCD Type 2. The MERGE statement expires the current version of a record, while the INSERT statement creates the new current version. SQLROWCOUNT is used after each DML operation to report the number of rows updated and inserted.
+2. Get ACCOUNT through DIM_TRANSACTION:
+
+print(tables[1:4])
+
+Output:
+
+["ACCOUNT", "FACT_PORTFOLIO", "DIM_TRANSACTION"]
+
+Again, index 1 is included and index 4 is excluded.
+
+3. Get the last two tables:
+
+print(tables[-2:])
+
+Output:
+
+["DIM_TRANSACTION", "RATING"]
+
+When the start position is omitted, Python starts from the beginning of the specified range.
+
+4. Get every second table:
+
+print(tables[::2])
+
+Output:
+
+["CUSTOMER", "FACT_PORTFOLIO", "RATING"]
+
+Here the third value is the step.
+
+The syntax is:
+
+list[start:stop:step]
+
+For example:
+
+tables[::2]
+
+means:
+
+Start from the beginning.
+
+Go until the end.
+
+Take every second item.
+
+Visual:
+
+Original list:
+
+Index       0             1          2                3                 4
+↓             ↓          ↓                ↓                 ↓
+CUSTOMER      ACCOUNT   FACT_PORTFOLIO   DIM_TRANSACTION     RATING
+
+tables[0:3]
+
+```
+        └───────────────┘
+      CUSTOMER ACCOUNT FACT_PORTFOLIO
+```
+
+tables[1:4]
+
+```
+              └────────────────────────┘
+              ACCOUNT FACT_PORTFOLIO DIM_TRANSACTION
+```
+
+tables[-2:]
+
+```
+                                          └──────────────────┘
+                                          DIM_TRANSACTION RATING
+```
+
+tables[::2]
+
+```
+        ↓                        ↓                           ↓
+      CUSTOMER             FACT_PORTFOLIO                   RATING
+```
+
+Important rule:
+
+The stop index is NOT included.
+
+For example:
+
+tables[0:3]
+
+means:
+
+0 included
+1 included
+2 included
+3 excluded
+
+This is one of the most important things to remember about Python slicing.
+
+More examples:
+
+tables[:3]
+
+Gets the first three items.
+
+tables[2:]
+
+Gets everything from index 2 to the end.
+
+tables[:]
+
+Gets the entire list.
+
+tables[::2]
+
+Gets every second item.
+
+tables[::3]
+
+Gets every third item.
+
+tables[::-1]
+
+Reverses the list.
+
+For example:
+
+print(tables[::-1])
+
+Output:
+
+["RATING", "DIM_TRANSACTION", "FACT_PORTFOLIO", "ACCOUNT", "CUSTOMER"]
+
+Practical data-engineering example:
+
+Suppose you have many tables:
+
+tables = [
+"CUSTOMER",
+"ACCOUNT",
+"FACT_PORTFOLIO",
+"DIM_TRANSACTION",
+"RATING",
+"PRODUCT",
+"BRANCH"
+]
+
+You could select only the first three tables:
+
+selected_tables = tables[:3]
+
+Or select the last two:
+
+selected_tables = tables[-2:]
+
+This becomes useful later when Python is used to process groups of tables in an Airflow pipeline.
+
+Interview point:
+
+The general slicing syntax is:
+
+list[start:stop:step]
+
+Start → where slicing begins.
+
+Stop → where slicing ends, but this position is excluded.
+
+Step → how many positions to move each time.
 `
 },
+
+    
     {
 title: "External Stage - Load CSV File from Amazon S3 into Snowflake",
 
