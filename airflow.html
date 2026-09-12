@@ -161,6 +161,7 @@
 const questions = [
  
 /* QUESTION 1 — Airflow Fundamentals */
+/* QUESTION 1 — Airflow Fundamentals */
 {
 title: "What Is Apache Airflow?",
 
@@ -168,9 +169,9 @@ question: `
 What is Apache Airflow?
 
 Explain:
-1. What Airflow is.
-2. Why it is used.
-3. Where it is commonly used.
+1. What Apache Airflow is.
+2. What Airflow is used for.
+3. Why Airflow is used in data engineering.
 4. Give a simple real-world example.
 `,
 
@@ -179,126 +180,347 @@ dataset:[],
 output:[],
 
 answer:`
-🔷 APACHE AIRFLOW
+### Definition
 
 Apache Airflow is an open-source platform used to
-📅 schedule,
-⚙️ execute, and
-👀 monitor
-workflows.
+programmatically author, schedule, and monitor workflows.
 
-Think of Airflow as a WORKFLOW MANAGER.
+Airflow is mainly a WORKFLOW ORCHESTRATION tool.
 
-        📥 Extract
-            ↓
-        🔄 Transform
-            ↓
-        📤 Load
-            ↓
-        ✅ Validate
+### What Is Workflow Orchestration?
 
-For example, suppose we have a daily data pipeline:
+Workflow orchestration means managing and controlling
+multiple tasks and making sure they execute in the
+required order.
 
-⏰ 6:00 AM
-    ↓
-📥 Get data from source
-    ↓
-🧹 Clean / transform data
-    ↓
-❄️ Load data into Snowflake
-    ↓
-🔍 Validate the data
-    ↓
-📊 Generate report
-    ↓
-✅ Pipeline completed
+### What Is Airflow Used For?
 
-Airflow controls this entire flow.
+Airflow can be used to:
 
-It can also handle:
+1. Create workflows
+2. Schedule workflows
+3. Define task dependencies
+4. Execute tasks
+5. Retry failed tasks
+6. Monitor workflow execution
+7. View task execution logs
 
-🔁 Retry
-❌ Failure
-⏰ Scheduling
-🔗 Dependencies
-📋 Logging
-👀 Monitoring
+### Why Is Airflow Used in Data Engineering?
 
-Example:
+In data engineering, we commonly have multiple steps
+that need to execute in a specific order.
 
-Task A → Task B → Task C
+For example:
 
-If Task B fails:
+1. Extract data from SQL Server
+2. Transform the data
+3. Load the data into Snowflake
+4. Validate the data
+5. Generate a report
 
-Task A ✅
-   ↓
-Task B ❌
-   ↓
-Task C ⏸️
+Airflow can coordinate these steps and control when
+each step should execute.
 
-Airflow can retry Task B 🔁.
+### Real-World Example
 
-Only after Task B succeeds:
+Suppose a company receives customer data every day.
 
-Task B ✅
-   ↓
-Task C ▶️
+The required process is:
+
+Extract Data
+      ↓
+Transform Data
+      ↓
+Load Data into Snowflake
+      ↓
+Validate Data
+      ↓
+Generate Report
+
+Airflow can manage this complete workflow.
+
+### Important Point
+
+Airflow is NOT primarily a database.
+
+Airflow is NOT primarily a data warehouse.
+
+Airflow is NOT primarily an ETL transformation engine.
+
+Instead, Airflow ORCHESTRATES different tasks and
+systems.
+
+For example:
+
+Airflow
+   ├── SQL Server
+   ├── Python
+   ├── Snowflake
+   ├── APIs
+   └── Other systems
+
+Airflow coordinates when these systems should be used
+and in what order.
+
+### Visual Representation
+
+                 ✈️ APACHE AIRFLOW
+                        │
+                        ▼
+                 📋 WORKFLOW
+                        │
+            ┌───────────┼───────────┐
+            ▼           ▼           ▼
+        📥 Extract   🔄 Transform   📤 Load
+            │           │           │
+       SQL Server     Python      ❄️ Snowflake
+                        │
+                        ▼
+                   🔍 Validate
+                        │
+                        ▼
+                    📊 Report
+
+### Key Takeaway
+
+✈️ Airflow
+   → Workflow orchestration platform
+
+📋 Workflow
+   → Collection of tasks that need to be executed
+
+🔗 Orchestration
+   → Controlling the execution and dependencies
+      between tasks
+
+💡 In simple words:
+
+Airflow is a tool that helps us create, schedule,
+execute, and monitor workflows.
+`
+},
+/* QUESTION 2 — Airflow Fundamentals */
+{
+title: "What Is a DAG?",
+
+question: `
+What is a DAG in Apache Airflow?
+
+Explain:
+1. What DAG stands for.
+2. What a DAG represents in Airflow.
+3. What a task is.
+4. What task dependencies are.
+5. What Directed, Acyclic, and Graph mean.
+6. Why a DAG cannot contain a cycle.
+`,
+
+dataset:[],
+
+output:[],
+
+answer:`
+### Definition
+
+DAG stands for:
+
+D → Directed
+A → Acyclic
+G → Graph
+
+In Apache Airflow, a DAG represents a WORKFLOW.
+
+A DAG defines:
+
+1. The tasks that need to be executed
+2. The dependencies between those tasks
+3. The order in which tasks should execute
+4. The schedule/configuration of the workflow
+
+### What Is a Task?
+
+A Task is an individual unit of work inside a DAG.
+
+For example:
+
+📥 Extract Data → Task
+🔄 Transform Data → Task
+❄️ Load Data → Task
+🔍 Validate Data → Task
+
+### What Is a Dependency?
+
+A dependency defines the relationship between tasks
+and determines which task should execute before another.
+
+For example:
+
+Task A → Task B
+
+means:
+
+Task B should execute after Task A.
+
+In Airflow, this can be represented as:
+
+task_a >> task_b
+
+### What Does Directed Mean?
+
+Directed means that the workflow has a specific direction.
+
+For example:
+
+A → B → C
+
+The direction is:
+
+A first
+ ↓
+B second
+ ↓
+C third
+
+### What Does Acyclic Mean?
+
+Acyclic means that the workflow cannot contain a cycle.
+
+A valid DAG:
+
+A → B → C
+
+An invalid workflow:
+
+A → B → C
+↑         ↓
+└─────────┘
+
+Here, C eventually points back to A.
+
+This creates a cycle, so it is not a valid DAG.
+
+### What Does Graph Mean?
+
+A graph consists of:
+
+Nodes
+→ Tasks
+
+Edges
+→ Dependencies between tasks
+
+For example:
+
+        Task A
+           │
+           ▼
+        Task B
+           │
+           ▼
+        Task C
+
+Here:
+
+📦 Task A = Node
+📦 Task B = Node
+📦 Task C = Node
+
+➡️ Arrows = Dependencies
+
+### Real-World Example
+
+Suppose we need to load data into Snowflake.
+
+The workflow is:
+
+1. Extract data
+2. Transform data
+3. Load data
+4. Validate data
+
+Each step can become a task inside a DAG.
+
+### Visual Representation
+
+              📋 DAG
+               │
+               ▼
+        📥 Extract Data
+               │
+               ▼
+        🔄 Transform Data
+               │
+               ▼
+        ❄️ Load to Snowflake
+               │
+               ▼
+          🔍 Validate Data
+
+The arrows represent dependencies.
 
 Therefore:
 
-💡 Airflow = Workflow Orchestration Tool
+Extract
+   ↓
+Transform
+   ↓
+Load
+   ↓
+Validate
 
-It does not mainly perform the actual data
-transformation itself. Instead, it coordinates
-different tasks and makes sure they execute in
-the required order.
-`
-},
-{
-title: "Stored Procedure - Get Customer Count",
+### Airflow vs DAG vs Task
 
-question:`
-Create a stored procedure named getCustomerCount.
+✈️ Airflow
+   → Platform that manages workflows
 
-Requirements:
+📋 DAG
+   → Definition/blueprint of one workflow
 
-1. Count customers in CUSTOMER_DIM.
-2. Store count in a variable.
-3. Return a string like:
+⚙️ Task
+   → Individual unit of work inside the DAG
 
-Total Customers : 500
-`,
-dataset:[
-{ID:1},
-{ID:2},
-{ID:3},
-{ID:4}
-],
-output:[
-{"Result":"Total Customers : 4"}
-],
-answer:`
-CREATE OR REPLACE PROCEDURE getCustomerCount()
-RETURNS STRING
-LANGUAGE SQL
-AS
-$$
+🔗 Dependency
+   → Relationship that defines task execution order
 
-DECLARE
-v_count NUMBER;
+### Important Example
 
-BEGIN
+One Airflow environment can contain multiple DAGs:
 
-SELECT COUNT(*)
-INTO :v_count
-FROM CUSTOMER_DIM;
+             ✈️ AIRFLOW
+                  │
+        ┌─────────┼─────────┐
+        ▼         ▼         ▼
+      📋 DAG 1   📋 DAG 2   📋 DAG 3
+        │         │         │
+       Tasks     Tasks     Tasks
 
-RETURN 'Total Customers : '||v_count;
+For example:
 
-END;
-$$;
+📋 customer_data_pipeline
+📋 sales_data_pipeline
+📋 risk_data_pipeline
 
-CALL getCustomerCount();
+Each DAG can contain its own tasks and dependencies.
+
+### Key Takeaway
+
+💡 DAG = Directed Acyclic Graph
+
+📋 DAG = Defines a workflow
+
+⚙️ Task = Individual work inside the workflow
+
+🔗 Dependency = Defines the order between tasks
+
+➡️ Directed = Has a specific direction
+
+🚫 Acyclic = Cannot contain a cycle
+
+🔷 Graph = Collection of nodes and relationships
+
+In simple words:
+
+📋 A DAG is the blueprint of an Airflow workflow.
 `
 },
 
