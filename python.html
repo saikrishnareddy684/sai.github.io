@@ -260,21 +260,28 @@ Important points:
 This type of variable usage will become useful later when we create Airflow DAGs and pass information such as source tables, target tables, database names, and configuration values.
 `
 },
-
-/* QUESTION 2 — Airflow Fundamentals */
-{
-title: "What Is a DAG?",
+    {
+title: "Python Data Types — Type Conversion and Concatenation",
 
 question: `
-What is a DAG in Apache Airflow?
+You are given the following Python variables:
 
-Explain:
-1. What DAG stands for.
-2. What a DAG represents in Airflow.
-3. What a task is.
-4. What task dependencies are.
-5. What Directed, Acyclic, and Graph mean.
-6. Why a DAG cannot contain a cycle.
+principal = 25000
+interest = 2500.50
+bonus = "500"
+name = "Sai"
+age = 29
+
+Calculate and print the total amount using principal, interest, and bonus.
+
+The output should be in the following format:
+
+Total amount is 28000.5 for the person Sai with age 29
+
+Important:
+The bonus variable contains "500" as a string, while principal and interest are numeric values.
+
+Identify the problem and use the appropriate type conversion to calculate the total correctly.
 `,
 
 dataset:[],
@@ -282,493 +289,124 @@ dataset:[],
 output:[],
 
 answer:`
-### Definition
+Definition:
 
-DAG stands for:
-
-D → Directed
-A → Acyclic
-G → Graph
-
-In Apache Airflow, a DAG represents a WORKFLOW.
-
-A DAG defines:
-
-1. The tasks that need to be executed
-2. The dependencies between those tasks
-3. The order in which tasks should execute
-4. The schedule/configuration of the workflow
-
-### What Is a Task?
-
-A Task is an individual unit of work inside a DAG.
+Type conversion means changing a value from one data type to another.
 
 For example:
 
-📥 Extract Data → Task
-🔄 Transform Data → Task
-❄️ Load Data → Task
-🔍 Validate Data → Task
+str() converts a value to a string.
+int() converts a value to an integer.
+float() converts a value to a decimal number.
 
-### What Is a Dependency?
+Given variables:
 
-A dependency defines the relationship between tasks
-and determines which task should execute before another.
-
-For example:
-
-Task A → Task B
-
-means:
-
-Task B should execute after Task A.
-
-In Airflow, this can be represented as:
-
-task_a >> task_b
-
-### What Does Directed Mean?
-
-Directed means that the workflow has a specific direction.
-
-For example:
-
-A → B → C
-
-The direction is:
-
-A first
- ↓
-B second
- ↓
-C third
-
-### What Does Acyclic Mean?
-
-Acyclic means that the workflow cannot contain a cycle.
-
-A valid DAG:
-
-A → B → C
-
-An invalid workflow:
-
-A → B → C
-↑         ↓
-└─────────┘
-
-Here, C eventually points back to A.
-
-This creates a cycle, so it is not a valid DAG.
-
-### What Does Graph Mean?
-
-A graph consists of:
-
-Nodes
-→ Tasks
-
-Edges
-→ Dependencies between tasks
-
-For example:
-
-        Task A
-           │
-           ▼
-        Task B
-           │
-           ▼
-        Task C
+principal = 25000
+interest = 2500.50
+bonus = "500"
+name = "Sai"
+age = 29
 
 Here:
 
-📦 Task A = Node
-📦 Task B = Node
-📦 Task C = Node
+principal is an integer.
+interest is a float.
+bonus is a string.
+name is a string.
+age is an integer.
 
-➡️ Arrows = Dependencies
+Problem:
 
-### Real-World Example
+We cannot directly perform this:
 
-Suppose we need to load data into Snowflake.
+principal + interest + bonus
 
-The workflow is:
+because Python would be trying to calculate:
 
-1. Extract data
-2. Transform data
-3. Load data
-4. Validate data
+integer + float + string
 
-Each step can become a task inside a DAG.
+Python cannot add a string to a number.
 
-### Visual Representation
+Therefore, we need to convert bonus from string to a number.
 
-              📋 DAG
-               │
-               ▼
-        📥 Extract Data
-               │
-               ▼
-        🔄 Transform Data
-               │
-               ▼
-        ❄️ Load to Snowflake
-               │
-               ▼
-          🔍 Validate Data
+Since bonus contains a whole number, we can use int():
 
-The arrows represent dependencies.
+int(bonus)
+
+This converts:
+
+"500" → 500
+
+Correct solution:
+
+total = principal + interest + int(bonus)
+
+print(f"Total amount is {total} for the person {name} with age {age}")
+
+Output:
+
+Total amount is 28000.5 for the person Sai with age 29
+
+Step-by-step:
+
+principal = 25000
+
+interest = 2500.50
+
+int(bonus) = 500
 
 Therefore:
 
-Extract
-   ↓
-Transform
-   ↓
-Load
-   ↓
-Validate
+25000 + 2500.50 + 500 = 28000.50
 
-### Airflow vs DAG vs Task
+Visual:
 
-✈️ Airflow
-   → Platform that manages workflows
+principal
+25000
++
+interest
+2500.50
++
+bonus
+"500"
+|
+| int()
+↓
+500
+|
+↓
+Total = 28000.50
 
-📋 DAG
-   → Definition/blueprint of one workflow
+Important distinction:
 
-⚙️ Task
-   → Individual unit of work inside the DAG
+Adding numbers:
 
-🔗 Dependency
-   → Relationship that defines task execution order
+principal + interest + int(bonus)
 
-### Important Example
+means mathematical addition.
 
-One Airflow environment can contain multiple DAGs:
+Joining strings:
 
-             ✈️ AIRFLOW
-                  │
-        ┌─────────┼─────────┐
-        ▼         ▼         ▼
-      📋 DAG 1   📋 DAG 2   📋 DAG 3
-        │         │         │
-       Tasks     Tasks     Tasks
+str(principal) + str(interest) + bonus
+
+means string concatenation.
+
+These are different operations.
+
+Interview point:
+
+If Python gives a TypeError while performing an operation between different data types, first check the data type of each variable using type().
 
 For example:
 
-📋 customer_data_pipeline
-📋 sales_data_pipeline
-📋 risk_data_pipeline
+print(type(principal))
+print(type(interest))
+print(type(bonus))
 
-Each DAG can contain its own tasks and dependencies.
-
-### Key Takeaway
-
-💡 DAG = Directed Acyclic Graph
-
-📋 DAG = Defines a workflow
-
-⚙️ Task = Individual work inside the workflow
-
-🔗 Dependency = Defines the order between tasks
-
-➡️ Directed = Has a specific direction
-
-🚫 Acyclic = Cannot contain a cycle
-
-🔷 Graph = Collection of nodes and relationships
-
-In simple words:
-
-📋 A DAG is the blueprint of an Airflow workflow.
+This helps identify which value needs type conversion.
 `
 },
 
-  /* QUESTION 3 — Airflow Fundamentals */
-{
-title: "Why Is Airflow Used?",
-
-question: `
-Why is Apache Airflow used?
-
-Explain:
-1. Why Airflow is needed.
-2. What problems Airflow solves.
-3. How Airflow helps in data engineering.
-4. Give a real-world example.
-5. Explain the benefits of using Airflow.
-`,
-
-dataset:[],
-
-output:[],
-
-answer:`
-### Definition
-
-Apache Airflow is used to ORCHESTRATE workflows.
-
-In simple words:
-
-Airflow helps us manage multiple tasks that need to
-run at specific times and/or in a specific order.
-
-### Why Do We Need Airflow?
-
-In a real-world data engineering project, we usually
-have many tasks.
-
-For example:
-
-📥 Get data from SQL Server
-      ↓
-🔄 Transform data
-      ↓
-❄️ Load data into Snowflake
-      ↓
-🔍 Validate data
-      ↓
-📊 Generate report
-
-Without a workflow orchestration tool, we would need
-to manually manage when each task runs and whether
-the previous task completed successfully.
-
-Airflow automates this process.
-
-### Problems Airflow Solves
-
-#### 1. Scheduling ⏰
-
-Airflow can automatically run workflows according
-to a schedule.
-
-For example:
-
-Every day at 6:00 AM
-        ↓
-     Run DAG
-        ↓
-  Execute pipeline
-
-We don't have to manually start the pipeline every day.
-
-#### 2. Task Dependencies 🔗
-
-Airflow allows us to define which task should run
-before another task.
-
-For example:
-
-Extract
-   ↓
-Transform
-   ↓
-Load
-
-Transform should not start until Extract has completed.
-
-#### 3. Failure Handling ❌
-
-If a task fails, Airflow can detect the failure.
-
-For example:
-
-Extract     ✅
-   ↓
-Transform   ❌
-   ↓
-Load        ⏸️
-
-Airflow can retry the failed task based on the
-configured retry settings.
-
-#### 4. Monitoring 👀
-
-Airflow provides a Web UI where we can monitor:
-
-- DAGs
-- Tasks
-- Task status
-- Execution history
-- Logs
-- Failures
-- Retries
-
-This makes it easier to identify where a pipeline
-failed.
-
-#### 5. Logging 📋
-
-Airflow maintains logs for task execution.
-
-For example:
-
-Task: load_to_snowflake
-
-Started: 06:00
-Completed: 06:08
-Status: Success
-
-If something goes wrong, we can check the task logs
-to understand the problem.
-
-#### 6. Automation ⚙️
-
-Once a DAG is configured, Airflow can automatically
-execute the workflow according to its schedule.
-
-This reduces manual intervention.
-
-#### 7. Managing Complex Workflows
-
-Airflow is useful when a pipeline contains many
-dependent tasks.
-
-For example:
-
-             📥 Extract
-                 │
-          ┌──────┴──────┐
-          ▼             ▼
-      🔄 Customer    🔄 Orders
-          │             │
-          └──────┬──────┘
-                 ▼
-          ❄️ Snowflake Load
-                 │
-                 ▼
-            🔍 Validate
-                 │
-                 ▼
-             📊 Report
-
-Airflow can manage these dependencies and execute
-the tasks in the correct order.
-
-### Real-World Data Engineering Example
-
-Suppose we have a daily Nordea-style data pipeline:
-
-⏰ 06:00 AM
-     ↓
-📥 Extract data
-     ↓
-🗄️ SQL Server processing
-     ↓
-🔄 Data transformation
-     ↓
-❄️ Snowflake load
-     ↓
-🔍 Reconciliation
-     ↓
-📊 Power BI data refresh
-
-Airflow can orchestrate this entire workflow.
-
-For example:
-
-If the Snowflake load fails:
-
-📥 Extract       ✅
-🗄️ Processing    ✅
-❄️ Snowflake     ❌
-🔍 Reconciliation ⏸️
-📊 Report         ⏸️
-
-Airflow can retry the Snowflake task.
-
-Once it succeeds:
-
-❄️ Snowflake     ✅
-       ↓
-🔍 Reconciliation ▶️
-       ↓
-📊 Report         ▶️
-
-### Visual Representation
-
-                    ✈️ AIRFLOW
-                        │
-                        ▼
-                   📋 DAG
-                        │
-             ┌──────────┴──────────┐
-             ▼                     ▼
-        📥 Extract             🔄 Transform
-             │                     │
-             └──────────┬──────────┘
-                        ▼
-                 ❄️ Load to
-                  Snowflake
-                        │
-                        ▼
-                  🔍 Validate
-                        │
-                        ▼
-                   📊 Report
-
-Airflow controls:
-
-⏰ When to run
-   ↓
-🔗 What runs first
-   ↓
-⚙️ What task to execute
-   ↓
-🔁 What to retry
-   ↓
-📋 Where to check logs
-   ↓
-👀 How to monitor the workflow
-
-### Key Benefits
-
-Airflow provides:
-
-⏰ Scheduling
-🔗 Dependency management
-⚙️ Automation
-🔁 Retry mechanism
-📋 Logging
-👀 Monitoring
-🚨 Failure handling
-📊 Workflow visibility
-
-### Key Takeaway
-
-💡 Airflow is used because real-world data pipelines
-usually contain multiple tasks that must execute
-at the right time and in the right order.
-
-Instead of manually managing those tasks:
-
-          Manual Process
-               ↓
-        😓 Difficult to manage
-
-Airflow provides:
-
-          ✈️ Airflow
-               ↓
-        ⚙️ Automated workflow
-               ↓
-        🔗 Dependencies
-               ↓
-        ⏰ Scheduling
-               ↓
-        👀 Monitoring
-               ↓
-        🔁 Retry / Recovery
-
-In simple words:
-
-👉 Airflow is used to AUTOMATE, SCHEDULE,
-   ORCHESTRATE, and MONITOR complex workflows.
-`
-},
    /* QUESTION 4 — Airflow vs SSIS */
 {
 title: "How Is SSIS Different From Airflow?",
