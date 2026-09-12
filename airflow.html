@@ -807,63 +807,368 @@ In simple words:
    ORCHESTRATE, and MONITOR complex workflows.
 `
 },
-    {
-title: "Stored Procedure - Update Salary If Customer Exists",
+   /* QUESTION 4 — Airflow vs SSIS */
+{
+title: "How Is SSIS Different From Airflow?",
 
 question: `
-Create a SQL Stored Procedure named updatecustomer.
+How is SSIS different from Apache Airflow?
 
-Requirements:
-
-1. Accept Customer ID as an input parameter.
-2. Check whether the customer exists.
-3. If the customer exists:
-   - Increase the salary by 10%.
-   - If salary is NULL, treat it as 10 before increasing.
-4. Return a success message.
-5. If the customer does not exist, return a "Customer not found" message.
+Explain:
+1. What SSIS is.
+2. What Airflow is.
+3. The main difference between SSIS and Airflow.
+4. Compare them based on ETL, orchestration, scheduling,
+   transformation, monitoring, and deployment.
+5. Give a practical example.
+6. Can Airflow replace SSIS?
 `,
 
-dataset:[
-{ID:1,NAME:"John",SALARY:50000},
-{ID:2,NAME:"David",SALARY:null},
-{ID:3,NAME:"Alex",SALARY:75000}
-],
+dataset:[],
 
-output:[
-{"Result":"Salary updated for ID 1"}
-],
+output:[],
 
 answer:`
-CREATE OR REPLACE PROCEDURE updatecustomer(pid INT)
-RETURNS STRING
-LANGUAGE SQL
-AS
-$$
-BEGIN
+### Definition — SSIS
 
-    IF (EXISTS (
-        SELECT 1
-        FROM customers
-        WHERE id = :pid
-    )) THEN
+SSIS stands for:
 
-        UPDATE customers
-        SET salary = COALESCE(salary,10) * 1.10
-        WHERE id = :pid;
+SQL Server Integration Services
 
-        RETURN 'Salary updated for ID ' || :pid;
+SSIS is a Microsoft ETL and data integration platform.
 
-    ELSE
+It is commonly used to:
 
-        RETURN 'Customer ID ' || :pid || ' not found';
+📥 Extract data
+🔄 Transform data
+📤 Load data
 
-    END IF;
+For example:
 
-END;
-$$;
+SQL Server
+    ↓
+  SSIS
+    ↓
+Transform
+    ↓
+SQL Server / Other Target
 
-CALL updatecustomer(1);
+
+### Definition — Airflow
+
+Apache Airflow is an open-source WORKFLOW ORCHESTRATION
+platform.
+
+It is mainly used to:
+
+⏰ Schedule workflows
+🔗 Manage dependencies
+⚙️ Execute tasks
+🔁 Retry failed tasks
+📋 Maintain logs
+👀 Monitor workflows
+
+
+### Main Difference
+
+The biggest difference is:
+
+🔷 SSIS
+   → Primarily an ETL / Data Integration tool
+
+✈️ Airflow
+   → Primarily a Workflow Orchestration tool
+
+
+### What Does This Mean?
+
+SSIS can actually perform data transformation.
+
+For example, an SSIS package can:
+
+📥 Read data from SQL Server
+       ↓
+🔄 Lookup data
+       ↓
+🔄 Filter rows
+       ↓
+🔄 Aggregate data
+       ↓
+📤 Load data into another table
+
+
+Airflow normally does not perform these transformations
+itself.
+
+Instead, Airflow can ORCHESTRATE the tools that perform
+the work.
+
+For example:
+
+                    ✈️ AIRFLOW
+                         │
+            ┌────────────┼────────────┐
+            ▼            ▼            ▼
+        🗄️ SQL       🐍 Python     ❄️ Snowflake
+        Task          Task           Task
+            │            │            │
+            └────────────┼────────────┘
+                         ▼
+                      📊 Report
+
+
+### SSIS Example
+
+Suppose we need to move customer data:
+
+SQL Server
+    │
+    ▼
+📦 SSIS Package
+    │
+    ├── OLE DB Source
+    │
+    ├── Lookup
+    │
+    ├── Derived Column
+    │
+    ├── Conditional Split
+    │
+    └── OLE DB Destination
+            │
+            ▼
+       SQL Server
+
+
+Here, SSIS itself is doing the ETL work.
+
+
+### Airflow Example
+
+Suppose we have the same overall pipeline:
+
+                ✈️ AIRFLOW
+                     │
+                     ▼
+              📋 Customer DAG
+                     │
+          ┌──────────┼──────────┐
+          ▼          ▼          ▼
+       📥 Extract  🔄 Transform  ❄️ Load
+          │          │           │
+      SQL Server   Python      Snowflake
+                     │
+                     ▼
+                  🔍 Validate
+
+
+Here, Airflow controls the workflow.
+
+The actual work can be performed by:
+
+🗄️ SQL
+🐍 Python
+❄️ Snowflake
+📦 SSIS
+🔌 API
+etc.
+
+
+### Comparison
+
+| Area | SSIS | Airflow |
+|---|---|---|
+| Primary purpose | ETL / Data Integration | Workflow Orchestration |
+| Developed by | Microsoft | Apache Software Foundation / open-source community |
+| ETL transformation | Strong | Usually delegated to other tools |
+| Workflow orchestration | Available, but package-oriented | Core purpose |
+| Scheduling | Yes | Yes |
+| Dependencies | Yes | Strong workflow dependency management |
+| Monitoring | SSIS/SQL Server ecosystem | Airflow Web UI |
+| Logs | Yes | Yes |
+| Retry | Yes | Yes |
+| Python integration | Possible | Very strong |
+| Snowflake integration | Possible | Strong |
+| SQL Server integration | Strong | Possible |
+| Cloud/multi-system workflows | Possible | Very suitable |
+| GUI-based development | Yes | DAG/code-based |
+| Programming style | Mostly visual packages | Programmatic Python DAGs |
+
+### Important Difference in Approach
+
+SSIS is generally:
+
+📦 PACKAGE-ORIENTED
+
+You create an SSIS package containing:
+
+Tasks
++
+Data Flow
++
+Transformations
++
+Connections
+
+
+Airflow is generally:
+
+📋 WORKFLOW/DAG-ORIENTED
+
+You create a DAG containing:
+
+Tasks
++
+Dependencies
++
+Schedule
++
+Configuration
+
+
+### Simple Example
+
+Imagine you have:
+
+1️⃣ Load Customer Data
+2️⃣ Load Order Data
+3️⃣ Perform Validation
+4️⃣ Refresh Report
+
+
+With SSIS:
+
+📦 SSIS Package
+    │
+    ├── Customer Data Flow
+    ├── Order Data Flow
+    ├── Validation
+    └── Report Task
+
+
+With Airflow:
+
+📋 DAG
+ │
+ ├── ⚙️ load_customer
+ │
+ ├── ⚙️ load_orders
+ │
+ ├── ⚙️ validate
+ │
+ └── ⚙️ refresh_report
+
+
+And the dependencies could be:
+
+load_customer ──┐
+                ├──> validate ──> refresh_report
+load_orders ────┘
+
+
+### Can Airflow Replace SSIS?
+
+💡 Not always directly.
+
+Airflow and SSIS solve different problems.
+
+If you need to perform complex transformations using
+SSIS Data Flow components, SSIS may still be appropriate.
+
+If you need to coordinate many different systems and
+applications, Airflow may be more suitable.
+
+However, Airflow can ORCHESTRATE SSIS packages.
+
+For example:
+
+                ✈️ AIRFLOW
+                     │
+                     ▼
+              Run SSIS Package
+                     │
+                     ▼
+                 SQL Server
+                     │
+                     ▼
+                ❄️ Snowflake
+
+
+So Airflow can act as the ORCHESTRATOR while SSIS
+performs the ETL work.
+
+
+### Interview Answer
+
+If the interviewer asks:
+
+"What's the main difference between SSIS and Airflow?"
+
+
+A good answer is:
+
+"SSIS is primarily an ETL and data integration tool,
+where we can extract, transform, and load data using
+components such as Data Flow Tasks.
+
+Airflow, on the other hand, is primarily a workflow
+orchestration platform. It is used to schedule tasks,
+manage dependencies, execute workflows, monitor them,
+and handle retries.
+
+Airflow can orchestrate different technologies such
+as SQL, Python, Snowflake, APIs, and even SSIS packages.
+
+So, SSIS focuses more on performing ETL, whereas Airflow
+focuses more on orchestrating workflows."
+
+
+### Visual Summary
+
+             📦 SSIS
+                │
+       ETL / Data Integration
+                │
+       ┌────────┼────────┐
+       ▼        ▼        ▼
+    Extract  Transform   Load
+
+
+             ✈️ AIRFLOW
+                │
+          Orchestration
+                │
+       ┌────────┼────────┐
+       ▼        ▼        ▼
+      SQL     Python   Snowflake
+       │        │        │
+       └────────┼────────┘
+                ▼
+             Workflow
+
+
+### Key Takeaway
+
+📦 SSIS
+→ Mainly performs ETL/Data Integration
+
+✈️ Airflow
+→ Mainly orchestrates workflows
+
+💡 They can also work TOGETHER.
+
+Airflow
+   ↓
+Run SSIS
+   ↓
+Process data
+   ↓
+Continue next Airflow task
+
+Therefore, Airflow does not necessarily mean
+"SSIS is no longer needed."
+
+It depends on the architecture and requirements.
 `
 },
     {
