@@ -1396,70 +1396,489 @@ Scheduler triggers the DAG RUN.
 Tasks execute as part of the DAG RUN.
 `
 },
-    {
-title: "Stored Procedure - Delete Customer and Return Rows Deleted",
+  /* QUESTION 6 — Airflow vs SQL Server Agent */
+{
+title: "Airflow vs SQL Server Agent",
 
 question: `
-Create a SQL Stored Procedure named deleteifexistscustomer.
+What is the difference between Apache Airflow and
+SQL Server Agent?
 
-Requirements:
-
-1. Accept Customer ID as an input parameter.
-2. Check whether the customer exists.
-3. If the customer exists:
-   - Delete the customer record.
-   - Return a message containing:
-     - Customer ID
-     - Number of rows deleted using SQLROWCOUNT.
-4. If the customer does not exist:
-   - Return a "Customer not found" message.
+Explain:
+1. What SQL Server Agent is.
+2. What Airflow is.
+3. The main difference between them.
+4. Compare scheduling, task dependencies, ETL,
+   monitoring, integrations, and platform support.
+5. Give a practical example.
+6. When would you use SQL Server Agent and when
+   would you use Airflow?
 `,
 
-dataset:[
-{ID:1,NAME:"John",CITY:"London"},
-{ID:2,NAME:"David",CITY:"Paris"},
-{ID:3,NAME:"Alex",CITY:"Tokyo"}
-],
+dataset:[],
 
-output:[
-{"Result":"Deleted Customer ID 1. Rows Deleted = 1"}
-],
+output:[],
 
 answer:`
-CREATE OR REPLACE PROCEDURE deleteifexistscustomer(pid INT)
-RETURNS STRING
-LANGUAGE SQL
-AS
-$$
-BEGIN
+### Definition — SQL Server Agent
 
-    IF EXISTS (
-        SELECT 1
-        FROM customers
-        WHERE id = :pid
-    ) THEN
+SQL Server Agent is a Microsoft SQL Server service
+used to automate and schedule jobs.
 
-        DELETE
-        FROM customers
-        WHERE id = :pid;
+It is commonly used for:
 
-        RETURN 'Deleted Customer ID '
-            || :pid
-            || '. Rows Deleted = '
-            || SQLROWCOUNT;
+📅 Scheduling SQL jobs
+⚙️ Executing stored procedures
+📦 Running SSIS packages
+🔄 Performing database maintenance
+📋 Monitoring job execution
+🚨 Sending alerts when jobs fail
 
-    ELSE
 
-        RETURN 'Customer ID '
-            || :pid
-            || ' not found.';
+### Definition — Apache Airflow
 
-    END IF;
+Apache Airflow is an open-source platform used to
+programmatically author, schedule, and monitor
+workflows.
 
-END;
-$$;
+It is mainly a WORKFLOW ORCHESTRATION platform.
 
-CALL deleteifexistscustomer(1);
+Airflow can orchestrate tasks across different
+technologies and systems.
+
+For example:
+
+✈️ Airflow
+   ├── SQL Server
+   ├── ❄️ Snowflake
+   ├── 🐍 Python
+   ├── 🔌 APIs
+   ├── 📦 SSIS
+   └── ☁️ Cloud services
+
+
+### Main Difference
+
+The simplest way to remember the difference is:
+
+🗄️ SQL Server Agent
+→ Mainly focused on SQL Server/database-related
+  job scheduling and automation.
+
+✈️ Airflow
+→ Mainly focused on orchestrating complex workflows
+  across multiple systems and technologies.
+
+
+### SQL Server Agent Example
+
+Suppose we need to run a stored procedure every day:
+
+⏰ 6:00 AM
+    ↓
+🗄️ SQL Server Agent
+    ↓
+▶️ Execute Stored Procedure
+    ↓
+✅ Job Completed
+
+
+SQL Server Agent can also execute:
+
+SQL Job
+   ↓
+Stored Procedure
+   ↓
+SSIS Package
+   ↓
+Maintenance Task
+
+
+### Airflow Example
+
+Suppose our pipeline uses multiple technologies:
+
+                 ✈️ AIRFLOW
+                     │
+                     ▼
+                📋 Daily DAG
+                     │
+             ┌───────┼───────┐
+             ▼       ▼       ▼
+        🗄️ SQL    🐍 Python  ❄️ Snowflake
+             │       │       │
+             └───────┼───────┘
+                     ▼
+                 🔍 Validate
+                     │
+                     ▼
+                  📊 Report
+
+
+Airflow can coordinate the complete workflow.
+
+
+### Scheduling
+
+Both tools support scheduling.
+
+SQL Server Agent:
+
+📅 Schedule
+   ↓
+🗄️ SQL Server Agent
+   ↓
+⚙️ Job
+
+
+Airflow:
+
+📅 DAG Schedule
+   ↓
+⏰ Airflow Scheduler
+   ↓
+📋 DAG Run
+   ↓
+⚙️ Tasks
+
+
+### Task Dependencies
+
+SQL Server Agent supports job steps and sequencing,
+but Airflow is designed specifically around workflow
+dependencies.
+
+For example:
+
+Extract
+   ↓
+Transform
+   ↓
+Load
+   ↓
+Validate
+
+
+In Airflow, these dependencies are explicitly defined
+in the DAG.
+
+For example:
+
+task_extract >> task_transform
+task_transform >> task_load
+task_load >> task_validate
+
+
+This makes complex workflows easier to represent.
+
+
+### ETL / Data Processing
+
+SQL Server Agent itself is NOT an ETL tool.
+
+It can schedule an SSIS package that performs ETL.
+
+For example:
+
+SQL Server Agent
+      ↓
+Run SSIS Package
+      ↓
+📥 Extract
+      ↓
+🔄 Transform
+      ↓
+📤 Load
+
+
+Similarly, Airflow itself is primarily NOT an ETL
+transformation engine.
+
+It can orchestrate tools that perform the ETL work.
+
+For example:
+
+Airflow
+   ↓
+Python
+   ↓
+SQL
+   ↓
+Snowflake
+   ↓
+Validation
+
+
+### Monitoring
+
+SQL Server Agent provides monitoring for SQL Server
+jobs.
+
+You can check:
+
+📋 Job history
+✅ Success
+❌ Failure
+⏰ Schedule
+🚨 Alerts
+
+
+Airflow provides a workflow-oriented UI where you can
+monitor:
+
+📋 DAGs
+⚙️ Tasks
+📅 DAG Runs
+🔗 Dependencies
+📋 Logs
+🔁 Retries
+❌ Failures
+⏱️ Execution times
+
+
+### Platform / Technology Support
+
+SQL Server Agent is strongly associated with the
+Microsoft SQL Server ecosystem.
+
+For example:
+
+🗄️ SQL Server
+📦 SSIS
+📋 T-SQL
+🔧 SQL Server maintenance
+
+
+Airflow is designed to work across many different
+technologies.
+
+For example:
+
+🗄️ SQL Server
+❄️ Snowflake
+🐍 Python
+☁️ AWS
+☁️ Azure
+🔌 REST APIs
+📦 SSIS
+📊 Data warehouses
+
+
+### Practical Example
+
+Suppose your pipeline is:
+
+SQL Server
+    ↓
+SSIS
+    ↓
+Snowflake
+    ↓
+Validation
+    ↓
+Power BI
+
+
+Using SQL Server Agent:
+
+🗄️ SQL Server Agent
+        ↓
+📦 Run SSIS
+        ↓
+❄️ Snowflake
+        ↓
+⚙️ Another SQL Agent Job
+        ↓
+📊 Report
+
+
+This can work, but managing a large cross-platform
+workflow can become more complicated.
+
+
+Using Airflow:
+
+                 ✈️ AIRFLOW
+                      │
+                      ▼
+                📋 Pipeline DAG
+                      │
+          ┌───────────┼───────────┐
+          ▼           ▼           ▼
+       🗄️ SQL       📦 SSIS    ❄️ Snowflake
+          │           │           │
+          └───────────┼───────────┘
+                      ▼
+                  🔍 Validate
+                      │
+                      ▼
+                  📊 Refresh
+
+
+Airflow acts as the central orchestrator.
+
+
+### Comparison
+
+| Feature | SQL Server Agent | Airflow |
+|---|---|---|
+| Primary purpose | Job scheduling/automation | Workflow orchestration |
+| Ecosystem | Microsoft / SQL Server | Multi-platform |
+| Scheduling | ✅ | ✅ |
+| Task dependencies | ✅ | ✅ Strong workflow model |
+| SQL Server | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐ |
+| SSIS | ⭐⭐⭐⭐⭐ | ✅ Can orchestrate |
+| Snowflake | Possible | ⭐⭐⭐⭐⭐ |
+| Python | Limited compared with Airflow | ⭐⭐⭐⭐⭐ |
+| APIs | Limited | ⭐⭐⭐⭐⭐ |
+| Cross-platform workflows | Limited | ⭐⭐⭐⭐⭐ |
+| Workflow visualization | Basic | Strong |
+| Task-level monitoring | ✅ | ✅ |
+| Logs | ✅ | ✅ |
+| Retry handling | ✅ | ✅ |
+| Complex workflows | Possible | Excellent |
+| DAG concept | ❌ | ✅ |
+
+
+### When Would You Use SQL Server Agent?
+
+SQL Server Agent is a good choice when:
+
+🗄️ Most of your workload is inside SQL Server.
+
+For example:
+
+SQL Server
+   ↓
+Stored Procedure
+   ↓
+SQL Server
+   ↓
+Report
+
+
+Or:
+
+SQL Server Agent
+   ↓
+SSIS Package
+   ↓
+SQL Server
+
+
+For a Microsoft SQL Server-centric environment,
+SQL Server Agent can be simple and effective.
+
+
+### When Would You Use Airflow?
+
+Airflow becomes more attractive when:
+
+🌐 Multiple technologies are involved.
+
+For example:
+
+SQL Server
+   +
+Snowflake
+   +
+Python
+   +
+APIs
+   +
+Cloud services
+
+
+And you need:
+
+📅 Scheduling
+🔗 Complex dependencies
+🔁 Retries
+📋 Centralized logs
+👀 Monitoring
+⚙️ Workflow orchestration
+
+
+### Important Point
+
+Airflow does NOT automatically make SQL Server Agent
+obsolete.
+
+They can even work together.
+
+For example:
+
+                 ✈️ AIRFLOW
+                      │
+                      ▼
+             🗄️ SQL Server Agent
+                      │
+                      ▼
+                 📦 SSIS
+                      │
+                      ▼
+                 🗄️ SQL Server
+
+
+Airflow can act as the higher-level orchestrator,
+while SQL Server Agent continues to manage
+SQL Server-specific jobs.
+
+
+### Interview Answer
+
+If the interviewer asks:
+
+"What's the difference between Airflow and SQL Server
+Agent?"
+
+
+A good answer is:
+
+"SQL Server Agent is primarily a job scheduling and
+automation service within the SQL Server ecosystem.
+It is commonly used to schedule T-SQL jobs, stored
+procedures, SSIS packages, and database maintenance.
+
+Airflow is an open-source workflow orchestration
+platform. It is designed to manage workflows across
+multiple technologies such as SQL Server, Snowflake,
+Python, APIs, and cloud services.
+
+Both can schedule and monitor jobs, but Airflow is
+more suitable for complex, cross-platform workflows,
+while SQL Server Agent is very convenient for
+SQL Server-centric workloads."
+
+
+### Key Takeaway
+
+🗄️ SQL Server Agent
+→ SQL Server-focused job scheduler
+
+✈️ Airflow
+→ Cross-platform workflow orchestrator
+
+📦 SSIS
+→ ETL / Data Integration
+
+📋 DAG
+→ Workflow definition in Airflow
+
+⏰ Scheduler
+→ Airflow component that triggers DAG runs
+
+💡 Easy way to remember:
+
+SQL Server Agent
+      ↓
+"Run this SQL/SSIS job."
+
+Airflow
+      ↓
+"Manage this entire workflow across
+multiple systems."
+
 `
 },
  {
