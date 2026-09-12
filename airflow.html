@@ -2245,60 +2245,331 @@ ONE DAG can have MANY DAG Runs.
 },
 
 {
-title: "Stored Procedure - Load Data from Stream to Target Table",
+title: "What Is Docker?",
 
 question: `
-Create a SQL Stored Procedure named insertsp.
+What is Docker?
 
-Requirements:
-
-1. Read data from the STREAMCUSTOMER stream.
-2. Insert only INSERT operations into the CUSTOMERS table.
-3. Use the metadata column METADATA$ACTION to filter INSERT records.
-4. Insert the ID, NAME and SALARY columns into the CUSTOMERS table.
-5. Return a message displaying the number of rows inserted using SQLROWCOUNT.
+Explain:
+1. What Docker is.
+2. What a Docker container is.
+3. What a Docker image is.
+4. What Docker Compose is.
+5. Why Docker is used with Airflow.
+6. Give a simple real-world example.
+7. Explain Docker vs Virtual Machine.
 `,
 
-dataset:[
-{ID:1,NAME:"John",SALARY:50000,METADATA_ACTION:"INSERT"},
-{ID:2,NAME:"David",SALARY:65000,METADATA_ACTION:"INSERT"},
-{ID:3,NAME:"Alex",SALARY:70000,METADATA_ACTION:"DELETE"},
-{ID:4,NAME:"Scott",SALARY:80000,METADATA_ACTION:"INSERT"}
-],
+dataset:[],
 
-output:[
-{"Result":"Inserts 3 rows to customer table"}
-],
+output:[],
 
 answer:`
-CREATE OR REPLACE PROCEDURE insertsp()
-RETURNS STRING
-LANGUAGE SQL
-AS
-$$
-BEGIN
+### Definition
 
-    INSERT INTO customers
-    (
-        id,
-        name,
-        salary
-    )
-    SELECT
-        id,
-        name,
-        salary
-    FROM streamcustomer
-    WHERE METADATA$ACTION='INSERT';
+🐳 Docker is a platform used to package and run applications
+inside isolated environments called CONTAINERS.
 
-    RETURN 'Inserts '
-           || SQLROWCOUNT
-           || ' rows to customer table';
+In simple words:
 
-END;
-$$;
+Docker allows an application to run together with the
+software and dependencies it needs, in a consistent
+environment.
 
-CALL insertsp();
+### What Is a Container?
+
+📦 A Container is an isolated environment in which an
+application runs.
+
+For example:
+
+📦 Airflow Container
+      │
+      ├── Airflow
+      ├── Python
+      └── Required libraries
+
+
+The container keeps the application's environment
+separate from other applications running on the computer.
+
+### What Is a Docker Image?
+
+🖼️ A Docker Image is a TEMPLATE used to create a
+Docker Container.
+
+Think of it like this:
+
+🖼️ Docker Image
+       │
+       │ creates
+       ▼
+📦 Docker Container
+
+
+For example:
+
+Airflow Docker Image
+       │
+       ▼
+Airflow Container
+
+
+The image contains the application and the required
+software/configuration needed to create the container.
+
+### Image vs Container
+
+🖼️ IMAGE
+→ Template/blueprint.
+
+📦 CONTAINER
+→ Running instance created from the image.
+
+
+Simple analogy:
+
+🏠 House Blueprint
+       ↓
+🏠 Actual House
+
+
+Similarly:
+
+🖼️ Docker Image
+       ↓
+📦 Docker Container
+
+
+### What Is Docker Compose?
+
+🐳 Docker Compose is a tool used to define and run
+multiple related containers together.
+
+Airflow usually needs more than one component.
+
+For example:
+
+🐳 Docker Compose
+       │
+       ├── 📦 Airflow Scheduler
+       ├── 📦 Airflow Webserver
+       ├── 📦 Airflow Worker
+       └── 📦 PostgreSQL
+
+
+Instead of manually starting every container,
+Docker Compose can manage them together.
+
+### Why Is Docker Used With Airflow?
+
+Airflow has several components and dependencies.
+
+Installing everything directly on Windows can be
+complicated.
+
+Without Docker:
+
+Windows
+   │
+   ├── Python
+   ├── Airflow
+   ├── Airflow dependencies
+   ├── Database
+   ├── Configuration
+   └── Other required services
+
+
+With Docker:
+
+Windows
+   │
+   ▼
+🐳 Docker
+   │
+   ├── 📦 Airflow
+   ├── 📦 Database
+   └── 📦 Other services
+
+
+Docker makes it easier to create a consistent Airflow
+environment.
+
+### Your Airflow Setup
+
+In your current setup, you have:
+
+Windows
+   │
+   ▼
+WSL2
+   │
+   ▼
+🐳 Docker
+   │
+   ▼
+📋 Airflow
+   │
+   ▼
+🌐 Airflow UI
+   │
+   ▼
+localhost:8080
+
+
+When you started your `airflow-practice` project using
+Docker Compose, Docker created and ran the required
+Airflow containers.
+
+You can then access the Airflow UI through:
+
+http://localhost:8080
+
+
+### Simple Airflow Example
+
+Suppose you have an Airflow workflow:
+
+📋 sales_pipeline
+       │
+       ▼
+📥 Extract data
+       │
+       ▼
+🔄 Transform data
+       │
+       ▼
+❄️ Load to Snowflake
+       │
+       ▼
+🔍 Validate
+
+
+Docker provides the environment in which Airflow
+components can run.
+
+So:
+
+🐳 Docker
+   ↓
+📋 Airflow
+   ↓
+📋 DAG
+   ↓
+⚙️ Tasks
+   ↓
+❄️ Snowflake
+
+
+### Docker vs Virtual Machine
+
+A Virtual Machine generally contains a complete
+guest operating system.
+
+A Docker Container shares the host operating system's
+kernel and isolates the application and its dependencies.
+
+Simple view:
+
+### Virtual Machine
+
+💻 Your Computer
+       ↓
+🖥️ Virtual Machine
+       ↓
+💿 Complete Operating System
+       ↓
+📋 Application
+
+
+### Docker
+
+💻 Your Computer
+       ↓
+🐳 Docker
+       ↓
+📦 Container
+       ↓
+📋 Application
+
+
+Containers are generally lighter and faster to start
+than full virtual machines.
+
+### Important Docker Terms
+
+🐳 Docker
+→ Platform for running containers.
+
+📦 Container
+→ Isolated environment where an application runs.
+
+🖼️ Docker Image
+→ Template used to create containers.
+
+🐳 Docker Compose
+→ Tool used to define and run multiple related
+  containers together.
+
+
+### Easy Analogy
+
+Think about a food delivery package.
+
+📝 Recipe
+   ↓
+🖼️ Docker Image
+   ↓
+📦 Docker Container
+   ↓
+🍱 Running Application
+
+
+The image is the template.
+
+The container is the actual running environment.
+
+### Key Takeaway
+
+Remember these four terms:
+
+🐳 Docker
+→ Platform.
+
+🖼️ Image
+→ Template.
+
+📦 Container
+→ Running instance of an image.
+
+🐳 Docker Compose
+→ Manages multiple related containers.
+
+For Airflow:
+
+🐳 Docker
+      ↓
+📦 Airflow Containers
+      ↓
+📋 Airflow
+      ↓
+📋 DAG
+      ↓
+⚙️ Tasks
+
+
+💡 For your Airflow learning, you don't need to become
+a Docker expert.
+
+Initially, understand:
+
+Docker
+→ Image
+→ Container
+→ Docker Compose
+
+These concepts are enough to understand how your
+Airflow environment is running.
 `
 },
    
