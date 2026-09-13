@@ -1685,325 +1685,7 @@ Dictionaries are especially important when working with JSON and APIs.
 `
 },
 
-
-    {
-title: "Snowpipe + Stream + Task - Incremental Employee Load",
-
-question: `
-An employee.csv file is uploaded to Amazon S3.
-
-Requirements:
-
-1. Create a CSV File Format.
-2. Create a Storage Integration.
-3. Create an External Stage.
-4. Create a RAW table named EMPLOYEE_RAW.
-5. Create a Snowpipe to load files into EMPLOYEE_RAW.
-6. Trigger the Snowpipe manually.
-7. Create a Stream on EMPLOYEE_RAW.
-8. Create a target table named EMPLOYEE_DIM.
-9. Create a Task that performs a MERGE from the Stream into EMPLOYEE_DIM.
-10. Resume the Task.
-11. Verify the final data in EMPLOYEE_DIM.
-`,
-
-dataset:[
-{EMP_ID:101,EMP_NAME:"John"},
-{EMP_ID:102,EMP_NAME:"Alice"}
-],
-
-output:[
-{EMP_ID:101,EMP_NAME:"John"},
-{EMP_ID:102,EMP_NAME:"Alice"}
-],
-
-answer:`
-
-CREATE FILE FORMAT CSV_FORMAT
-TYPE=CSV
-SKIP_HEADER=1;
-
-CREATE STORAGE INTEGRATION S3_INT
-TYPE=EXTERNAL_STAGE
-STORAGE_PROVIDER=S3
-ENABLED=TRUE
-STORAGE_AWS_ROLE_ARN='YOUR_ROLE_ARN'
-STORAGE_ALLOWED_LOCATIONS=('s3://my-practice-bucket-sai-123/');
-
-CREATE STAGE EMP_STAGE
-URL='s3://my-practice-bucket-sai-123/'
-STORAGE_INTEGRATION=S3_INT
-FILE_FORMAT=CSV_FORMAT;
-
-CREATE TABLE EMPLOYEE_RAW
-(
-EMP_ID NUMBER,
-EMP_NAME STRING
-);
-
-CREATE PIPE EMPLOYEE_PIPE
-AS
-COPY INTO EMPLOYEE_RAW
-FROM @EMP_STAGE
-PATTERN='.*employee.*\\.csv';
-
-ALTER PIPE EMPLOYEE_PIPE REFRESH;
-
-CREATE STREAM EMPLOYEE_STREAM
-ON TABLE EMPLOYEE_RAW;
-
-CREATE TABLE EMPLOYEE_DIM
-(
-EMP_ID NUMBER,
-EMP_NAME STRING
-);
-
-CREATE TASK EMPLOYEE_TASK
-WAREHOUSE=COMPUTE_WH
-SCHEDULE='1 MINUTE'
-WHEN SYSTEM$STREAM_HAS_DATA('EMPLOYEE_STREAM')
-AS
-
-MERGE INTO EMPLOYEE_DIM T
-USING EMPLOYEE_STREAM S
-ON T.EMP_ID=S.EMP_ID
-
-WHEN MATCHED THEN
-UPDATE SET
-T.EMP_NAME=S.EMP_NAME
-
-WHEN NOT MATCHED THEN
-INSERT
-(
-EMP_ID,
-EMP_NAME
-)
-VALUES
-(
-S.EMP_ID,
-S.EMP_NAME
-);
-
-ALTER TASK EMPLOYEE_TASK RESUME;
-
-SELECT *
-FROM EMPLOYEE_DIM;
-
-`
-},
-
-    {
-title: "Surrogate Key Creation for Dimension and Fact Tables using SCD Type 2",
-
-question: `
-Implement a Slowly Changing Dimension (SCD Type 2) process for CUSTOMER_DIM and load the FACT_SALES table.
-
-Requirements:
-
-1. Create a source customer table (SRC_CUSTOMER).
-2. Create a source sales table (SRC_SALES).
-3. Create a dimension table (DIM_CUSTOMER) with:
-   - CUSTOMER_SK
-   - CUSTOMER_ID
-   - CUSTOMER_NAME
-   - CITY
-   - START_DATE
-   - END_DATE
-   - IS_CURRENT
-4. Perform an initial load into DIM_CUSTOMER.
-5. Simulate a customer city change.
-6. Expire the existing dimension record.
-7. Insert a new dimension record with a new surrogate key.
-8. Create FACT_SALES.
-9. Load FACT_SALES by looking up the correct CUSTOMER_SK using CUSTOMER_ID and SALES_DATE.
-10. Verify that historical sales point to the old surrogate key and new sales point to the latest surrogate key.
-`,
-
-dataset:{
-
-SRC_CUSTOMER:[
-{CUSTOMER_ID:101,CUSTOMER_NAME:"Sai",CITY:"Bangalore"},
-{CUSTOMER_ID:102,CUSTOMER_NAME:"John",CITY:"Hyderabad"}
-],
-
-SRC_SALES:[
-{ORDER_ID:1001,CUSTOMER_ID:101,SALES_AMOUNT:500,SALES_DATE:"2026-03-15"},
-{ORDER_ID:1002,CUSTOMER_ID:101,SALES_AMOUNT:800,SALES_DATE:"2026-08-10"},
-{ORDER_ID:1003,CUSTOMER_ID:102,SALES_AMOUNT:600,SALES_DATE:"2026-04-20"}
-]
-
-},
-
-output:{
-
-DIM_CUSTOMER:[
-{
-CUSTOMER_SK:1011,
-CUSTOMER_ID:101,
-CUSTOMER_NAME:"Sai",
-CITY:"Bangalore",
-START_DATE:"2026-01-01",
-END_DATE:"2026-06-30",
-IS_CURRENT:"N"
-},
-{
-CUSTOMER_SK:1012,
-CUSTOMER_ID:101,
-CUSTOMER_NAME:"Sai",
-CITY:"Hyderabad",
-START_DATE:"2026-07-01",
-END_DATE:null,
-IS_CURRENT:"Y"
-},
-{
-CUSTOMER_SK:1021,
-CUSTOMER_ID:102,
-CUSTOMER_NAME:"John",
-CITY:"Hyderabad",
-START_DATE:"2026-01-01",
-END_DATE:null,
-IS_CURRENT:"Y"
-}
-],
-
-FACT_SALES:[
-{
-ORDER_ID:1001,
-CUSTOMER_SK:1011,
-SALES_AMOUNT:500,
-SALES_DATE:"2026-03-15"
-},
-{
-ORDER_ID:1002,
-CUSTOMER_SK:1012,
-SALES_AMOUNT:800,
-SALES_DATE:"2026-08-10"
-},
-{
-ORDER_ID:1003,
-CUSTOMER_SK:1021,
-SALES_AMOUNT:600,
-SALES_DATE:"2026-04-20"
-}
-]
-
-},
-
-answer:`
-
---------------------------------------------
-STEP 1 - Create Source Tables
---------------------------------------------
-
-CREATE OR REPLACE TABLE SRC_CUSTOMER
-(
-CUSTOMER_ID NUMBER,
-CUSTOMER_NAME STRING,
-CITY STRING
-);
-
-CREATE OR REPLACE TABLE SRC_SALES
-(
-ORDER_ID NUMBER,
-CUSTOMER_ID NUMBER,
-SALES_AMOUNT NUMBER(10,2),
-SALES_DATE DATE
-);
-
---------------------------------------------
-STEP 2 - Create Dimension Table
---------------------------------------------
-
-CREATE OR REPLACE TABLE DIM_CUSTOMER
-(
-CUSTOMER_SK NUMBER,
-CUSTOMER_ID NUMBER,
-CUSTOMER_NAME STRING,
-CITY STRING,
-START_DATE DATE,
-END_DATE DATE,
-IS_CURRENT STRING
-);
-
---------------------------------------------
-STEP 3 - Create Fact Table
---------------------------------------------
-
-CREATE OR REPLACE TABLE FACT_SALES
-(
-ORDER_ID NUMBER,
-CUSTOMER_SK NUMBER,
-SALES_AMOUNT NUMBER(10,2),
-SALES_DATE DATE
-);
-
---------------------------------------------
-STEP 4 - Initial Load
---------------------------------------------
-
-INSERT INTO DIM_CUSTOMER VALUES
-(1011,101,'Sai','Bangalore','2026-01-01','2026-06-30','N'),
-(1012,101,'Sai','Hyderabad','2026-07-01',NULL,'Y'),
-(1021,102,'John','Hyderabad','2026-01-01',NULL,'Y');
-
---------------------------------------------
-STEP 5 - Load Sales
---------------------------------------------
-
-INSERT INTO SRC_SALES VALUES
-(1001,101,500,'2026-03-15'),
-(1002,101,800,'2026-08-10'),
-(1003,102,600,'2026-04-20');
-
---------------------------------------------
-STEP 6 - Load Fact Table
---------------------------------------------
-
-INSERT INTO FACT_SALES
-
-SELECT
-
-S.ORDER_ID,
-D.CUSTOMER_SK,
-S.SALES_AMOUNT,
-S.SALES_DATE
-
-FROM SRC_SALES S
-
-JOIN DIM_CUSTOMER D
-
-ON S.CUSTOMER_ID=D.CUSTOMER_ID
-
-AND S.SALES_DATE BETWEEN D.START_DATE
-AND COALESCE(D.END_DATE,'9999-12-31');
-
---------------------------------------------
-STEP 7 - Verify
---------------------------------------------
-
-SELECT *
-FROM DIM_CUSTOMER;
-
-SELECT *
-FROM FACT_SALES;
-
-SELECT
-
-F.ORDER_ID,
-D.CUSTOMER_NAME,
-D.CITY,
-F.SALES_AMOUNT,
-F.SALES_DATE
-
-FROM FACT_SALES F
-
-JOIN DIM_CUSTOMER D
-
-ON F.CUSTOMER_SK=D.CUSTOMER_SK;
-
-`
-}
-    ,
+     ,
   {
 title: "Python Variables — Fetch Variables, locals(), globals(), and Collections",
 
@@ -2393,290 +2075,434 @@ A set can be used when you need only unique table names.
 `
 },
     {
-title: "Degenerate Dimension - Store Transaction Identifier in the Fact Table",
+title: "Python if, elif, and else — Conditional Statements",
 
 question: `
-Implement a Degenerate Dimension in a Data Warehouse.
+You are working on a data pipeline and want Python to make decisions based on conditions.
 
-Requirements:
+Consider the following variables:
 
-1. Create a customer dimension table named DIM_CUSTOMER.
-2. Create a product dimension table named DIM_PRODUCT.
-3. Create a fact table named FACT_SALES.
-4. Store ORDER_ID directly in FACT_SALES without creating a DIM_ORDER table.
-5. Insert sample data into all tables.
-6. Join the fact table with the customer and product dimensions.
-7. Retrieve Order ID, Customer Name, Product Name, and Sales Amount.
-8. Explain why ORDER_ID is considered a Degenerate Dimension.
+records = 100000
+load_status = "SUCCESS"
+environment = "PROD"
+error_count = 0
+
+Answer the following:
+
+1. What is an if statement in Python?
+2. What are elif and else?
+3. How do you write a condition in Python?
+4. What comparison operators can be used in conditions?
+5. How do you check multiple conditions?
+6. What happens when an if condition is False?
+7. Can we use if without else?
+8. Can we use multiple elif statements?
+9. What is the difference between = and ==?
+10. Write a practical data-engineering example that checks whether a pipeline was successful.
+11. Write a complex example that checks records, environment, and error count.
 `,
 
-dataset:{
+dataset:[],
 
-DIM_CUSTOMER:[
-{CUSTOMER_SK:1,CUSTOMER_NAME:"Sai"},
-{CUSTOMER_SK:2,CUSTOMER_NAME:"John"}
-],
-
-DIM_PRODUCT:[
-{PRODUCT_SK:11,PRODUCT_NAME:"Laptop"},
-{PRODUCT_SK:12,PRODUCT_NAME:"Mobile"}
-],
-
-FACT_SALES:[
-{ORDER_ID:1001,CUSTOMER_SK:1,PRODUCT_SK:11,SALES_AMOUNT:500},
-{ORDER_ID:1002,CUSTOMER_SK:2,PRODUCT_SK:12,SALES_AMOUNT:800},
-{ORDER_ID:1003,CUSTOMER_SK:1,PRODUCT_SK:12,SALES_AMOUNT:700}
-]
-
-},
-
-output:[
-{ORDER_ID:1001,CUSTOMER_NAME:"Sai",PRODUCT_NAME:"Laptop",SALES_AMOUNT:500},
-{ORDER_ID:1002,CUSTOMER_NAME:"John",PRODUCT_NAME:"Mobile",SALES_AMOUNT:800},
-{ORDER_ID:1003,CUSTOMER_NAME:"Sai",PRODUCT_NAME:"Mobile",SALES_AMOUNT:700}
-],
+output:[],
 
 answer:`
+Definition:
 
---------------------------------------------
-STEP 1 - Create Customer Dimension
---------------------------------------------
+A conditional statement allows Python to make a decision based on whether a condition is True or False.
 
-CREATE OR REPLACE TABLE DIM_CUSTOMER
-(
-    CUSTOMER_SK NUMBER,
-    CUSTOMER_NAME STRING
-);
+The three main conditional keywords are:
 
-INSERT INTO DIM_CUSTOMER VALUES
-(1,'Sai'),
-(2,'John');
+if
+elif
+else
 
---------------------------------------------
-STEP 2 - Create Product Dimension
---------------------------------------------
 
-CREATE OR REPLACE TABLE DIM_PRODUCT
-(
-    PRODUCT_SK NUMBER,
-    PRODUCT_NAME STRING
-);
+1. if statement
 
-INSERT INTO DIM_PRODUCT VALUES
-(11,'Laptop'),
-(12,'Mobile');
+if is used to execute code when a condition is True.
 
---------------------------------------------
-STEP 3 - Create Fact Table
---------------------------------------------
+Example:
 
-CREATE OR REPLACE TABLE FACT_SALES
-(
-    ORDER_ID NUMBER,
-    CUSTOMER_SK NUMBER,
-    PRODUCT_SK NUMBER,
-    SALES_AMOUNT NUMBER(10,2)
-);
+age = 29
 
-INSERT INTO FACT_SALES VALUES
-(1001,1,11,500),
-(1002,2,12,800),
-(1003,1,12,700);
+if age >= 18:
+    print("Adult")
 
---------------------------------------------
-STEP 4 - Retrieve Sales Report
---------------------------------------------
+Output:
 
-SELECT
-    F.ORDER_ID,
-    C.CUSTOMER_NAME,
-    P.PRODUCT_NAME,
-    F.SALES_AMOUNT
-FROM FACT_SALES F
-JOIN DIM_CUSTOMER C
-    ON F.CUSTOMER_SK = C.CUSTOMER_SK
-JOIN DIM_PRODUCT P
-    ON F.PRODUCT_SK = P.PRODUCT_SK;
+Adult
 
---------------------------------------------
-STEP 5 - Explanation
---------------------------------------------
 
--- ORDER_ID is stored directly in FACT_SALES.
--- No DIM_ORDER table is created because ORDER_ID is only a
--- transaction identifier and has no descriptive attributes.
--- Therefore, ORDER_ID is called a Degenerate Dimension.
+2. else statement
 
-`
-},
-    {
-title: "Junk Dimension - Create and Load Fact Table",
+else is executed when the if condition is False.
 
-question:`
-You are given a source table named SALES_RAW.
+Example:
 
-Requirements:
+age = 15
 
-1. Create a Junk Dimension named DIM_JUNK.
-2. Generate a surrogate key named JUNK_KEY using an IDENTITY column.
-3. Store only the distinct combinations of:
-   - IS_PROMOTION
-   - PAYMENT_MODE
-   - IS_ONLINE
-   - IS_RETURNED
-4. Create a FACT_SALES table with the following columns:
-   - SALES_ID
-   - PRODUCT_KEY
-   - CUSTOMER_KEY
-   - JUNK_KEY
-   - SALES_AMOUNT
-5. Load FACT_SALES by replacing the four low-cardinality columns with JUNK_KEY.
-6. Finally, write a query to display FACT_SALES along with DIM_JUNK to verify the mapping.
-`,
+if age >= 18:
+    print("Adult")
+else:
+    print("Minor")
 
-dataset:[
-{
-SALES_ID:1,
-PRODUCT_KEY:101,
-CUSTOMER_KEY:1001,
-IS_PROMOTION:"Y",
-PAYMENT_MODE:"Card",
-IS_ONLINE:"Y",
-IS_RETURNED:"N",
-SALES_AMOUNT:1500
-},
-{
-SALES_ID:2,
-PRODUCT_KEY:102,
-CUSTOMER_KEY:1002,
-IS_PROMOTION:"N",
-PAYMENT_MODE:"Cash",
-IS_ONLINE:"N",
-IS_RETURNED:"N",
-SALES_AMOUNT:2200
-},
-{
-SALES_ID:3,
-PRODUCT_KEY:103,
-CUSTOMER_KEY:1003,
-IS_PROMOTION:"Y",
-PAYMENT_MODE:"UPI",
-IS_ONLINE:"Y",
-IS_RETURNED:"Y",
-SALES_AMOUNT:1750
-},
-{
-SALES_ID:4,
-PRODUCT_KEY:101,
-CUSTOMER_KEY:1004,
-IS_PROMOTION:"Y",
-PAYMENT_MODE:"Card",
-IS_ONLINE:"Y",
-IS_RETURNED:"N",
-SALES_AMOUNT:900
-},
-{
-SALES_ID:5,
-PRODUCT_KEY:105,
-CUSTOMER_KEY:1005,
-IS_PROMOTION:"N",
-PAYMENT_MODE:"Card",
-IS_ONLINE:"N",
-IS_RETURNED:"N",
-SALES_AMOUNT:3200
-},
-{
-SALES_ID:6,
-PRODUCT_KEY:106,
-CUSTOMER_KEY:1006,
-IS_PROMOTION:"Y",
-PAYMENT_MODE:"Cash",
-IS_ONLINE:"Y",
-IS_RETURNED:"N",
-SALES_AMOUNT:1100
-}
-],
+Output:
 
-output:[
-{
-FACT_SALES:[
-{"SALES_ID":1,"PRODUCT_KEY":101,"CUSTOMER_KEY":1001,"JUNK_KEY":1,"SALES_AMOUNT":1500},
-{"SALES_ID":2,"PRODUCT_KEY":102,"CUSTOMER_KEY":1002,"JUNK_KEY":2,"SALES_AMOUNT":2200},
-{"SALES_ID":3,"PRODUCT_KEY":103,"CUSTOMER_KEY":1003,"JUNK_KEY":3,"SALES_AMOUNT":1750},
-{"SALES_ID":4,"PRODUCT_KEY":101,"CUSTOMER_KEY":1004,"JUNK_KEY":1,"SALES_AMOUNT":900},
-{"SALES_ID":5,"PRODUCT_KEY":105,"CUSTOMER_KEY":1005,"JUNK_KEY":4,"SALES_AMOUNT":3200},
-{"SALES_ID":6,"PRODUCT_KEY":106,"CUSTOMER_KEY":1006,"JUNK_KEY":5,"SALES_AMOUNT":1100}
-]
-}
-],
+Minor
 
-answer:`
-CREATE OR REPLACE TABLE DIM_JUNK
-(
-    JUNK_KEY INT IDENTITY(1,1),
-    IS_PROMOTION STRING,
-    PAYMENT_MODE STRING,
-    IS_ONLINE STRING,
-    IS_RETURNED STRING
-);
 
-INSERT INTO DIM_JUNK
-(
-    IS_PROMOTION,
-    PAYMENT_MODE,
-    IS_ONLINE,
-    IS_RETURNED
-)
-SELECT DISTINCT
-    IS_PROMOTION,
-    PAYMENT_MODE,
-    IS_ONLINE,
-    IS_RETURNED
-FROM SALES_RAW;
+3. elif statement
 
-CREATE OR REPLACE TABLE FACT_SALES
-(
-    SALES_ID INT,
-    PRODUCT_KEY INT,
-    CUSTOMER_KEY INT,
-    JUNK_KEY INT,
-    SALES_AMOUNT NUMBER(10,2)
-);
+elif means "else if".
 
-INSERT INTO FACT_SALES
-(
-    SALES_ID,
-    PRODUCT_KEY,
-    CUSTOMER_KEY,
-    JUNK_KEY,
-    SALES_AMOUNT
-)
-SELECT
-    S.SALES_ID,
-    S.PRODUCT_KEY,
-    S.CUSTOMER_KEY,
-    J.JUNK_KEY,
-    S.SALES_AMOUNT
-FROM SALES_RAW S
-JOIN DIM_JUNK J
-ON S.IS_PROMOTION = J.IS_PROMOTION
-AND S.PAYMENT_MODE = J.PAYMENT_MODE
-AND S.IS_ONLINE = J.IS_ONLINE
-AND S.IS_RETURNED = J.IS_RETURNED;
+It allows us to check another condition when the previous condition was False.
 
-SELECT
-    F.SALES_ID,
-    F.PRODUCT_KEY,
-    F.CUSTOMER_KEY,
-    J.IS_PROMOTION,
-    J.PAYMENT_MODE,
-    J.IS_ONLINE,
-    J.IS_RETURNED,
-    F.SALES_AMOUNT
-FROM FACT_SALES F
-JOIN DIM_JUNK J
-ON F.JUNK_KEY = J.JUNK_KEY
-ORDER BY F.SALES_ID;
+Example:
+
+marks = 75
+
+if marks >= 90:
+    print("Excellent")
+elif marks >= 60:
+    print("Good")
+else:
+    print("Needs improvement")
+
+Output:
+
+Good
+
+
+4. Basic structure
+
+if condition:
+    statement
+
+elif condition:
+    statement
+
+else:
+    statement
+
+
+Important:
+
+Python uses indentation to identify which statements belong to the condition.
+
+Example:
+
+if age >= 18:
+    print("Adult")
+
+The print statement must be indented.
+
+
+5. Comparison operators
+
+Python provides several comparison operators:
+
+==   Equal to
+!=   Not equal to
+>    Greater than
+<    Less than
+>=   Greater than or equal to
+<=   Less than or equal to
+
+
+Example:
+
+age = 29
+
+if age >= 18:
+    print("Eligible")
+
+
+6. Very important difference between = and ==
+
+= means assignment.
+
+Example:
+
+age = 29
+
+This stores 29 in the variable age.
+
+== means comparison.
+
+Example:
+
+if age == 29:
+    print("Age is 29")
+
+So remember:
+
+=  → assign a value
+
+== → compare two values
+
+
+7. if without else
+
+Yes, an if statement can be used without else.
+
+Example:
+
+records = 100000
+
+if records > 0:
+    print("Records available")
+
+Output:
+
+Records available
+
+If the condition is False, Python simply skips the block.
+
+
+8. Multiple elif statements
+
+You can use multiple elif statements.
+
+Example:
+
+status = "FAILED"
+
+if status == "SUCCESS":
+    print("Pipeline completed")
+elif status == "RUNNING":
+    print("Pipeline is running")
+elif status == "FAILED":
+    print("Pipeline failed")
+else:
+    print("Unknown status")
+
+Output:
+
+Pipeline failed
+
+
+9. Practical data-engineering example
+
+Consider:
+
+records = 100000
+load_status = "SUCCESS"
+
+if load_status == "SUCCESS":
+    print("Data load completed")
+else:
+    print("Data load failed")
+
+Output:
+
+Data load completed
+
+
+10. Checking multiple conditions
+
+We can use and, or, and not.
+
+and:
+
+Both conditions must be True.
+
+Example:
+
+records = 100000
+error_count = 0
+
+if records > 0 and error_count == 0:
+    print("Data validation successful")
+
+Output:
+
+Data validation successful
+
+
+or:
+
+At least one condition must be True.
+
+Example:
+
+load_status = "FAILED"
+validation_status = "FAILED"
+
+if load_status == "FAILED" or validation_status == "FAILED":
+    print("Pipeline requires attention")
+
+Output:
+
+Pipeline requires attention
+
+
+not:
+
+not reverses True and False.
+
+Example:
+
+pipeline_running = False
+
+if not pipeline_running:
+    print("Pipeline is not running")
+
+Output:
+
+Pipeline is not running
+
+
+11. Complex data-engineering example
+
+Consider:
+
+records = 100000
+load_status = "SUCCESS"
+environment = "PROD"
+error_count = 0
+
+if load_status == "SUCCESS" and records > 0 and error_count == 0:
+    print("Production load completed successfully")
+elif load_status == "SUCCESS" and error_count > 0:
+    print("Load completed but errors were found")
+elif load_status == "FAILED":
+    print("Production load failed")
+else:
+    print("Pipeline status requires investigation")
+
+Output:
+
+Production load completed successfully
+
+
+12. Another interview-style example
+
+Suppose a pipeline has these values:
+
+records = 0
+load_status = "SUCCESS"
+error_count = 0
+
+Question:
+
+Should the pipeline be considered successful?
+
+Answer:
+
+No.
+
+Although load_status is SUCCESS, there are zero records.
+
+We can write:
+
+if load_status == "SUCCESS" and records > 0 and error_count == 0:
+    print("Pipeline successful")
+else:
+    print("Pipeline validation failed")
+
+Output:
+
+Pipeline validation failed
+
+
+13. Python decision flow
+
+Python evaluates conditions from top to bottom.
+
+Example:
+
+if condition_1:
+    execute block 1
+
+elif condition_2:
+    execute block 2
+
+elif condition_3:
+    execute block 3
+
+else:
+    execute default block
+
+
+Once Python finds a True condition, it executes that block and skips the remaining elif and else blocks.
+
+
+14. Airflow connection
+
+Conditional logic is useful when writing Python code used by Airflow.
+
+For example:
+
+records = 100000
+error_count = 0
+
+if records > 0 and error_count == 0:
+    print("Continue pipeline")
+else:
+    print("Stop or investigate pipeline")
+
+
+In a real Airflow workflow, this type of logic can be used to decide what should happen based on:
+
+Record counts
+Validation results
+Pipeline status
+Environment
+Error counts
+File availability
+API responses
+Snowflake query results
+
+
+Visual:
+
+                 Start
+                   |
+                   v
+             Check condition
+                   |
+          +--------+--------+
+          |                 |
+        True              False
+          |                 |
+          v                 v
+      Execute IF        Check ELIF
+                            |
+                     +------+------+
+                     |             |
+                   True          False
+                     |             |
+                     v             v
+                Execute ELIF   Execute ELSE
+
+
+Interview Answer:
+
+If an interviewer asks, "What are if, elif, and else in Python?", answer:
+
+"if, elif, and else are conditional statements used for decision-making in Python. if checks the first condition. elif allows us to check additional conditions when the previous condition is false. else executes when none of the conditions are true."
+
+
+Key points to remember:
+
+if → first condition
+
+elif → additional condition
+
+else → default condition
+
+= → assignment
+
+== → comparison
+
+and → all conditions must be True
+
+or → at least one condition must be True
+
+not → reverses the condition
+
+Indentation → defines the code block
 `
 },
 /* End of questions array */
