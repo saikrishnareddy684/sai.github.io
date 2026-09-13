@@ -4646,6 +4646,255 @@ When we start creating real Airflow DAGs, you will see statements that import DA
 So understanding import now will make the Airflow code much easier to understand.
 `
 },
+    {
+title: "Python Exception Handling — try, except, else, and finally",
+
+question: `
+What is exception handling in Python?
+
+Why do we need try, except, else, and finally?
+
+How can exception handling be useful in data engineering and Airflow pipelines?
+`,
+
+dataset:[],
+
+output:[],
+
+answer:`
+Definition:
+
+Exception handling is a way to handle errors that occur while a Python program is running.
+
+Normally, when Python encounters an error, the program stops.
+
+Exception handling allows us to catch the error and decide what the program should do instead.
+
+The main keywords are:
+
+try
+Contains the code that may cause an error.
+
+except
+Handles the error if one occurs.
+
+else
+Runs only when no error occurs in the try block.
+
+finally
+Runs whether an error occurs or not.
+
+Basic structure:
+
+try:
+    risky code
+except:
+    error handling code
+else:
+    code when there is no error
+finally:
+    cleanup code
+
+
+Example 1 — Basic exception:
+
+number = 10
+result = number / 0
+
+This produces a ZeroDivisionError because a number cannot be divided by zero.
+
+Using exception handling:
+
+try:
+    number = 10
+    result = number / 0
+except:
+    print("An error occurred")
+
+Output:
+
+An error occurred
+
+
+Example 2 — Catching a specific exception:
+
+try:
+    number = 10
+    result = number / 0
+except ZeroDivisionError:
+    print("Cannot divide by zero")
+
+It is better to catch a specific exception when possible.
+
+Example 3 — ValueError:
+
+try:
+    age = int("abc")
+except ValueError:
+    print("Invalid number")
+
+Output:
+
+Invalid number
+
+The string abc cannot be converted into an integer.
+
+
+Example 4 — else:
+
+try:
+    number = int("100")
+except ValueError:
+    print("Invalid number")
+else:
+    print("Conversion successful")
+
+Output:
+
+Conversion successful
+
+The else block runs only when the try block succeeds.
+
+
+Example 5 — finally:
+
+try:
+    print("Processing data")
+except:
+    print("Error occurred")
+finally:
+    print("Process completed")
+
+The finally block runs regardless of whether an error occurs.
+
+This is useful for cleanup activities such as closing files or database connections.
+
+
+Important difference:
+
+Error:
+The general problem that occurs during program execution.
+
+Exception:
+An error condition that Python can detect and handle using try and except.
+
+Common Python exceptions:
+
+ValueError
+Wrong value type for an operation.
+
+TypeError
+Operation performed on an incompatible type.
+
+ZeroDivisionError
+Division by zero.
+
+KeyError
+Trying to access a dictionary key that does not exist.
+
+IndexError
+Trying to access a list index that does not exist.
+
+FileNotFoundError
+Trying to open a file that does not exist.
+
+Connection-related exceptions can also occur when working with databases or external systems.
+
+
+Data-engineering example:
+
+records = 1000
+error_count = 0
+
+try:
+    if records == 0:
+        raise ValueError("No records found")
+
+    print("Processing records")
+
+except ValueError as error:
+    print("Validation failed:", error)
+
+else:
+    print("Load successful")
+
+finally:
+    print("Pipeline processing completed")
+
+
+Airflow connection:
+
+In Airflow, tasks can fail because of problems such as:
+
+Database connection failure
+SQL error
+Invalid input
+Missing file
+API failure
+Snowflake failure
+
+Python exception handling can be used inside task code to handle expected problems.
+
+However, for Airflow, we generally should NOT hide an error.
+
+If a critical task fails, Airflow should know that the task failed so that it can retry or mark the task as failed.
+
+For example:
+
+try:
+    load_data()
+except Exception as error:
+    print("Load failed:", error)
+    raise
+
+The raise statement sends the exception back to Airflow.
+
+This is important because if we catch an error and simply print it without raising it again, Airflow may think the task succeeded.
+
+Visual:
+
+Python code
+     |
+     v
+   try
+     |
+     v
+  Does error occur?
+    /       \\
+  No         Yes
+  |           |
+  v           v
+else       except
+  |           |
+  \\          /
+    v       v
+      finally
+         |
+         v
+      Continue
+
+
+Interview point:
+
+Question:
+Why should we use specific exceptions instead of simply using except?
+
+Answer:
+Specific exceptions make the code safer and easier to debug because we handle only the errors we expect.
+
+Question:
+Why is finally useful?
+
+Answer:
+finally is useful for cleanup operations because it runs whether an exception occurs or not.
+
+Question:
+What happens if we catch an exception in an Airflow task but do not raise it again?
+
+Answer:
+The task may appear successful even though the actual business operation failed. For critical failures, we should raise the exception so Airflow can mark the task as failed and apply retry or failure handling.
+`
+},
 /* End of questions array */
 ];
 
