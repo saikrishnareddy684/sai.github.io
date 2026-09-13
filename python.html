@@ -1147,110 +1147,270 @@ Use a tuple when the collection should remain fixed.
 },
 
    
-
-    {
-title: "Snowpipe + Stream + Task - Incremental Employee Load",
+{
+title: "Python Sets — Introduction",
 
 question: `
-An employee.csv file is uploaded to Amazon S3.
+Create a Python set containing the following table names:
 
-Requirements:
+CUSTOMER
+ACCOUNT
+CUSTOMER
+FACT_PORTFOLIO
+ACCOUNT
 
-1. Create a CSV File Format.
-2. Create a Storage Integration.
-3. Create an External Stage.
-4. Create a RAW table named EMPLOYEE_RAW.
-5. Create a Snowpipe to load files into EMPLOYEE_RAW.
-6. Trigger the Snowpipe manually.
-7. Create a Stream on EMPLOYEE_RAW.
-8. Create a target table named EMPLOYEE_DIM.
-9. Create a Task that performs a MERGE from the Stream into EMPLOYEE_DIM.
-10. Resume the Task.
-11. Verify the final data in EMPLOYEE_DIM.
-`,
+Then:
 
-dataset:[
-{EMP_ID:101,EMP_NAME:"John"},
-{EMP_ID:102,EMP_NAME:"Alice"}
-],
+1. Print the set.
+2. Check its data type.
+3. Add a new table called RATING.
+4. Remove CUSTOMER.
+5. Check whether ACCOUNT exists in the set.
+6. Understand why duplicate values are not stored.
+7. Compare the number of values written in the set with the number of unique values actually stored.
+   `,
 
-output:[
-{EMP_ID:101,EMP_NAME:"John"},
-{EMP_ID:102,EMP_NAME:"Alice"}
-],
+dataset:[],
+
+output:[],
 
 answer:`
+Definition:
 
-CREATE FILE FORMAT CSV_FORMAT
-TYPE=CSV
-SKIP_HEADER=1;
+A set is a Python data type used to store a collection of unique values.
 
-CREATE STORAGE INTEGRATION S3_INT
-TYPE=EXTERNAL_STAGE
-STORAGE_PROVIDER=S3
-ENABLED=TRUE
-STORAGE_AWS_ROLE_ARN='YOUR_ROLE_ARN'
-STORAGE_ALLOWED_LOCATIONS=('s3://my-practice-bucket-sai-123/');
+A set does not store duplicate values.
 
-CREATE STAGE EMP_STAGE
-URL='s3://my-practice-bucket-sai-123/'
-STORAGE_INTEGRATION=S3_INT
-FILE_FORMAT=CSV_FORMAT;
+A set is normally created using curly braces.
 
-CREATE TABLE EMPLOYEE_RAW
-(
-EMP_ID NUMBER,
-EMP_NAME STRING
-);
+Example:
 
-CREATE PIPE EMPLOYEE_PIPE
-AS
-COPY INTO EMPLOYEE_RAW
-FROM @EMP_STAGE
-PATTERN='.*employee.*\\.csv';
+tables = {"CUSTOMER", "ACCOUNT", "CUSTOMER"}
 
-ALTER PIPE EMPLOYEE_PIPE REFRESH;
+Notice that CUSTOMER is written twice.
 
-CREATE STREAM EMPLOYEE_STREAM
-ON TABLE EMPLOYEE_RAW;
+The duplicate value is present in the code that we write, but Python automatically removes the duplicate when it creates the set.
 
-CREATE TABLE EMPLOYEE_DIM
-(
-EMP_ID NUMBER,
-EMP_NAME STRING
-);
+Therefore, the resulting set contains only:
 
-CREATE TASK EMPLOYEE_TASK
-WAREHOUSE=COMPUTE_WH
-SCHEDULE='1 MINUTE'
-WHEN SYSTEM$STREAM_HAS_DATA('EMPLOYEE_STREAM')
-AS
+CUSTOMER
+ACCOUNT
 
-MERGE INTO EMPLOYEE_DIM T
-USING EMPLOYEE_STREAM S
-ON T.EMP_ID=S.EMP_ID
+If we run:
 
-WHEN MATCHED THEN
-UPDATE SET
-T.EMP_NAME=S.EMP_NAME
+print(tables)
 
-WHEN NOT MATCHED THEN
-INSERT
-(
-EMP_ID,
-EMP_NAME
-)
-VALUES
-(
-S.EMP_ID,
-S.EMP_NAME
-);
+The output will contain only the unique values.
 
-ALTER TASK EMPLOYEE_TASK RESUME;
+Important distinction:
 
-SELECT *
-FROM EMPLOYEE_DIM;
+The duplicate exists in the input expression.
 
+The duplicate does NOT exist in the resulting set.
+
+Visual:
+
+Values written:
+
+CUSTOMER
+ACCOUNT
+CUSTOMER
+|
+| Python creates the set
+| and removes duplicates
+↓
+Stored in set:
+
+CUSTOMER
+ACCOUNT
+
+Checking the number of stored values:
+
+tables = {"CUSTOMER", "ACCOUNT", "CUSTOMER"}
+
+print(len(tables))
+
+Output:
+
+2
+
+Although CUSTOMER was written twice, the set contains only two unique values.
+
+Compare this with a list:
+
+tables = ["CUSTOMER", "ACCOUNT", "CUSTOMER"]
+
+print(len(tables))
+
+Output:
+
+3
+
+Therefore:
+
+List → duplicates are allowed.
+
+Set → duplicates are automatically removed.
+
+1. Print the set:
+
+print(tables)
+
+The output contains only unique values.
+
+2. Check the data type:
+
+print(type(tables))
+
+Output:
+
+<class 'set'>
+
+You can also use:
+
+print(isinstance(tables, set))
+
+Output:
+
+True
+
+3. Add a value:
+
+tables.add("RATING")
+
+Now RATING is included in the set.
+
+4. Remove a value:
+
+tables.remove("CUSTOMER")
+
+CUSTOMER is removed from the set.
+
+There is another method:
+
+tables.discard("CUSTOMER")
+
+The difference is:
+
+remove() produces an error if the value does not exist.
+
+discard() does not produce an error if the value does not exist.
+
+5. Check whether a value exists:
+
+print("ACCOUNT" in tables)
+
+Output:
+
+True
+
+The in operator checks whether a value exists in the set.
+
+Practical data-engineering example:
+
+Suppose you receive table names from multiple systems:
+
+table_list = [
+"CUSTOMER",
+"ACCOUNT",
+"CUSTOMER",
+"RATING",
+"ACCOUNT",
+"PRODUCT"
+]
+
+There are six values in the list, but only four unique table names.
+
+You can convert the list into a set:
+
+unique_tables = set(table_list)
+
+Now the duplicate CUSTOMER and ACCOUNT values are removed.
+
+Visual:
+
+List:
+
+CUSTOMER
+ACCOUNT
+CUSTOMER
+RATING
+ACCOUNT
+PRODUCT
+
+
+    |
+    | set()
+    ↓
+
+
+Set:
+
+CUSTOMER
+ACCOUNT
+RATING
+PRODUCT
+
+This is useful when you need to identify unique tables, columns, IDs, or other values.
+
+List vs Tuple vs Set vs Dictionary:
+
+List:
+
+tables = ["CUSTOMER", "ACCOUNT", "CUSTOMER"]
+
+Ordered collection.
+Duplicates are allowed.
+Can be changed.
+
+Tuple:
+
+tables = ("CUSTOMER", "ACCOUNT", "CUSTOMER")
+
+Ordered collection.
+Duplicates are allowed.
+Cannot be changed.
+
+Set:
+
+tables = {"CUSTOMER", "ACCOUNT", "CUSTOMER"}
+
+Duplicate values are automatically removed.
+Order should not be relied upon.
+Can be changed.
+
+Dictionary:
+
+tables = {
+"source": "SQL Server",
+"target": "Snowflake"
+}
+
+Stores key-value pairs.
+
+Important set methods:
+
+add() → adds one value.
+
+remove() → removes a value and produces an error if it does not exist.
+
+discard() → removes a value without producing an error if it does not exist.
+
+in → checks whether a value exists.
+
+len() → returns the number of unique values stored in the set.
+
+Interview point:
+
+The main reason to use a set is when you need unique values and do not need to depend on their order.
+
+A common interview question is:
+
+If CUSTOMER appears three times while creating a set, will the set contain CUSTOMER three times?
+
+Answer:
+
+No. CUSTOMER can be written multiple times in the input expression, but the resulting set stores CUSTOMER only once.
 `
 },
 
