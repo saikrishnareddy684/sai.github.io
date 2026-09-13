@@ -3483,6 +3483,633 @@ for → generally used to iterate through a collection
 while → generally used when repetition depends on a condition
 `
 },
+    {
+title: "Python Functions — Creating and Calling Functions",
+
+question: `
+You are building a data pipeline and want to organize your Python code into reusable blocks.
+
+Answer the following:
+
+1. What is a function in Python?
+2. Why do we use functions?
+3. How do you define a function?
+4. How do you call a function?
+5. What is a parameter?
+6. What is an argument?
+7. What is the difference between a parameter and an argument?
+8. How do you create a function with multiple parameters?
+9. How do you return a value from a function?
+10. What happens if a function does not have a return statement?
+11. What is the difference between print and return?
+12. How can a function use local variables?
+13. How can a function access a global variable?
+14. Write a practical data-engineering function for calculating record counts.
+15. Write a complex function that validates a data pipeline.
+`,
+
+dataset:[],
+
+output:[],
+
+answer:`
+Definition:
+
+A function is a reusable block of Python code that performs a specific task.
+
+Instead of writing the same code multiple times, we can create a function once and call it whenever we need it.
+
+
+1. Creating a basic function
+
+The syntax is:
+
+def function_name():
+    statements
+
+Example:
+
+def greet():
+    print("Hello Sai")
+
+Here:
+
+def → keyword used to define a function
+
+greet → function name
+
+() → parameters go inside these brackets
+
+: → starts the function block
+
+Indented statements → code belonging to the function
+
+
+2. Calling a function
+
+Defining a function does not execute it.
+
+We need to call it.
+
+Example:
+
+def greet():
+    print("Hello Sai")
+
+greet()
+
+Output:
+
+Hello Sai
+
+
+The execution flow is:
+
+Function definition
+       ↓
+Python stores the function
+       ↓
+greet() is called
+       ↓
+Function executes
+
+
+3. Why use functions?
+
+Functions help us:
+
+Avoid repeating code
+
+Organize code
+
+Improve readability
+
+Reuse logic
+
+Make testing easier
+
+Break a large program into smaller pieces
+
+This is especially useful in data engineering.
+
+
+4. Function with a parameter
+
+A parameter allows us to pass information into a function.
+
+Example:
+
+def greet(name):
+    print("Hello", name)
+
+greet("Sai")
+
+Output:
+
+Hello Sai
+
+
+Here:
+
+name → parameter
+
+"Sai" → argument
+
+
+5. Parameter vs argument
+
+Parameter:
+
+The variable defined inside the function definition.
+
+Example:
+
+def greet(name):
+
+name is the parameter.
+
+
+Argument:
+
+The actual value passed when calling the function.
+
+Example:
+
+greet("Sai")
+
+"Sai" is the argument.
+
+
+Simple rule:
+
+Parameter → placeholder
+
+Argument → actual value
+
+
+6. Multiple parameters
+
+A function can have multiple parameters.
+
+Example:
+
+def employee_details(name, age, experience):
+    print("Name:", name)
+    print("Age:", age)
+    print("Experience:", experience)
+
+employee_details("Sai", 29, 7)
+
+Output:
+
+Name: Sai
+Age: 29
+Experience: 7
+
+
+7. Returning a value
+
+A function can return a result using return.
+
+Example:
+
+def add_numbers(a, b):
+    return a + b
+
+result = add_numbers(10, 20)
+
+print(result)
+
+Output:
+
+30
+
+
+Here:
+
+The function calculates a + b.
+
+return sends the result back to the caller.
+
+The result is stored in the variable result.
+
+
+8. print vs return
+
+This is very important for interviews.
+
+print():
+
+Displays something on the screen.
+
+return:
+
+Sends a value back from the function.
+
+
+Example using print:
+
+def add(a, b):
+    print(a + b)
+
+result = add(10, 20)
+
+The function displays 30, but result does not contain the calculated value.
+
+
+Example using return:
+
+def add(a, b):
+    return a + b
+
+result = add(10, 20)
+
+print(result)
+
+Now result contains:
+
+30
+
+
+Simple difference:
+
+print → display
+
+return → send the value back
+
+
+9. Function without return
+
+Example:
+
+def greet():
+    print("Hello")
+
+result = greet()
+
+print(result)
+
+Output:
+
+Hello
+None
+
+
+When a function does not explicitly return a value, Python returns None.
+
+
+10. Local variables inside functions
+
+Variables created inside a function are normally local variables.
+
+Example:
+
+def calculate():
+    amount = 5000
+    print(amount)
+
+calculate()
+
+Here:
+
+amount
+
+is a local variable.
+
+It belongs to the function.
+
+
+If you try:
+
+print(amount)
+
+outside the function, Python will not find that local variable.
+
+
+11. Function with a global variable
+
+Example:
+
+company = "TCS"
+
+def employee():
+    print(company)
+
+employee()
+
+Output:
+
+TCS
+
+
+The function can read the global variable company.
+
+
+12. Modifying a global variable
+
+If you want to modify a global variable from inside a function, use global.
+
+Example:
+
+salary = 1200000
+
+def update_salary():
+    global salary
+    salary = 1500000
+
+update_salary()
+
+print(salary)
+
+Output:
+
+1500000
+
+
+However, in real projects, it is generally better to pass values into functions and return results rather than depending heavily on global variables.
+
+
+13. Practical data-engineering function
+
+Suppose you want to calculate the total number of records.
+
+Create:
+
+def calculate_total_records(table1_records, table2_records):
+    total = table1_records + table2_records
+    return total
+
+total_records = calculate_total_records(100000, 50000)
+
+print("Total records:", total_records)
+
+Output:
+
+Total records: 150000
+
+
+Here:
+
+table1_records → parameter
+
+table2_records → parameter
+
+100000 → argument
+
+50000 → argument
+
+total → local variable
+
+return total → sends the result back
+
+
+14. Function for pipeline validation
+
+Example:
+
+def validate_pipeline(records, error_count, status):
+
+    if status == "SUCCESS" and records > 0 and error_count == 0:
+        return "Pipeline validation successful"
+
+    return "Pipeline validation failed"
+
+
+result = validate_pipeline(
+    100000,
+    0,
+    "SUCCESS"
+)
+
+print(result)
+
+Output:
+
+Pipeline validation successful
+
+
+This function receives three pieces of information:
+
+records
+
+error_count
+
+status
+
+It checks the conditions and returns the validation result.
+
+
+15. Complex data-engineering example
+
+Suppose you have multiple tables.
+
+Create a function:
+
+def validate_table(table_name, records, error_count):
+
+    if records == 0:
+        return table_name + " has no records"
+
+    if error_count > 0:
+        return table_name + " has errors"
+
+    return table_name + " validation successful"
+
+
+print(validate_table("CUSTOMER", 100000, 0))
+print(validate_table("ACCOUNT", 50000, 2))
+print(validate_table("TRANSACTION", 0, 0))
+
+Output:
+
+CUSTOMER validation successful
+
+ACCOUNT has errors
+
+TRANSACTION has no records
+
+
+Here we have created one reusable function and used it for three different tables.
+
+
+16. Function with a list
+
+Functions can also accept collections.
+
+Example:
+
+def process_tables(tables):
+
+    for table in tables:
+        print("Processing:", table)
+
+
+tables = ["CUSTOMER", "ACCOUNT", "TRANSACTION"]
+
+process_tables(tables)
+
+Output:
+
+Processing: CUSTOMER
+Processing: ACCOUNT
+Processing: TRANSACTION
+
+
+Here we combine:
+
+Function
+List
+For loop
+
+
+17. Function returning multiple values
+
+Python can return multiple values.
+
+Example:
+
+def calculate_summary():
+
+    total_records = 100000
+    error_count = 5
+
+    return total_records, error_count
+
+
+records, errors = calculate_summary()
+
+print("Records:", records)
+print("Errors:", errors)
+
+Output:
+
+Records: 100000
+Errors: 5
+
+
+Python internally returns these values together as a tuple.
+
+
+18. Airflow connection
+
+Functions are extremely important in Airflow.
+
+For example, a Python function could contain:
+
+Extract logic
+
+Validation logic
+
+Transformation logic
+
+API logic
+
+Snowflake logic
+
+File-processing logic
+
+
+A simplified Airflow-style idea is:
+
+def process_customer_data():
+    print("Reading CUSTOMER data")
+    print("Validating CUSTOMER data")
+    print("Loading CUSTOMER data")
+
+
+The function contains the processing logic.
+
+Airflow can then use that Python logic as part of a task.
+
+
+Visual:
+
+              Function
+                  |
+        +---------+---------+
+        |         |         |
+      Input     Logic     Output
+        |         |         |
+        v         v         v
+   Parameters  Processing  Return
+                  |
+                  v
+             Result
+
+
+Example:
+
+Input
+  |
+  v
+records = 100000
+errors = 0
+status = SUCCESS
+  |
+  v
+validate_pipeline()
+  |
+  v
+Condition checking
+  |
+  v
+Return result
+  |
+  v
+Pipeline validation successful
+
+
+Interview Answer:
+
+If an interviewer asks:
+
+"What is a function in Python?"
+
+You can answer:
+
+"A function is a reusable block of code designed to perform a specific task. We define a function using the def keyword, pass inputs through parameters, and can return a result using the return statement."
+
+
+Key points to remember:
+
+def → defines a function
+
+function_name() → calls a function
+
+parameter → placeholder in function definition
+
+argument → actual value passed to the function
+
+return → sends a value back
+
+print → displays a value
+
+Local variable → normally created inside a function
+
+Global variable → created in the global scope
+
+None → default return value when there is no explicit return
+
+
+Important Data Engineering Connection:
+
+Functions become very important when working with Airflow.
+
+For example:
+
+One function → extract data
+
+One function → validate data
+
+One function → transform data
+
+One function → load data
+
+Airflow can then orchestrate these operations as tasks in a DAG.
+
+This is why learning Python functions is an important step before learning Airflow DAG programming.
+`
+},
 /* End of questions array */
 ];
 
