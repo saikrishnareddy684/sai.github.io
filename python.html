@@ -2004,168 +2004,392 @@ ON F.CUSTOMER_SK=D.CUSTOMER_SK;
 `
 }
     ,
-    {
-title: "Conformed Dimension - Shared Dimension Across Multiple Fact Tables",
+  {
+title: "Python Variables — Fetch Variables, locals(), globals(), and Collections",
 
 question: `
-Implement a Conformed Dimension in a Data Warehouse.
+You have created several variables in a Python program:
 
-Requirements:
+name = "sai"
+age = 29
+price = 300000
+time = 3
+rate = 3
+intrest = 27000.0
+example = ["sai", 29, 280000.0, True]
+database = ("sql server", "ms sql", "snowflake")
+databases = ["sql server"]
+dicionary = {
+    "pipeline_name": "creditriskcube",
+    "source": "sql server",
+    "target": "snowflake",
+    "status": "completed",
+    "new": 3
+}
+tables = {"transaction", "customer"}
 
-1. Create a shared dimension table named DIM_CUSTOMER.
-2. Create two fact tables:
-   - FACT_SALES
-   - FACT_RETURNS
-3. Insert sample data into all three tables.
-4. Ensure both fact tables reference the same CUSTOMER_SK from DIM_CUSTOMER.
-5. Retrieve sales data along with customer information.
-6. Retrieve returns data along with customer information.
-7. Generate a report showing the total sales and total refunds for each customer.
+Answer the following:
+
+1. How can you fetch all the variables currently available in the Python session in a clean order?
+
+2. How can you exclude Python's internal variables such as __name__, __doc__, and __builtins__?
+
+3. What is the difference between locals() and globals()?
+
+4. What are Python collections?
+
+5. What are the main Python collection types?
+
+6. Identify the collection type of example, database, dicionary, and tables.
+
+7. What is the difference between a list, tuple, dictionary, and set?
 `,
 
-dataset:{
+dataset:[],
 
-DIM_CUSTOMER:[
-{CUSTOMER_SK:1,CUSTOMER_ID:101,CUSTOMER_NAME:"Sai",CITY:"Bangalore"},
-{CUSTOMER_SK:2,CUSTOMER_ID:102,CUSTOMER_NAME:"John",CITY:"Hyderabad"},
-{CUSTOMER_SK:3,CUSTOMER_ID:103,CUSTOMER_NAME:"David",CITY:"Chennai"}
-],
-
-FACT_SALES:[
-{ORDER_ID:1001,CUSTOMER_SK:1,SALES_AMOUNT:500},
-{ORDER_ID:1002,CUSTOMER_SK:2,SALES_AMOUNT:700},
-{ORDER_ID:1003,CUSTOMER_SK:3,SALES_AMOUNT:900}
-],
-
-FACT_RETURNS:[
-{RETURN_ID:2001,CUSTOMER_SK:1,REFUND_AMOUNT:500},
-{RETURN_ID:2002,CUSTOMER_SK:3,REFUND_AMOUNT:900}
-]
-
-},
-
-output:{
-
-SALES_REPORT:[
-{ORDER_ID:1001,CUSTOMER_NAME:"Sai",CITY:"Bangalore",SALES_AMOUNT:500},
-{ORDER_ID:1002,CUSTOMER_NAME:"John",CITY:"Hyderabad",SALES_AMOUNT:700},
-{ORDER_ID:1003,CUSTOMER_NAME:"David",CITY:"Chennai",SALES_AMOUNT:900}
-],
-
-RETURNS_REPORT:[
-{RETURN_ID:2001,CUSTOMER_NAME:"Sai",CITY:"Bangalore",REFUND_AMOUNT:500},
-{RETURN_ID:2002,CUSTOMER_NAME:"David",CITY:"Chennai",REFUND_AMOUNT:900}
-]
-
-},
+output:[],
 
 answer:`
+Definitions:
 
---------------------------------------------
-STEP 1 - Create Customer Dimension
---------------------------------------------
+Variable:
+A variable is a name that refers to a value stored in Python.
 
-CREATE OR REPLACE TABLE DIM_CUSTOMER
-(
-    CUSTOMER_SK NUMBER,
-    CUSTOMER_ID NUMBER,
-    CUSTOMER_NAME STRING,
-    CITY STRING
-);
+locals():
+locals() returns the variables available in the current local scope.
 
-INSERT INTO DIM_CUSTOMER VALUES
-(1,101,'Sai','Bangalore'),
-(2,102,'John','Hyderabad'),
-(3,103,'David','Chennai');
+globals():
+globals() returns the variables available in the global scope.
 
---------------------------------------------
-STEP 2 - Create Sales Fact
---------------------------------------------
+Python Collection:
+A collection is a Python data structure used to store multiple values in a single variable.
 
-CREATE OR REPLACE TABLE FACT_SALES
-(
-    ORDER_ID NUMBER,
-    CUSTOMER_SK NUMBER,
-    SALES_AMOUNT NUMBER(10,2)
-);
+The four main built-in Python collection types are:
 
-INSERT INTO FACT_SALES VALUES
-(1001,1,500),
-(1002,2,700),
-(1003,3,900);
+1. List
+2. Tuple
+3. Dictionary
+4. Set
 
---------------------------------------------
-STEP 3 - Create Returns Fact
---------------------------------------------
 
-CREATE OR REPLACE TABLE FACT_RETURNS
-(
-    RETURN_ID NUMBER,
-    CUSTOMER_SK NUMBER,
-    REFUND_AMOUNT NUMBER(10,2)
-);
+1. Fetch all variables cleanly
 
-INSERT INTO FACT_RETURNS VALUES
-(2001,1,500),
-(2002,3,900);
+Use this complete script:
 
---------------------------------------------
-STEP 4 - Sales Report
---------------------------------------------
+for variable_name, variable_value in locals().copy().items():
+    if not variable_name.startswith("__"):
+        print(variable_name, "=", variable_value)
 
-SELECT
-S.ORDER_ID,
-C.CUSTOMER_NAME,
-C.CITY,
-S.SALES_AMOUNT
-FROM FACT_SALES S
-JOIN DIM_CUSTOMER C
-ON S.CUSTOMER_SK=C.CUSTOMER_SK;
+The output will be similar to:
 
---------------------------------------------
-STEP 5 - Returns Report
---------------------------------------------
+name = sai
+age = 29
+price = 300000
+time = 3
+rate = 3
+intrest = 27000.0
+example = ['sai', 29, 280000.0, True]
+database = ('sql server', 'ms sql', 'snowflake')
+databases = ['sql server']
+dicionary = {'pipeline_name': 'creditriskcube', 'source': 'sql server', 'target': 'snowflake', 'status': 'completed', 'new': 3}
+tables = {'transaction', 'customer'}
 
-SELECT
-R.RETURN_ID,
-C.CUSTOMER_NAME,
-C.CITY,
-R.REFUND_AMOUNT
-FROM FACT_RETURNS R
-JOIN DIM_CUSTOMER C
-ON R.CUSTOMER_SK=C.CUSTOMER_SK;
 
---------------------------------------------
-STEP 6 - Customer-wise Sales and Refund Report
---------------------------------------------
+Why do we use locals().copy()?
 
-WITH SALES AS
-(
-SELECT
-CUSTOMER_SK,
-SUM(SALES_AMOUNT) TOTAL_SALES
-FROM FACT_SALES
-GROUP BY CUSTOMER_SK
-),
-RETURNS AS
-(
-SELECT
-CUSTOMER_SK,
-SUM(REFUND_AMOUNT) TOTAL_REFUNDS
-FROM FACT_RETURNS
-GROUP BY CUSTOMER_SK
-)
+locals() gives us the variables available in the current scope.
 
-SELECT
-C.CUSTOMER_NAME,
-COALESCE(S.TOTAL_SALES,0) TOTAL_SALES,
-COALESCE(R.TOTAL_REFUNDS,0) TOTAL_REFUNDS
-FROM DIM_CUSTOMER C
-LEFT JOIN SALES S
-ON C.CUSTOMER_SK=S.CUSTOMER_SK
-LEFT JOIN RETURNS R
-ON C.CUSTOMER_SK=R.CUSTOMER_SK;
+copy() creates a separate copy of that information, which makes it safer to iterate through while working with the variables.
 
+
+2. Why do we use startswith("__")?
+
+Python automatically creates some special variables such as:
+
+__name__
+__doc__
+__package__
+__loader__
+__spec__
+__builtins__
+
+These are Python's internal or special variables.
+
+This condition:
+
+if not variable_name.startswith("__"):
+
+means:
+
+Only show variables whose names do NOT start with double underscores.
+
+Therefore, your output contains your own variables instead of Python's internal variables.
+
+
+3. locals() vs globals()
+
+locals():
+
+Returns variables available in the current local scope.
+
+For example, inside a function:
+
+def calculate():
+    amount = 5000
+    print(locals())
+
+Here, amount is a local variable, so locals() can show it.
+
+globals():
+
+Returns variables available in the global scope.
+
+For example:
+
+name = "sai"
+age = 29
+
+print(globals())
+
+The global variables name and age will be available in the global scope.
+
+
+Simple difference:
+
+locals() → current/local scope
+
+globals() → global scope
+
+
+Important point:
+
+In the Python interactive shell that you are currently using, variables that you create at the top level are generally part of the global namespace as well.
+
+Therefore, you may see your variables when using both locals() and globals().
+
+
+4. What are Python collections?
+
+Python collections are data structures that allow us to store multiple values together.
+
+For example, instead of creating:
+
+table1 = "customer"
+table2 = "account"
+table3 = "transaction"
+
+we can create a collection:
+
+tables = ["customer", "account", "transaction"]
+
+
+5. Main Python collection types
+
+List:
+
+A list stores multiple values and allows duplicates.
+
+Example:
+
+tables = ["customer", "account", "customer"]
+
+List characteristics:
+
+Ordered
+Mutable
+Duplicates allowed
+Uses square brackets
+
+
+Tuple:
+
+A tuple stores multiple values but cannot normally be changed after creation.
+
+Example:
+
+databases = ("sql server", "snowflake", "postgresql")
+
+Tuple characteristics:
+
+Ordered
+Immutable
+Duplicates allowed
+Uses parentheses
+
+
+Dictionary:
+
+A dictionary stores data as key-value pairs.
+
+Example:
+
+pipeline = {
+    "source": "sql server",
+    "target": "snowflake",
+    "status": "completed"
+}
+
+Dictionary characteristics:
+
+Stores key-value pairs
+Mutable
+Keys should be unique
+Uses curly braces
+
+
+Set:
+
+A set stores unique values.
+
+Example:
+
+tables = {"customer", "account", "customer"}
+
+The resulting set contains only:
+
+customer
+account
+
+Set characteristics:
+
+Unordered
+Mutable
+Duplicates automatically removed
+Uses curly braces
+
+
+6. Identify the collection types in the question
+
+example = ["sai", 29, 280000.0, True]
+
+This is a LIST.
+
+database = ("sql server", "ms sql", "snowflake")
+
+This is a TUPLE.
+
+dicionary = {
+    "pipeline_name": "creditriskcube",
+    "source": "sql server",
+    "target": "snowflake"
+}
+
+This is a DICTIONARY.
+
+tables = {"transaction", "customer"}
+
+This is a SET.
+
+
+7. Quick comparison
+
+List:
+Ordered
+Mutable
+Duplicates allowed
+Example: ["A", "B", "A"]
+
+Tuple:
+Ordered
+Immutable
+Duplicates allowed
+Example: ("A", "B", "A")
+
+Dictionary:
+Key-value pairs
+Mutable
+Keys are unique
+Example: {"name": "Sai", "age": 29}
+
+Set:
+Unordered
+Mutable
+Duplicates removed
+Example: {"A", "B", "A"}
+
+
+Practical Data Engineering Example:
+
+In a data pipeline, we might use:
+
+List → store a list of tables to process
+
+tables_to_process = ["customer", "account", "transaction"]
+
+Tuple → store fixed environments
+
+environments = ("DEV", "TEST", "PROD")
+
+Dictionary → store pipeline configuration
+
+pipeline_config = {
+    "source": "SQL Server",
+    "target": "Snowflake",
+    "load_type": "Incremental"
+}
+
+Set → store unique table names
+
+unique_tables = {"customer", "account", "customer"}
+
+
+Visual:
+
+Python Collections
+|
+|-- List
+|   |-- Ordered
+|   |-- Mutable
+|   |-- Duplicates allowed
+|
+|-- Tuple
+|   |-- Ordered
+|   |-- Immutable
+|   |-- Duplicates allowed
+|
+|-- Dictionary
+|   |-- Key + Value
+|   |-- Mutable
+|   |-- Unique keys
+|
+|-- Set
+    |-- Unordered
+    |-- Mutable
+    |-- Unique values
+
+
+Interview Answer:
+
+If an interviewer asks, "What are the main Python collections?", you can answer:
+
+"Python provides four commonly used built-in collection types: List, Tuple, Dictionary, and Set. A List is ordered and mutable and allows duplicates. A Tuple is ordered and immutable. A Dictionary stores data as key-value pairs with unique keys. A Set stores unique values and automatically removes duplicates."
+
+
+Airflow/Data Engineering Connection:
+
+These collections are very useful when writing Airflow DAGs.
+
+For example:
+
+tables = ["customer", "account", "transaction"]
+
+A DAG can use this list to process multiple tables.
+
+pipeline_config = {
+    "source": "SQL Server",
+    "target": "Snowflake",
+    "load_type": "Incremental"
+}
+
+A dictionary can store pipeline configuration.
+
+environments = ("DEV", "TEST", "PROD")
+
+A tuple can store a fixed set of environments.
+
+unique_tables = set(tables)
+
+A set can be used when you need only unique table names.
 `
 },
     {
