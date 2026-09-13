@@ -5605,6 +5605,951 @@ loads = JSON string → Python.
 For Airflow, understanding files, JSON, and Python dictionaries is important because configuration and API data are commonly handled in these formats.
 `
 },
+    {
+title: "Python + SQL/Snowflake — Database Connections and Data Processing",
+
+question: `
+How can Python connect to a database?
+
+How can Python execute SQL queries?
+
+How can Python fetch database results?
+
+How is Python used with SQL Server and Snowflake?
+
+How does this knowledge connect to Airflow pipelines?
+`,
+
+dataset:[],
+
+output:[],
+
+answer:`
+Definitions:
+
+Database:
+A system used to store and manage structured data.
+
+Database connection:
+A communication link between Python and a database that allows Python to send SQL commands and retrieve data.
+
+Database driver:
+A Python library that allows Python to communicate with a specific database.
+
+Cursor:
+An object used by Python to execute SQL statements and retrieve results from a database.
+
+SQL query:
+A command sent to the database to read, insert, update, or delete data.
+
+Python + database:
+
+Python
+   |
+   | Database driver
+   v
+Database
+   |
+   v
+SQL execution
+   |
+   v
+Result
+   |
+   v
+Python
+
+
+1. Why use Python with SQL?
+
+SQL is excellent for working with data inside a database.
+
+Python is useful for:
+
+Automation
+File processing
+API calls
+Data transformation
+Pipeline control
+Calling multiple systems
+Error handling
+Scheduling and orchestration
+
+A data pipeline may look like:
+
+SQL Server
+    |
+    v
+Python
+    |
+    v
+Transformation
+    |
+    v
+Snowflake
+
+
+2. Connecting Python to SQL Server
+
+A commonly used Python library is pyodbc.
+
+Example:
+
+import pyodbc
+
+connection = pyodbc.connect(
+    "DRIVER={ODBC Driver 18 for SQL Server};"
+    "SERVER=my_server;"
+    "DATABASE=my_database;"
+    "UID=my_user;"
+    "PWD=my_password"
+)
+
+The connection object represents the connection between Python and SQL Server.
+
+Important:
+
+In real projects, passwords should NOT be hard-coded inside Python code.
+
+They should normally be stored securely using environment variables, Airflow Connections, secrets management, or another secure configuration system.
+
+
+3. Creating a cursor
+
+After connecting:
+
+cursor = connection.cursor()
+
+The cursor is used to execute SQL.
+
+Example:
+
+cursor.execute("SELECT COUNT(*) FROM CUSTOMER")
+
+
+4. Fetching results
+
+Example:
+
+cursor.execute("SELECT COUNT(*) FROM CUSTOMER")
+
+result = cursor.fetchone()
+
+print(result)
+
+fetchone() retrieves one row.
+
+Other commonly used methods:
+
+fetchone()
+Returns one row.
+
+fetchmany()
+Returns a specified number of rows.
+
+fetchall()
+Returns all remaining rows.
+
+
+5. Example — reading table data
+
+cursor.execute(
+    "SELECT CUSTOMER_ID, CUSTOMER_NAME FROM CUSTOMER"
+)
+
+rows = cursor.fetchall()
+
+for row in rows:
+    print(row)
+
+
+The flow is:
+
+Python
+   |
+   v
+cursor.execute()
+   |
+   v
+SQL Server
+   |
+   v
+Query result
+   |
+   v
+fetchall()
+   |
+   v
+Python
+
+
+6. Inserting data
+
+Example:
+
+cursor.execute(
+    "INSERT INTO CUSTOMER (CUSTOMER_ID, CUSTOMER_NAME) VALUES (?, ?)",
+    101,
+    "Sai"
+)
+
+connection.commit()
+
+commit() saves the transaction.
+
+Without committing, the insert may not be permanently saved depending on the connection settings.
+
+
+7. Parameterized queries
+
+Avoid constructing SQL by directly joining user-provided values.
+
+For example, instead of building SQL manually, use parameters supported by the database driver.
+
+Example:
+
+customer_id = 101
+
+cursor.execute(
+    "SELECT * FROM CUSTOMER WHERE CUSTOMER_ID = ?",
+    customer_id
+)
+
+This is safer and helps avoid SQL injection problems.
+
+
+8. Closing the connection
+
+After database work:
+
+cursor.close()
+connection.close()
+
+In production code, proper cleanup should be handled even when an error occurs.
+
+
+9. Python + Snowflake
+
+Snowflake provides a Python connector that allows Python applications to communicate with Snowflake.
+
+Typical flow:
+
+import snowflake.connector
+
+connection = snowflake.connector.connect(
+    user="username",
+    password="password",
+    account="account_identifier",
+    warehouse="COMPUTE_WH",
+    database="MY_DATABASE",
+    schema="MY_SCHEMA"
+)
+
+cursor = connection.cursor()
+
+cursor.execute(
+    "SELECT COUNT(*) FROM CUSTOMER"
+)
+
+result = cursor.fetchone()
+
+print(result)
+
+Again, credentials should be stored securely rather than directly inside source code.
+
+
+10. SQL Server → Snowflake example
+
+Imagine:
+
+SQL Server
+CUSTOMER
+100,000 rows
+
+Snowflake
+CUSTOMER
+95,000 rows
+
+Python can execute validation queries:
+
+SELECT COUNT(*) FROM CUSTOMER
+
+on both systems and compare the results.
+
+Conceptually:
+
+SQL Server count
+       |
+       v
+Python
+       |
+       | compare
+       v
+Snowflake count
+       |
+       v
+Validation result
+
+
+11. Reconciliation example
+
+Suppose:
+
+source_count = 100000
+target_count = 100000
+
+Python:
+
+if source_count == target_count:
+    print("Reconciliation successful")
+else:
+    print("Reconciliation failed")
+
+This is very relevant to data-engineering projects because reconciliation checks whether source and target data match after a migration or load.
+
+
+12. Python function for reconciliation
+
+def validate_counts(source_count, target_count):
+
+    if source_count == target_count:
+        return "Reconciliation successful"
+
+    return "Reconciliation failed"
+
+
+result = validate_counts(100000, 100000)
+
+print(result)
+
+Output:
+
+Reconciliation successful
+
+
+13. Airflow connection
+
+This is where Python, SQL, Snowflake, and Airflow come together.
+
+Imagine an Airflow DAG:
+
+DAG
+ |
+ +--> Extract from SQL Server
+ |
+ +--> Transform / Validate
+ |
+ +--> Load into Snowflake
+ |
+ +--> Reconcile counts
+ |
+ +--> Send result
+
+
+Airflow controls the workflow.
+
+Python contains the logic.
+
+SQL retrieves and manipulates data.
+
+Snowflake stores the target data.
+
+
+14. Important distinction
+
+Airflow is NOT primarily a database.
+
+Airflow is an orchestration platform.
+
+Python is the programming language used to define DAGs and task logic.
+
+SQL is used to work with relational data.
+
+Snowflake is the cloud data platform / data warehouse.
+
+A simplified architecture:
+
+             Airflow
+                |
+        -----------------
+        |       |       |
+      Python   SQL    Scheduling
+        |
+        v
+   SQL Server
+        |
+        v
+    Snowflake
+
+
+15. Important interview question
+
+Question:
+Why would you use Python when SQL can already transform data?
+
+Answer:
+SQL is usually better for transformations that can be executed efficiently inside the database. Python is useful for orchestration, automation, external APIs, file processing, complex application logic, and connecting multiple systems.
+
+Question:
+What is a cursor?
+
+Answer:
+A cursor is an object provided by a database driver that allows Python to execute SQL statements and retrieve query results.
+
+Question:
+What is commit?
+
+Answer:
+commit saves the current database transaction so that changes such as INSERT, UPDATE, or DELETE become permanent.
+
+Question:
+What is fetchone()?
+
+Answer:
+fetchone() retrieves one row from the query result.
+
+Question:
+What is fetchall()?
+
+Answer:
+fetchall() retrieves all remaining rows from the query result.
+
+Question:
+How would you validate a SQL Server to Snowflake migration using Python?
+
+Answer:
+Python can execute validation queries against both systems, retrieve counts or other reconciliation metrics, compare the source and target results, and report whether the migration passed or failed.
+
+Question:
+Should database passwords be written directly in Python code?
+
+Answer:
+No. Credentials should be stored securely using mechanisms such as environment variables, Airflow Connections, secret managers, or other secure credential stores.
+
+Key interview concept:
+
+Do not think:
+
+Airflow = SQL execution only.
+
+Think:
+
+Airflow = orchestration
+Python = programming and automation
+SQL = data processing
+SQL Server / Snowflake = data systems
+
+
+Practical data-engineering example:
+
+1. Airflow starts the task.
+2. Python connects to SQL Server.
+3. Python executes a SQL query.
+4. Python retrieves the result.
+5. Python connects to Snowflake.
+6. Python executes the required SQL.
+7. Python performs reconciliation.
+8. If validation fails, Python raises an exception.
+9. Airflow marks the task as failed and can retry it.
+
+This is the foundation for building real SQL Server → Snowflake Airflow pipelines.
+`
+},
+    {
+title: "Python for Airflow — DAGs, Tasks, Operators, and Python Code",
+
+question: `
+How is Python used in Apache Airflow?
+
+What is a DAG?
+
+What is a task?
+
+What is an operator?
+
+How do we create a simple Airflow DAG using Python?
+
+How does Python code execute inside an Airflow task?
+`,
+
+dataset:[],
+
+output:[],
+
+answer:`
+Definitions:
+
+Airflow:
+Apache Airflow is an open-source workflow orchestration platform used to develop, schedule, and monitor workflows.
+
+DAG:
+DAG stands for Directed Acyclic Graph.
+
+A DAG defines the workflow, including:
+
+Tasks
+Task dependencies
+Schedule
+Start date
+Retry configuration
+Other workflow settings
+
+Task:
+A task is an individual unit of work inside a DAG.
+
+Operator:
+An operator defines what a task should do.
+
+Examples:
+
+PythonOperator
+Runs Python code.
+
+BashOperator
+Runs a shell command.
+
+SQL operators
+Execute SQL against supported databases.
+
+TaskFlow API:
+A modern Airflow approach that allows Python functions to be directly used as tasks.
+
+
+1. Basic Airflow structure
+
+A simple Airflow workflow looks like:
+
+DAG
+ |
+ +--- Task 1
+ |
+ +--- Task 2
+ |
+ +--- Task 3
+
+For example:
+
+Start
+  |
+  v
+Extract
+  |
+  v
+Transform
+  |
+  v
+Load
+  |
+  v
+Validate
+
+
+2. Airflow DAG is Python code
+
+An Airflow DAG is normally defined inside a Python file.
+
+The Python file contains the workflow definition.
+
+Conceptually:
+
+Python file
+    |
+    v
+DAG
+    |
+    +---- Task
+    |
+    +---- Task
+    |
+    +---- Task
+
+
+3. Simple Python task
+
+A Python function can contain the actual business logic.
+
+Example:
+
+def say_hello():
+    print("Hello from Airflow")
+
+
+Airflow can execute this function as a task.
+
+
+4. PythonOperator
+
+PythonOperator is an Airflow operator used to execute a Python function.
+
+Conceptually:
+
+def say_hello():
+    print("Hello from Airflow")
+
+
+PythonOperator
+      |
+      v
+say_hello()
+      |
+      v
+Task execution
+
+
+5. DAG + Python task
+
+A simplified example looks like:
+
+from airflow import DAG
+from airflow.operators.python import PythonOperator
+from datetime import datetime
+
+
+def say_hello():
+    print("Hello from Airflow")
+
+
+with DAG(
+    dag_id="my_first_dag",
+    start_date=datetime(2026, 1, 1),
+    schedule=None,
+    catchup=False
+) as dag:
+
+    hello_task = PythonOperator(
+        task_id="say_hello",
+        python_callable=say_hello
+    )
+
+
+Important concepts:
+
+dag_id
+Unique name of the DAG.
+
+task_id
+Unique name of the task inside the DAG.
+
+python_callable
+The Python function that the task should execute.
+
+schedule
+Determines when the DAG should run.
+
+catchup
+Controls whether Airflow should create historical runs for missed schedules.
+
+
+6. Task dependency
+
+Suppose we have three tasks:
+
+extract
+transform
+load
+
+We want:
+
+extract → transform → load
+
+Python can define this dependency using:
+
+extract >> transform >> load
+
+This means:
+
+extract must finish before transform starts.
+
+transform must finish before load starts.
+
+
+7. Multiple branches
+
+A workflow can also look like:
+
+          Extract
+          /     \\
+         v       v
+   Validate    Transform
+         \\       /
+          v     v
+            Load
+
+Airflow uses these task dependencies to determine execution order.
+
+
+8. Python function with data-engineering logic
+
+Example:
+
+def validate_data():
+
+    source_count = 100000
+    target_count = 100000
+
+    if source_count == target_count:
+        print("Validation successful")
+    else:
+        raise ValueError("Reconciliation failed")
+
+
+This is a good example of Python being used inside an Airflow task.
+
+If validation fails and the exception is raised, Airflow can mark the task as failed.
+
+
+9. Why raise an exception?
+
+Suppose:
+
+def validate_data():
+
+    if source_count != target_count:
+        print("Validation failed")
+
+
+The function only prints the message.
+
+Airflow may still consider the task successful because the Python function completed without raising an exception.
+
+Better:
+
+def validate_data():
+
+    if source_count != target_count:
+        raise ValueError("Validation failed")
+
+
+Now the exception tells Airflow that the task failed.
+
+
+10. Airflow + SQL Server + Snowflake
+
+A realistic workflow can look like:
+
+                 Airflow DAG
+                      |
+          -------------------------
+          |           |           |
+          v           v           v
+      Extract      Transform   Validate
+          |           |           |
+          v           v           v
+      SQL Server    Python     Snowflake
+                                  |
+                                  v
+                              Reconcile
+
+
+For your type of project:
+
+SQL Server
+    |
+    v
+Extract data
+    |
+    v
+Python / SQL validation
+    |
+    v
+Snowflake
+    |
+    v
+Reconciliation
+    |
+    v
+Success / Failure
+
+
+11. TaskFlow API
+
+Modern Airflow also provides the TaskFlow API.
+
+Instead of explicitly creating a PythonOperator, we can define a Python function as a task.
+
+Conceptually:
+
+from airflow.decorators import dag, task
+
+
+@task
+def extract():
+    return 100000
+
+
+@task
+def validate(count):
+    print(count)
+
+
+The output of one task can be passed to another.
+
+This makes Python-based Airflow workflows easier to read.
+
+
+12. XCom connection
+
+Suppose:
+
+extract() returns:
+
+100000
+
+and validate() needs that value.
+
+Airflow can pass the value between tasks using XCom.
+
+Conceptually:
+
+Extract Task
+     |
+     | 100000
+     v
+   XCom
+     |
+     v
+Validate Task
+
+
+This becomes important when we learn XCom in detail.
+
+
+13. Important distinction
+
+DAG:
+Defines the workflow.
+
+Task:
+Individual unit of work.
+
+Operator:
+Defines how the task performs its work.
+
+Python function:
+Contains Python business logic.
+
+Scheduler:
+Determines when scheduled DAG runs should be created and schedules tasks.
+
+Worker:
+Executes tasks when the selected executor uses workers.
+
+Metadata database:
+Stores Airflow metadata such as DAG runs, task states, and other Airflow information.
+
+
+14. Interview question
+
+Question:
+Why is Airflow DAG code written in Python?
+
+Answer:
+Airflow uses Python to define workflows, tasks, dependencies, configuration, and custom processing logic. Python also allows Airflow to integrate with databases, APIs, files, cloud platforms, and other systems.
+
+
+Question:
+What is PythonOperator?
+
+Answer:
+PythonOperator is an Airflow operator used to execute a Python callable as an Airflow task.
+
+
+Question:
+What is the difference between a DAG and a task?
+
+Answer:
+A DAG represents the complete workflow, while a task represents one individual unit of work inside that workflow.
+
+
+Question:
+What does >> mean in Airflow?
+
+Answer:
+It is used to define task dependencies.
+
+For example:
+
+extract >> transform >> load
+
+means extract runs before transform, and transform runs before load.
+
+
+Question:
+What happens when a Python task raises an exception?
+
+Answer:
+The task is marked as failed, and Airflow can apply configured retry or failure-handling behavior.
+
+
+Question:
+Can Airflow execute SQL without Python logic?
+
+Answer:
+Yes. Airflow provides operators and integrations that can execute SQL. Airflow's main responsibility is orchestration, while SQL performs database operations.
+
+
+15. Your hands-on Airflow connection
+
+You already created:
+
+my_first_dag
+
+with:
+
+say_hello
+
+That means you have already experienced the basic structure:
+
+Airflow
+   |
+   v
+DAG
+   |
+   v
+Task
+   |
+   v
+Python function
+   |
+   v
+Task execution
+   |
+   v
+Airflow logs
+
+
+This is exactly the foundation we needed from Python.
+
+Python learning is now complete for the purpose of starting Airflow.
+
+Next we move into the dedicated Airflow learning path:
+
+1. Airflow architecture
+2. DAG in depth
+3. Tasks
+4. Operators
+5. Scheduler
+6. DAG Run
+7. Executor
+8. Worker
+9. Triggerer
+10. Metadata database
+11. XCom
+12. Variables
+13. Connections
+14. Sensors
+15. TaskFlow API
+16. Dynamic task mapping
+17. SQL Server integration
+18. Snowflake integration
+19. ETL / ELT pipelines
+20. Retries and failure handling
+21. Practical projects
+22. Airflow interview questions
+
+Python → Airflow foundation is now complete.
+`
+},
 /* End of questions array */
 ];
 
