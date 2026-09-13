@@ -4110,6 +4110,542 @@ Airflow can then orchestrate these operations as tasks in a DAG.
 This is why learning Python functions is an important step before learning Airflow DAG programming.
 `
 },
+    {
+title: "Python Modules and import — Reusing Python Code",
+
+question: `
+Answer the following:
+
+1. What is a module in Python?
+2. Why do we use modules?
+3. What is import?
+4. How do you import a complete module?
+5. How do you import a specific function from a module?
+6. What is an alias and how is it used?
+7. What is the difference between import math and from math import sqrt?
+8. How do you use functions from an imported module?
+9. What are built-in Python modules?
+10. How can you create your own Python module?
+11. Write a practical data-engineering example using a module.
+12. How are imports used in Airflow DAGs?
+`,
+
+dataset:[],
+
+output:[],
+
+answer:`
+Definition:
+
+A module is a Python file containing reusable Python code such as functions, variables, and classes.
+
+A Python module normally has a .py file extension.
+
+For example:
+
+data_utils.py
+
+could contain functions used for data processing.
+
+Instead of writing the same function repeatedly in different programs, we can create it once inside a module and import it whenever required.
+
+
+1. What is import?
+
+import is a Python keyword used to bring a module into your program so that you can use the code provided by that module.
+
+
+Example:
+
+import math
+
+print(math.sqrt(25))
+
+Output:
+
+5.0
+
+Here:
+
+math → module
+
+sqrt → function inside the math module
+
+
+2. Why do we use modules?
+
+Modules help us:
+
+Reuse code
+
+Organize large programs
+
+Avoid duplicate code
+
+Keep related functions together
+
+Make applications easier to maintain
+
+Use Python's existing functionality
+
+
+3. Built-in Python modules
+
+Python provides many modules.
+
+Examples:
+
+math → mathematical operations
+
+datetime → date and time operations
+
+os → operating-system related operations
+
+json → JSON processing
+
+random → random values
+
+statistics → statistical calculations
+
+These are available as part of Python's standard library.
+
+
+4. Importing a complete module
+
+Example:
+
+import math
+
+print(math.sqrt(100))
+print(math.pow(2, 3))
+
+Output:
+
+10.0
+8.0
+
+The module name is used before the function:
+
+math.sqrt()
+
+math.pow()
+
+
+5. Importing a specific function
+
+Instead of importing the entire module, you can import a specific function.
+
+Example:
+
+from math import sqrt
+
+print(sqrt(100))
+
+Output:
+
+10.0
+
+Now you can use sqrt directly.
+
+
+6. Difference between import and from import
+
+Using:
+
+import math
+
+You access the function using:
+
+math.sqrt(100)
+
+
+Using:
+
+from math import sqrt
+
+You access it using:
+
+sqrt(100)
+
+
+Simple difference:
+
+import math
+→ import the module
+
+from math import sqrt
+→ import only the specific function
+
+
+7. Importing multiple functions
+
+Example:
+
+from math import sqrt, pow
+
+print(sqrt(25))
+print(pow(2, 3))
+
+Output:
+
+5.0
+8.0
+
+
+8. Using an alias
+
+An alias gives another name to an imported module.
+
+Example:
+
+import datetime as dt
+
+print(dt.datetime.now())
+
+Here:
+
+datetime → actual module name
+
+dt → alias
+
+
+Another common example:
+
+import pandas as pd
+
+The module pandas can then be referenced as pd.
+
+
+9. Creating your own module
+
+Suppose you create a file:
+
+data_utils.py
+
+Inside it:
+
+def calculate_total(a, b):
+    return a + b
+
+Now create another Python file.
+
+You can import your module:
+
+import data_utils
+
+result = data_utils.calculate_total(100, 200)
+
+print(result)
+
+Output:
+
+300
+
+
+The important idea is:
+
+data_utils.py
+       |
+       | import
+       v
+main Python program
+       |
+       v
+data_utils.calculate_total()
+
+
+10. Importing a specific function from your own module
+
+You can also write:
+
+from data_utils import calculate_total
+
+result = calculate_total(100, 200)
+
+print(result)
+
+Output:
+
+300
+
+
+11. Practical data-engineering example
+
+Suppose you create a module called:
+
+pipeline_utils.py
+
+It contains:
+
+def validate_records(records):
+
+    if records > 0:
+        return True
+
+    return False
+
+
+Then your main program can use:
+
+import pipeline_utils
+
+records = 100000
+
+if pipeline_utils.validate_records(records):
+    print("Data validation successful")
+else:
+    print("Data validation failed")
+
+Output:
+
+Data validation successful
+
+
+This is useful because validation logic can be reused across multiple pipelines.
+
+
+12. Using the datetime module
+
+Data engineering frequently requires date calculations.
+
+Example:
+
+import datetime
+
+today = datetime.date.today()
+
+print(today)
+
+The output will depend on the current date.
+
+
+You can also calculate dates:
+
+from datetime import date, timedelta
+
+today = date.today()
+tomorrow = today + timedelta(days=1)
+
+print("Today:", today)
+print("Tomorrow:", tomorrow)
+
+
+13. Using the json module
+
+JSON is very common in APIs and data pipelines.
+
+Example:
+
+import json
+
+pipeline = {
+    "source": "SQL Server",
+    "target": "Snowflake",
+    "status": "SUCCESS"
+}
+
+json_data = json.dumps(pipeline)
+
+print(json_data)
+
+Output:
+
+{"source": "SQL Server", "target": "Snowflake", "status": "SUCCESS"}
+
+
+Here:
+
+Python dictionary
+       |
+       v
+json.dumps()
+       |
+       v
+JSON string
+
+
+14. Module vs library
+
+These terms are related but not exactly the same.
+
+Module:
+
+Usually a single Python file containing reusable code.
+
+Library:
+
+A broader collection of reusable Python functionality, often containing multiple modules and packages.
+
+Example:
+
+A project can contain:
+
+library
+   |
+   +-- module 1
+   +-- module 2
+   +-- module 3
+
+
+15. What is a package?
+
+A package is a way of organizing related Python modules into a directory structure.
+
+For example:
+
+pipeline_package
+   |
+   +-- extraction
+   +-- validation
+   +-- transformation
+   +-- loading
+
+
+Each part can contain reusable Python code.
+
+The simple hierarchy is:
+
+Library
+   ↓
+Package
+   ↓
+Module
+   ↓
+Function
+
+
+16. Practical SQL/Snowflake example
+
+Suppose you create:
+
+snowflake_utils.py
+
+It could contain functions such as:
+
+def get_connection():
+    print("Connecting to Snowflake")
+
+
+def load_table(table_name):
+    print("Loading table:", table_name)
+
+
+Then another Python program can use:
+
+import snowflake_utils
+
+snowflake_utils.get_connection()
+
+snowflake_utils.load_table("CUSTOMER")
+
+Output:
+
+Connecting to Snowflake
+
+Loading table: CUSTOMER
+
+
+17. Airflow connection
+
+Modules are extremely important in Airflow.
+
+An Airflow DAG commonly imports Airflow classes and operators.
+
+For example, an Airflow DAG may import:
+
+DAG
+
+PythonOperator
+
+SQL operators
+
+Snowflake operators
+
+datetime functionality
+
+
+The idea is:
+
+Python modules
+       |
+       v
+Airflow imports
+       |
+       +---- DAG
+       |
+       +---- Operators
+       |
+       +---- Connections
+       |
+       +---- Other Airflow functionality
+       |
+       v
+Airflow DAG
+
+
+You will see imports at the beginning of almost every Airflow DAG file.
+
+
+18. Interview Answer
+
+If an interviewer asks:
+
+"What is a Python module?"
+
+You can answer:
+
+"A Python module is a Python file containing reusable code such as functions, variables, or classes. We use the import statement to reuse that code in another Python program. Modules help organize code, avoid duplication, and improve maintainability."
+
+
+Key points to remember:
+
+Module → Python file containing reusable code
+
+import → brings a module into the program
+
+from ... import ... → imports specific functionality
+
+as → creates an alias
+
+Built-in module → module provided by Python
+
+Package → collection of related modules
+
+Library → broader collection of reusable Python functionality
+
+Function → reusable block of code inside a module
+
+
+Data Engineering Connection:
+
+Modules are useful for creating reusable functions for:
+
+SQL execution
+
+Snowflake connections
+
+Data validation
+
+File processing
+
+Date calculations
+
+API calls
+
+Logging
+
+Data transformation
+
+
+Airflow Connection:
+
+Airflow DAG files use imports heavily.
+
+When we start creating real Airflow DAGs, you will see statements that import DAGs, operators, scheduling utilities, database operators, and other Airflow components.
+
+So understanding import now will make the Airflow code much easier to understand.
+`
+},
 /* End of questions array */
 ];
 
