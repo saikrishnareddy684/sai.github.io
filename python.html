@@ -2505,6 +2505,984 @@ not → reverses the condition
 Indentation → defines the code block
 `
 },
+    {
+title: "Python for Loops — Iterating Through Collections",
+
+question: `
+You have the following data:
+
+tables = ["CUSTOMER", "ACCOUNT", "TRANSACTION", "RATING"]
+databases = ("SQL SERVER", "SNOWFLAKE", "POSTGRESQL")
+
+Answer the following:
+
+1. What is a for loop in Python?
+2. Why are for loops used?
+3. How do you loop through a list?
+4. How do you loop through a tuple?
+5. How do you use range() with a for loop?
+6. How do you access both the index and value of a list?
+7. How do you use an if condition inside a for loop?
+8. How do you use break and continue?
+9. How can you process multiple database tables using a for loop?
+10. Write a complex data-engineering example using a for loop and conditions.
+11. How can for loops be useful in Airflow?
+`,
+
+dataset:[],
+
+output:[],
+
+answer:`
+Definition:
+
+A for loop is used to repeatedly execute a block of code for each item in a collection or sequence.
+
+Instead of writing the same code multiple times, we can use a loop.
+
+
+1. Basic for loop
+
+Example:
+
+tables = ["CUSTOMER", "ACCOUNT", "TRANSACTION"]
+
+for table in tables:
+    print(table)
+
+Output:
+
+CUSTOMER
+ACCOUNT
+TRANSACTION
+
+Here:
+
+tables → collection
+
+table → variable that temporarily holds each item
+
+for → starts the loop
+
+in → gets each item from the collection
+
+
+2. How does the loop work?
+
+For this list:
+
+tables = ["CUSTOMER", "ACCOUNT", "TRANSACTION"]
+
+Python processes it like this:
+
+First iteration:
+
+table = "CUSTOMER"
+
+Second iteration:
+
+table = "ACCOUNT"
+
+Third iteration:
+
+table = "TRANSACTION"
+
+
+Visual:
+
+tables
+   |
+   +--> CUSTOMER --> execute code
+   |
+   +--> ACCOUNT --> execute code
+   |
+   +--> TRANSACTION --> execute code
+   |
+   +--> Loop finished
+
+
+3. Loop through a tuple
+
+A for loop can also process a tuple.
+
+databases = ("SQL SERVER", "SNOWFLAKE", "POSTGRESQL")
+
+for database in databases:
+    print(database)
+
+Output:
+
+SQL SERVER
+SNOWFLAKE
+POSTGRESQL
+
+
+4. Loop through a string
+
+A string is also iterable.
+
+name = "SAI"
+
+for character in name:
+    print(character)
+
+Output:
+
+S
+A
+I
+
+
+5. Using range()
+
+range() is commonly used when you want to repeat something a specific number of times.
+
+Example:
+
+for number in range(5):
+    print(number)
+
+Output:
+
+0
+1
+2
+3
+4
+
+Important:
+
+range(5) starts from 0 and stops before 5.
+
+
+You can specify a starting value:
+
+for number in range(1, 6):
+    print(number)
+
+Output:
+
+1
+2
+3
+4
+5
+
+
+6. Access index and value using enumerate()
+
+Suppose:
+
+tables = ["CUSTOMER", "ACCOUNT", "TRANSACTION"]
+
+We want both the position and table name.
+
+Use:
+
+for index, table in enumerate(tables):
+    print(index, table)
+
+Output:
+
+0 CUSTOMER
+1 ACCOUNT
+2 TRANSACTION
+
+
+You can also start the index from 1:
+
+for index, table in enumerate(tables, start=1):
+    print(index, table)
+
+Output:
+
+1 CUSTOMER
+2 ACCOUNT
+3 TRANSACTION
+
+
+7. if condition inside a for loop
+
+Example:
+
+tables = ["CUSTOMER", "ACCOUNT", "TRANSACTION"]
+
+for table in tables:
+    if table == "ACCOUNT":
+        print("Account table found")
+
+Output:
+
+Account table found
+
+
+8. Processing tables based on a condition
+
+Example:
+
+tables = ["CUSTOMER", "ACCOUNT", "TRANSACTION", "RATING"]
+
+for table in tables:
+    if table == "CUSTOMER":
+        print("Process customer data")
+    elif table == "ACCOUNT":
+        print("Process account data")
+    else:
+        print("Process other table:", table)
+
+
+9. break
+
+break completely stops the loop.
+
+Example:
+
+tables = ["CUSTOMER", "ACCOUNT", "TRANSACTION", "RATING"]
+
+for table in tables:
+    if table == "TRANSACTION":
+        break
+
+    print(table)
+
+Output:
+
+CUSTOMER
+ACCOUNT
+
+When Python reaches TRANSACTION, break stops the loop.
+
+
+10. continue
+
+continue skips the current iteration and moves to the next item.
+
+Example:
+
+tables = ["CUSTOMER", "ACCOUNT", "TRANSACTION", "RATING"]
+
+for table in tables:
+    if table == "ACCOUNT":
+        continue
+
+    print(table)
+
+Output:
+
+CUSTOMER
+TRANSACTION
+RATING
+
+ACCOUNT is skipped.
+
+
+Important difference:
+
+break → stop the entire loop
+
+continue → skip the current iteration
+
+
+11. Complex data-engineering example
+
+Suppose we have several tables and want to process only tables that contain data.
+
+tables = [
+    {"name": "CUSTOMER", "records": 100000},
+    {"name": "ACCOUNT", "records": 50000},
+    {"name": "TRANSACTION", "records": 0},
+    {"name": "RATING", "records": 25000}
+]
+
+for table in tables:
+    if table["records"] > 0:
+        print(
+            "Processing table:",
+            table["name"],
+            "Records:",
+            table["records"]
+        )
+    else:
+        print(
+            "Skipping table:",
+            table["name"],
+            "because it has no records"
+        )
+
+Output:
+
+Processing table: CUSTOMER Records: 100000
+
+Processing table: ACCOUNT Records: 50000
+
+Skipping table: TRANSACTION because it has no records
+
+Processing table: RATING Records: 25000
+
+
+12. Another interview-style example
+
+Suppose you have:
+
+tables = ["CUSTOMER", "ACCOUNT", "TRANSACTION", "RATING"]
+
+You want to generate a SQL statement for every table.
+
+Use:
+
+for table in tables:
+    sql = "SELECT COUNT(*) FROM " + table
+    print(sql)
+
+Output:
+
+SELECT COUNT(*) FROM CUSTOMER
+
+SELECT COUNT(*) FROM ACCOUNT
+
+SELECT COUNT(*) FROM TRANSACTION
+
+SELECT COUNT(*) FROM RATING
+
+
+This is a very common data-engineering pattern.
+
+In real projects, instead of only printing the SQL, you could execute the SQL against SQL Server or Snowflake.
+
+
+13. Complex example with validation
+
+Suppose:
+
+tables = [
+    {"name": "CUSTOMER", "records": 100000, "status": "SUCCESS"},
+    {"name": "ACCOUNT", "records": 50000, "status": "SUCCESS"},
+    {"name": "TRANSACTION", "records": 0, "status": "FAILED"},
+    {"name": "RATING", "records": 25000, "status": "SUCCESS"}
+]
+
+for table in tables:
+
+    if table["status"] == "FAILED":
+        print("FAILED:", table["name"])
+        continue
+
+    if table["records"] == 0:
+        print("NO DATA:", table["name"])
+        continue
+
+    print(
+        "VALID:",
+        table["name"],
+        "Records:",
+        table["records"]
+    )
+
+
+Output:
+
+VALID: CUSTOMER Records: 100000
+
+VALID: ACCOUNT Records: 50000
+
+FAILED: TRANSACTION
+
+VALID: RATING Records: 25000
+
+
+Here we are combining:
+
+for loop
+if
+continue
+dictionary
+list
+dictionary access
+
+
+14. Nested for loop
+
+A loop can exist inside another loop.
+
+Example:
+
+databases = ["SQL SERVER", "SNOWFLAKE"]
+tables = ["CUSTOMER", "ACCOUNT"]
+
+for database in databases:
+    for table in tables:
+        print(database, "-", table)
+
+Output:
+
+SQL SERVER - CUSTOMER
+SQL SERVER - ACCOUNT
+SNOWFLAKE - CUSTOMER
+SNOWFLAKE - ACCOUNT
+
+This means every table is processed for every database.
+
+
+15. Airflow connection
+
+For loops are very useful when building Airflow workflows.
+
+For example, suppose you need to process:
+
+CUSTOMER
+ACCOUNT
+TRANSACTION
+RATING
+
+Instead of writing separate code for every table, you can maintain a list:
+
+tables = ["CUSTOMER", "ACCOUNT", "TRANSACTION", "RATING"]
+
+Then use a loop to process each table.
+
+In Airflow, this concept can be used when creating tasks dynamically for multiple tables.
+
+For example:
+
+tables = ["CUSTOMER", "ACCOUNT", "TRANSACTION"]
+
+for table in tables:
+    print("Create processing task for:", table)
+
+
+This is one of the Python concepts that will become important when we learn Airflow DAGs and dynamic task generation.
+
+
+Visual:
+
+                 tables
+                    |
+          +---------+---------+
+          |         |         |
+          v         v         v
+      CUSTOMER   ACCOUNT   TRANSACTION
+          |         |         |
+          v         v         v
+       Process   Process   Process
+          |         |         |
+          +---------+---------+
+                    |
+               Loop finished
+
+
+Interview Answer:
+
+If an interviewer asks:
+
+"What is a for loop in Python?"
+
+You can answer:
+
+"A for loop is used to iterate through items in a collection or sequence. It executes a block of code once for each item. It is commonly used to process lists, tuples, dictionaries, files, database tables, and other iterable objects."
+
+
+Key points to remember:
+
+for → starts the loop
+
+in → gets items from the collection
+
+range() → generates a sequence of numbers
+
+enumerate() → provides index and value
+
+break → stops the loop
+
+continue → skips the current iteration
+
+Nested loop → loop inside another loop
+
+For loop + if → useful for conditional data processing
+
+
+Data Engineering Connection:
+
+For loops are commonly used for:
+
+Processing multiple tables
+
+Processing multiple files
+
+Running validation for multiple datasets
+
+Generating SQL statements
+
+Processing API responses
+
+Iterating through configuration
+
+Creating dynamic Airflow tasks
+
+Processing multiple dates or partitions
+`
+},
+    {
+title: "Python while Loops — Repeating Until a Condition Changes",
+
+question: `
+You are working on a data pipeline and want Python to continue performing an operation while a particular condition is True.
+
+Consider:
+
+count = 1
+
+Answer the following:
+
+1. What is a while loop in Python?
+2. What is the basic syntax of a while loop?
+3. How is a while loop different from a for loop?
+4. How do you increment a variable inside a while loop?
+5. What happens if the condition never becomes False?
+6. How can you stop a while loop using break?
+7. How can you skip an iteration using continue?
+8. Write a while loop that prints numbers from 1 to 5.
+9. Write a practical data-engineering example using a while loop.
+10. Write an interview-style example where a pipeline keeps checking a status until it becomes SUCCESS.
+`,
+
+dataset:[],
+
+output:[],
+
+answer:`
+Definition:
+
+A while loop repeatedly executes a block of code as long as a condition is True.
+
+The main idea is:
+
+Check condition
+    ↓
+If True → execute code
+    ↓
+Check condition again
+    ↓
+If False → stop
+
+
+1. Basic while loop
+
+Example:
+
+count = 1
+
+while count <= 5:
+    print(count)
+    count = count + 1
+
+Output:
+
+1
+2
+3
+4
+5
+
+
+How it works:
+
+Initially:
+
+count = 1
+
+Python checks:
+
+count <= 5
+
+This is True, so it prints 1.
+
+Then:
+
+count = count + 1
+
+Now:
+
+count = 2
+
+Python checks again.
+
+This continues until count becomes 6.
+
+At that point:
+
+6 <= 5
+
+is False.
+
+The loop stops.
+
+
+2. Important part: changing the variable
+
+Consider:
+
+count = 1
+
+while count <= 5:
+    print(count)
+
+This is dangerous because count never changes.
+
+The condition:
+
+count <= 5
+
+will always remain True.
+
+This creates an infinite loop.
+
+
+Therefore, normally you need to update the variable:
+
+count = count + 1
+
+or:
+
+count += 1
+
+
+3. while loop vs for loop
+
+for loop:
+
+Usually used when you know what collection or sequence you want to iterate through.
+
+Example:
+
+tables = ["CUSTOMER", "ACCOUNT", "RATING"]
+
+for table in tables:
+    print(table)
+
+
+while loop:
+
+Usually used when you want to continue until a condition changes.
+
+Example:
+
+count = 1
+
+while count <= 3:
+    print(count)
+    count += 1
+
+
+Simple difference:
+
+for → iterate through items
+
+while → repeat while a condition is True
+
+
+4. Incrementing a variable
+
+You can write:
+
+count = count + 1
+
+or the shorter form:
+
+count += 1
+
+Both mean the same thing.
+
+
+Similarly:
+
+count -= 1
+
+means:
+
+count = count - 1
+
+
+5. Using break
+
+break immediately stops the loop.
+
+Example:
+
+count = 1
+
+while count <= 10:
+
+    if count == 5:
+        break
+
+    print(count)
+    count += 1
+
+Output:
+
+1
+2
+3
+4
+
+When count becomes 5, break stops the loop.
+
+
+6. Using continue
+
+continue skips the current iteration and moves to the next iteration.
+
+Example:
+
+count = 0
+
+while count < 5:
+
+    count += 1
+
+    if count == 3:
+        continue
+
+    print(count)
+
+Output:
+
+1
+2
+4
+5
+
+The value 3 is skipped.
+
+
+Important difference:
+
+break → completely stops the loop
+
+continue → skips only the current iteration
+
+
+7. Practical data-engineering example
+
+Suppose you want to process batches of data.
+
+batch = 1
+total_batches = 5
+
+while batch <= total_batches:
+    print("Processing batch:", batch)
+    batch += 1
+
+Output:
+
+Processing batch: 1
+Processing batch: 2
+Processing batch: 3
+Processing batch: 4
+Processing batch: 5
+
+
+This could represent processing multiple batches of data.
+
+
+8. Interview-style pipeline example
+
+Suppose a pipeline has a status:
+
+status = "RUNNING"
+
+You want to keep checking until the status becomes SUCCESS.
+
+A simple learning example is:
+
+status = "RUNNING"
+check_count = 1
+
+while status == "RUNNING" and check_count <= 5:
+
+    print("Checking pipeline status...")
+
+    if check_count == 5:
+        status = "SUCCESS"
+
+    check_count += 1
+
+print("Final status:", status)
+
+Output:
+
+Checking pipeline status...
+Checking pipeline status...
+Checking pipeline status...
+Checking pipeline status...
+Checking pipeline status...
+Final status: SUCCESS
+
+
+Here:
+
+while checks whether the pipeline is still RUNNING.
+
+check_count prevents the loop from continuing forever.
+
+When the condition becomes False, the loop ends.
+
+
+9. Complex example
+
+Suppose you need to process records in batches.
+
+total_records = 100000
+processed_records = 0
+batch_size = 20000
+
+while processed_records < total_records:
+
+    processed_records += batch_size
+
+    if processed_records > total_records:
+        processed_records = total_records
+
+    print("Processed records:", processed_records)
+
+Output:
+
+Processed records: 20000
+Processed records: 40000
+Processed records: 60000
+Processed records: 80000
+Processed records: 100000
+
+
+This is a useful pattern for understanding batch processing.
+
+
+10. while with a dictionary
+
+Suppose:
+
+pipeline = {
+    "status": "RUNNING",
+    "attempt": 1
+}
+
+while pipeline["status"] == "RUNNING":
+
+    print("Pipeline attempt:", pipeline["attempt"])
+
+    pipeline["attempt"] += 1
+
+    if pipeline["attempt"] > 3:
+        pipeline["status"] = "SUCCESS"
+
+print("Pipeline completed with status:", pipeline["status"])
+
+Output:
+
+Pipeline attempt: 1
+Pipeline attempt: 2
+Pipeline attempt: 3
+Pipeline completed with status: SUCCESS
+
+
+Here we combine:
+
+while loop
+if condition
+dictionary
+variable increment
+
+
+11. Infinite loop
+
+An infinite loop happens when the condition never becomes False.
+
+Example:
+
+count = 1
+
+while count <= 5:
+    print(count)
+
+The problem is that count never changes.
+
+Therefore:
+
+count <= 5
+
+always remains True.
+
+To stop it manually in the Python shell, you can normally press:
+
+Ctrl + C
+
+But when writing programs, it is better to design the loop so that its condition eventually becomes False.
+
+
+12. Airflow connection
+
+In real Airflow development, you normally do not use while loops to wait for a task to finish.
+
+Airflow already provides orchestration mechanisms for task dependencies, scheduling, retries, sensors, and waiting for external conditions.
+
+However, understanding while loops is still important because Python code inside Airflow may need loops for:
+
+Processing batches
+Checking data conditions
+Retry-style logic
+Iterating through configuration
+Processing records
+Building dynamic values
+
+
+Visual:
+
+              Start
+                |
+                v
+          Check condition
+                |
+          +-----+-----+
+          |           |
+        True        False
+          |           |
+          v           v
+     Execute code    Stop
+          |
+          v
+     Update value
+          |
+          +-----------> Check condition again
+
+
+Interview Answer:
+
+If an interviewer asks:
+
+"What is a while loop in Python?"
+
+You can answer:
+
+"A while loop repeatedly executes a block of code as long as a specified condition is True. We generally use it when the number of iterations is not known in advance and we want to continue processing until a particular condition changes."
+
+
+Key points to remember:
+
+while → repeats while condition is True
+
+count += 1 → increases the value
+
+break → stops the loop
+
+continue → skips the current iteration
+
+Infinite loop → condition never becomes False
+
+for → generally used to iterate through a collection
+
+while → generally used when repetition depends on a condition
+`
+},
 /* End of questions array */
 ];
 
