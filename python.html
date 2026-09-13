@@ -4895,6 +4895,307 @@ Answer:
 The task may appear successful even though the actual business operation failed. For critical failures, we should raise the exception so Airflow can mark the task as failed and apply retry or failure handling.
 `
 },
+    {
+title: "Python Comprehensions — List and Dictionary",
+
+question: `
+What is a comprehension in Python?
+
+How do list comprehensions work?
+
+How do dictionary comprehensions work?
+
+How can comprehensions be useful in data engineering and Airflow?
+`,
+
+dataset:[],
+
+output:[],
+
+answer:`
+Definition:
+
+A comprehension is a short way of creating a new collection from an existing collection.
+
+Python mainly provides:
+
+List comprehension
+Used to create a new list.
+
+Dictionary comprehension
+Used to create a new dictionary.
+
+The main benefit is that they can make simple transformation logic shorter and easier to read.
+
+1. List comprehension — basic
+
+Normal approach:
+
+numbers = [1, 2, 3, 4, 5]
+
+squares = []
+
+for number in numbers:
+    squares.append(number * number)
+
+Result:
+
+[1, 4, 9, 16, 25]
+
+
+Using list comprehension:
+
+numbers = [1, 2, 3, 4, 5]
+
+squares = [number * number for number in numbers]
+
+Result:
+
+[1, 4, 9, 16, 25]
+
+
+Basic structure:
+
+new_list = [expression for item in existing_list]
+
+
+2. List comprehension with condition
+
+Suppose we only want even numbers.
+
+numbers = [1, 2, 3, 4, 5, 6]
+
+even_numbers = [number for number in numbers if number % 2 == 0]
+
+Result:
+
+[2, 4, 6]
+
+Structure:
+
+new_list = [expression for item in existing_list if condition]
+
+
+3. Data-engineering example
+
+Suppose we have table names:
+
+tables = ["CUSTOMER", "ACCOUNT", "TRANSACTION", "PRODUCT"]
+
+We want only tables containing the word ACCOUNT or CUSTOMER.
+
+selected_tables = [
+    table
+    for table in tables
+    if "CUSTOMER" in table or "ACCOUNT" in table
+]
+
+Result:
+
+["CUSTOMER", "ACCOUNT"]
+
+
+4. Transforming values
+
+Suppose table names are lowercase:
+
+tables = ["customer", "account", "transaction"]
+
+upper_tables = [table.upper() for table in tables]
+
+Result:
+
+["CUSTOMER", "ACCOUNT", "TRANSACTION"]
+
+
+This is useful when preparing table names before generating SQL statements.
+
+
+5. Dictionary comprehension
+
+Dictionary comprehension creates a dictionary using a compact expression.
+
+Example:
+
+tables = ["CUSTOMER", "ACCOUNT", "TRANSACTION"]
+
+table_lengths = {
+    table: len(table)
+    for table in tables
+}
+
+Result:
+
+{
+    "CUSTOMER": 8,
+    "ACCOUNT": 7,
+    "TRANSACTION": 11
+}
+
+
+Basic structure:
+
+new_dictionary = {
+    key_expression: value_expression
+    for item in existing_collection
+}
+
+
+6. Dictionary comprehension with condition
+
+Suppose we have:
+
+records = {
+    "CUSTOMER": 100000,
+    "ACCOUNT": 50000,
+    "TRANSACTION": 0,
+    "PRODUCT": 25000
+}
+
+We want only tables containing records.
+
+non_empty_tables = {
+    table: count
+    for table, count in records.items()
+    if count > 0
+}
+
+Result:
+
+{
+    "CUSTOMER": 100000,
+    "ACCOUNT": 50000,
+    "PRODUCT": 25000
+}
+
+
+7. Important difference from a normal loop
+
+Comprehension:
+
+even_numbers = [number for number in numbers if number % 2 == 0]
+
+Normal loop:
+
+even_numbers = []
+
+for number in numbers:
+    if number % 2 == 0:
+        even_numbers.append(number)
+
+Both produce the same result.
+
+Comprehension is simply a shorter way of writing this type of logic.
+
+
+8. Nested comprehension
+
+Example:
+
+tables = ["CUSTOMER", "ACCOUNT"]
+environments = ["DEV", "TEST", "PROD"]
+
+combinations = [
+    table + "_" + environment
+    for table in tables
+    for environment in environments
+]
+
+Result:
+
+[
+    "CUSTOMER_DEV",
+    "CUSTOMER_TEST",
+    "CUSTOMER_PROD",
+    "ACCOUNT_DEV",
+    "ACCOUNT_TEST",
+    "ACCOUNT_PROD"
+]
+
+
+This is similar to nested loops.
+
+
+9. Airflow connection
+
+Comprehensions can be useful when working with multiple tables.
+
+For example:
+
+tables = ["CUSTOMER", "ACCOUNT", "TRANSACTION"]
+
+task_names = [
+    "load_" + table.lower()
+    for table in tables
+]
+
+Result:
+
+[
+    "load_customer",
+    "load_account",
+    "load_transaction"
+]
+
+
+This type of transformation can be useful when creating dynamic task configurations.
+
+However, do not make complex logic unnecessarily compact.
+
+If a comprehension becomes difficult to understand, a normal for loop is often better.
+
+
+Visual:
+
+Existing collection
+       |
+       v
+   for each item
+       |
+       v
+   transformation
+       |
+       v
+    condition
+       |
+       v
+  New collection
+
+
+Interview questions:
+
+Question:
+What is list comprehension?
+
+Answer:
+List comprehension is a concise way to create a new list by applying an expression to items from an existing collection, optionally using a condition.
+
+Question:
+Can list comprehension contain an if condition?
+
+Answer:
+Yes. For example, we can filter only even numbers or only records that satisfy a particular condition.
+
+Question:
+What is dictionary comprehension?
+
+Answer:
+Dictionary comprehension is a concise way to create a dictionary by generating key-value pairs from an existing collection.
+
+Question:
+When should we avoid comprehensions?
+
+Answer:
+When the logic becomes complex or difficult to read. In that situation, a normal for loop is usually clearer.
+
+Important interview point:
+
+Comprehensions are mainly useful for simple transformation and filtering.
+
+They are NOT automatically better just because they use fewer lines.
+Readability is more important than making the code short.
+`
+},
 /* End of questions array */
 ];
 
