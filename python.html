@@ -5196,6 +5196,415 @@ They are NOT automatically better just because they use fewer lines.
 Readability is more important than making the code short.
 `
 },
+    {
+title: "Python Files & JSON — Reading, Writing, and Working with Data",
+
+question: `
+What are files in Python?
+
+How do we create, read, write, and append to a file?
+
+What is JSON?
+
+How do we convert Python data to JSON and JSON back to Python?
+
+How are files and JSON used in data engineering and Airflow?
+`,
+
+dataset:[],
+
+output:[],
+
+answer:`
+Definitions:
+
+File:
+A file is a stored collection of data on disk, such as a text file, CSV file, JSON file, or configuration file.
+
+File handling:
+Python provides built-in functionality to open, read, write, and close files.
+
+JSON:
+JSON stands for JavaScript Object Notation.
+
+It is a common text format used to store and exchange structured data.
+
+JSON is especially common in APIs, configuration files, and data pipelines.
+
+
+1. Opening a file
+
+Python uses the open() function.
+
+Basic structure:
+
+file = open("example.txt", "r")
+
+The second argument specifies the mode.
+
+Common modes:
+
+r
+Read an existing file.
+
+w
+Write to a file. Creates the file if it does not exist and replaces existing content.
+
+a
+Append data to the end of a file.
+
+x
+Create a new file. Gives an error if the file already exists.
+
+
+2. Reading a file
+
+Suppose example.txt contains:
+
+CUSTOMER
+ACCOUNT
+TRANSACTION
+
+Python:
+
+file = open("example.txt", "r")
+
+content = file.read()
+
+print(content)
+
+file.close()
+
+The read() function reads the entire file.
+
+
+3. Reading line by line
+
+file = open("example.txt", "r")
+
+for line in file:
+    print(line.strip())
+
+file.close()
+
+strip() removes unwanted spaces and newline characters around the text.
+
+
+4. Better approach — with
+
+Instead of manually closing the file, we can use with.
+
+with open("example.txt", "r") as file:
+    content = file.read()
+    print(content)
+
+Python automatically closes the file after the with block finishes.
+
+This is the preferred approach.
+
+
+5. Writing to a file
+
+with open("pipeline.txt", "w") as file:
+    file.write("Pipeline started")
+
+If pipeline.txt already contains data, w mode replaces the existing content.
+
+
+6. Appending to a file
+
+with open("pipeline.txt", "a") as file:
+    file.write("\\nPipeline completed")
+
+a mode adds new data at the end instead of replacing existing data.
+
+
+7. Reading multiple lines
+
+with open("tables.txt", "r") as file:
+    tables = file.readlines()
+
+print(tables)
+
+The result is a list containing the lines from the file.
+
+
+8. What is JSON?
+
+Example JSON data:
+
+{
+    "pipeline_name": "Credit Risk Pipeline",
+    "source": "SQL Server",
+    "target": "Snowflake",
+    "records": 100000,
+    "status": "SUCCESS"
+}
+
+JSON looks similar to a Python dictionary.
+
+Python dictionary:
+
+{
+    "name": "Sai",
+    "age": 29
+}
+
+JSON:
+
+{
+    "name": "Sai",
+    "age": 29
+}
+
+However, JSON is a text/data-exchange format, while a Python dictionary is a Python data structure.
+
+
+9. Python dictionary to JSON
+
+Python provides the json module.
+
+import json
+
+pipeline = {
+    "pipeline_name": "Credit Risk Pipeline",
+    "source": "SQL Server",
+    "target": "Snowflake",
+    "records": 100000
+}
+
+json_data = json.dumps(pipeline)
+
+print(json_data)
+
+dumps() means convert Python data into a JSON string.
+
+
+10. JSON to Python dictionary
+
+Suppose we have:
+
+json_data = '{"name": "Sai", "age": 29}'
+
+Python:
+
+import json
+
+data = json.loads(json_data)
+
+print(data)
+print(data["name"])
+
+loads() converts a JSON string into a Python object, usually a dictionary.
+
+
+Important:
+
+dump
+Python object → JSON file
+
+dumps
+Python object → JSON string
+
+load
+JSON file → Python object
+
+loads
+JSON string → Python object
+
+
+11. Writing JSON to a file
+
+import json
+
+pipeline = {
+    "pipeline_name": "Credit Risk Pipeline",
+    "source": "SQL Server",
+    "target": "Snowflake",
+    "records": 100000
+}
+
+with open("pipeline.json", "w") as file:
+    json.dump(pipeline, file, indent=4)
+
+This creates a JSON file containing the pipeline configuration.
+
+indent=4 makes the JSON easier for humans to read.
+
+
+12. Reading JSON from a file
+
+import json
+
+with open("pipeline.json", "r") as file:
+    pipeline = json.load(file)
+
+print(pipeline["source"])
+print(pipeline["target"])
+
+Output:
+
+SQL Server
+Snowflake
+
+
+13. Data-engineering example
+
+Imagine we have a configuration file:
+
+pipeline_config.json
+
+{
+    "source": "SQL Server",
+    "target": "Snowflake",
+    "tables": [
+        "CUSTOMER",
+        "ACCOUNT",
+        "TRANSACTION"
+    ],
+    "batch_size": 50000,
+    "retry_count": 3
+}
+
+Python can read this configuration:
+
+import json
+
+with open("pipeline_config.json", "r") as file:
+    config = json.load(file)
+
+print(config["source"])
+print(config["target"])
+print(config["tables"])
+print(config["batch_size"])
+
+This allows us to keep configuration outside the Python code.
+
+
+14. Airflow connection
+
+Airflow DAGs are Python files, but JSON is also useful around pipelines.
+
+For example, an Airflow pipeline may receive API data in JSON format.
+
+API
+ |
+ v
+JSON response
+ |
+ v
+Python
+ |
+ v
+Transform data
+ |
+ v
+Snowflake
+
+
+Airflow can also work with configuration information such as:
+
+source table
+target table
+batch size
+environment
+API settings
+pipeline parameters
+
+Python reads the configuration and uses it while executing the workflow.
+
+
+15. Important interview question
+
+Question:
+What is the difference between json.load() and json.loads()?
+
+Answer:
+
+json.load()
+Reads JSON from a file and converts it into a Python object.
+
+json.loads()
+Reads JSON from a string and converts it into a Python object.
+
+
+Question:
+What is the difference between json.dump() and json.dumps()?
+
+Answer:
+
+json.dump()
+Writes Python data directly into a JSON file.
+
+json.dumps()
+Converts Python data into a JSON string.
+
+
+Question:
+Why is with open() preferred?
+
+Answer:
+It automatically closes the file after the operation, even if an exception occurs.
+
+
+Question:
+What happens when we use w mode?
+
+Answer:
+The file is created if it does not exist. If it already exists, its existing content is replaced.
+
+
+Question:
+When would you use a JSON file in a data pipeline?
+
+Answer:
+JSON is useful for configuration, API responses, metadata, and exchanging structured data between systems.
+
+
+Visual:
+
+JSON File
+    |
+    v
+json.load()
+    |
+    v
+Python Dictionary
+    |
+    v
+Processing / Transformation
+    |
+    v
+Snowflake / Database
+
+
+Key points to remember:
+
+File = stored data on disk.
+
+open() = opens a file.
+
+r = read.
+
+w = write/replace.
+
+a = append.
+
+with open() = preferred safe file handling.
+
+JSON = structured text format.
+
+dump = Python → JSON file.
+
+dumps = Python → JSON string.
+
+load = JSON file → Python.
+
+loads = JSON string → Python.
+
+For Airflow, understanding files, JSON, and Python dictionaries is important because configuration and API data are commonly handled in these formats.
+`
+},
 /* End of questions array */
 ];
 
