@@ -2573,1418 +2573,1093 @@ Airflow environment is running.
 `
 },
     {
-title: "Stored Procedure - Load SCD Type 2 Using Stream and Merge",
+title: "Practice 1 — Create and Run a Simple Airflow DAG",
 
-question: `
-Create a SQL Stored Procedure named LOAD_SCD2.
+question: `What are we going to build in Airflow Practice 1?`,
 
-Requirements:
+dataset:[],
 
-1. Read changed records from the STG_CUSTOMER_STREAM stream.
-2. Process only INSERT operations using the METADATA$ACTION column.
-3. Store the changed records in a temporary table.
-4. Perform SCD Type 2 processing:
-   - If CUSTOMER_NAME or SALARY has changed, mark the existing record as CURRENT_FLAG='N' and set the END_DATE.
-   - Insert the new version of the customer record with CURRENT_FLAG='Y'.
-5. Capture the number of rows updated using SQLROWCOUNT.
-6. Capture the number of rows inserted using SQLROWCOUNT.
-7. Return a message in the format:
-   Updated = <updated_rows>, Inserted = <inserted_rows>
-`,
-
-dataset:[
-{CUSTOMER_ID:101,CUSTOMER_NAME:"John",SALARY:5000,CURRENT_FLAG:"Y",START_DATE:"2025-01-01",END_DATE:null},
-{CUSTOMER_ID:102,CUSTOMER_NAME:"David",SALARY:7000,CURRENT_FLAG:"Y",START_DATE:"2025-01-01",END_DATE:null}
-],
-
-dataset2:[
-{CUSTOMER_ID:101,CUSTOMER_NAME:"John",SALARY:6500,METADATA_ACTION:"INSERT"},
-{CUSTOMER_ID:102,CUSTOMER_NAME:"David",SALARY:7000,METADATA_ACTION:"INSERT"}
-],
-
-output:[
-{CUSTOMER_ID:101,CUSTOMER_NAME:"John",SALARY:5000,CURRENT_FLAG:"N"},
-{CUSTOMER_ID:101,CUSTOMER_NAME:"John",SALARY:6500,CURRENT_FLAG:"Y"},
-{"Result":"Updated = 1, Inserted = 1"}
-],
+output:[],
 
 answer:`
-CREATE OR REPLACE PROCEDURE LOAD_SCD2()
-RETURNS STRING
-LANGUAGE SQL
-AS
-$$
-DECLARE
-    V_UPDATED NUMBER;
-    V_INSERTED NUMBER;
-BEGIN
-
-    CREATE OR REPLACE TEMP TABLE TMP_CHANGES AS
-    SELECT
-        CUSTOMER_ID,
-        CUSTOMER_NAME,
-        SALARY
-    FROM STG_CUSTOMER_STREAM
-    WHERE METADATA$ACTION='INSERT';
-
-    MERGE INTO DIM_CUSTOMER T
-    USING TMP_CHANGES S
-    ON T.CUSTOMER_ID=S.CUSTOMER_ID
-    AND T.CURRENT_FLAG='Y'
-
-    WHEN MATCHED
-    AND (
-            T.CUSTOMER_NAME<>S.CUSTOMER_NAME
-         OR T.SALARY<>S.SALARY
-    )
-
-    THEN UPDATE
-    SET
-        CURRENT_FLAG='N',
-        END_DATE=CURRENT_DATE();
-
-    V_UPDATED:=SQLROWCOUNT;
-
-    INSERT INTO DIM_CUSTOMER
-    (
-        CUSTOMER_ID,
-        CUSTOMER_NAME,
-        SALARY,
-        START_DATE,
-        END_DATE,
-        CURRENT_FLAG
-    )
-
-    SELECT
-        S.CUSTOMER_ID,
-        S.CUSTOMER_NAME,
-        S.SALARY,
-        CURRENT_DATE(),
-        NULL,
-        'Y'
-
-    FROM TMP_CHANGES S
-
-    LEFT JOIN DIM_CUSTOMER D
-
-    ON S.CUSTOMER_ID=D.CUSTOMER_ID
-    AND S.CUSTOMER_NAME=D.CUSTOMER_NAME
-    AND S.SALARY=D.SALARY
-    AND D.CURRENT_FLAG='Y'
-
-    WHERE D.CUSTOMER_ID IS NULL;
-
-    V_INSERTED:=SQLROWCOUNT;
-
-    RETURN
-    'Updated = '
-    ||V_UPDATED
-    ||', Inserted = '
-    ||V_INSERTED;
-
-END;
-$$;
-
-CALL LOAD_SCD2();
-`,
-
-explanation:`
-Concepts Covered:
-
-• Snowflake Streams
-• METADATA$ACTION
-• Temporary Tables
-• MERGE Statement
-• Slowly Changing Dimension (SCD Type 2)
-• SQLROWCOUNT
-• CURRENT_FLAG
-• START_DATE / END_DATE
-• INSERT ... SELECT
-• Stored Procedures
-• RETURN STRING
-
-Note:
-This is a common Snowflake ETL pattern for implementing SCD Type 2. The MERGE statement expires the current version of a record, while the INSERT statement creates the new current version. SQLROWCOUNT is used after each DML operation to report the number of rows updated and inserted.
-`
-},
-    {
-title: "External Stage - Load CSV File from Amazon S3 into Snowflake",
-
-question:`
-A CSV file named employees.csv has already been uploaded to the following S3 bucket:
-
-s3://company-data/employees/
-
-The CSV contains the following data:
-
-EMP_ID,EMP_NAME,DEPARTMENT,SALARY
-1,John,IT,60000
-2,Alice,HR,55000
-3,Bob,Finance,70000
-
-Perform the following tasks:
-
-1. Create a target table named EMPLOYEES.
-2. Create a CSV file format.
-3. Create a Storage Integration for the S3 bucket.
-4. Create an External Stage using the Storage Integration.
-5. Verify that the file exists in the stage.
-6. Validate the file without loading data.
-7. Load the data into the table.
-8. Reload the file even if it has already been loaded.
-9. Load only employees.csv.
-10. Load only CSV files matching a pattern.
-11. Skip invalid rows while loading.
-12. Remove the source file after successful loading.
-13. Display the loaded data.
-
-Also demonstrate how to create the same External Stage using AWS_ACCESS_KEY_ID and AWS_SECRET_KEY instead of Storage Integration.
-`,
-
-dataset:[
-{"EMP_ID":1,"EMP_NAME":"John","DEPARTMENT":"IT","SALARY":60000},
-{"EMP_ID":2,"EMP_NAME":"Alice","DEPARTMENT":"HR","SALARY":55000},
-{"EMP_ID":3,"EMP_NAME":"Bob","DEPARTMENT":"Finance","SALARY":70000}
-],
-
-output:[
-{"EMP_ID":1,"EMP_NAME":"John","DEPARTMENT":"IT","SALARY":60000},
-{"EMP_ID":2,"EMP_NAME":"Alice","DEPARTMENT":"HR","SALARY":55000},
-{"EMP_ID":3,"EMP_NAME":"Bob","DEPARTMENT":"Finance","SALARY":70000}
-],
-
-answer:`
-
---------------------------------------------------------
--- Step 1 : Create Target Table
---------------------------------------------------------
-
-CREATE OR REPLACE TABLE EMPLOYEES
-(
-EMP_ID NUMBER,
-EMP_NAME STRING,
-DEPARTMENT STRING,
-SALARY NUMBER
-);
-
---------------------------------------------------------
--- Step 2 : Create File Format
---------------------------------------------------------
-
-CREATE OR REPLACE FILE FORMAT CSV_FORMAT
-TYPE = CSV
-FIELD_DELIMITER=','
-SKIP_HEADER=1
-FIELD_OPTIONALLY_ENCLOSED_BY='"'
-NULL_IF=('NULL','');
-
---------------------------------------------------------
--- Step 3 : Create Storage Integration
---------------------------------------------------------
-
-CREATE OR REPLACE STORAGE INTEGRATION S3_INT
-TYPE = EXTERNAL_STAGE
-STORAGE_PROVIDER = S3
-ENABLED = TRUE
-STORAGE_AWS_ROLE_ARN='arn:aws:iam::123456789012:role/SnowflakeRole'
-STORAGE_ALLOWED_LOCATIONS=('s3://company-data/');
-
---------------------------------------------------------
--- Step 4 : Describe Storage Integration
---------------------------------------------------------
-
-DESC INTEGRATION S3_INT;
-
---------------------------------------------------------
--- Step 5 : Create External Stage using Storage Integration
---------------------------------------------------------
-
-CREATE OR REPLACE STAGE EMP_STAGE
-URL='s3://company-data/employees/'
-STORAGE_INTEGRATION=S3_INT
-FILE_FORMAT=CSV_FORMAT;
-
---------------------------------------------------------
--- Alternative Method
--- Create Stage using AWS Keys
---------------------------------------------------------
-
-CREATE OR REPLACE STAGE EMP_STAGE_KEY
-URL='s3://company-data/employees/'
-CREDENTIALS=(
-AWS_KEY_ID='YOUR_ACCESS_KEY'
-AWS_SECRET_KEY='YOUR_SECRET_KEY'
-)
-FILE_FORMAT=CSV_FORMAT;
-
---------------------------------------------------------
--- Step 6 : Verify Files
---------------------------------------------------------
-
-LIST @EMP_STAGE;
-
---------------------------------------------------------
--- Step 7 : Validate without Loading
---------------------------------------------------------
-
-COPY INTO EMPLOYEES
-FROM @EMP_STAGE
-VALIDATION_MODE='RETURN_ERRORS';
-
---------------------------------------------------------
--- Return All Errors
---------------------------------------------------------
-
-COPY INTO EMPLOYEES
-FROM @EMP_STAGE
-VALIDATION_MODE='RETURN_ALL_ERRORS';
-
---------------------------------------------------------
--- Step 8 : Load Data
---------------------------------------------------------
-
-COPY INTO EMPLOYEES
-FROM @EMP_STAGE;
-
---------------------------------------------------------
--- Step 9 : Load only Specific File
---------------------------------------------------------
-
-COPY INTO EMPLOYEES
-FROM @EMP_STAGE
-FILES=('employees.csv');
-
---------------------------------------------------------
--- Step 10 : Load using Pattern
---------------------------------------------------------
-
-COPY INTO EMPLOYEES
-FROM @EMP_STAGE
-PATTERN='.*employees.*\\.csv';
-
---------------------------------------------------------
--- Step 11 : Skip Bad Records
---------------------------------------------------------
-
-COPY INTO EMPLOYEES
-FROM @EMP_STAGE
-ON_ERROR='CONTINUE';
-
---------------------------------------------------------
--- Step 12 : Force Reload
---------------------------------------------------------
-
-COPY INTO EMPLOYEES
-FROM @EMP_STAGE
-FORCE=TRUE;
-
---------------------------------------------------------
--- Step 13 : Purge Files
---------------------------------------------------------
-
-COPY INTO EMPLOYEES
-FROM @EMP_STAGE
-PURGE=TRUE;
-
---------------------------------------------------------
--- Step 14 : Combine Multiple Parameters
---------------------------------------------------------
-
-COPY INTO EMPLOYEES
-FROM @EMP_STAGE
-FILES=('employees.csv')
-ON_ERROR='CONTINUE'
-FORCE=TRUE
-PURGE=TRUE;
-
---------------------------------------------------------
--- Step 15 : View Loaded Data
---------------------------------------------------------
-
-SELECT *
-FROM EMPLOYEES;
-
-`
-},
-    {
-title: "Snowpipe - Load CSV from S3 Stage into Raw Table",
-
-question: `
-A file named employee.csv is uploaded into the following S3 bucket:
-
-s3://my-practice-bucket-sai-123/
-
-Requirements:
-
-1. Create a CSV File Format.
-2. Create a Storage Integration.
-3. Create an External Stage using the Storage Integration.
-4. Create a table named EMPLOYEE_RAW.
-5. Create a Snowpipe named EMPLOYEE_PIPE to automatically load only employee CSV files into EMPLOYEE_RAW.
-6. Manually trigger the pipe using ALTER PIPE ... REFRESH.
-7. Verify that the data has been loaded into EMPLOYEE_RAW.
-`,
-
-dataset:[
-{EMP_ID:101,EMP_NAME:"John"},
-{EMP_ID:102,EMP_NAME:"Alice"}
-],
-
-output:[
-{EMP_ID:101,EMP_NAME:"John"},
-{EMP_ID:102,EMP_NAME:"Alice"}
-],
-
-answer:`
-
-CREATE OR REPLACE FILE FORMAT CSV_FORMAT
-TYPE=CSV
-SKIP_HEADER=1
-FIELD_DELIMITER=',';
-
-CREATE OR REPLACE STORAGE INTEGRATION S3_INT
-TYPE=EXTERNAL_STAGE
-STORAGE_PROVIDER=S3
-ENABLED=TRUE
-STORAGE_AWS_ROLE_ARN='YOUR_ROLE_ARN'
-STORAGE_ALLOWED_LOCATIONS=('s3://my-practice-bucket-sai-123/');
-
-CREATE OR REPLACE STAGE EMP_STAGE
-URL='s3://my-practice-bucket-sai-123/'
-STORAGE_INTEGRATION=S3_INT
-FILE_FORMAT=CSV_FORMAT;
-
-CREATE OR REPLACE TABLE EMPLOYEE_RAW
-(
-EMP_ID NUMBER,
-EMP_NAME STRING
-);
-
-CREATE OR REPLACE PIPE EMPLOYEE_PIPE
-AS
-COPY INTO EMPLOYEE_RAW
-FROM @EMP_STAGE
-PATTERN='.*employee.*\\.csv'
-FILE_FORMAT=(FORMAT_NAME='CSV_FORMAT');
-
-ALTER PIPE EMPLOYEE_PIPE REFRESH;
-
-SELECT *
-FROM EMPLOYEE_RAW;
-
-`
-},
-    {
-title: "External Table - Query CSV Files from Amazon S3",
-
-question: `
-A CSV file named customers.csv is stored in the following S3 bucket:
-
-s3://my-practice-bucket-sai-123/
-
-Requirements:
-
-1. Create a CSV File Format.
-2. Create a Storage Integration.
-3. Create an External Stage.
-4. Create an External Table named EXT_CUSTOMERS.
-5. Read the data directly from S3 without loading it into Snowflake.
-6. Refresh the External Table after a new file is uploaded.
-7. Query the External Table.
-`,
-
-dataset:[
-{CUSTOMER_ID:1,CUSTOMER_NAME:"John",CITY:"London"},
-{CUSTOMER_ID:2,CUSTOMER_NAME:"David",CITY:"Paris"},
-{CUSTOMER_ID:3,CUSTOMER_NAME:"Alex",CITY:"Tokyo"}
-],
-
-output:[
-{CUSTOMER_ID:1,CUSTOMER_NAME:"John",CITY:"London"},
-{CUSTOMER_ID:2,CUSTOMER_NAME:"David",CITY:"Paris"},
-{CUSTOMER_ID:3,CUSTOMER_NAME:"Alex",CITY:"Tokyo"}
-],
-
-answer:`
-
-CREATE OR REPLACE FILE FORMAT CSV_FORMAT
-TYPE=CSV
-SKIP_HEADER=1;
-
-CREATE OR REPLACE STORAGE INTEGRATION S3_INT
-TYPE=EXTERNAL_STAGE
-STORAGE_PROVIDER=S3
-ENABLED=TRUE
-STORAGE_AWS_ROLE_ARN='YOUR_ROLE_ARN'
-STORAGE_ALLOWED_LOCATIONS=('s3://my-practice-bucket-sai-123/');
-
-CREATE OR REPLACE STAGE CUSTOMER_STAGE
-URL='s3://my-practice-bucket-sai-123/'
-STORAGE_INTEGRATION=S3_INT
-FILE_FORMAT=CSV_FORMAT;
-
-CREATE OR REPLACE EXTERNAL TABLE EXT_CUSTOMERS
-(
-CUSTOMER_ID NUMBER AS (VALUE:c1::NUMBER),
-CUSTOMER_NAME STRING AS (VALUE:c2::STRING),
-CITY STRING AS (VALUE:c3::STRING)
-)
-LOCATION=@CUSTOMER_STAGE
-PATTERN='.*customers\\.csv'
-AUTO_REFRESH=FALSE
-FILE_FORMAT=(FORMAT_NAME='CSV_FORMAT');
-
-ALTER EXTERNAL TABLE EXT_CUSTOMERS REFRESH;
-
-SELECT *
-FROM EXT_CUSTOMERS;
-
+Definition:
+
+A DAG is a workflow in Apache Airflow. It contains tasks and defines the order in which those tasks should run.
+
+In Practice 1, we will create one DAG with two Python tasks.
+
+DAG name:
+
+my_practice_1
+
+Workflow:
+
+my_practice_1
+|
+v
+say_hello
+|
+v
+show_my_details
+
+The first task prints a Hello message.
+
+The second task prints some details.
+
+The purpose of Practice 1 is to learn the basic practical flow:
+
+Python file
+|
+v
+dags folder
+|
+v
+Airflow detects DAG
+|
+v
+DAG appears in Airflow UI
+|
+v
+DAG is turned ON
+|
+v
+DAG is manually triggered
+|
+v
+Tasks execute
+|
+v
+Task logs show the output
 `
 },
 
-    {
-title: "Snowpipe + Stream + Task - Incremental Employee Load",
-
-question: `
-An employee.csv file is uploaded to Amazon S3.
-
-Requirements:
-
-1. Create a CSV File Format.
-2. Create a Storage Integration.
-3. Create an External Stage.
-4. Create a RAW table named EMPLOYEE_RAW.
-5. Create a Snowpipe to load files into EMPLOYEE_RAW.
-6. Trigger the Snowpipe manually.
-7. Create a Stream on EMPLOYEE_RAW.
-8. Create a target table named EMPLOYEE_DIM.
-9. Create a Task that performs a MERGE from the Stream into EMPLOYEE_DIM.
-10. Resume the Task.
-11. Verify the final data in EMPLOYEE_DIM.
-`,
-
-dataset:[
-{EMP_ID:101,EMP_NAME:"John"},
-{EMP_ID:102,EMP_NAME:"Alice"}
-],
-
-output:[
-{EMP_ID:101,EMP_NAME:"John"},
-{EMP_ID:102,EMP_NAME:"Alice"}
-],
-
-answer:`
-
-CREATE FILE FORMAT CSV_FORMAT
-TYPE=CSV
-SKIP_HEADER=1;
-
-CREATE STORAGE INTEGRATION S3_INT
-TYPE=EXTERNAL_STAGE
-STORAGE_PROVIDER=S3
-ENABLED=TRUE
-STORAGE_AWS_ROLE_ARN='YOUR_ROLE_ARN'
-STORAGE_ALLOWED_LOCATIONS=('s3://my-practice-bucket-sai-123/');
-
-CREATE STAGE EMP_STAGE
-URL='s3://my-practice-bucket-sai-123/'
-STORAGE_INTEGRATION=S3_INT
-FILE_FORMAT=CSV_FORMAT;
-
-CREATE TABLE EMPLOYEE_RAW
-(
-EMP_ID NUMBER,
-EMP_NAME STRING
-);
-
-CREATE PIPE EMPLOYEE_PIPE
-AS
-COPY INTO EMPLOYEE_RAW
-FROM @EMP_STAGE
-PATTERN='.*employee.*\\.csv';
-
-ALTER PIPE EMPLOYEE_PIPE REFRESH;
-
-CREATE STREAM EMPLOYEE_STREAM
-ON TABLE EMPLOYEE_RAW;
-
-CREATE TABLE EMPLOYEE_DIM
-(
-EMP_ID NUMBER,
-EMP_NAME STRING
-);
-
-CREATE TASK EMPLOYEE_TASK
-WAREHOUSE=COMPUTE_WH
-SCHEDULE='1 MINUTE'
-WHEN SYSTEM$STREAM_HAS_DATA('EMPLOYEE_STREAM')
-AS
-
-MERGE INTO EMPLOYEE_DIM T
-USING EMPLOYEE_STREAM S
-ON T.EMP_ID=S.EMP_ID
-
-WHEN MATCHED THEN
-UPDATE SET
-T.EMP_NAME=S.EMP_NAME
-
-WHEN NOT MATCHED THEN
-INSERT
-(
-EMP_ID,
-EMP_NAME
-)
-VALUES
-(
-S.EMP_ID,
-S.EMP_NAME
-);
-
-ALTER TASK EMPLOYEE_TASK RESUME;
-
-SELECT *
-FROM EMPLOYEE_DIM;
-
-`
-},
-
-    {
-title: "External Table - Query CSV Files from Amazon S3",
-
-question: `
-A CSV file named customers.csv is stored in the following S3 bucket:
-
-s3://my-practice-bucket-sai-123/
-
-Requirements:
-
-1. Create a CSV File Format.
-2. Create a Storage Integration.
-3. Create an External Stage.
-4. Create an External Table named EXT_CUSTOMERS.
-5. Read the data directly from S3 without loading it into Snowflake.
-6. Refresh the External Table after a new file is uploaded.
-7. Query the External Table.
-`,
-
-dataset:[
-{CUSTOMER_ID:1,CUSTOMER_NAME:"John",CITY:"London"},
-{CUSTOMER_ID:2,CUSTOMER_NAME:"David",CITY:"Paris"},
-{CUSTOMER_ID:3,CUSTOMER_NAME:"Alex",CITY:"Tokyo"}
-],
-
-output:[
-{CUSTOMER_ID:1,CUSTOMER_NAME:"John",CITY:"London"},
-{CUSTOMER_ID:2,CUSTOMER_NAME:"David",CITY:"Paris"},
-{CUSTOMER_ID:3,CUSTOMER_NAME:"Alex",CITY:"Tokyo"}
-],
-
-answer:`
-
-CREATE OR REPLACE FILE FORMAT CSV_FORMAT
-TYPE=CSV
-SKIP_HEADER=1;
-
-CREATE OR REPLACE STORAGE INTEGRATION S3_INT
-TYPE=EXTERNAL_STAGE
-STORAGE_PROVIDER=S3
-ENABLED=TRUE
-STORAGE_AWS_ROLE_ARN='YOUR_ROLE_ARN'
-STORAGE_ALLOWED_LOCATIONS=('s3://my-practice-bucket-sai-123/');
-
-CREATE OR REPLACE STAGE CUSTOMER_STAGE
-URL='s3://my-practice-bucket-sai-123/'
-STORAGE_INTEGRATION=S3_INT
-FILE_FORMAT=CSV_FORMAT;
-
-CREATE OR REPLACE EXTERNAL TABLE EXT_CUSTOMERS
-(
-CUSTOMER_ID NUMBER AS (VALUE:c1::NUMBER),
-CUSTOMER_NAME STRING AS (VALUE:c2::STRING),
-CITY STRING AS (VALUE:c3::STRING)
-)
-LOCATION=@CUSTOMER_STAGE
-PATTERN='.*customers\\.csv'
-AUTO_REFRESH=FALSE
-FILE_FORMAT=(FORMAT_NAME='CSV_FORMAT');
-
-ALTER EXTERNAL TABLE EXT_CUSTOMERS REFRESH;
-
-SELECT *
-FROM EXT_CUSTOMERS;
-
-`
-},
-
-    {
-title: "Snowpipe + Stream + Task - Incremental Employee Load",
-
-question: `
-An employee.csv file is uploaded to Amazon S3.
-
-Requirements:
-
-1. Create a CSV File Format.
-2. Create a Storage Integration.
-3. Create an External Stage.
-4. Create a RAW table named EMPLOYEE_RAW.
-5. Create a Snowpipe to load files into EMPLOYEE_RAW.
-6. Trigger the Snowpipe manually.
-7. Create a Stream on EMPLOYEE_RAW.
-8. Create a target table named EMPLOYEE_DIM.
-9. Create a Task that performs a MERGE from the Stream into EMPLOYEE_DIM.
-10. Resume the Task.
-11. Verify the final data in EMPLOYEE_DIM.
-`,
-
-dataset:[
-{EMP_ID:101,EMP_NAME:"John"},
-{EMP_ID:102,EMP_NAME:"Alice"}
-],
-
-output:[
-{EMP_ID:101,EMP_NAME:"John"},
-{EMP_ID:102,EMP_NAME:"Alice"}
-],
-
-answer:`
-
-CREATE FILE FORMAT CSV_FORMAT
-TYPE=CSV
-SKIP_HEADER=1;
-
-CREATE STORAGE INTEGRATION S3_INT
-TYPE=EXTERNAL_STAGE
-STORAGE_PROVIDER=S3
-ENABLED=TRUE
-STORAGE_AWS_ROLE_ARN='YOUR_ROLE_ARN'
-STORAGE_ALLOWED_LOCATIONS=('s3://my-practice-bucket-sai-123/');
-
-CREATE STAGE EMP_STAGE
-URL='s3://my-practice-bucket-sai-123/'
-STORAGE_INTEGRATION=S3_INT
-FILE_FORMAT=CSV_FORMAT;
-
-CREATE TABLE EMPLOYEE_RAW
-(
-EMP_ID NUMBER,
-EMP_NAME STRING
-);
-
-CREATE PIPE EMPLOYEE_PIPE
-AS
-COPY INTO EMPLOYEE_RAW
-FROM @EMP_STAGE
-PATTERN='.*employee.*\\.csv';
-
-ALTER PIPE EMPLOYEE_PIPE REFRESH;
-
-CREATE STREAM EMPLOYEE_STREAM
-ON TABLE EMPLOYEE_RAW;
-
-CREATE TABLE EMPLOYEE_DIM
-(
-EMP_ID NUMBER,
-EMP_NAME STRING
-);
-
-CREATE TASK EMPLOYEE_TASK
-WAREHOUSE=COMPUTE_WH
-SCHEDULE='1 MINUTE'
-WHEN SYSTEM$STREAM_HAS_DATA('EMPLOYEE_STREAM')
-AS
-
-MERGE INTO EMPLOYEE_DIM T
-USING EMPLOYEE_STREAM S
-ON T.EMP_ID=S.EMP_ID
-
-WHEN MATCHED THEN
-UPDATE SET
-T.EMP_NAME=S.EMP_NAME
-
-WHEN NOT MATCHED THEN
-INSERT
-(
-EMP_ID,
-EMP_NAME
-)
-VALUES
-(
-S.EMP_ID,
-S.EMP_NAME
-);
-
-ALTER TASK EMPLOYEE_TASK RESUME;
-
-SELECT *
-FROM EMPLOYEE_DIM;
-
-`
-},
-
-    {
-title: "Surrogate Key Creation for Dimension and Fact Tables using SCD Type 2",
-
-question: `
-Implement a Slowly Changing Dimension (SCD Type 2) process for CUSTOMER_DIM and load the FACT_SALES table.
-
-Requirements:
-
-1. Create a source customer table (SRC_CUSTOMER).
-2. Create a source sales table (SRC_SALES).
-3. Create a dimension table (DIM_CUSTOMER) with:
-   - CUSTOMER_SK
-   - CUSTOMER_ID
-   - CUSTOMER_NAME
-   - CITY
-   - START_DATE
-   - END_DATE
-   - IS_CURRENT
-4. Perform an initial load into DIM_CUSTOMER.
-5. Simulate a customer city change.
-6. Expire the existing dimension record.
-7. Insert a new dimension record with a new surrogate key.
-8. Create FACT_SALES.
-9. Load FACT_SALES by looking up the correct CUSTOMER_SK using CUSTOMER_ID and SALES_DATE.
-10. Verify that historical sales point to the old surrogate key and new sales point to the latest surrogate key.
-`,
-
-dataset:{
-
-SRC_CUSTOMER:[
-{CUSTOMER_ID:101,CUSTOMER_NAME:"Sai",CITY:"Bangalore"},
-{CUSTOMER_ID:102,CUSTOMER_NAME:"John",CITY:"Hyderabad"}
-],
-
-SRC_SALES:[
-{ORDER_ID:1001,CUSTOMER_ID:101,SALES_AMOUNT:500,SALES_DATE:"2026-03-15"},
-{ORDER_ID:1002,CUSTOMER_ID:101,SALES_AMOUNT:800,SALES_DATE:"2026-08-10"},
-{ORDER_ID:1003,CUSTOMER_ID:102,SALES_AMOUNT:600,SALES_DATE:"2026-04-20"}
-]
-
-},
-
-output:{
-
-DIM_CUSTOMER:[
 {
-CUSTOMER_SK:1011,
-CUSTOMER_ID:101,
-CUSTOMER_NAME:"Sai",
-CITY:"Bangalore",
-START_DATE:"2026-01-01",
-END_DATE:"2026-06-30",
-IS_CURRENT:"N"
-},
-{
-CUSTOMER_SK:1012,
-CUSTOMER_ID:101,
-CUSTOMER_NAME:"Sai",
-CITY:"Hyderabad",
-START_DATE:"2026-07-01",
-END_DATE:null,
-IS_CURRENT:"Y"
-},
-{
-CUSTOMER_SK:1021,
-CUSTOMER_ID:102,
-CUSTOMER_NAME:"John",
-CITY:"Hyderabad",
-START_DATE:"2026-01-01",
-END_DATE:null,
-IS_CURRENT:"Y"
-}
-],
+title: "Step 1 — Understand the Airflow Project Folder",
 
-FACT_SALES:[
-{
-ORDER_ID:1001,
-CUSTOMER_SK:1011,
-SALES_AMOUNT:500,
-SALES_DATE:"2026-03-15"
-},
-{
-ORDER_ID:1002,
-CUSTOMER_SK:1012,
-SALES_AMOUNT:800,
-SALES_DATE:"2026-08-10"
-},
-{
-ORDER_ID:1003,
-CUSTOMER_SK:1021,
-SALES_AMOUNT:600,
-SALES_DATE:"2026-04-20"
-}
-]
+question: `Where is our Airflow project located, and what folders do we have?`,
 
-},
+dataset:[],
+
+output:[],
 
 answer:`
+Our Airflow project is located at:
 
---------------------------------------------
-STEP 1 - Create Source Tables
---------------------------------------------
+C:\airflow-practice
 
-CREATE OR REPLACE TABLE SRC_CUSTOMER
-(
-CUSTOMER_ID NUMBER,
-CUSTOMER_NAME STRING,
-CITY STRING
-);
+The important folders are:
 
-CREATE OR REPLACE TABLE SRC_SALES
-(
-ORDER_ID NUMBER,
-CUSTOMER_ID NUMBER,
-SALES_AMOUNT NUMBER(10,2),
-SALES_DATE DATE
-);
+config
+dags
+logs
+plugins
 
---------------------------------------------
-STEP 2 - Create Dimension Table
---------------------------------------------
+There are also files such as:
 
-CREATE OR REPLACE TABLE DIM_CUSTOMER
-(
-CUSTOMER_SK NUMBER,
-CUSTOMER_ID NUMBER,
-CUSTOMER_NAME STRING,
-CITY STRING,
-START_DATE DATE,
-END_DATE DATE,
-IS_CURRENT STRING
-);
+.env
+docker-compose.yaml
 
---------------------------------------------
-STEP 3 - Create Fact Table
---------------------------------------------
+The dags folder is especially important because this is where we place our DAG Python files.
 
-CREATE OR REPLACE TABLE FACT_SALES
-(
-ORDER_ID NUMBER,
-CUSTOMER_SK NUMBER,
-SALES_AMOUNT NUMBER(10,2),
-SALES_DATE DATE
-);
+Our structure is:
 
---------------------------------------------
-STEP 4 - Initial Load
---------------------------------------------
+C:\airflow-practice
+|
++-- config
+|
++-- dags
+|
++-- logs
+|
++-- plugins
+|
++-- .env
+|
++-- docker-compose.yaml
 
-INSERT INTO DIM_CUSTOMER VALUES
-(1011,101,'Sai','Bangalore','2026-01-01','2026-06-30','N'),
-(1012,101,'Sai','Hyderabad','2026-07-01',NULL,'Y'),
-(1021,102,'John','Hyderabad','2026-01-01',NULL,'Y');
-
---------------------------------------------
-STEP 5 - Load Sales
---------------------------------------------
-
-INSERT INTO SRC_SALES VALUES
-(1001,101,500,'2026-03-15'),
-(1002,101,800,'2026-08-10'),
-(1003,102,600,'2026-04-20');
-
---------------------------------------------
-STEP 6 - Load Fact Table
---------------------------------------------
-
-INSERT INTO FACT_SALES
-
-SELECT
-
-S.ORDER_ID,
-D.CUSTOMER_SK,
-S.SALES_AMOUNT,
-S.SALES_DATE
-
-FROM SRC_SALES S
-
-JOIN DIM_CUSTOMER D
-
-ON S.CUSTOMER_ID=D.CUSTOMER_ID
-
-AND S.SALES_DATE BETWEEN D.START_DATE
-AND COALESCE(D.END_DATE,'9999-12-31');
-
---------------------------------------------
-STEP 7 - Verify
---------------------------------------------
-
-SELECT *
-FROM DIM_CUSTOMER;
-
-SELECT *
-FROM FACT_SALES;
-
-SELECT
-
-F.ORDER_ID,
-D.CUSTOMER_NAME,
-D.CITY,
-F.SALES_AMOUNT,
-F.SALES_DATE
-
-FROM FACT_SALES F
-
-JOIN DIM_CUSTOMER D
-
-ON F.CUSTOMER_SK=D.CUSTOMER_SK;
-
+For Practice 1, we work mainly inside the dags folder.
 `
-}
-    ,
-    {
-title: "Conformed Dimension - Shared Dimension Across Multiple Fact Tables",
-
-question: `
-Implement a Conformed Dimension in a Data Warehouse.
-
-Requirements:
-
-1. Create a shared dimension table named DIM_CUSTOMER.
-2. Create two fact tables:
-   - FACT_SALES
-   - FACT_RETURNS
-3. Insert sample data into all three tables.
-4. Ensure both fact tables reference the same CUSTOMER_SK from DIM_CUSTOMER.
-5. Retrieve sales data along with customer information.
-6. Retrieve returns data along with customer information.
-7. Generate a report showing the total sales and total refunds for each customer.
-`,
-
-dataset:{
-
-DIM_CUSTOMER:[
-{CUSTOMER_SK:1,CUSTOMER_ID:101,CUSTOMER_NAME:"Sai",CITY:"Bangalore"},
-{CUSTOMER_SK:2,CUSTOMER_ID:102,CUSTOMER_NAME:"John",CITY:"Hyderabad"},
-{CUSTOMER_SK:3,CUSTOMER_ID:103,CUSTOMER_NAME:"David",CITY:"Chennai"}
-],
-
-FACT_SALES:[
-{ORDER_ID:1001,CUSTOMER_SK:1,SALES_AMOUNT:500},
-{ORDER_ID:1002,CUSTOMER_SK:2,SALES_AMOUNT:700},
-{ORDER_ID:1003,CUSTOMER_SK:3,SALES_AMOUNT:900}
-],
-
-FACT_RETURNS:[
-{RETURN_ID:2001,CUSTOMER_SK:1,REFUND_AMOUNT:500},
-{RETURN_ID:2002,CUSTOMER_SK:3,REFUND_AMOUNT:900}
-]
-
 },
 
-output:{
+{
+title: "Step 2 — Go to the dags Folder",
 
-SALES_REPORT:[
-{ORDER_ID:1001,CUSTOMER_NAME:"Sai",CITY:"Bangalore",SALES_AMOUNT:500},
-{ORDER_ID:1002,CUSTOMER_NAME:"John",CITY:"Hyderabad",SALES_AMOUNT:700},
-{ORDER_ID:1003,CUSTOMER_NAME:"David",CITY:"Chennai",SALES_AMOUNT:900}
-],
+question: `How do we move from the Airflow project folder into the dags folder?`,
 
-RETURNS_REPORT:[
-{RETURN_ID:2001,CUSTOMER_NAME:"Sai",CITY:"Bangalore",REFUND_AMOUNT:500},
-{RETURN_ID:2002,CUSTOMER_NAME:"David",CITY:"Chennai",REFUND_AMOUNT:900}
-]
+dataset:[],
 
-},
+output:[],
 
 answer:`
+Use:
 
---------------------------------------------
-STEP 1 - Create Customer Dimension
---------------------------------------------
+cd dags
 
-CREATE OR REPLACE TABLE DIM_CUSTOMER
-(
-    CUSTOMER_SK NUMBER,
-    CUSTOMER_ID NUMBER,
-    CUSTOMER_NAME STRING,
-    CITY STRING
-);
+Definition:
 
-INSERT INTO DIM_CUSTOMER VALUES
-(1,101,'Sai','Bangalore'),
-(2,102,'John','Hyderabad'),
-(3,103,'David','Chennai');
+cd means Change Directory.
 
---------------------------------------------
-STEP 2 - Create Sales Fact
---------------------------------------------
+The command:
 
-CREATE OR REPLACE TABLE FACT_SALES
-(
-    ORDER_ID NUMBER,
-    CUSTOMER_SK NUMBER,
-    SALES_AMOUNT NUMBER(10,2)
-);
+cd dags
 
-INSERT INTO FACT_SALES VALUES
-(1001,1,500),
-(1002,2,700),
-(1003,3,900);
+means:
 
---------------------------------------------
-STEP 3 - Create Returns Fact
---------------------------------------------
+Move from the current folder into the dags folder.
 
-CREATE OR REPLACE TABLE FACT_RETURNS
-(
-    RETURN_ID NUMBER,
-    CUSTOMER_SK NUMBER,
-    REFUND_AMOUNT NUMBER(10,2)
-);
+Before:
 
-INSERT INTO FACT_RETURNS VALUES
-(2001,1,500),
-(2002,3,900);
+C:\airflow-practice
 
---------------------------------------------
-STEP 4 - Sales Report
---------------------------------------------
+After:
 
-SELECT
-S.ORDER_ID,
-C.CUSTOMER_NAME,
-C.CITY,
-S.SALES_AMOUNT
-FROM FACT_SALES S
-JOIN DIM_CUSTOMER C
-ON S.CUSTOMER_SK=C.CUSTOMER_SK;
+C:\airflow-practice\dags
 
---------------------------------------------
-STEP 5 - Returns Report
---------------------------------------------
+This is where our DAG Python files are stored.
+`
+},
 
-SELECT
-R.RETURN_ID,
-C.CUSTOMER_NAME,
-C.CITY,
-R.REFUND_AMOUNT
-FROM FACT_RETURNS R
-JOIN DIM_CUSTOMER C
-ON R.CUSTOMER_SK=C.CUSTOMER_SK;
+{
+title: "Step 3 — Check Existing DAG Files",
 
---------------------------------------------
-STEP 6 - Customer-wise Sales and Refund Report
---------------------------------------------
+question: `What was already present inside our dags folder?`,
 
-WITH SALES AS
-(
-SELECT
-CUSTOMER_SK,
-SUM(SALES_AMOUNT) TOTAL_SALES
-FROM FACT_SALES
-GROUP BY CUSTOMER_SK
-),
-RETURNS AS
-(
-SELECT
-CUSTOMER_SK,
-SUM(REFUND_AMOUNT) TOTAL_REFUNDS
-FROM FACT_RETURNS
-GROUP BY CUSTOMER_SK
+dataset:[],
+
+output:[],
+
+answer:`
+Our dags folder already contained:
+
+**pycache**
+my_first_dag.py
+
+my_first_dag.py is our existing DAG.
+
+We did not modify it.
+
+For Practice 1, we created a separate DAG file so that our existing DAG remains safe.
+
+Final structure:
+
+C:\airflow-practice\dags
+|
++-- **pycache**
+|
++-- my_first_dag.py
+|
++-- my_practice_1.py
+`
+},
+
+{
+title: "Step 4 — Create the DAG File",
+
+question: `How did we create the new DAG Python file?`,
+
+dataset:[],
+
+output:[],
+
+answer:`
+From inside the dags folder, we used:
+
+notepad my_practice_1.py
+
+This opens Notepad and creates the Python file if it does not already exist.
+
+The file is:
+
+my_practice_1.py
+
+Its location is:
+
+C:\airflow-practice\dags\my_practice_1.py
+
+We then saved the file.
+
+Important:
+
+We are using our existing Docker Desktop and Airflow installation.
+
+We are not installing Airflow again using a Python virtual environment.
+`
+},
+
+{
+title: "Step 5 — Import Airflow Components",
+
+question: `What imports did we use in our DAG?`,
+
+dataset:[],
+
+output:[],
+
+answer:`
+Our DAG starts with:
+
+from airflow.sdk import DAG
+
+from airflow.providers.standard.operators.python import PythonOperator
+
+from datetime import datetime
+
+Definitions:
+
+DAG:
+
+DAG is the workflow definition in Airflow.
+
+PythonOperator:
+
+PythonOperator allows Airflow to execute a Python function as a task.
+
+datetime:
+
+datetime is used to define dates and times in Python.
+
+The imports allow our Python file to understand the Airflow objects that we are going to use.
+`
+},
+
+{
+title: "Step 6 — Create Python Functions",
+
+question: `How did we create the Python functions that our Airflow tasks will execute?`,
+
+dataset:[],
+
+output:[],
+
+answer:`
+We created two Python functions.
+
+First function:
+
+def say_hello():
+print("Hello! This is my Practice 1 DAG.")
+
+Second function:
+
+def show_my_details():
+print("Name: Sai Krishna Reddy")
+print("Learning: Apache Airflow")
+print("Environment: Docker")
+
+Definition:
+
+A Python function is a reusable block of Python code that performs a particular piece of work.
+
+In our DAG:
+
+say_hello performs the first piece of work.
+
+show_my_details performs the second piece of work.
+
+Airflow will execute these functions through PythonOperator tasks.
+`
+},
+
+{
+title: "Step 7 — Define the DAG",
+
+question: `How did we define our Airflow DAG?`,
+
+dataset:[],
+
+output:[],
+
+answer:`
+We used:
+
+with DAG(
+dag_id="my_practice_1",
+start_date=datetime(2026,9,14),
+schedule=None,
+catchup=False,
+) as dag:
+
+Important parameters:
+
+dag_id:
+
+This is the unique name of the DAG in Airflow.
+
+Our DAG ID is:
+
+my_practice_1
+
+start_date:
+
+This tells Airflow the starting date associated with the DAG.
+
+schedule:
+
+schedule=None means we are not asking Airflow to automatically schedule this DAG.
+
+We will trigger it manually.
+
+catchup:
+
+catchup=False means Airflow should not create old historical runs that would otherwise be considered missed.
+
+The result is:
+
+Airflow
+|
+v
+my_practice_1
+`
+},
+
+{
+title: "Step 8 — Create the First Task",
+
+question: `How did we create the say_hello task?`,
+
+dataset:[],
+
+output:[],
+
+answer:`
+We created a PythonOperator:
+
+task_1 = PythonOperator(
+task_id="say_hello",
+python_callable=say_hello,
 )
 
-SELECT
-C.CUSTOMER_NAME,
-COALESCE(S.TOTAL_SALES,0) TOTAL_SALES,
-COALESCE(R.TOTAL_REFUNDS,0) TOTAL_REFUNDS
-FROM DIM_CUSTOMER C
-LEFT JOIN SALES S
-ON C.CUSTOMER_SK=S.CUSTOMER_SK
-LEFT JOIN RETURNS R
-ON C.CUSTOMER_SK=R.CUSTOMER_SK;
+There are two important names here.
 
+task_1:
+
+This is the Python variable containing the task object.
+
+task_id:
+
+This is the Airflow task ID.
+
+Our Airflow task ID is:
+
+say_hello
+
+python_callable:
+
+This tells Airflow which Python function should be executed.
+
+Here:
+
+python_callable=say_hello
+
+means:
+
+When Airflow executes this task, execute the say_hello Python function.
+
+The relationship is:
+
+task_1
+|
+v
+PythonOperator
+|
+v
+say_hello()
+|
+v
+Hello message
 `
 },
-    {
-title: "Degenerate Dimension - Store Transaction Identifier in the Fact Table",
 
-question: `
-Implement a Degenerate Dimension in a Data Warehouse.
+{
+title: "Step 9 — Create the Second Task",
 
-Requirements:
+question: `How did we create the show_my_details task?`,
 
-1. Create a customer dimension table named DIM_CUSTOMER.
-2. Create a product dimension table named DIM_PRODUCT.
-3. Create a fact table named FACT_SALES.
-4. Store ORDER_ID directly in FACT_SALES without creating a DIM_ORDER table.
-5. Insert sample data into all tables.
-6. Join the fact table with the customer and product dimensions.
-7. Retrieve Order ID, Customer Name, Product Name, and Sales Amount.
-8. Explain why ORDER_ID is considered a Degenerate Dimension.
-`,
+dataset:[],
 
-dataset:{
-
-DIM_CUSTOMER:[
-{CUSTOMER_SK:1,CUSTOMER_NAME:"Sai"},
-{CUSTOMER_SK:2,CUSTOMER_NAME:"John"}
-],
-
-DIM_PRODUCT:[
-{PRODUCT_SK:11,PRODUCT_NAME:"Laptop"},
-{PRODUCT_SK:12,PRODUCT_NAME:"Mobile"}
-],
-
-FACT_SALES:[
-{ORDER_ID:1001,CUSTOMER_SK:1,PRODUCT_SK:11,SALES_AMOUNT:500},
-{ORDER_ID:1002,CUSTOMER_SK:2,PRODUCT_SK:12,SALES_AMOUNT:800},
-{ORDER_ID:1003,CUSTOMER_SK:1,PRODUCT_SK:12,SALES_AMOUNT:700}
-]
-
-},
-
-output:[
-{ORDER_ID:1001,CUSTOMER_NAME:"Sai",PRODUCT_NAME:"Laptop",SALES_AMOUNT:500},
-{ORDER_ID:1002,CUSTOMER_NAME:"John",PRODUCT_NAME:"Mobile",SALES_AMOUNT:800},
-{ORDER_ID:1003,CUSTOMER_NAME:"Sai",PRODUCT_NAME:"Mobile",SALES_AMOUNT:700}
-],
+output:[],
 
 answer:`
+We created:
 
---------------------------------------------
-STEP 1 - Create Customer Dimension
---------------------------------------------
+task_2 = PythonOperator(
+task_id="show_my_details",
+python_callable=show_my_details,
+)
 
-CREATE OR REPLACE TABLE DIM_CUSTOMER
-(
-    CUSTOMER_SK NUMBER,
-    CUSTOMER_NAME STRING
-);
+Again:
 
-INSERT INTO DIM_CUSTOMER VALUES
-(1,'Sai'),
-(2,'John');
+task_2:
 
---------------------------------------------
-STEP 2 - Create Product Dimension
---------------------------------------------
+Python variable containing the task object.
 
-CREATE OR REPLACE TABLE DIM_PRODUCT
-(
-    PRODUCT_SK NUMBER,
-    PRODUCT_NAME STRING
-);
+task_id:
 
-INSERT INTO DIM_PRODUCT VALUES
-(11,'Laptop'),
-(12,'Mobile');
+Airflow task ID.
 
---------------------------------------------
-STEP 3 - Create Fact Table
---------------------------------------------
+python_callable:
 
-CREATE OR REPLACE TABLE FACT_SALES
-(
-    ORDER_ID NUMBER,
-    CUSTOMER_SK NUMBER,
-    PRODUCT_SK NUMBER,
-    SALES_AMOUNT NUMBER(10,2)
-);
+Python function that Airflow should execute.
 
-INSERT INTO FACT_SALES VALUES
-(1001,1,11,500),
-(1002,2,12,800),
-(1003,1,12,700);
+So:
 
---------------------------------------------
-STEP 4 - Retrieve Sales Report
---------------------------------------------
-
-SELECT
-    F.ORDER_ID,
-    C.CUSTOMER_NAME,
-    P.PRODUCT_NAME,
-    F.SALES_AMOUNT
-FROM FACT_SALES F
-JOIN DIM_CUSTOMER C
-    ON F.CUSTOMER_SK = C.CUSTOMER_SK
-JOIN DIM_PRODUCT P
-    ON F.PRODUCT_SK = P.PRODUCT_SK;
-
---------------------------------------------
-STEP 5 - Explanation
---------------------------------------------
-
--- ORDER_ID is stored directly in FACT_SALES.
--- No DIM_ORDER table is created because ORDER_ID is only a
--- transaction identifier and has no descriptive attributes.
--- Therefore, ORDER_ID is called a Degenerate Dimension.
-
+task_2
+|
+v
+PythonOperator
+|
+v
+show_my_details()
+|
+v
+Name
+Learning
+Environment
 `
 },
-    {
-title: "Junk Dimension - Create and Load Fact Table",
 
-question:`
-You are given a source table named SALES_RAW.
+{
+title: "Step 10 — Define Task Dependency",
 
-Requirements:
+question: `How did we tell Airflow that say_hello must run before show_my_details?`,
 
-1. Create a Junk Dimension named DIM_JUNK.
-2. Generate a surrogate key named JUNK_KEY using an IDENTITY column.
-3. Store only the distinct combinations of:
-   - IS_PROMOTION
-   - PAYMENT_MODE
-   - IS_ONLINE
-   - IS_RETURNED
-4. Create a FACT_SALES table with the following columns:
-   - SALES_ID
-   - PRODUCT_KEY
-   - CUSTOMER_KEY
-   - JUNK_KEY
-   - SALES_AMOUNT
-5. Load FACT_SALES by replacing the four low-cardinality columns with JUNK_KEY.
-6. Finally, write a query to display FACT_SALES along with DIM_JUNK to verify the mapping.
-`,
+dataset:[],
 
-dataset:[
-{
-SALES_ID:1,
-PRODUCT_KEY:101,
-CUSTOMER_KEY:1001,
-IS_PROMOTION:"Y",
-PAYMENT_MODE:"Card",
-IS_ONLINE:"Y",
-IS_RETURNED:"N",
-SALES_AMOUNT:1500
-},
-{
-SALES_ID:2,
-PRODUCT_KEY:102,
-CUSTOMER_KEY:1002,
-IS_PROMOTION:"N",
-PAYMENT_MODE:"Cash",
-IS_ONLINE:"N",
-IS_RETURNED:"N",
-SALES_AMOUNT:2200
-},
-{
-SALES_ID:3,
-PRODUCT_KEY:103,
-CUSTOMER_KEY:1003,
-IS_PROMOTION:"Y",
-PAYMENT_MODE:"UPI",
-IS_ONLINE:"Y",
-IS_RETURNED:"Y",
-SALES_AMOUNT:1750
-},
-{
-SALES_ID:4,
-PRODUCT_KEY:101,
-CUSTOMER_KEY:1004,
-IS_PROMOTION:"Y",
-PAYMENT_MODE:"Card",
-IS_ONLINE:"Y",
-IS_RETURNED:"N",
-SALES_AMOUNT:900
-},
-{
-SALES_ID:5,
-PRODUCT_KEY:105,
-CUSTOMER_KEY:1005,
-IS_PROMOTION:"N",
-PAYMENT_MODE:"Card",
-IS_ONLINE:"N",
-IS_RETURNED:"N",
-SALES_AMOUNT:3200
-},
-{
-SALES_ID:6,
-PRODUCT_KEY:106,
-CUSTOMER_KEY:1006,
-IS_PROMOTION:"Y",
-PAYMENT_MODE:"Cash",
-IS_ONLINE:"Y",
-IS_RETURNED:"N",
-SALES_AMOUNT:1100
-}
-],
-
-output:[
-{
-FACT_SALES:[
-{"SALES_ID":1,"PRODUCT_KEY":101,"CUSTOMER_KEY":1001,"JUNK_KEY":1,"SALES_AMOUNT":1500},
-{"SALES_ID":2,"PRODUCT_KEY":102,"CUSTOMER_KEY":1002,"JUNK_KEY":2,"SALES_AMOUNT":2200},
-{"SALES_ID":3,"PRODUCT_KEY":103,"CUSTOMER_KEY":1003,"JUNK_KEY":3,"SALES_AMOUNT":1750},
-{"SALES_ID":4,"PRODUCT_KEY":101,"CUSTOMER_KEY":1004,"JUNK_KEY":1,"SALES_AMOUNT":900},
-{"SALES_ID":5,"PRODUCT_KEY":105,"CUSTOMER_KEY":1005,"JUNK_KEY":4,"SALES_AMOUNT":3200},
-{"SALES_ID":6,"PRODUCT_KEY":106,"CUSTOMER_KEY":1006,"JUNK_KEY":5,"SALES_AMOUNT":1100}
-]
-}
-],
+output:[],
 
 answer:`
-CREATE OR REPLACE TABLE DIM_JUNK
-(
-    JUNK_KEY INT IDENTITY(1,1),
-    IS_PROMOTION STRING,
-    PAYMENT_MODE STRING,
-    IS_ONLINE STRING,
-    IS_RETURNED STRING
-);
+We used:
 
-INSERT INTO DIM_JUNK
-(
-    IS_PROMOTION,
-    PAYMENT_MODE,
-    IS_ONLINE,
-    IS_RETURNED
-)
-SELECT DISTINCT
-    IS_PROMOTION,
-    PAYMENT_MODE,
-    IS_ONLINE,
-    IS_RETURNED
-FROM SALES_RAW;
+task_1 >> task_2
 
-CREATE OR REPLACE TABLE FACT_SALES
-(
-    SALES_ID INT,
-    PRODUCT_KEY INT,
-    CUSTOMER_KEY INT,
-    JUNK_KEY INT,
-    SALES_AMOUNT NUMBER(10,2)
-);
+The >> operator defines a dependency between Airflow tasks.
 
-INSERT INTO FACT_SALES
-(
-    SALES_ID,
-    PRODUCT_KEY,
-    CUSTOMER_KEY,
-    JUNK_KEY,
-    SALES_AMOUNT
-)
-SELECT
-    S.SALES_ID,
-    S.PRODUCT_KEY,
-    S.CUSTOMER_KEY,
-    J.JUNK_KEY,
-    S.SALES_AMOUNT
-FROM SALES_RAW S
-JOIN DIM_JUNK J
-ON S.IS_PROMOTION = J.IS_PROMOTION
-AND S.PAYMENT_MODE = J.PAYMENT_MODE
-AND S.IS_ONLINE = J.IS_ONLINE
-AND S.IS_RETURNED = J.IS_RETURNED;
+It means:
 
-SELECT
-    F.SALES_ID,
-    F.PRODUCT_KEY,
-    F.CUSTOMER_KEY,
-    J.IS_PROMOTION,
-    J.PAYMENT_MODE,
-    J.IS_ONLINE,
-    J.IS_RETURNED,
-    F.SALES_AMOUNT
-FROM FACT_SALES F
-JOIN DIM_JUNK J
-ON F.JUNK_KEY = J.JUNK_KEY
-ORDER BY F.SALES_ID;
+task_1 must run before task_2.
+
+Therefore:
+
+say_hello
+|
+v
+show_my_details
+
+Airflow will not treat the two tasks as completely independent.
+
+The dependency creates the workflow order.
 `
 },
+
+{
+title: "Step 11 — Check Whether Airflow Detected the DAG",
+
+question: `How did we verify that Airflow could see our new DAG?`,
+
+dataset:[],
+
+output:[],
+
+answer:`
+We first moved back to the project folder using:
+
+cd ..
+
+Definition:
+
+.. means the parent directory.
+
+Then we used:
+
+docker compose exec airflow-scheduler airflow dags list
+
+This command asks the running Airflow scheduler container to list the DAGs known to Airflow.
+
+Important parts:
+
+docker compose:
+
+Works with our Docker Compose Airflow project.
+
+exec:
+
+Runs a command inside an already-running container.
+
+airflow-scheduler:
+
+The Airflow scheduler service/container.
+
+airflow dags list:
+
+Lists the DAGs detected by Airflow.
+
+We saw:
+
+my_practice_1
+
+This confirmed that Airflow successfully detected our DAG.
+
+The flow was:
+
+Windows DAG file
+|
+v
+C:\airflow-practice\dags
+|
+v
+Docker volume mapping
+|
+v
+/opt/airflow/dags
+|
+v
+Airflow reads the file
+|
+v
+my_practice_1 detected
+`
+},
+
+{
+title: "Step 12 — Verify the DAG in Airflow UI",
+
+question: `How did we verify the DAG visually?`,
+
+dataset:[],
+
+output:[],
+
+answer:`
+We opened the Airflow web interface at:
+
+localhost:8080
+
+The DAG list showed:
+
+my_practice_1
+
+This confirmed that the DAG was available in the Airflow UI.
+
+At this point:
+
+DAG file exists
+|
+v
+Airflow detects DAG
+|
+v
+DAG appears in UI
+`
+},
+
+{
+title: "Step 13 — Turn the DAG ON",
+
+question: `Why did we turn my_practice_1 ON in the Airflow UI?`,
+
+dataset:[],
+
+output:[],
+
+answer:`
+Airflow allows a DAG to be paused or active.
+
+Paused:
+
+Airflow does not schedule the DAG.
+
+Active:
+
+Airflow is allowed to schedule the DAG.
+
+We turned my_practice_1 ON.
+
+Our DAG has schedule=None, so it will not automatically run anyway.
+
+We turned it ON as part of learning how DAG activation works in the Airflow UI.
+`
+},
+
+{
+title: "Step 14 — Trigger the DAG",
+
+question: `How did we run my_practice_1?`,
+
+dataset:[],
+
+output:[],
+
+answer:`
+Because we used:
+
+schedule=None
+
+the DAG does not automatically run.
+
+We manually triggered my_practice_1 from the Airflow UI.
+
+When we trigger a DAG, Airflow creates a DAG Run.
+
+The flow is:
+
+my_practice_1
+|
+v
+Manual Trigger
+|
+v
+DAG Run
+|
+v
+Task execution
+
+A DAG Run represents one execution of the DAG.
+`
+},
+
+{
+title: "Step 15 — Check the First Task",
+
+question: `What happened when say_hello executed?`,
+
+dataset:[],
+
+output:[],
+
+answer:`
+The PythonOperator executed the say_hello function.
+
+The function contained:
+
+print("Hello! This is my Practice 1 DAG.")
+
+The message appeared in the Airflow task logs.
+
+The important output was:
+
+Hello! This is my Practice 1 DAG.
+
+The task finished with:
+
+Task instance in success state
+
+This means the task executed successfully.
+
+Execution flow:
+
+say_hello task
+|
+v
+PythonOperator
+|
+v
+say_hello()
+|
+v
+print()
+|
+v
+Task log
+|
+v
+SUCCESS
+`
+},
+
+{
+title: "Step 16 — Understand Airflow Task Logs",
+
+question: `Why did we see many messages in the task log when we only used one print statement?`,
+
+dataset:[],
+
+output:[],
+
+answer:`
+Airflow logs contain both:
+
+1. Output from our Python code
+2. Information generated by Airflow itself
+
+Our code produced:
+
+Hello! This is my Practice 1 DAG.
+
+Airflow produced messages such as:
+
+Task instance is in running state
+
+Task instance in success state
+
+Task operator: PythonOperator
+
+These messages describe what Airflow was doing while executing the task.
+
+Think of the log as two layers:
+
+Our Python code
+|
+v
+print message
+|
+v
+Airflow captures it
+|
+v
+Task log
+
+At the same time:
+
+Airflow
+|
++-- starts task
+|
++-- tracks task state
+|
++-- executes operator
+|
++-- records result
+|
++-- marks task successful
+`
+},
+
+{
+title: "Step 17 — Check the Second Task",
+
+question: `What output did show_my_details produce?`,
+
+dataset:[],
+
+output:[],
+
+answer:`
+The second task executed the show_my_details function.
+
+The output was:
+
+Name: Sai Krishna Reddy
+Learning: Apache Airflow
+Environment: Docker
+
+The task also finished successfully.
+
+The dependency ensured that:
+
+say_hello
+|
+v
+show_my_details
+
+So show_my_details was executed after say_hello.
+`
+},
+
+{
+title: "Step 18 — Common Mistake: start_Date",
+
+question: `What is wrong with start_Date=datetime(2026,9,14)?`,
+
+dataset:[],
+
+output:[],
+
+answer:`
+The correct parameter is:
+
+start_date
+
+Not:
+
+start_Date
+
+Python and Airflow parameter names are case-sensitive.
+
+These are different names:
+
+start_date
+start_Date
+
+Airflow expects the exact parameter:
+
+start_date
+
+Correct:
+
+start_date=datetime(2026,9,14)
+
+Incorrect:
+
+start_Date=datetime(2026,9,14)
+
+General lesson:
+
+Always use the exact parameter name expected by the Python function or Airflow class.
+`
+},
+
+{
+title: "Step 19 — Common Mistake: task1 vs task_1",
+
+question: `What was wrong when we created task1 but later used task_1?`,
+
+dataset:[],
+
+output:[],
+
+answer:`
+We initially created:
+
+task1 = PythonOperator(...)
+
+But later we wrote:
+
+task_1 >> task_2
+
+These are different Python variable names.
+
+task1
+
+and
+
+task_1
+
+are not the same variable.
+
+Python is case-sensitive and also treats different spellings as different names.
+
+Therefore, we should use one consistent name.
+
+For example:
+
+task_1 = PythonOperator(...)
+
+task_2 = PythonOperator(...)
+
+task_1 >> task_2
+
+General lesson:
+
+Variable names must match exactly.
+
+A small difference in spelling can cause a Python error.
+`
+},
+
+{
+title: "Step 20 — Task Variable vs Task ID",
+
+question: `What is the difference between task_1 and task_id="say_hello"?`,
+
+dataset:[],
+
+output:[],
+
+answer:`
+They are two different things.
+
+task_1:
+
+This is a Python variable.
+
+task_id="say_hello":
+
+This is the ID given to the Airflow task.
+
+Example:
+
+task_1 = PythonOperator(
+task_id="say_hello",
+python_callable=say_hello,
+)
+
+Think of it like this:
+
+Python side:
+
+task_1
+|
+v
+Task object
+
+Airflow side:
+
+task_id
+|
+v
+say_hello
+
+The Python variable helps our Python code refer to the task.
+
+The task_id identifies the task inside Airflow.
+
+This is why we can write:
+
+task_1 >> task_2
+
+while Airflow displays the tasks as:
+
+say_hello
+show_my_details
+`
+},
+
+{
+title: "Step 21 — Complete Practice 1 DAG",
+
+question: `What is the complete code for my_practice_1.py?`,
+
+dataset:[],
+
+output:[],
+
+answer:`
+The complete corrected DAG is:
+
+from airflow.sdk import DAG
+from airflow.providers.standard.operators.python import PythonOperator
+from datetime import datetime
+
+def say_hello():
+print("Hello! This is my Practice 1 DAG.")
+
+def show_my_details():
+print("Name: Sai Krishna Reddy")
+print("Learning: Apache Airflow")
+print("Environment: Docker")
+
+with DAG(
+dag_id="my_practice_1",
+start_date=datetime(2026,9,14),
+schedule=None,
+catchup=False,
+) as dag:
+
+```
+task_1 = PythonOperator(
+    task_id="say_hello",
+    python_callable=say_hello,
+)
+
+task_2 = PythonOperator(
+    task_id="show_my_details",
+    python_callable=show_my_details,
+)
+
+task_1 >> task_2
+```
+
+Final workflow:
+
+my_practice_1
+|
+v
+say_hello
+|
+v
+show_my_details
+|
+v
+SUCCESS
+`
+},
+
+{
+title: "Practice 1 — What We Learned",
+
+question: `What Airflow concepts did we learn from Practice 1?`,
+
+dataset:[],
+
+output:[],
+
+answer:`
+We practically learned:
+
+1. DAG
+
+A workflow definition in Airflow.
+
+2. DAG file
+
+A Python file containing the DAG definition.
+
+3. DAG ID
+
+The unique identifier of the DAG.
+
+4. Task
+
+An individual unit of work.
+
+5. PythonOperator
+
+An Airflow operator used to execute a Python function.
+
+6. Python function
+
+The actual Python code executed by the task.
+
+7. Dependency
+
+Defines the order in which tasks execute.
+
+8. DAG Run
+
+One execution of a DAG.
+
+9. Manual Trigger
+
+Starting a DAG manually from the Airflow UI.
+
+10. Task Logs
+
+Logs containing the task execution information and our Python output.
+
+11. Task State
+
+The task can have states such as queued, running, success, or failed.
+
+12. Docker integration
+
+Our Windows dags folder is made available inside the Airflow container.
+
+Overall flow:
+
+Python DAG file
+|
+v
+dags folder
+|
+v
+Docker
+|
+v
+Airflow detects DAG
+|
+v
+Airflow UI
+|
+v
+Manual Trigger
+|
+v
+DAG Run
+|
+v
+Task 1
+|
+v
+Task 2
+|
+v
+Logs
+|
+v
+SUCCESS
+`
+},
+
 /* End of questions array */
 ];
 
