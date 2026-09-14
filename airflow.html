@@ -3994,6 +3994,70 @@ Use op_kwargs when you want values to be explicitly associated with parameter na
 `
 },
 
+    {
+title: "Airflow Practice 7 — Python Data Processing",
+
+question: `
+How can we perform data processing using PythonOperator in Airflow?`,
+
+dataset:[10, 20, 30, 40, 50],
+
+output:["Total: 150", "Average: 30.0"],
+
+answer:`
+Definition:
+PythonOperator allows Airflow to execute a Python function as a task.
+
+In this practice, we perform actual data processing using Python.
+
+Flow:
+Input data → Python processing → Calculate total and average → Output
+
+Full Code:
+
+from airflow.sdk import DAG
+from airflow.providers.standard.operators.python import PythonOperator
+from datetime import datetime
+
+def process_numbers():
+numbers = [10, 20, 30, 40, 50]
+
+
+total = sum(numbers)
+average = total / len(numbers)
+
+print("Numbers:", numbers)
+print("Total:", total)
+print("Average:", average)
+
+
+with DAG(
+dag_id="my_practice_7",
+start_date=datetime(2026, 9, 14),
+schedule=None,
+catchup=False,
+) as dag:
+
+
+task_1 = PythonOperator(
+    task_id="process_numbers",
+    python_callable=process_numbers,
+)
+
+
+Important:
+sum(numbers) calculates the total.
+
+len(numbers) gives the number of items.
+
+average = total / len(numbers) calculates the average.
+
+PythonOperator connects the Python function to an Airflow task.
+
+This is our first practice where we perform actual data processing inside an Airflow task.
+`
+},
+
 /* End of questions array */
 ];
 
