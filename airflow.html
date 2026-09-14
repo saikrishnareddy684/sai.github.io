@@ -3847,6 +3847,74 @@ op_kwargs is useful when a function has multiple parameters because each value i
 `
 },
 
+{
+title: "Airflow Practice 5 — Multiple op_kwargs",
+
+question: `
+How can we pass multiple named parameters to an Airflow task?`,
+
+dataset:[],
+
+output:["Name: Sai Krishna", "Learning: Apache Airflow"],
+
+answer:`
+Definition:
+op_kwargs allows us to pass named arguments to a Python function.
+
+We can pass multiple values using op_kwargs.
+
+Example:
+
+Function:
+show_details(name, learning_topic)
+
+Values:
+name → Sai Krishna
+learning_topic → Apache Airflow
+
+Flow:
+Airflow → op_kwargs → Function parameters → Output
+
+Full Code:
+
+from airflow.sdk import DAG
+from airflow.providers.standard.operators.python import PythonOperator
+from datetime import datetime
+
+def show_details(name, learning_topic):
+print("Name:", name)
+print("Learning:", learning_topic)
+
+with DAG(
+dag_id="my_practice_5",
+start_date=datetime(2026, 9, 14),
+schedule=None,
+catchup=False,
+) as dag:
+
+
+task_1 = PythonOperator(
+    task_id="show_details",
+    python_callable=show_details,
+    op_kwargs={
+        "name": "Sai Krishna",
+        "learning_topic": "Apache Airflow",
+    },
+)
+
+
+Important:
+op_kwargs passes named arguments.
+
+The dictionary key must match the function parameter name.
+
+Example:
+"name" matches name
+"learning_topic" matches learning_topic
+
+This is useful when a task needs multiple input values.
+`
+},
 
 /* End of questions array */
 ];
