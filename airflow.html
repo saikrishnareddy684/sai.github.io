@@ -3788,6 +3788,66 @@ Practice 3: Task configuration → Function parameter
 `
 },
 
+    {
+title: "Airflow Practice 4 — op_kwargs",
+
+question: `
+What is op_kwargs in Airflow?`,
+
+dataset:[],
+
+output:["hello Sai Krishna"],
+
+answer:`
+Definition:
+op_kwargs is used to pass named arguments to a Python function in PythonOperator.
+
+Example:
+greet(name) expects one value.
+
+op_kwargs provides:
+name → Sai Krishna
+
+Flow:
+Airflow → op_kwargs → greet(name) → Output
+
+Full Code:
+
+from airflow.sdk import DAG
+from airflow.providers.standard.operators.python import PythonOperator
+from datetime import datetime
+
+def greet(name):
+print("hello", name)
+
+with DAG(
+dag_id="my_practice_4",
+start_date=datetime(2026, 9, 14),
+schedule=None,
+catchup=False,
+) as dag:
+
+task_1 = PythonOperator(
+    task_id="greet",
+    python_callable=greet,
+    op_kwargs={"name": "Sai Krishna"},
+)
+
+Important:
+Indentation matters in Python. The task must be inside the with DAG block.
+
+op_kwargs passes named arguments to the Python function.
+
+This is different from op_args:
+
+Practice 3: op_args → positional arguments
+Practice 4: op_kwargs → named arguments
+
+op_kwargs is useful when a function has multiple parameters because each value is clearly associated with its parameter name.
+`
+},
+
+
 /* End of questions array */
 ];
 
