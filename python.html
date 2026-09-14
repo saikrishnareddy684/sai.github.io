@@ -6551,6 +6551,666 @@ Python → Airflow foundation is now complete.
 `
 },
 /* End of questions array */
+    {
+title: "Apache Airflow — Architecture and Core Components",
+
+question: `
+What is Apache Airflow?
+
+Why is Airflow used?
+
+What are the main components of Airflow?
+
+How do DAG, Task, Operator, Scheduler, Worker, Executor, Triggerer, and Metadata Database work together?
+
+How does a DAG execution flow through Airflow?
+`,
+
+dataset:[],
+
+output:[],
+
+answer:`
+Definition:
+
+Apache Airflow is an open-source workflow orchestration platform.
+
+It is used to develop, schedule, execute, and monitor workflows.
+
+The important word is orchestration.
+
+Orchestration means managing the order and execution of different tasks across a workflow.
+
+For example, imagine this data pipeline:
+
+SQL Server
+    |
+    v
+Extract data
+    |
+    v
+Transform data
+    |
+    v
+Load into Snowflake
+    |
+    v
+Reconcile data
+    |
+    v
+Send notification
+
+Airflow can control this entire workflow.
+
+
+1. Why do we need Airflow?
+
+Suppose we have five jobs:
+
+Job 1 → Extract data
+Job 2 → Transform data
+Job 3 → Load Snowflake
+Job 4 → Reconcile data
+Job 5 → Send notification
+
+We need to control:
+
+Which job runs first?
+Which job depends on another?
+When should the workflow start?
+What happens if a job fails?
+Should the failed job retry?
+How do we monitor the workflow?
+Which tasks succeeded or failed?
+
+Airflow helps manage these requirements.
+
+
+2. Main Airflow architecture
+
+A simplified Airflow architecture is:
+
+                 ✈️ AIRFLOW
+                     |
+        +------------+------------+
+        |            |            |
+        v            v            v
+     Scheduler    API Server   DAG Processor
+        |                         |
+        |                         |
+        v                         v
+      Executor                  DAGs
+        |
+        v
+      Worker
+        |
+        v
+      Task
+        |
+        v
+SQL Server / Snowflake / APIs / Files
+
+                 |
+                 v
+          Metadata Database
+
+                 |
+                 v
+              Redis
+          when required by
+       the selected executor
+
+
+3. DAG
+
+DAG stands for:
+
+Directed Acyclic Graph.
+
+A DAG represents a workflow.
+
+It defines:
+
+Tasks
+Dependencies
+Schedule
+Start date
+Retry configuration
+Other workflow settings
+
+Example:
+
+Extract
+   |
+   v
+Transform
+   |
+   v
+Load
+   |
+   v
+Validate
+
+
+The arrows represent dependencies.
+
+Extract must finish before Transform.
+
+Transform must finish before Load.
+
+Load must finish before Validate.
+
+
+4. Task
+
+A task is an individual unit of work inside a DAG.
+
+For example:
+
+DAG: Credit Risk Pipeline
+
+Tasks:
+
+extract_data
+transform_data
+load_snowflake
+validate_data
+
+So:
+
+DAG
+ |
+ +-- extract_data
+ |
+ +-- transform_data
+ |
+ +-- load_snowflake
+ |
+ +-- validate_data
+
+
+5. Operator
+
+An operator defines what a task should do.
+
+Common examples:
+
+PythonOperator
+Runs Python code.
+
+BashOperator
+Runs shell commands.
+
+SQL-related operators
+Execute SQL operations.
+
+Sensor operators
+Wait for something to happen.
+
+Think of it like this:
+
+Task = what Airflow executes
+
+Operator = how the task performs its work
+
+
+6. Scheduler
+
+The Scheduler is responsible for determining which scheduled DAG runs need to be created and which tasks are ready to be scheduled.
+
+Example:
+
+Suppose a DAG has:
+
+Schedule: every day at 2 AM
+
+The Scheduler continuously evaluates the DAG schedule.
+
+When the appropriate time arrives, Airflow creates a DAG Run and schedules its tasks according to dependencies and other rules.
+
+
+7. DAG Run
+
+A DAG Run represents one execution of a DAG.
+
+For example:
+
+Credit Risk Pipeline
+       |
+       +-- Run 1 → September 12
+       |
+       +-- Run 2 → September 13
+       |
+       +-- Run 3 → September 14
+
+Each run is a separate execution of the same DAG.
+
+
+8. Executor
+
+The Executor determines how Airflow tasks are actually executed.
+
+In simple terms:
+
+Scheduler
+    |
+    v
+Executor
+    |
+    v
+Execution mechanism
+    |
+    v
+Task
+
+
+Different Airflow environments can use different executor configurations.
+
+The important interview concept is:
+
+Scheduler decides and schedules.
+
+Executor determines how tasks are executed.
+
+Worker performs the actual task execution when the chosen executor architecture uses workers.
+
+
+9. Worker
+
+A Worker is a process/container/machine that executes tasks.
+
+For example:
+
+Scheduler
+    |
+    v
+Task scheduled
+    |
+    v
+Worker
+    |
+    v
+Python code executes
+    |
+    v
+Task result
+
+
+In your Docker setup, you have already seen an Airflow worker container.
+
+
+10. API Server
+
+The API Server provides the interface through which Airflow's web UI and API clients communicate with Airflow.
+
+You interact with Airflow through the browser UI.
+
+For example:
+
+Browser
+   |
+   v
+localhost:8080
+   |
+   v
+Airflow API Server
+   |
+   v
+Airflow components
+
+
+This is why you can open your Airflow environment in the browser.
+
+
+11. DAG Processor
+
+The DAG Processor processes DAG files and parses the Python code that defines your DAGs.
+
+For example:
+
+DAG Python file
+       |
+       v
+DAG Processor
+       |
+       v
+Parsed DAG
+       |
+       v
+Airflow metadata / scheduling process
+
+
+This is particularly relevant in modern Airflow versions.
+
+
+12. Metadata Database
+
+The Metadata Database stores information about Airflow itself.
+
+It can contain information such as:
+
+DAG information
+DAG runs
+Task instances
+Task states
+Schedules
+Connections
+Variables
+Other Airflow metadata
+
+
+Important:
+
+The Metadata Database is NOT normally your business data warehouse.
+
+For example:
+
+Your business data:
+
+Customer
+Account
+Transaction
+Credit Risk
+
+may live in Snowflake.
+
+Airflow's metadata:
+
+DAG Run
+Task state
+Connection
+Schedule
+
+is stored in Airflow's metadata database.
+
+
+13. Redis
+
+Redis can be used as a messaging/broker component in certain Airflow executor architectures.
+
+In your current Docker setup, you have already seen a Redis container.
+
+The exact role depends on the executor configuration.
+
+For your current learning level, remember:
+
+Redis can help coordinate task execution in distributed Airflow setups.
+
+
+14. Triggerer
+
+The Triggerer is an Airflow component used for handling deferrable tasks and asynchronous waiting.
+
+For example, instead of occupying a worker while waiting for an external event, a deferrable task can defer its waiting work to the Triggerer.
+
+Conceptually:
+
+Task
+ |
+ v
+Waiting for external event
+ |
+ v
+Triggerer
+ |
+ v
+Event occurs
+ |
+ v
+Task resumes
+
+
+15. Complete execution flow
+
+Now combine everything:
+
+                  DAG Python file
+                         |
+                         v
+                   DAG Processor
+                         |
+                         v
+                        DAG
+                         |
+                         v
+                     Scheduler
+                         |
+                         v
+                     DAG Run
+                         |
+                         v
+                   Task scheduled
+                         |
+                         v
+                      Executor
+                         |
+                         v
+                       Worker
+                         |
+                         v
+                    Task executes
+                         |
+             +-----------+-----------+
+             |                       |
+             v                       v
+        SQL Server              Snowflake
+             |                       |
+             +-----------+-----------+
+                         |
+                         v
+                 Task result/state
+                         |
+                         v
+                Metadata Database
+
+
+16. Apply this to your project
+
+Imagine your Nordea-style pipeline:
+
+SQL Server
+    |
+    v
+Extract
+    |
+    v
+Transform
+    |
+    v
+Snowflake
+    |
+    v
+Reconciliation
+    |
+    v
+Power BI / downstream
+
+
+Airflow could orchestrate:
+
+Task 1:
+Extract data from SQL Server.
+
+Task 2:
+Load/transform data.
+
+Task 3:
+Load data into Snowflake.
+
+Task 4:
+Run reconciliation.
+
+Task 5:
+If successful, continue to the next process.
+
+If Task 3 fails:
+
+Task 3
+  |
+  v
+Failure
+  |
+  v
+Retry
+  |
+  +---- Success → Continue
+  |
+  +---- Failure → Final failure
+
+
+17. Very important distinction
+
+Do not memorize the components as isolated definitions.
+
+Understand the flow:
+
+DAG
+defines the workflow.
+
+DAG Processor
+reads/processes DAG code.
+
+Scheduler
+determines what should be scheduled.
+
+DAG Run
+represents one execution of the DAG.
+
+Executor
+controls the execution mechanism.
+
+Worker
+executes the task when workers are used.
+
+Operator
+defines the type of work.
+
+Task
+is the individual executable unit.
+
+Metadata Database
+stores Airflow's metadata and state.
+
+API Server
+provides the API/UI interface.
+
+Triggerer
+handles deferred asynchronous waiting.
+
+
+18. Interview questions
+
+Question:
+What is Apache Airflow?
+
+Answer:
+Apache Airflow is an open-source workflow orchestration platform used to develop, schedule, execute, and monitor workflows.
+
+
+Question:
+What is a DAG?
+
+Answer:
+A DAG is a Directed Acyclic Graph that defines a workflow, including its tasks and dependencies.
+
+
+Question:
+What is a task?
+
+Answer:
+A task is an individual unit of work within a DAG.
+
+
+Question:
+What is an operator?
+
+Answer:
+An operator defines what kind of work a task performs, such as executing Python code or running a command.
+
+
+Question:
+What is the difference between a DAG and a DAG Run?
+
+Answer:
+A DAG is the definition of the workflow. A DAG Run is one execution of that workflow.
+
+
+Question:
+What does the Scheduler do?
+
+Answer:
+The Scheduler evaluates DAG schedules and dependencies and schedules eligible tasks for execution.
+
+
+Question:
+What does a Worker do?
+
+Answer:
+A Worker executes tasks that have been assigned to it in executor architectures that use workers.
+
+
+Question:
+What is the Metadata Database?
+
+Answer:
+It stores Airflow's internal metadata, such as DAG runs, task states, schedules, connections, and variables.
+
+
+Question:
+Is Airflow a database?
+
+Answer:
+No. Airflow is a workflow orchestration platform. It uses a metadata database to store information about Airflow itself.
+
+
+Question:
+Is Airflow an ETL tool?
+
+Answer:
+Airflow is primarily an orchestration platform, not an ETL engine. It can orchestrate ETL/ELT tools and tasks.
+
+
+Question:
+What happens when a task fails?
+
+Answer:
+Depending on the task configuration, Airflow can retry the task. If all retries fail, the task can be marked as failed and downstream tasks may be prevented from running according to their dependencies and trigger rules.
+
+
+19. Your current Docker environment
+
+You have already installed Airflow using Docker Desktop.
+
+Your environment contains components such as:
+
+Airflow Scheduler
+Airflow API Server
+Airflow DAG Processor
+Airflow Worker
+Airflow Triggerer
+PostgreSQL
+Redis
+
+So you are not learning these concepts only theoretically.
+
+You already have a real Airflow environment running these components in Docker.
+
+The next step is to understand each component individually, starting with the most important one:
+
+DAG
+       |
+       v
+Tasks
+       |
+       v
+Dependencies
+       |
+       v
+DAG Run
+
+We will then go deeper into Scheduler, Operators, Executor, Worker, XCom, Connections, and Variables.
+`
+},
 ];
 
 /* ============================
