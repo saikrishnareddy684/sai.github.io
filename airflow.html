@@ -3916,6 +3916,84 @@ This is useful when a task needs multiple input values.
 `
 },
 
+
+    {
+title: "Airflow Practice 6 — op_args vs op_kwargs",
+
+question: `
+What is the difference between op_args and op_kwargs in Airflow?`,
+
+dataset:[],
+
+output:["Name: Sai Krishna", "topic: Apache Airflow"],
+
+answer:`
+Definition:
+op_args and op_kwargs are used to pass values to a Python function in PythonOperator.
+
+op_args:
+Passes values by position.
+
+op_kwargs:
+Passes values by parameter name.
+
+Example:
+
+Function:
+show_details(name, topic)
+
+Using op_args:
+op_args=["Sai Krishna", "Apache Airflow"]
+
+First value → name
+Second value → topic
+
+Flow:
+Airflow → op_args → Function parameters → Output
+
+Full Code:
+
+from airflow.sdk import DAG
+from airflow.providers.standard.operators.python import PythonOperator
+from datetime import datetime
+
+def show_details(name, topic):
+print("Name:", name)
+print("topic:", topic)
+
+with DAG(
+dag_id="my_practice_6",
+schedule=None,
+catchup=False,
+start_date=datetime(2026, 9, 14),
+) as dag:
+
+
+task_1 = PythonOperator(
+    task_id="show_details",
+    python_callable=show_details,
+    op_args=["Sai Krishna", "Apache Airflow"],
+)
+
+
+Important:
+op_args depends on the position of values.
+
+Example:
+First value → first parameter
+Second value → second parameter
+
+op_kwargs depends on parameter names.
+
+Example:
+{"name": "Sai Krishna", "topic": "Apache Airflow"}
+
+Interview point:
+Use op_args when the parameter order is clear.
+Use op_kwargs when you want values to be explicitly associated with parameter names.
+`
+},
+
 /* End of questions array */
 ];
 
