@@ -4138,6 +4138,184 @@ Process → Return → XCom → Consume
 `
 },
 
+    {
+title: "Airflow Practice 9 — SQL Query Results",
+
+question: `
+If I run a SELECT query on a big Snowflake table from Airflow, will Airflow display all the rows?`,
+
+dataset: ["Snowflake table with 10 million rows"],
+
+output: ["Task execution logs", "Success or Failed status"],
+
+answer:`
+Definition:
+Airflow is primarily an orchestration and monitoring platform. It is not a SQL query result viewer like Snowflake Snowsight.
+
+If we run a SELECT query from Airflow that returns a large number of rows, Airflow normally does not display all the rows in the task logs.
+
+Example:
+
+SELECT * FROM BIG_TABLE;
+
+If BIG_TABLE contains 10 million rows:
+
+Airflow → Executes the SQL query
+Snowflake → Processes the query and returns the result
+Airflow → Records execution information and task status
+
+Airflow normally displays logs such as:
+
+Executing: SELECT * FROM BIG_TABLE
+
+Query execution information
+
+Task instance in success state
+
+The actual 10 million rows remain in Snowflake.
+
+Flow:
+Airflow → Execute SQL → Snowflake → Process Data → Task Status
+
+Example 1:
+
+Query:
+SELECT * FROM BIG_TABLE;
+
+Result:
+10 million rows
+
+Airflow does not normally display all 10 million rows in the task log.
+
+Example 2:
+
+Query:
+SELECT COUNT(*) FROM CUSTOMER;
+
+Airflow can execute the query successfully, but the actual query result is not automatically displayed like a table in Snowsight.
+
+If we specifically need a small query result inside Airflow, we can configure the task to capture the result and pass it to another task. XCom can be used for passing small amounts of data between Airflow tasks.
+
+Important:
+Airflow is mainly responsible for orchestrating, executing, monitoring, and managing dependencies between tasks.
+
+Snowflake is responsible for storing and processing the data.
+
+For our current test:
+
+Query:
+SELECT CURRENT_VERSION();
+
+Snowflake returned:
+10.33.101
+
+But the Airflow log mainly showed:
+
+Rows affected: 1
+
+Task instance in success state
+
+This is expected because the purpose of our test was to verify that Airflow could connect to Snowflake and successfully execute SQL.
+
+Main concept:
+Airflow = Orchestration and Monitoring
+
+Snowflake = Data Storage and Processing
+
+Therefore, Airflow normally shows execution logs and task status rather than displaying every row returned by a large SQL query.
+`
+},
+{
+title: "Airflow Practice 10 — Connecting Airflow to Snowflake",
+
+question: `
+How can we connect Airflow to Snowflake and execute a SQL query using an Airflow DAG?`,
+
+dataset: ["Snowflake connection configured in Airflow UI", "Connection ID: snowflake_practice", "Query: SELECT CURRENT_VERSION()"],
+
+output: ["Snowflake version: 10.33.101", "Task status: Success"],
+
+answer:`
+Definition:
+Airflow can connect to external databases such as Snowflake using an Airflow Connection and a suitable operator.
+
+In this practice:
+
+A Snowflake connection was created in the Airflow UI.
+
+The Connection ID was snowflake_practice.
+
+The DAG uses this connection ID to connect to Snowflake.
+
+The DAG executes SELECT CURRENT_VERSION().
+
+Snowflake successfully processes the query.
+
+The Airflow task finishes with a Success status.
+
+Flow:
+Airflow DAG → snowflake_practice Connection → Snowflake → Execute SQL → Task Success
+
+Full Code:
+
+from datetime import datetime
+
+from airflow import DAG
+from airflow.providers.snowflake.operators.snowflake import SQLExecuteQueryOperator
+
+with DAG(
+dag_id="snowflake_test",
+start_date=datetime(2026, 9, 17),
+schedule=None,
+catchup=False,
+) as dag:
+
+```
+test_snowflake = SQLExecuteQueryOperator(
+    task_id="test_snowflake_connection",
+    conn_id="snowflake_practice",
+    sql="SELECT CURRENT_VERSION();",
+)
+```
+
+Important:
+The conn_id must exactly match the Connection ID configured in the Airflow UI.
+
+Initially, we used snowflake_default, but that connection did not exist.
+
+The actual Connection ID was snowflake_practice, so we changed the DAG to use it.
+
+The Snowflake Account was configured as:
+
+JD85620.ap-southeast-7.aws
+
+This allowed the Snowflake connector to connect successfully.
+
+The query:
+
+SELECT CURRENT_VERSION();
+
+returned the Snowflake version:
+
+10.33.101
+
+However, the Airflow task log did not display 10.33.101 directly. Instead, it showed information such as:
+
+Running statement: select current_version();
+
+Rows affected: 1
+
+Snowflake query id: 01c722af-000d-ff52-0002-39660001400e
+
+Task instance in success state
+
+This is normal because Airflow is primarily used for orchestration and monitoring rather than displaying SQL query results like a database query tool.
+
+Main concept:
+Connection ID → Connect to Snowflake → Execute SQL → Monitor task → Success
+`
+},
+
 /* End of questions array */
 ];
 
