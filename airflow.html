@@ -4058,6 +4058,86 @@ This is our first practice where we perform actual data processing inside an Air
 `
 },
 
+    {
+title: "Airflow Practice 8 — Processing and XCom",
+
+question: `
+How can we process data in one Airflow task and pass the result to another task?`,
+
+dataset:[10, 20, 30, 40, 50],
+
+output:["Total: 150", "Total received from task 1: 150"],
+
+answer:`
+Definition:
+A task can process data, return a result, and pass that result to another task using XCom.
+
+In this practice:
+
+Task 1 calculates the total.
+
+Task 1 returns the total.
+
+Airflow stores the returned value as an XCom.
+
+Task 2 retrieves the value using xcom_pull.
+
+Flow:
+Input → Task 1 → Return value → XCom → Task 2 → Output
+
+Full Code:
+
+from airflow.sdk import DAG
+from airflow.providers.standard.operators.python import PythonOperator
+from datetime import datetime
+
+def calculate_total():
+numbers = [10, 20, 30, 40, 50]
+total = sum(numbers)
+ 
+print("Numbers:", numbers)
+print("Total:", total)
+
+return total
+ 
+
+def display_total(**context):
+total = context["ti"].xcom_pull(task_ids="calculate_total")
+print("Total received from task 1:", total)
+
+with DAG(
+dag_id="my_practice_8",
+schedule=None,
+catchup=False,
+start_date=datetime(2026, 9, 14),
+) as dag:
+
+ 
+task_1 = PythonOperator(
+    task_id="calculate_total",
+    python_callable=calculate_total,
+)
+
+task_2 = PythonOperator(
+    task_id="display_total",
+    python_callable=display_total,
+)
+
+task_1 >> task_2
+ 
+
+Important:
+return total sends the result from Task 1.
+
+xcom_pull retrieves the returned value in Task 2.
+
+task_1 >> task_2 defines the execution order.
+
+This is a common Airflow pattern:
+Process → Return → XCom → Consume
+`
+},
+
 /* End of questions array */
 ];
 
