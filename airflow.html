@@ -4270,13 +4270,11 @@ schedule=None,
 catchup=False,
 ) as dag:
 
-```
 test_snowflake = SQLExecuteQueryOperator(
     task_id="test_snowflake_connection",
     conn_id="snowflake_practice",
     sql="SELECT CURRENT_VERSION();",
 )
-```
 
 Important:
 The conn_id must exactly match the Connection ID configured in the Airflow UI.
@@ -4313,6 +4311,76 @@ This is normal because Airflow is primarily used for orchestration and monitorin
 
 Main concept:
 Connection ID → Connect to Snowflake → Execute SQL → Monitor task → Success
+`
+},
+
+    {
+title: "Airflow Practice 11 — Troubleshooting DAG Not Appearing",
+
+question: `
+What should I check if a newly created Airflow DAG file is not appearing in the Airflow UI?`,
+
+dataset: ["New DAG file: snowflake_xcom.py", "Existing DAG: snowflake_test"],
+
+output: ["DAG appears in the Airflow UI", "Or an import/parsing error is displayed"],
+
+answer:`
+Definition:
+When a new Python DAG file is created inside the Airflow dags folder, Airflow needs to parse the file successfully before displaying the DAG in the Airflow UI.
+
+If the DAG does not appear in the UI, the Python file may contain a syntax error, import error, or another DAG parsing problem.
+
+In this practice:
+
+We created a new file:
+
+snowflake_xcom.py
+
+The existing snowflake_test DAG was already visible in the Airflow UI.
+
+However, snowflake_xcom was not visible.
+
+Troubleshooting Steps:
+
+1. Open the Airflow UI.
+
+2. Go to the DAGs page.
+
+3. Look for Import Errors or DAG Import Errors.
+
+4. Open the import errors section.
+
+5. Check whether there is an error related to:
+
+snowflake_xcom.py
+
+If an error is displayed, copy the error message and review it before changing the DAG code.
+
+Flow:
+Create DAG file → Airflow parses Python file → Parsing successful → DAG appears in UI
+
+If parsing fails:
+
+Create DAG file → Airflow parses Python file → Parsing error → DAG does not appear
+
+Important:
+Do not immediately change the DAG code when a DAG is missing from the UI.
+
+First check the Import Errors section because it can show the exact reason why Airflow could not load the DAG.
+
+Common causes include:
+
+Syntax errors
+
+Incorrect imports
+
+Missing Python packages
+
+Incorrect indentation
+
+Invalid DAG configuration
+
+In our case, snowflake_test was already detected, so we should specifically check whether snowflake_xcom.py has a parsing or import error.
 `
 },
 
