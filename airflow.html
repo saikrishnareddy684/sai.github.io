@@ -4384,6 +4384,120 @@ In our case, snowflake_test was already detected, so we should specifically chec
 `
 },
 
+    {
+title: "Airflow Practice 11 — Snowflake Query Result and XCom",
+
+question: `
+How can we get a value from Snowflake in one Airflow task and pass that value to another task using XCom?`,
+
+dataset: ["Snowflake CURRENT_VERSION()", "Connection ID: snowflake_practice"],
+
+output: ["Snowflake version: 10.33.101", "Snowflake version received from Task 1: 10.33.101"],
+
+answer:`
+Definition:
+XCom allows one Airflow task to pass a small amount of data to another Airflow task.
+
+In this practice:
+
+Task 1 connects to Snowflake.
+
+Task 1 executes SELECT CURRENT_VERSION().
+
+The Snowflake query returns the version number.
+
+The result is pushed to XCom.
+
+Task 2 retrieves the value from XCom using xcom_pull.
+
+Task 2 displays the Snowflake version.
+
+Flow:
+Task 1 → Snowflake → Query Result → XCom → Task 2 → Display Result
+
+Full Code:
+
+from datetime import datetime
+
+from airflow import DAG
+from airflow.providers.snowflake.operators.snowflake import SQLExecuteQueryOperator
+from airflow.providers.standard.operators.python import PythonOperator
+
+def display_version(**context):
+version = context["ti"].xcom_pull(task_ids="get_snowflake_version")
+print("Snowflake version received from Task 1:", version)
+
+with DAG(
+dag_id="snowflake_xcom",
+start_date=datetime(2026, 9, 17),
+schedule=None,
+catchup=False,
+) as dag:
+
+task_1 = SQLExecuteQueryOperator(
+    task_id="get_snowflake_version",
+    conn_id="snowflake_practice",
+    sql="SELECT CURRENT_VERSION();",
+    do_xcom_push=True,
+)
+
+task_2 = PythonOperator(
+    task_id="display_version",
+    python_callable=display_version,
+)
+
+task_1 >> task_2
+
+Explanation:
+
+Task 1:
+
+SQLExecuteQueryOperator connects to Snowflake using the connection ID snowflake_practice.
+
+It executes:
+
+SELECT CURRENT_VERSION();
+
+The query returns:
+
+10.33.101
+
+The setting:
+
+do_xcom_push=True
+
+allows the task result to be pushed to XCom.
+
+Task 2:
+
+PythonOperator runs the display_version function.
+
+The following code retrieves the value stored by Task 1:
+
+context["ti"].xcom_pull(task_ids="get_snowflake_version")
+
+The value is then printed:
+
+Snowflake version received from Task 1: 10.33.101
+
+Important:
+
+do_xcom_push=True allows the task result to be stored in XCom.
+
+xcom_pull retrieves a value from another task.
+
+task_ids="get_snowflake_version" identifies the task from which the value is retrieved.
+
+task_1 >> task_2 defines the execution order.
+
+XCom is intended for passing relatively small amounts of data between tasks. It is not intended for passing millions of database rows.
+
+Main concept:
+Execute → Return Result → XCom → Retrieve → Use Result
+`
+},
+
+
 /* End of questions array */
 ];
 
