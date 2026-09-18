@@ -162,49 +162,1093 @@ const questions = [
 
 /* QUESTION 1 — Employee Visit Tracking */
 {
-title: "Stored Procedure - Fetch Customer By ID",
+title: "Power BI Interview — 25 Relationship and Data Modeling Questions",
 
 question: `
-Create a SQL Stored Procedure named fetchCustomerById.
+Question 1:
+Why is a dimension table usually on the 1 side and a fact table on the many side of a relationship?
 
-Requirements:
-1. Accept customer id as an input parameter.
-2. Fetch all columns from CUSTOMER_DIM.
-3. Store the SELECT result in a RESULTSET.
-4. Return the result using RETURN TABLE().
+Question 2:
+What happens if the column used on the 1 side of a Power BI relationship contains duplicate values?
+
+Question 3:
+What is the difference between Single and Both cross-filter directions?
+
+Question 4:
+Why do you prefer single-direction relationships in a star schema?
+
+Question 5:
+What is an ambiguous relationship or ambiguous filter path in Power BI?
+
+Question 6:
+What is a many-to-many relationship in Power BI?
+
+Question 7:
+What is a bridge table and why is it used for many-to-many relationships?
+
+Question 8:
+How would you establish the relationships between Customer, BridgeCustomerAccount, Account and FactSales?
+
+Question 9:
+If DimCustomer itself contains duplicate CustomerID values, can it be the 1 side of the relationship with BridgeCustomerAccount?
+
+Question 10:
+What is a role-playing dimension? Give an example using a Date dimension.
+
+Question 11:
+Explain active vs inactive relationships and give a practical example.
+
+Question 12:
+Why can only one relationship between the same two tables normally be active at a time?
+
+Question 13:
+What is cardinality in a Power BI relationship?
+
+Question 14:
+What is the difference between a Power BI relationship and a SQL JOIN?
+
+Question 15:
+What happens if a CustomerID exists in the fact table but does not exist in the Customer dimension?
+
+Question 16:
+Would you merge a dimension table into a 100-million-row fact table in Power Query?
+
+Question 17:
+What does filter mean in Power BI, and how does a dimension filter a fact table?
+
+Question 18:
+If a relationship is Many-to-one between FactSales and DimCustomer, does Many-to-one determine the filter direction?
+
+Question 19:
+How can bidirectional filtering create ambiguous paths, and how would you avoid that?
+
+Question 20:
+Can Power BI create a many-to-many relationship if I do not have a bridge table?
+
+Question 21:
+Why might you prefer a bridge table instead of a direct many-to-many relationship?
+
+Question 22:
+How does a customer filter reach the fact table through a bridge table?
+
+Question 23:
+When a user selects a customer in Power BI, is Power BI performing a SQL JOIN between the dimension and fact table?
+
+Question 24:
+Can two Power BI tables have multiple relationships between them?
+
+Question 25:
+Explain a complete Customer-to-Account many-to-many model using a bridge table.
 `,
-dataset:[
-{ID:1,NAME:"John",CITY:"London"},
-{ID:2,NAME:"David",CITY:"Paris"},
-{ID:3,NAME:"Alex",CITY:"Tokyo"}
+
+dataset: [
+"DimCustomer",
+"DimDate",
+"DimAccount",
+"DimProduct",
+"FactSales",
+"FactInternetSales",
+"BridgeCustomerAccount",
+"CustomerID",
+"AccountID",
+"OrderDate",
+"ShipDate",
+"DeliveryDate",
+"Power BI relationships"
 ],
-output:[
-{ID:2,NAME:"David",CITY:"Paris"}
+
+output: [
+"Cardinality",
+"Cross-filter direction",
+"Single vs Both filtering",
+"Active and inactive relationships",
+"Many-to-many modeling",
+"Bridge table design",
+"Role-playing dimensions",
+"Filter propagation",
+"Ambiguous filter paths",
+"Star schema design"
 ],
+
 answer:`
-CREATE OR REPLACE PROCEDURE fetchCustomerById(p_id INT)
-RETURNS TABLE()
-LANGUAGE SQL
-AS
-$$
-DECLARE
-    rs RESULTSET;
-BEGIN
+Question 1:
+Why is a dimension table usually on the 1 side and a fact table on the many side of a relationship?
 
-    rs := (
-        SELECT *
-        FROM CUSTOMER_DIM
-        WHERE ID=:p_id
-    );
+Answer:
 
-    RETURN TABLE(rs);
+In a star schema, dimension tables normally contain unique business entities, while fact tables contain multiple transactions related to those entities.
 
-END;
-$$;
+Example:
 
-CALL fetchCustomerById(2);
+DimCustomer:
+
+CustomerID | CustomerName
+101 | Sai
+102 | John
+
+FactSales:
+
+CustomerID | Sales
+101 | 500
+101 | 700
+102 | 300
+
+Relationship:
+
+DimCustomer[CustomerID] 1 → * FactSales[CustomerID]
+
+Customer 101 appears once in DimCustomer but can appear many times in FactSales.
+
+Therefore:
+
+Dimension = 1 side
+Fact = many side
+
+Main concept:
+
+Dimension describes the business entity.
+
+Fact stores multiple transactions for that entity.
+
+Question 2:
+What happens if the column used on the 1 side of a Power BI relationship contains duplicate values?
+
+Answer:
+
+If CustomerID is duplicated in DimCustomer, then CustomerID is not unique and the table cannot correctly act as the 1 side of a normal 1-to-many relationship.
+
+Example:
+
+DimCustomer:
+
+CustomerID
+101
+101
+102
+
+Because 101 appears twice, CustomerID is not unique.
+
+First, investigate why the duplicates exist.
+
+If CustomerID should be unique, clean or correct the dimension.
+
+If the business relationship is genuinely many-to-many, design the model using an appropriate bridge table.
+
+Important:
+
+Do not automatically remove duplicates without understanding why they exist.
+
+The correct solution depends on the business grain of the table.
+
+Question 3:
+What is the difference between Single and Both cross-filter directions?
+
+Answer:
+
+Single means the filter normally travels in one direction.
+
+Example:
+
+DimCustomer → FactSales
+
+If we select Customer = Sai, the filter flows from DimCustomer to FactSales.
+
+Both means filters can travel in both directions.
+
+Example:
+
+DimCustomer ↔ FactSales
+
+A filter applied to either table can potentially propagate to the other table.
+
+In a normal star schema, Single direction is generally preferred because it keeps filter propagation predictable.
+
+Important:
+
+Cardinality and cross-filter direction are different concepts.
+
+Cardinality answers:
+
+How many rows are related?
+
+Examples:
+
+1-to-many
+Many-to-one
+Many-to-many
+
+Cross-filter direction answers:
+
+Which direction can the filter travel?
+
+Examples:
+
+Single
+Both
+
+Question 4:
+Why do you prefer single-direction relationships in a star schema?
+
+Answer:
+
+In a star schema, filters normally need to flow from dimensions to the fact table.
+
+Example:
+
+DimCustomer → FactSales
+
+DimProduct → FactSales
+
+DimDate → FactSales
+
+Single-direction relationships keep the filter path simple and predictable.
+
+They also reduce the chance of ambiguous filter paths and make DAX calculations easier to understand.
+
+Interview answer:
+
+I prefer single-direction relationships because filters normally flow from dimensions to facts in a predictable direction. This keeps the model simple, reduces ambiguity, and makes DAX behavior easier to understand.
+
+Question 5:
+What is an ambiguous relationship or ambiguous filter path in Power BI?
+
+Answer:
+
+An ambiguous filter path occurs when Power BI has more than one possible path through which a filter can travel between tables.
+
+For example:
+
+DimCustomer → FactSales → DimProduct
+
+Another relationship may create an additional route between the same tables.
+
+If bidirectional relationships are also used, the number of possible filter paths can increase.
+
+Power BI may then have multiple possible routes for a filter to reach a table.
+
+This can cause ambiguous or unexpected filter behavior.
+
+To avoid this:
+
+Use a clean star schema.
+
+Prefer single-direction relationships.
+
+Avoid unnecessary bidirectional relationships.
+
+Use bridge tables where appropriate.
+
+Question 6:
+What is a many-to-many relationship in Power BI?
+
+Answer:
+
+A many-to-many relationship occurs when the relationship key can contain duplicate values on both sides.
+
+Example:
+
+Table A:
+
+CustomerID
+101
+101
+102
+
+Table B:
+
+CustomerID
+101
+101
+102
+
+CustomerID 101 appears multiple times on both sides.
+
+Therefore, the relationship can be many-to-many.
+
+Power BI supports direct many-to-many relationships.
+
+However, for a genuine business many-to-many relationship, a bridge table is often preferred because it makes the business relationship explicit and gives better control over filter propagation.
+
+Question 7:
+What is a bridge table and why is it used for many-to-many relationships?
+
+Answer:
+
+A bridge table is a table that stores the valid combinations between two entities when their relationship is many-to-many.
+
+Example:
+
+BridgeCustomerAccount:
+
+CustomerID | AccountID
+101 | A1
+101 | A2
+102 | A1
+
+This tells us:
+
+Customer 101 → Account A1
+
+Customer 101 → Account A2
+
+Customer 102 → Account A1
+
+The bridge makes the many-to-many business relationship explicit.
+
+A typical model is:
+
+DimCustomer
+1
+|
+*
+BridgeCustomerAccount
+*
+|
+1
+DimAccount
+1
+|
+*
+FactSales
+
+The bridge stores the CustomerID and AccountID mapping.
+
+Important:
+
+The bridge table represents the relationship between business entities. It is not simply a duplicate copy of a dimension.
+
+Question 8:
+How would you establish the relationships between Customer, BridgeCustomerAccount, Account and FactSales?
+
+Answer:
+
+The join conditions are:
+
+# DimCustomer[CustomerID]
+
+BridgeCustomerAccount[CustomerID]
+
+# BridgeCustomerAccount[AccountID]
+
+DimAccount[AccountID]
+
+# DimAccount[AccountID]
+
+FactSales[AccountID]
+
+The model is:
+
+DimCustomer
+1
+|
+*
+BridgeCustomerAccount
+*
+|
+1
+DimAccount
+1
+|
+*
+FactSales
+
+The filter path is:
+
+DimCustomer
+→ BridgeCustomerAccount
+→ DimAccount
+→ FactSales
+
+For example, selecting Customer 101 identifies the accounts associated with Customer 101 and then filters the corresponding fact records.
+
+Question 9:
+If DimCustomer itself contains duplicate CustomerID values, can it be the 1 side of the relationship with BridgeCustomerAccount?
+
+Answer:
+
+No.
+
+If DimCustomer contains:
+
+CustomerID
+101
+101
+102
+
+then CustomerID is not unique.
+
+Therefore DimCustomer cannot correctly be the 1 side of a 1-to-many relationship using CustomerID.
+
+If BridgeCustomerAccount contains:
+
+CustomerID | AccountID
+101 | A1
+101 | A2
+102 | A1
+
+then CustomerID is duplicated on both sides.
+
+That would be a many-to-many relationship.
+
+If we need a clean 1-to-many relationship, we need a table containing unique CustomerIDs.
+
+Example:
+
+DimCustomerUnique:
+
+CustomerID
+101
+102
+
+Then:
+
+DimCustomerUnique[CustomerID] 1 → * BridgeCustomerAccount[CustomerID]
+
+Important:
+
+First understand why the original DimCustomer contains duplicates.
+
+Do not blindly remove duplicates.
+
+Question 10:
+What is a role-playing dimension? Give an example using a Date dimension.
+
+Answer:
+
+A role-playing dimension is one dimension that is used for multiple business purposes or roles.
+
+Example:
+
+FactSales contains:
+
+OrderDate
+ShipDate
+DeliveryDate
+
+The same DimDate can be related to all three dates.
+
+Conceptually:
+
+DimDate → OrderDate
+
+DimDate → ShipDate
+
+DimDate → DeliveryDate
+
+The Date dimension is the role-playing dimension.
+
+Order Date, Ship Date and Delivery Date are the different roles.
+
+Important:
+
+OrderDate and ShipDate are not separate role-playing dimensions. They are different roles played by the Date dimension.
+
+Question 11:
+Explain active vs inactive relationships and give a practical example.
+
+Answer:
+
+Power BI can have multiple relationships between the same two tables, but normally only one relationship between those tables can be active at a time.
+
+Example:
+
+DimDate[Date] → FactSales[OrderDate]
+ACTIVE
+
+DimDate[Date] → FactSales[ShipDate]
+INACTIVE
+
+DimDate[Date] → FactSales[DeliveryDate]
+INACTIVE
+
+The active relationship is used automatically when calculations are performed.
+
+An inactive relationship can be activated inside a DAX measure using USERELATIONSHIP.
+
+Example:
+
+Sales by Ship Date =
+CALCULATE(
+[Total Sales],
+USERELATIONSHIP(
+DimDate[Date],
+FactSales[ShipDate]
+)
+)
+
+This allows the same Date dimension to be used for different business date roles.
+
+Question 12:
+Why can only one relationship between the same two tables normally be active at a time?
+
+Answer:
+
+If multiple relationships between the same two tables were active simultaneously, Power BI could have multiple active filter paths between those tables.
+
+For example:
+
+DimDate → OrderDate
+
+DimDate → ShipDate
+
+If both were active, a date selection could filter FactSales through both date columns at the same time.
+
+To avoid this ambiguity, one relationship is normally active and the others remain inactive.
+
+The inactive relationship can be explicitly used in a measure with USERELATIONSHIP.
+
+Question 13:
+What is cardinality in a Power BI relationship?
+
+Answer:
+
+Cardinality describes how many rows from one table can relate to rows in another table.
+
+Common types are:
+
+One-to-one:
+1 ↔ 1
+
+One-to-many:
+1 → *
+
+Many-to-one:
+
+* → 1
+
+Many-to-many:
+
+* ↔ *
+
+Typical star schema:
+
+DimCustomer[CustomerID] 1 → * FactSales[CustomerID]
+
+This means one customer can have many sales transactions.
+
+Question 14:
+What is the difference between a Power BI relationship and a SQL JOIN?
+
+Answer:
+
+A SQL JOIN physically combines rows from tables to produce a query result.
+
+Example:
+
+SELECT *
+FROM DimCustomer C
+JOIN FactSales F
+ON C.CustomerID = F.CustomerID;
+
+A Power BI relationship does not physically merge the tables.
+
+Instead, it defines how tables are related and how filters can propagate between them.
+
+Example:
+
+DimCustomer[CustomerID] 1 → * FactSales[CustomerID]
+
+If the user selects Customer = Sai, Power BI can use the relationship to filter the relevant fact rows.
+
+Main difference:
+
+SQL JOIN = combines rows for a query result.
+
+Power BI relationship = defines relationships and filter propagation between tables.
+
+Question 15:
+What happens if a CustomerID exists in the fact table but does not exist in the Customer dimension?
+
+Answer:
+
+If the fact table contains a CustomerID that does not exist in the dimension, the fact row has no matching customer dimension record.
+
+Example:
+
+DimCustomer:
+
+101
+102
+
+FactSales:
+
+101
+102
+999
+
+CustomerID 999 has no matching dimension row.
+
+This can cause the related dimension attributes to appear blank or be associated with an unknown member depending on the model and data design.
+
+In a data warehouse, a common solution is to create an Unknown Customer record, such as CustomerID = 0, and map invalid or missing customer keys to that member during ETL.
+
+Important:
+
+Referential integrity between dimensions and facts should be checked during data processing.
+
+Question 16:
+Would you merge a dimension table into a 100-million-row fact table in Power Query?
+
+Answer:
+
+Normally, I would avoid merging the entire dimension into a very large fact table unless there is a specific requirement.
+
+For example:
+
+FactSales:
+100 million rows
+
+DimCustomer:
+100 thousand customers
+
+Instead of duplicating customer attributes across 100 million fact rows, keep the tables separate and create a relationship:
+
+DimCustomer
+1
+|
+*
+FactSales
+
+This preserves the star schema and avoids unnecessary duplication.
+
+However, the correct design depends on the business requirement, source system and performance considerations.
+
+Question 17:
+What does filter mean in Power BI, and how does a dimension filter a fact table?
+
+Answer:
+
+A filter determines which rows should be considered for a visual or calculation.
+
+Example:
+
+DimCustomer:
+
+101 | Sai
+102 | John
+103 | David
+
+FactSales:
+
+101 | 500
+101 | 700
+102 | 300
+103 | 900
+101 | 200
+
+If the user selects Sai:
+
+CustomerID = 101
+
+The relationship allows the filter to flow:
+
+DimCustomer
+101
+↓
+FactSales
+
+The relevant fact rows are:
+
+101 | 500
+101 | 700
+101 | 200
+
+A Total Sales measure calculates:
+
+500 + 700 + 200 = 1400
+
+So:
+
+User selection
+→ Dimension filter
+→ Relationship
+→ Relevant fact rows
+→ Measure calculation
+
+Question 18:
+If a relationship is Many-to-one between FactSales and DimCustomer, does Many-to-one determine the filter direction?
+
+Answer:
+
+No.
+
+This is an important distinction.
+
+Cardinality and cross-filter direction are separate concepts.
+
+Suppose Power BI shows:
+
+FactSales[*]
+|
+DimCustomer[1]
+
+with cardinality:
+
+Many-to-one (*:1)
+
+This only tells us how many rows are related.
+
+It does not tell us which direction the filter flows.
+
+If Cross-filter direction is Single, the normal star-schema filter flow is:
+
+DimCustomer
+↓
+FactSales
+
+If Cross-filter direction is Both:
+
+DimCustomer
+↕
+FactSales
+
+filters can propagate in both directions.
+
+Therefore:
+
+Cardinality answers:
+How many rows are related?
+
+Cross-filter direction answers:
+Which direction can the filter travel?
+
+For your Power BI AdventureWorks model, if you see:
+
+FactInternetSales
+Many to one (*:1)
+DimCustomer
+
+and:
+
+Cross-filter direction = Single
+
+the normal filter flow is:
+
+DimCustomer → FactInternetSales.
+
+The fact that Power BI displays the relationship as Many-to-one does not mean the filter flows from FactInternetSales to DimCustomer.
+
+Question 19:
+How can bidirectional filtering create ambiguous paths, and how would you avoid that?
+
+Answer:
+
+Bidirectional filtering allows filters to travel in both directions.
+
+This can become problematic when a model contains multiple relationships between tables.
+
+A filter may be able to travel through more than one path.
+
+For example:
+
+Customer
+↓
+Fact
+↑
+Product
+
+If additional bidirectional relationships exist, Power BI may have multiple possible routes for a filter to travel.
+
+This can create ambiguous filter paths or unexpected filter behavior.
+
+To avoid this:
+
+Prefer single-direction relationships in a star schema.
+
+Use bidirectional relationships only when there is a clear requirement.
+
+Use bridge tables for genuine many-to-many scenarios.
+
+Keep the model as a clean star schema as much as possible.
+
+Interview answer:
+
+Bidirectional filtering can create multiple filter paths and ambiguous behavior in a complex model. I normally prefer single-direction relationships and use bidirectional filtering only when there is a specific business requirement.
+
+Question 20:
+Can Power BI create a many-to-many relationship if I do not have a bridge table?
+
+Answer:
+
+Yes.
+
+Power BI supports a direct many-to-many relationship when the relationship key contains duplicate values on both sides.
+
+Example:
+
+DimCustomer:
+
+101
+101
+102
+
+FactSales:
+
+101
+101
+102
+
+CustomerID 101 exists multiple times in both tables.
+
+Power BI can create:
+
+DimCustomer[*] ↔ FactSales[*]
+
+However, this does not mean a bridge table is unnecessary in every business scenario.
+
+If the relationship is genuinely many-to-many, a bridge table can make the business mapping explicit and provide better control over filtering.
+
+Also, if the duplicate CustomerID in DimCustomer is unexpected, we should first investigate and correct the dimension rather than simply choosing many-to-many.
+
+Question 21:
+Why might you prefer a bridge table instead of a direct many-to-many relationship?
+
+Answer:
+
+A bridge table explicitly stores the many-to-many mapping.
+
+Example:
+
+BridgeCustomerAccount:
+
+CustomerID | AccountID
+101 | A1
+101 | A2
+102 | A1
+
+This clearly tells us which accounts belong to which customers.
+
+The model becomes:
+
+DimCustomer
+1
+|
+*
+BridgeCustomerAccount
+*
+|
+1
+DimAccount
+1
+|
+*
+FactSales
+
+Advantages include:
+
+The business relationship is explicit.
+
+The model is easier to understand.
+
+Filter paths can be controlled.
+
+The bridge can contain additional mapping information if required.
+
+A direct many-to-many relationship can still be valid in some models, but a bridge is often preferable when the business relationship itself needs to be represented.
+
+Question 22:
+How does a customer filter reach the fact table through a bridge table?
+
+Answer:
+
+Suppose:
+
+DimCustomer:
+
+101 | Sai
+
+BridgeCustomerAccount:
+
+101 | A1
+101 | A2
+
+DimAccount:
+
+A1 | Savings
+A2 | Current
+
+FactSales:
+
+A1 | 500
+A1 | 700
+A2 | 300
+
+If the user selects Customer 101:
+
+Step 1:
+
+DimCustomer filters CustomerID 101.
+
+Step 2:
+
+The filter travels to BridgeCustomerAccount.
+
+The bridge finds:
+
+101 | A1
+101 | A2
+
+Step 3:
+
+Those AccountIDs filter DimAccount.
+
+Step 4:
+
+DimAccount filters FactSales.
+
+Fact rows become:
+
+A1 | 500
+A1 | 700
+A2 | 300
+
+Total:
+
+1500
+
+Filter flow:
+
+DimCustomer
+→ BridgeCustomerAccount
+→ DimAccount
+→ FactSales
+
+Question 23:
+When a user selects a customer in Power BI, is Power BI performing a SQL JOIN between the dimension and fact table?
+
+Answer:
+
+Not in the same way as a traditional SQL JOIN.
+
+The relationship defines how the filter propagates between the tables.
+
+Example:
+
+DimCustomer[CustomerID] 1 → * FactSales[CustomerID]
+
+When the user selects Customer 101, Power BI uses the relationship to identify the relevant fact rows for the calculation.
+
+Conceptually:
+
+Customer selection
+→ Relationship
+→ Filtered fact rows
+→ Measure
+
+The relationship is therefore primarily about the semantic model and filter propagation, while a SQL JOIN explicitly combines rows into a query result.
+
+Question 24:
+Can two Power BI tables have multiple relationships between them?
+
+Answer:
+
+Yes.
+
+Two tables can have multiple relationships.
+
+For example:
+
+DimDate[Date] → FactSales[OrderDate]
+
+DimDate[Date] → FactSales[ShipDate]
+
+DimDate[Date] → FactSales[DeliveryDate]
+
+However, normally only one relationship between those two tables can be active at a time.
+
+The other relationships can remain inactive and be used explicitly in DAX with USERELATIONSHIP.
+
+Question 25:
+Explain a complete Customer-to-Account many-to-many model using a bridge table.
+
+Answer:
+
+Suppose one customer can have multiple accounts and one account can be associated with multiple customers.
+
+We create:
+
+DimCustomer:
+
+CustomerID
+101
+102
+
+BridgeCustomerAccount:
+
+CustomerID | AccountID
+101 | A1
+101 | A2
+102 | A1
+
+DimAccount:
+
+AccountID
+A1
+A2
+
+FactSales:
+
+AccountID | Sales
+A1 | 500
+A1 | 700
+A2 | 300
+
+Relationships:
+
+DimCustomer[CustomerID]
+1 →
+*
+BridgeCustomerAccount[CustomerID]
+
+BridgeCustomerAccount[AccountID]
+
+* →
+  1
+  DimAccount[AccountID]
+
+DimAccount[AccountID]
+1 →
+*
+FactSales[AccountID]
+
+The filter path is:
+
+Customer
+→ Bridge
+→ Account
+→ Fact
+
+If Customer 101 is selected, the bridge identifies A1 and A2, which then filter the corresponding sales records.
+
+This is a clean way to represent a genuine many-to-many business relationship.
+
+Final interview memory:
+
+Cardinality tells me how many rows are related.
+
+Cross-filter direction tells me where the filter travels.
+
+Dimension normally sits on the 1 side.
+
+Fact normally sits on the many side.
+
+Single direction normally means:
+
+Dimension → Fact.
+
+Both direction means:
+
+Dimension ↔ Fact.
+
+A bridge table represents a genuine many-to-many business mapping.
+
+An inactive relationship can be used in DAX with USERELATIONSHIP.
+
+A role-playing dimension is one dimension used in multiple business roles.
+
+For a clean star schema, I normally prefer controlled, single-direction filter propagation.
 `
-},
+}
  
 /* End of questions array */
 ];
