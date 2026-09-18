@@ -2837,6 +2837,73 @@ ORDER BY → What is the sequence?
 SUM() → Calculate the cumulative total.
 `
 }
+    ,
+
+    {
+    title: "SQL Interview Question 18 — LEAD() Function",
+
+    question: `
+Write a SQL query to display each employee's salary along with the salary of the next-highest-paid employee in the same department.`,
+
+    dataset: `
+Employee table:
+
+| EmployeeID | EmployeeName | Department | Salary |
+|------------|--------------|------------|--------|
+| 1          | A            | IT         | 70000  |
+| 2          | B            | IT         | 80000  |
+| 3          | C            | IT         | 60000  |
+| 4          | D            | HR         | 75000  |
+| 5          | E            | HR         | 65000  |
+| 6          | F            | HR         | 55000  |`,
+
+    output: `
+| EmployeeName | Department | Salary | NextSalary |
+|--------------|------------|--------|------------|
+| B            | IT         | 80000 | 70000      |
+| A            | IT         | 70000 | 60000      |
+| C            | IT         | 60000 | NULL       |
+| D            | HR         | 75000 | 65000      |
+| E            | HR         | 65000 | 55000      |
+| F            | HR         | 55000 | NULL       |`,
+
+    answer: `
+SELECT
+    EmployeeName,
+    Department,
+    Salary,
+    LEAD(Salary) OVER (
+        PARTITION BY Department
+        ORDER BY Salary DESC
+    ) AS NextSalary
+FROM Employee;
+
+Explanation:
+
+LEAD() is used to access the value from the next row within the window.
+
+PARTITION BY Department
+→ Separates employees department-wise.
+
+ORDER BY Salary DESC
+→ Arranges employees from highest salary to lowest salary within each department.
+
+LEAD(Salary)
+→ Gets the salary from the next row in that order.
+
+For example, in IT:
+
+B → 80000 → next salary is 70000
+A → 70000 → next salary is 60000
+C → 60000 → no next row, so NULL
+
+Interview point:
+
+LAG() looks at the previous row.
+LEAD() looks at the next row.
+
+Here we need the next row, so LEAD() is used.`
+}
 /* End of questions array */
 ];
 
