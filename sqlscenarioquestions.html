@@ -2352,6 +2352,148 @@ The window function approach is useful when ranking logic is required.
 The GROUP BY + JOIN approach is useful when we only need the maximum value for each group and want to join it back to the original table.
 `
 }
+    ,
+    {
+    title: "Highest-Paid Employee in Each Department",
+
+    question: `
+Write a SQL query to find the highest-paid employee in each department.
+
+Solve the problem using:
+1. A window function
+2. A GROUP BY and JOIN approach without using a window function
+
+If multiple employees have the same highest salary in a department, return all of them.
+`,
+
+    dataset: `
+Employee
+EmployeeID | EmployeeName | Department | Salary
+1          | A            | IT         | 70000
+2          | B            | IT         | 80000
+3          | C            | IT         | 60000
+4          | D            | HR         | 75000
+5          | E            | HR         | 65000
+6          | F            | HR         | 55000
+`,
+
+    output: `
+EmployeeName | Salary | Department
+B            | 80000  | IT
+D            | 75000  | HR
+`,
+
+    answer: `
+Approach 1: Using a Window Function
+
+SELECT
+    EmployeeID,
+    EmployeeName,
+    Department,
+    Salary
+FROM (
+    SELECT
+        EmployeeID,
+        EmployeeName,
+        Department,
+        Salary,
+        DENSE_RANK() OVER (
+            PARTITION BY Department
+            ORDER BY Salary DESC
+        ) AS r
+    FROM Employee
+) a
+WHERE r = 1;
+
+
+Explanation:
+
+DENSE_RANK() ranks employees separately within each department.
+
+PARTITION BY Department → Creates a separate ranking for each department.
+
+ORDER BY Salary DESC → Places the highest salary first.
+
+WHERE r = 1 → Returns the highest-paid employee or employees.
+
+DENSE_RANK() also handles ties. If two employees have the same highest salary, both receive rank 1 and both are returned.
+
+
+Approach 2: Without a Window Function
+
+We can use GROUP BY to find the maximum salary for each department and then JOIN that result back to the Employee table.
+
+SELECT
+    a.EmployeeID,
+    a.EmployeeName,
+    a.Department,
+    a.Salary
+FROM Employee a
+JOIN (
+    SELECT
+        Department,
+        MAX(Salary) AS MaxSalary
+    FROM Employee
+    GROUP BY Department
+) b
+    ON a.Department = b.Department
+   AND a.Salary = b.MaxSalary;
+
+
+Explanation:
+
+The subquery calculates the maximum salary for each department.
+
+GROUP BY Department → Calculates MAX(Salary) separately for each department.
+
+Then we JOIN the result back to Employee using Department and Salary.
+
+If multiple employees have the same maximum salary, all matching employees are returned.
+
+
+Example with a Tie:
+
+Suppose IT has:
+
+A → 80000
+B → 80000
+C → 70000
+
+The subquery returns:
+
+IT → 80000
+
+Both A and B match the maximum salary, so both are returned.
+
+
+Key Difference:
+
+Window Function Approach:
+
+DENSE_RANK() OVER (
+    PARTITION BY Department
+    ORDER BY Salary DESC
+)
+
+This ranks every employee and then filters rank 1.
+
+Without Window Function:
+
+MAX(Salary)
+GROUP BY Department
+
+This first finds the maximum salary for each department and then joins it back to the Employee table.
+
+
+Interview Point:
+
+Both approaches can return the same result.
+
+The window function approach is useful when ranking logic is required.
+
+The GROUP BY + JOIN approach is useful when we only need the maximum value for each group and want to join it back to the original table.
+`
+}
 /* End of questions array */
 ];
 
