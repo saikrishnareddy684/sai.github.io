@@ -1635,6 +1635,52 @@ SELECT
 FROM customer_orders;
 `
 },
+
+    {
+    question: `
+A company has an Employee table containing employee salaries.
+
+Write a SQL query to find the second-highest distinct salary
+in each department, along with the employee name and salary.
+
+If multiple employees have the same second-highest salary,
+return all of those employees.
+
+Output columns: Department, EmployeeName, Salary.
+`,
+    dataset: [
+        {employee_id:"1", employee_name:"A", department:"IT", salary:"50000"},
+        {employee_id:"2", employee_name:"B", department:"IT", salary:"70000"},
+        {employee_id:"3", employee_name:"C", department:"IT", salary:"70000"},
+        {employee_id:"4", employee_name:"D", department:"IT", salary:"60000"},
+        {employee_id:"5", employee_name:"E", department:"HR", salary:"60000"},
+        {employee_id:"6", employee_name:"F", department:"HR", salary:"80000"},
+        {employee_id:"7", employee_name:"G", department:"HR", salary:"80000"},
+        {employee_id:"8", employee_name:"H", department:"HR", salary:"70000"}
+    ],
+    output: [
+        {department:"IT", employee_name:"D", salary:"60000"},
+        {department:"HR", employee_name:"H", salary:"70000"}
+    ],
+    answer: `
+SELECT
+    department,
+    employeename,
+    salary
+FROM (
+    SELECT
+        department,
+        employeename,
+        salary,
+        DENSE_RANK() OVER (
+            PARTITION BY department
+            ORDER BY salary DESC
+        ) AS r
+    FROM employee
+) a
+WHERE r = 2;
+`
+},
 /* End of questions array */
 ];
 
