@@ -1860,6 +1860,129 @@ LAST_VALUE() → Last value in the window
 NTILE() → Divide rows into buckets
 `
 }
+    {
+    title: "SQL Window SUM vs Running Total",
+
+    question: `
+What is the difference between a normal window SUM() and a running total using SUM()?
+`,
+
+    dataset: `
+Employee
+EmployeeName | Department | Salary
+A            | IT         | 50000
+B            | IT         | 60000
+C            | IT         | 70000
+`,
+
+    output: `
+For a normal window SUM():
+
+EmployeeName | Salary | Total Department Salary
+A            | 50000  | 180000
+B            | 60000  | 180000
+C            | 70000  | 180000
+
+For a running total:
+
+EmployeeName | Salary | Running Total
+A            | 50000  | 50000
+B            | 60000  | 110000
+C            | 70000  | 180000
+`,
+
+    answer: `
+The main difference is the ORDER BY clause used inside the window function.
+
+1. Normal Window SUM()
+
+When SUM() uses only PARTITION BY and does not have ORDER BY, it calculates the total for the entire partition and displays the same total on every row.
+
+Example:
+
+SUM(Salary) OVER (
+    PARTITION BY Department
+)
+
+For the IT department:
+
+50000 + 60000 + 70000 = 180000
+
+So every IT employee will show 180000 as the total department salary.
+
+This is a window aggregate function, but it is not a running total.
+
+
+2. Running Total
+
+When SUM() uses PARTITION BY together with ORDER BY, the SUM is calculated progressively according to the specified row order.
+
+Example:
+
+SUM(Salary) OVER (
+    PARTITION BY Department
+    ORDER BY Salary
+)
+
+The result will be:
+
+50000 → 50000
+60000 → 110000
+70000 → 180000
+
+This is called a running total or cumulative total.
+
+
+Important Point:
+
+It is not specifically ORDER BY Salary DESC that makes it a running total.
+
+Both ASC and DESC can be used.
+
+ASC:
+
+SUM(Salary) OVER (
+    PARTITION BY Department
+    ORDER BY Salary ASC
+)
+
+Running calculation:
+
+50000 → 50000
+60000 → 110000
+70000 → 180000
+
+
+DESC:
+
+SUM(Salary) OVER (
+    PARTITION BY Department
+    ORDER BY Salary DESC
+)
+
+Running calculation:
+
+70000 → 70000
+60000 → 130000
+50000 → 180000
+
+
+Interview Definition:
+
+A window SUM() with only PARTITION BY calculates the aggregate total for the entire partition while retaining the individual rows.
+
+When ORDER BY is added to the window definition, the SUM() is calculated progressively according to the specified row order, which is commonly used to calculate a running or cumulative total.
+
+
+Easy Memory:
+
+PARTITION BY only
+→ Total for the entire group
+
+PARTITION BY + ORDER BY
+→ Progressive / Running Total
+`
+}
 /* End of questions array */
 ];
 
