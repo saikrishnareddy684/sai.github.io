@@ -2644,6 +2644,102 @@ When the requirement says "exactly N rows per group", ROW_NUMBER() is generally 
 When the requirement says "top N distinct salary levels including ties", DENSE_RANK() is generally appropriate.
 `
 }
+    ,
+    {
+    title: "Department Maximum Salary Using a Window Function",
+
+    question: `
+Write a SQL query to find the highest salary in each department and display it alongside every employee in that department.
+`,
+
+    dataset: `
+Employee
+EmployeeID | EmployeeName | Department | Salary
+1          | A            | IT         | 70000
+2          | B            | IT         | 80000
+3          | C            | IT         | 60000
+4          | D            | HR         | 75000
+5          | E            | HR         | 65000
+6          | F            | HR         | 55000
+`,
+
+    output: `
+EmployeeName | Department | Salary | HighestDeptSalary
+A            | IT         | 70000  | 80000
+B            | IT         | 80000  | 80000
+C            | IT         | 60000  | 80000
+D            | HR         | 75000  | 75000
+E            | HR         | 65000  | 75000
+F            | HR         | 55000  | 75000
+`,
+
+    answer: `
+SELECT
+    EmployeeName,
+    Department,
+    Salary,
+    MAX(Salary) OVER (
+        PARTITION BY Department
+    ) AS HighestDeptSalary
+FROM Employee;
+
+
+Explanation:
+
+MAX(Salary) OVER (PARTITION BY Department) calculates the maximum salary separately for each department while retaining every employee row.
+
+PARTITION BY Department → Creates a separate logical group for each department.
+
+MAX(Salary) → Finds the highest salary within each department.
+
+Because this is a window function, the employee rows are not collapsed. The department's highest salary is displayed alongside every employee in that department.
+
+
+For IT:
+
+70000, 80000, 60000
+
+Highest salary = 80000
+
+Therefore, every IT employee displays 80000 as HighestDeptSalary.
+
+
+For HR:
+
+75000, 65000, 55000
+
+Highest salary = 75000
+
+Therefore, every HR employee displays 75000 as HighestDeptSalary.
+
+
+Comparison with GROUP BY:
+
+Using GROUP BY:
+
+SELECT
+    Department,
+    MAX(Salary) AS HighestDeptSalary
+FROM Employee
+GROUP BY Department;
+
+This returns one row per department.
+
+
+Using a Window Function:
+
+MAX(Salary) OVER (
+    PARTITION BY Department
+)
+
+This retains every employee row and displays the department maximum alongside it.
+
+
+Interview Explanation:
+
+I used MAX as a window function with PARTITION BY Department. This calculates the maximum salary separately for each department while retaining every employee row in the result.
+`
+}
 /* End of questions array */
 ];
 
