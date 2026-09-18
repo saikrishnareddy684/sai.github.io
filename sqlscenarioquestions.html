@@ -3138,6 +3138,89 @@ NOT EXISTS
 
 EXISTS is commonly used when we only need to check whether a related record exists, rather than retrieving data from that related table.`
 }
+    ,
+    {
+    title: "SQL Interview Question 38 — Find Missing Numbers",
+
+    question: `
+Given an Orders table containing OrderID values, write a SQL query to identify the missing OrderIDs between the minimum and maximum OrderID.
+
+For example, if the existing OrderIDs are 101, 102, 103, 105, 106, and 108, the missing OrderIDs should be 104 and 107.`,
+
+    dataset: `
+Orders table:
+
+| OrderID |
+|---------|
+| 101     |
+| 102     |
+| 103     |
+| 105     |
+| 106     |
+| 108     |`,
+
+    output: `
+| MissingOrderID |
+|----------------|
+| 104            |
+| 107            |`,
+
+    answer: `
+WITH OrderNumbers AS (
+    SELECT MIN(OrderID) AS OrderID
+    FROM Orders
+
+    UNION ALL
+
+    SELECT OrderID + 1
+    FROM OrderNumbers
+    WHERE OrderID < (
+        SELECT MAX(OrderID)
+        FROM Orders
+    )
+)
+SELECT
+    OrderID AS MissingOrderID
+FROM OrderNumbers
+WHERE NOT EXISTS (
+    SELECT 1
+    FROM Orders o
+    WHERE o.OrderID = OrderNumbers.OrderID
+)
+OPTION (MAXRECURSION 0);
+
+Explanation:
+
+The recursive CTE generates every number between the minimum and maximum OrderID.
+
+For this example, it generates:
+
+101
+102
+103
+104
+105
+106
+107
+108
+
+The NOT EXISTS condition then checks which generated numbers are not present in the Orders table.
+
+104 is not present, so it is returned.
+107 is not present, so it is returned.
+
+Interview point:
+
+This is a gaps-and-islands type of problem.
+
+The basic approach is:
+
+1. Generate the complete sequence.
+2. Compare it with the existing values.
+3. Return the values that are missing.
+
+The recursive CTE is used here to generate the sequence of numbers.`
+}
 /* End of questions array */
 ];
 
