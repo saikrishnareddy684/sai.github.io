@@ -2494,6 +2494,156 @@ The window function approach is useful when ranking logic is required.
 The GROUP BY + JOIN approach is useful when we only need the maximum value for each group and want to join it back to the original table.
 `
 }
+    ,
+    {
+    title: "Top 2 Employees Per Department — Exactly 2 Rows",
+
+    question: `
+Write a SQL query to find the top 2 highest-paid employees in each department.
+
+The requirement is to return exactly 2 employees per department, even if there is a salary tie.
+
+Solve the problem using:
+1. A window function
+2. An approach without a window function
+`,
+
+    dataset: `
+Employee
+EmployeeID | EmployeeName | Department | Salary
+1          | A            | IT         | 70000
+2          | B            | IT         | 80000
+3          | C            | IT         | 80000
+4          | D            | HR         | 60000
+5          | E            | HR         | 75000
+6          | F            | HR         | 75000
+`,
+
+    output: `
+EmployeeID | EmployeeName | Department | Salary
+2          | B            | IT         | 80000
+3          | C            | IT         | 80000
+5          | E            | HR         | 75000
+6          | F            | HR         | 75000
+`,
+
+    answer: `
+Approach 1: Using a Window Function
+
+The best window function for this requirement is ROW_NUMBER() because we need exactly 2 employees from each department.
+
+SELECT
+    EmployeeID,
+    EmployeeName,
+    Department,
+    Salary
+FROM (
+    SELECT
+        EmployeeID,
+        EmployeeName,
+        Department,
+        Salary,
+        ROW_NUMBER() OVER (
+            PARTITION BY Department
+            ORDER BY Salary DESC, EmployeeID
+        ) AS rn
+    FROM Employee
+) a
+WHERE rn <= 2;
+
+
+Explanation:
+
+PARTITION BY Department creates a separate numbering sequence for each department.
+
+ORDER BY Salary DESC puts the highest-paid employees first.
+
+EmployeeID is added as a second ordering column to make the result deterministic when two employees have the same salary.
+
+ROW_NUMBER() assigns a unique number to every employee, even when salaries are tied.
+
+WHERE rn <= 2 returns exactly two employees from each department.
+
+
+Approach 2: Without a Window Function
+
+Without a window function, one common approach is to use a correlated subquery.
+
+SELECT
+    e.EmployeeID,
+    e.EmployeeName,
+    e.Department,
+    e.Salary
+FROM Employee e
+WHERE (
+    SELECT COUNT(*)
+    FROM Employee e2
+    WHERE e2.Department = e.Department
+      AND (
+          e2.Salary > e.Salary
+          OR (
+              e2.Salary = e.Salary
+              AND e2.EmployeeID < e.EmployeeID
+          )
+      )
+) < 2;
+
+
+Explanation:
+
+For each employee, the correlated subquery counts how many employees in the same department should come before that employee.
+
+An employee comes before another employee when:
+
+1. Their salary is higher, or
+2. Their salary is the same but their EmployeeID is smaller.
+
+If fewer than 2 employees come before the current employee, that employee belongs to the top 2.
+
+
+Important Difference Between Ranking Functions:
+
+ROW_NUMBER():
+
+Returns exactly 2 employees per department when filtered using rn <= 2.
+
+Ties receive different row numbers.
+
+RANK():
+
+Can return more than 2 employees because tied employees receive the same rank.
+
+DENSE_RANK():
+
+Can also return more than 2 employees because tied employees receive the same rank.
+
+
+Example:
+
+Suppose IT has:
+
+B → 80000
+C → 80000
+A → 70000
+
+ROW_NUMBER():
+
+B → 1
+C → 2
+A → 3
+
+Filtering rn <= 2 returns B and C.
+
+This gives exactly 2 employees.
+
+
+Interview Point:
+
+When the requirement says "exactly N rows per group", ROW_NUMBER() is generally the appropriate choice.
+
+When the requirement says "top N distinct salary levels including ties", DENSE_RANK() is generally appropriate.
+`
+}
 /* End of questions array */
 ];
 
