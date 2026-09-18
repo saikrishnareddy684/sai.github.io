@@ -2109,6 +2109,107 @@ Both approaches produce the same result.
 A window function is often more direct because it calculates the department average without collapsing the employee rows.
 `
 }
+
+    {
+    title: "LAG() — Difference Between Current and Previous Order",
+
+    question: `
+You have an Orders table.
+
+Write a SQL query to find the difference between the current order amount and the previous order amount for each customer.
+
+Use LAG() to identify the previous order amount.
+`,
+
+    dataset: `
+Orders
+CustomerID | OrderID | OrderDate   | Amount
+101        | O1      | 2026-01-01  | 500
+101        | O2      | 2026-01-05  | 700
+101        | O3      | 2026-01-10  | 300
+102        | O4      | 2026-01-02  | 900
+102        | O5      | 2026-01-08  | 400
+`,
+
+    output: `
+CustomerID | OrderID | Amount | PreviousAmount | Difference
+101        | O1      | 500    | NULL           | NULL
+101        | O2      | 700    | 500            | 200
+101        | O3      | 300    | 700            | -400
+102        | O4      | 900    | NULL           | NULL
+102        | O5      | 400    | 900            | -500
+`,
+
+    answer: `
+SELECT
+    CustomerID,
+    OrderID,
+    Amount,
+    PreviousAmount,
+    Amount - PreviousAmount AS Difference
+FROM (
+    SELECT
+        CustomerID,
+        OrderID,
+        Amount,
+        LAG(Amount) OVER (
+            PARTITION BY CustomerID
+            ORDER BY OrderDate
+        ) AS PreviousAmount
+    FROM Orders
+) a;
+
+
+Explanation:
+
+LAG(Amount) is used to retrieve the amount from the previous row.
+
+PARTITION BY CustomerID ensures that the previous amount is taken only from the same customer.
+
+ORDER BY OrderDate determines the sequence of orders and therefore identifies which order is considered the previous order.
+
+For the first order of each customer, there is no previous order, so LAG() returns NULL.
+
+Then the outer query calculates:
+
+Amount - PreviousAmount AS Difference
+
+
+For Customer 101:
+
+O1 → 500, previous amount is NULL, difference is NULL.
+
+O2 → 700, previous amount is 500, difference is 200.
+
+O3 → 300, previous amount is 700, difference is -400.
+
+
+For Customer 102:
+
+O4 → 900, previous amount is NULL, difference is NULL.
+
+O5 → 400, previous amount is 900, difference is -500.
+
+
+Interview Explanation:
+
+I used LAG() to retrieve the previous order amount for each customer. I partitioned the data by CustomerID so that the comparison happens within each customer, and I ordered the rows by OrderDate to determine the previous order. Finally, I subtracted the previous amount from the current amount to calculate the difference.
+
+
+Important Pattern:
+
+LAG(Column) OVER (
+    PARTITION BY GroupColumn
+    ORDER BY SequenceColumn
+)
+
+PARTITION BY → Which group?
+
+ORDER BY → What is the sequence?
+
+LAG() → Get the previous row's value.
+`
+}
 /* End of questions array */
 ];
 
