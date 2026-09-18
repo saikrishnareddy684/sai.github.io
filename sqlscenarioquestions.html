@@ -1983,6 +1983,132 @@ PARTITION BY + ORDER BY
 → Progressive / Running Total
 `
 }
+    {
+    title: "Employees Earning More Than Department Average",
+
+    question: `
+Find the employees who earn more than the average salary of their respective department.
+
+Solve the problem using:
+1. A window function
+2. A GROUP BY and JOIN approach without using a window function
+`,
+
+    dataset: `
+Employee
+EmployeeID | EmployeeName | Department | Salary
+1          | A            | IT         | 70000
+2          | B            | IT         | 80000
+3          | C            | IT         | 80000
+4          | D            | HR         | 60000
+5          | E            | HR         | 75000
+6          | F            | HR         | 70000
+`,
+
+    output: `
+EmployeeName | Department | Salary
+B            | IT         | 80000
+C            | IT         | 80000
+E            | HR         | 75000
+F            | HR         | 70000
+`,
+
+    answer: `
+Approach 1: Using a Window Function
+
+SELECT
+    EmployeeID,
+    EmployeeName,
+    Department,
+    Salary
+FROM (
+    SELECT
+        EmployeeID,
+        EmployeeName,
+        Department,
+        Salary,
+        AVG(Salary) OVER (
+            PARTITION BY Department
+        ) AS AvgSalary
+    FROM Employee
+) a
+WHERE Salary > AvgSalary;
+
+
+Explanation:
+
+AVG(Salary) OVER (PARTITION BY Department) calculates the average salary separately for each department while keeping every employee row.
+
+For IT:
+
+70000 + 80000 + 80000 = 230000
+
+Average = 76666.67
+
+Therefore, employees B and C qualify.
+
+For HR:
+
+60000 + 75000 + 70000 = 205000
+
+Average = 68333.33
+
+Therefore, employees E and F qualify.
+
+
+Approach 2: Without a Window Function
+
+We can first calculate the average salary for each department using GROUP BY and then JOIN that result back to the Employee table.
+
+SELECT
+    a.EmployeeID,
+    a.EmployeeName,
+    a.Department,
+    a.Salary
+FROM Employee a
+JOIN (
+    SELECT
+        Department,
+        AVG(Salary) AS AvgSalary
+    FROM Employee
+    GROUP BY Department
+) b
+    ON a.Department = b.Department
+WHERE a.Salary > b.AvgSalary;
+
+
+Explanation:
+
+The subquery calculates one average salary for each department.
+
+Then we join the department average back to every employee using Department.
+
+Finally, the WHERE condition compares each employee's salary with the average salary of their department.
+
+
+Key Difference:
+
+Window Function Approach:
+
+AVG(Salary) OVER (PARTITION BY Department)
+
+This calculates the department average while retaining every employee row.
+
+GROUP BY + JOIN Approach:
+
+SELECT Department, AVG(Salary)
+FROM Employee
+GROUP BY Department
+
+This first produces one row per department, and then we JOIN it back to the Employee table.
+
+Interview Point:
+
+Both approaches produce the same result.
+
+A window function is often more direct because it calculates the department average without collapsing the employee rows.
+`
+}
 /* End of questions array */
 ];
 
