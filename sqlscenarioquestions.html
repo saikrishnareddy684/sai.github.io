@@ -1597,6 +1597,44 @@ LEFT JOIN Department D
 `
 },
 
+    {
+    question: `
+A company stores customer orders.
+
+Write a SQL query to display each order along with the
+previous order amount for the same customer.
+
+The previous order must be determined based on OrderDate.
+
+Output columns: CustomerID, OrderID, OrderDate, Amount, PreviousOrderAmount.
+`,
+    dataset: [
+        {customer_id:"101", order_id:"O1", order_date:"2026-01-01", amount:"500"},
+        {customer_id:"101", order_id:"O2", order_date:"2026-01-05", amount:"700"},
+        {customer_id:"101", order_id:"O3", order_date:"2026-01-10", amount:"300"},
+        {customer_id:"102", order_id:"O4", order_date:"2026-01-02", amount:"900"},
+        {customer_id:"102", order_id:"O5", order_date:"2026-01-08", amount:"400"}
+    ],
+    output: [
+        {customer_id:"101", order_id:"O1", order_date:"2026-01-01", amount:"500", previous_order_amount:"NULL"},
+        {customer_id:"101", order_id:"O2", order_date:"2026-01-05", amount:"700", previous_order_amount:"500"},
+        {customer_id:"101", order_id:"O3", order_date:"2026-01-10", amount:"300", previous_order_amount:"700"},
+        {customer_id:"102", order_id:"O4", order_date:"2026-01-02", amount:"900", previous_order_amount:"NULL"},
+        {customer_id:"102", order_id:"O5", order_date:"2026-01-08", amount:"400", previous_order_amount:"900"}
+    ],
+    answer: `
+SELECT
+    customer_id,
+    order_id,
+    order_date,
+    amount,
+    LAG(amount) OVER (
+        PARTITION BY customer_id
+        ORDER BY order_date
+    ) AS previous_order_amount
+FROM customer_orders;
+`
+},
 /* End of questions array */
 ];
 
