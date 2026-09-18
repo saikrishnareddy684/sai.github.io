@@ -3033,6 +3033,111 @@ MAX() OVER (PARTITION BY Department)
 
 Window functions are useful here because they calculate the aggregate value without collapsing the individual employee rows.`
 }
+    ,
+
+    {
+    title: "SQL Interview Questions 23 and 24 — EXISTS and NOT EXISTS",
+
+    question: `
+Question 23:
+
+Write a SQL query to find employees who have placed at least one order.
+
+Question 24:
+
+Write a SQL query to find employees who have never placed an order.`,
+
+    dataset: `
+Employee table:
+
+| EmployeeID | EmployeeName |
+|------------|--------------|
+| 1          | A            |
+| 2          | B            |
+| 3          | C            |
+| 4          | D            |
+
+Orders table:
+
+| OrderID | EmployeeID | Amount |
+|---------|------------|--------|
+| 101     | 1          | 500    |
+| 102     | 1          | 700    |
+| 103     | 3          | 900    |`,
+
+    output: `
+Question 23 Output:
+
+| EmployeeID | EmployeeName |
+|------------|--------------|
+| 1          | A            |
+| 3          | C            |
+
+Question 24 Output:
+
+| EmployeeID | EmployeeName |
+|------------|--------------|
+| 2          | B            |
+| 4          | D            |`,
+
+    answer: `
+Question 23 Answer:
+
+SELECT
+    e.EmployeeID,
+    e.EmployeeName
+FROM Employee e
+WHERE EXISTS (
+    SELECT 1
+    FROM Orders o
+    WHERE o.EmployeeID = e.EmployeeID
+);
+
+Explanation:
+
+EXISTS checks whether the subquery returns at least one matching row.
+
+For each employee, SQL checks whether an order exists for that employee.
+
+Employee 1 → Order exists → returned
+Employee 2 → No order → not returned
+Employee 3 → Order exists → returned
+Employee 4 → No order → not returned
+
+The SELECT 1 inside EXISTS does not mean that the value 1 is returned to the user. EXISTS only checks whether at least one row is found.
+
+
+Question 24 Answer:
+
+SELECT
+    e.EmployeeID,
+    e.EmployeeName
+FROM Employee e
+WHERE NOT EXISTS (
+    SELECT 1
+    FROM Orders o
+    WHERE o.EmployeeID = e.EmployeeID
+);
+
+Explanation:
+
+NOT EXISTS checks whether the subquery does not return any matching row.
+
+Employee 1 → Order exists → not returned
+Employee 2 → No order → returned
+Employee 3 → Order exists → not returned
+Employee 4 → No order → returned
+
+Interview point:
+
+EXISTS
+→ Returns rows when at least one matching row exists.
+
+NOT EXISTS
+→ Returns rows when no matching row exists.
+
+EXISTS is commonly used when we only need to check whether a related record exists, rather than retrieving data from that related table.`
+}
 /* End of questions array */
 ];
 
