@@ -2904,6 +2904,135 @@ LEAD() looks at the next row.
 
 Here we need the next row, so LEAD() is used.`
 }
+    ,
+    {
+    title: "SQL Interview Questions 19 and 20 — AVG() and MAX() Window Functions",
+
+    question: `
+Question 19:
+
+Write a SQL query to display each employee's salary along with the average salary of their department.
+
+Question 20:
+
+Write a SQL query to display each employee and calculate the difference between their salary and the highest salary in their department.`,
+
+    dataset: `
+Employee table:
+
+| EmployeeID | EmployeeName | Department | Salary |
+|------------|--------------|------------|--------|
+| 1          | A            | IT         | 70000  |
+| 2          | B            | IT         | 80000  |
+| 3          | C            | IT         | 60000  |
+| 4          | D            | HR         | 75000  |
+| 5          | E            | HR         | 65000  |
+| 6          | F            | HR         | 55000  |`,
+
+    output: `
+Question 19 Output:
+
+| EmployeeName | Department | Salary | AvgDeptSalary |
+|--------------|------------|--------|---------------|
+| A            | IT         | 70000  | 70000         |
+| B            | IT         | 80000  | 70000         |
+| C            | IT         | 60000  | 70000         |
+| D            | HR         | 75000  | 65000         |
+| E            | HR         | 65000  | 65000         |
+| F            | HR         | 55000  | 65000         |
+
+Question 20 Output:
+
+| EmployeeName | Department | Salary | SalaryDifference |
+|--------------|------------|--------|------------------|
+| A            | IT         | 70000  | 10000            |
+| B            | IT         | 80000  | 0                |
+| C            | IT         | 60000  | 20000            |
+| D            | HR         | 75000  | 0                |
+| E            | HR         | 65000  | 10000            |
+| F            | HR         | 55000  | 20000            |`,
+
+    answer: `
+Question 19 Answer:
+
+SELECT
+    EmployeeName,
+    Department,
+    Salary,
+    AVG(Salary) OVER (
+        PARTITION BY Department
+    ) AS AvgDeptSalary
+FROM Employee;
+
+Explanation:
+
+AVG(Salary) OVER (PARTITION BY Department)
+calculates the average salary separately for each department while keeping every employee row.
+
+For IT:
+
+70000 + 80000 + 60000 = 210000
+210000 / 3 = 70000
+
+So 70000 is displayed for every IT employee.
+
+For HR:
+
+75000 + 65000 + 55000 = 195000
+195000 / 3 = 65000
+
+So 65000 is displayed for every HR employee.
+
+
+Question 20 Answer:
+
+SELECT
+    EmployeeName,
+    Department,
+    Salary,
+    Salary - MaxSalary AS SalaryDifference
+FROM (
+    SELECT
+        EmployeeName,
+        Department,
+        Salary,
+        MAX(Salary) OVER (
+            PARTITION BY Department
+        ) AS MaxSalary
+    FROM Employee
+) a;
+
+Explanation:
+
+MAX(Salary) OVER (PARTITION BY Department)
+finds the highest salary within each department while keeping every employee row.
+
+Then:
+
+Salary - MaxSalary
+
+calculates the difference between the employee's salary and the highest salary in that department.
+
+For example, in IT:
+
+A → 70000 - 80000 = -10000
+B → 80000 - 80000 = 0
+C → 60000 - 80000 = -20000
+
+If the requirement is to show the positive gap from the highest salary, use:
+
+MaxSalary - Salary
+
+Interview point:
+
+AVG() OVER (PARTITION BY Department)
+→ Shows the department average alongside every employee.
+
+MAX() OVER (PARTITION BY Department)
+→ Shows the department maximum alongside every employee.
+
+Window functions are useful here because they calculate the aggregate value without collapsing the individual employee rows.`
+}
 /* End of questions array */
 ];
 
