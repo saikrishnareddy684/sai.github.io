@@ -1551,7 +1551,51 @@ FROM cdc.fn_cdc_get_all_changes_dbo_EMPLOYEE
 );
 `
 },
+{
+    question: `
+A company has two tables: Employee and Department.
 
+The requirement is to return all employees, including employees
+whose department does not exist in the Department table.
+
+However, display the DepartmentName only when the employee belongs
+to the IT department.
+
+Determine:
+- How to return all employees
+- How to display IT as the department when applicable
+- How to keep non-IT and unmatched employees in the result
+
+Output columns: EmployeeName, DepartmentID, DepartmentName.
+`,
+    dataset: [
+        {employee_id:"1", employee_name:"A", department_id:"10"},
+        {employee_id:"2", employee_name:"B", department_id:"20"},
+        {employee_id:"3", employee_name:"C", department_id:"30"},
+        {employee_id:"4", employee_name:"D", department_id:"40"}
+    ],
+    department_dataset: [
+        {department_id:"10", department_name:"IT"},
+        {department_id:"20", department_name:"HR"},
+        {department_id:"30", department_name:"Finance"}
+    ],
+    output: [
+        {employee_name:"A", department_id:"10", department_name:"IT"},
+        {employee_name:"B", department_id:"20", department_name:"NULL"},
+        {employee_name:"C", department_id:"30", department_name:"NULL"},
+        {employee_name:"D", department_id:"40", department_name:"NULL"}
+    ],
+    answer: `
+SELECT
+    E.EmployeeName,
+    E.DepartmentID,
+    D.DepartmentName
+FROM Employee E
+LEFT JOIN Department D
+    ON E.DepartmentID = D.DepartmentID
+    AND D.DepartmentName = 'IT';
+`
+},
 
 /* End of questions array */
 ];
