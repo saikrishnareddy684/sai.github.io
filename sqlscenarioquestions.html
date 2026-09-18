@@ -1681,6 +1681,185 @@ FROM (
 WHERE r = 2;
 `
 },
+
+    {
+    title: "SQL Window Functions — Interview Definitions",
+
+    question: `
+What are the commonly used SQL Window Functions and their definitions?
+`,
+
+    dataset: `
+No dataset is required because this question focuses on definitions of SQL Window Functions.
+`,
+
+    output: `
+ROW_NUMBER()
+RANK()
+DENSE_RANK()
+LAG()
+LEAD()
+SUM()
+AVG()
+COUNT()
+FIRST_VALUE()
+LAST_VALUE()
+NTILE()
+`,
+
+    answer: `
+1. ROW_NUMBER()
+
+ROW_NUMBER() assigns a unique sequential number to each row based on the specified ordering.
+
+If multiple rows have the same value, they still receive different row numbers.
+
+Example:
+ROW_NUMBER() OVER (PARTITION BY Department ORDER BY Salary DESC)
+
+
+2. RANK()
+
+RANK() assigns the same rank to rows with the same value. When there are ties, the next rank is skipped.
+
+Example:
+If salaries are 90000, 80000, 80000, 70000, the ranks are:
+1, 2, 2, 4
+
+
+3. DENSE_RANK()
+
+DENSE_RANK() assigns the same rank to rows with the same value, but it does not skip ranks after a tie.
+
+Example:
+If salaries are 90000, 80000, 80000, 70000, the ranks are:
+1, 2, 2, 3
+
+
+4. LAG()
+
+LAG() is used to access a value from a previous row within the result set based on the specified ordering.
+
+It is commonly used to find the previous order, previous salary, previous transaction, or previous month's value.
+
+Example:
+LAG(Salary) OVER (PARTITION BY Department ORDER BY Salary)
+
+
+5. LEAD()
+
+LEAD() is used to access a value from a subsequent or next row within the result set based on the specified ordering.
+
+It is commonly used to compare the current row with the next order, next transaction, or next month's value.
+
+Example:
+LEAD(Salary) OVER (PARTITION BY Department ORDER BY Salary)
+
+
+6. SUM()
+
+SUM() calculates the total of a numeric column over a specified window while keeping the individual rows in the result.
+
+Unlike a normal SUM() with GROUP BY, a window SUM() does not collapse the rows.
+
+It can also be used to calculate a running total.
+
+Example:
+SUM(SalesAmount) OVER (
+    PARTITION BY CustomerID
+    ORDER BY OrderDate
+)
+
+
+7. AVG()
+
+AVG() calculates the average of a numeric column over a specified window while keeping the individual rows in the result.
+
+Example:
+AVG(Salary) OVER (PARTITION BY Department)
+
+
+8. COUNT()
+
+COUNT() counts the number of rows or non-null values within a specified window while keeping the individual rows in the result.
+
+Example:
+COUNT(*) OVER (PARTITION BY Department)
+
+
+9. FIRST_VALUE()
+
+FIRST_VALUE() returns the first value from a specified window based on the defined ordering.
+
+Example:
+FIRST_VALUE(Salary) OVER (
+    PARTITION BY Department
+    ORDER BY Salary DESC
+)
+
+
+10. LAST_VALUE()
+
+LAST_VALUE() returns the last value from a specified window based on the defined ordering and window frame.
+
+It is important to understand the window frame when using LAST_VALUE(), because the default frame can sometimes cause unexpected results.
+
+Example:
+LAST_VALUE(Salary) OVER (
+    PARTITION BY Department
+    ORDER BY Salary
+)
+
+
+11. NTILE()
+
+NTILE(n) divides the rows in an ordered result set into approximately equal groups or buckets.
+
+For example, NTILE(4) divides the rows into four groups, which can be used to identify quartiles.
+
+Example:
+NTILE(4) OVER (ORDER BY Salary)
+
+
+Important Window Function Pattern:
+
+FUNCTION() OVER (
+    PARTITION BY column
+    ORDER BY column
+)
+
+PARTITION BY → Defines which group the calculation should be performed within.
+
+ORDER BY → Defines the sequence of rows within that group.
+
+FUNCTION → Defines what calculation or operation should be performed.
+
+
+Easy Interview Memory:
+
+ROW_NUMBER() → Unique numbering
+
+RANK() → Ties + gaps
+
+DENSE_RANK() → Ties + no gaps
+
+LAG() → Look backward / previous row
+
+LEAD() → Look forward / next row
+
+SUM() → Total over a window
+
+AVG() → Average over a window
+
+COUNT() → Count over a window
+
+FIRST_VALUE() → First value in the window
+
+LAST_VALUE() → Last value in the window
+
+NTILE() → Divide rows into buckets
+`
+}
 /* End of questions array */
 ];
 
