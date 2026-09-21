@@ -372,6 +372,34 @@ For historical analysis or programmatic monitoring, Snowflake also provides quer
 After identifying the bottleneck, I decide whether the solution should be query optimization, better pruning/data organization, a different physical design, precomputation, or warehouse sizing.
 `
 },
+    {
+title: "Infosys L2 - Recent Snowflake Development in GCPTSL",
+question: `
+What is the recent development you have done in the Snowflake GCPTSL layer?
+Can you explain one recent development you made in a dimension, view, or any other Snowflake object?
+`,
+dataset:[
+{LAYER:"GCPTSL", DEVELOPMENT:"Modification of an existing business view", AREA:"Business rule and dimension-related logic", VALIDATION:"Data validation and reconciliation", PERFORMANCE:"Snowflake query performance check", DOWNSTREAM:"SSAS and Power BI"}
+],
+output:[
+{REQUIREMENT:"Business requirement identified", ANALYSIS:"Existing view, source tables, joins and business logic analyzed", IMPLEMENTATION:"Required dimension/business rule logic added", VALIDATION:"Output compared with expected business results and upstream data", PERFORMANCE:"Query execution and impact of additional joins checked", DEPLOYMENT:"Changes moved through the deployment process", DOWNSTREAM_IMPACT:"Updated view consumed by SSAS and Power BI"}
+],
+answer:`
+One of my recent developments in the GCPTSL layer was related to a business requirement where we had to modify an existing business view to incorporate an additional business rule and dimension-related logic.
+
+I first analyzed the existing view and traced the underlying source tables and joins to understand how the current data was being derived.
+
+Based on the requirement, I identified the relevant dimension and added the required logic to the view while making sure that the existing business rules and output were not impacted.
+
+After implementing the change, I performed data validation by comparing the new output with the expected business results and also performed reconciliation with the upstream data.
+
+I also checked the impact of the additional join and logic on query performance using Snowflake's query execution details.
+
+Once the validation was completed, the changes were moved through the development and deployment process, and the updated view was consumed by the downstream SSAS model and Power BI reports.
+
+So, my recent work was not just creating or modifying a view. It involved understanding the business requirement, analyzing the existing Snowflake logic, implementing the change, validating the data, checking performance, and ensuring that the downstream reporting was not impacted.
+`
+},
 /* End of questions array */
 ];
 
