@@ -210,7 +210,168 @@ Source files → Mainframe processing → Staging → Snowflake/GCPTSL → Busin
 My major area of responsibility is the Snowflake GCPTSL layer, particularly business logic, SQL development, data validation, reconciliation, and performance-related improvements.
 `
 },
-   
+
+    {
+title: "Snowflake View Performance - Multiple Joins",
+
+question: `
+What happens to performance if the view contains five joins?
+`,
+
+dataset:[
+{
+VIEW:"GCPTSL business view",
+JOINS:5,
+TABLES:"Multiple staging/core fact and dimension tables",
+CONSUMER:"SSAS"
+}
+],
+
+output:[
+{
+IMPACT:"The query can become more expensive because Snowflake has to process the joins when the view is queried.",
+KEY_POINT:"A standard view does not store the query result physically. The underlying query is executed when the view is queried.",
+}
+],
+
+answer:`
+If a view contains five joins, performance depends mainly on the size of the underlying tables, join conditions, filters, and how much data needs to be processed.
+
+A standard Snowflake view does not physically store the result. When the view is queried, Snowflake expands the view definition and executes the underlying query.
+
+With five joins, Snowflake may need to scan and join large amounts of data. This can increase execution time, bytes scanned, memory usage, and potentially warehouse consumption.
+
+However, having five joins does not automatically mean that the query will be slow. Snowflake's optimizer can optimize the execution plan.
+
+I would therefore check the actual query profile and identify where the expensive scans, joins, or data movement are occurring.
+`
+},
+
+    {
+title: "Snowflake View Performance - Optimization",
+
+question: `
+A business view contains multiple joins and is running slowly. How would you optimize it?
+`,
+
+dataset:[
+{
+PROBLEM:"Slow GCPTSL business view",
+POSSIBLE_CAUSES:"Large scans, inefficient joins, poor filtering, unnecessary columns, data volume"
+}
+],
+
+output:[
+{
+APPROACH:"Analyze Query Profile → reduce unnecessary data → improve filtering → review joins → optimize underlying tables → consider precomputation where appropriate"
+}
+],
+
+answer:`
+First, I would not immediately increase the warehouse size. I would first identify the actual bottleneck using the Query Profile.
+
+I would check whether the query is scanning large amounts of data and whether any particular join is expensive.
+
+Then I would:
+
+1. Select only the required columns instead of using SELECT *.
+
+2. Apply appropriate filters as early as possible so that less data needs to be processed.
+
+3. Review the join conditions and make sure the joins are using the correct keys and are not unintentionally multiplying rows.
+
+4. Check whether unnecessary joins can be removed.
+
+5. Check whether the underlying tables are suitable for pruning and whether clustering would help for frequently filtered large tables.
+
+6. Check whether the same expensive transformation is repeatedly being calculated.
+
+7. If the business requirement justifies it, consider precomputed approaches such as a materialized view or a physically maintained table instead of recalculating an expensive transformation every time.
+
+8. Finally, if the query is still legitimately compute-intensive, I would evaluate whether the warehouse size is appropriate.
+
+The important point is that I would first identify the bottleneck rather than simply scaling up the warehouse.
+`
+},
+
+    {
+title: "Snowflake Query Analysis - Detecting Large Scans",
+
+question: `
+How do you know whether a view is scanning a large amount of data?
+`,
+
+dataset:[
+{
+TOOL:"Snowflake Query Profile",
+METRICS:"Bytes scanned, partitions scanned, partitions total, execution time"
+}
+],
+
+output:[
+{
+CHECK:"Query Profile and Query History",
+INDICATORS:"Large bytes scanned, high partitions scanned, poor partition pruning, expensive table scans"
+}
+],
+
+answer:`
+I would execute the query against the view and open the Query Profile in Snowsight.
+
+In the Query Profile, I would look at the table scan operations and check metrics such as the amount of data scanned and the number of partitions scanned compared with the total number of partitions.
+
+For example, if a table has a large number of micro-partitions and the query scans most of them, that indicates that partition pruning may not be effective.
+
+I would also look at the bytes scanned and identify which table scan or operation is contributing most of the work.
+
+I would then investigate whether better filtering, query predicates, data organization, or clustering could improve pruning.
+
+I would not judge performance only from the total query duration. I would use the Query Profile to identify where the data is actually being processed.
+`
+},
+
+    {
+title: "Snowflake Query Performance - Monitoring",
+
+question: `
+How do you check query performance in Snowflake?
+`,
+
+dataset:[
+{
+TOOLS:"Snowsight Query History and Query Profile",
+ADDITIONAL:"ACCOUNT_USAGE / INFORMATION_SCHEMA query history"
+}
+],
+
+output:[
+{
+CHECK:"Execution time, bytes scanned, partitions scanned, warehouse, compilation time, query profile, spill and expensive operators"
+}
+],
+
+answer:`
+I normally start with Query History in Snowsight.
+
+I check:
+
+1. Total execution time.
+2. Bytes scanned.
+3. Warehouse used.
+4. Query start and end time.
+5. Compilation time where relevant.
+6. Whether the query is using cache.
+7. Query Profile for detailed execution information.
+
+In the Query Profile, I look for expensive table scans, joins, aggregations, data movement, and possible spilling.
+
+For large queries, I also check partition pruning by comparing partitions scanned with partitions available.
+
+For historical analysis or programmatic monitoring, Snowflake also provides query history information through the appropriate account usage or information schema views/functions.
+
+After identifying the bottleneck, I decide whether the solution should be query optimization, better pruning/data organization, a different physical design, precomputation, or warehouse sizing.
+`
+},
 /* End of questions array */
 ];
 
