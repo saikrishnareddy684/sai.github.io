@@ -400,6 +400,58 @@ Once the validation was completed, the changes were moved through the developmen
 So, my recent work was not just creating or modifying a view. It involved understanding the business requirement, analyzing the existing Snowflake logic, implementing the change, validating the data, checking performance, and ensuring that the downstream reporting was not impacted.
 `
 },
+
+    {
+title: "Infosys L2 - End-to-End Testing After Snowflake Object Development",
+question: `
+Once you develop a Snowflake object such as a view, how is testing performed?
+Can you explain the complete end-to-end testing process from development to production?
+`,
+dataset:[
+{STEP:1, ACTIVITY:"Requirement Analysis", DETAILS:"Understand the business requirement, source tables, target output, business rules and expected results"},
+{STEP:2, ACTIVITY:"Development", DETAILS:"Develop or modify the Snowflake view, SQL logic, joins, filters and business rules in the development environment"},
+{STEP:3, ACTIVITY:"Unit Testing", DETAILS:"Validate the object using sample and business scenarios and check the SQL output"},
+{STEP:4, ACTIVITY:"Data Validation", DETAILS:"Compare source and target data, record counts, key values, NULLs, duplicates and business calculations"},
+{STEP:5, ACTIVITY:"Reconciliation", DETAILS:"Reconcile important measures and records with upstream data and expected business results"},
+{STEP:6, ACTIVITY:"Regression Testing", DETAILS:"Make sure the existing functionality and existing reports are not impacted"},
+{STEP:7, ACTIVITY:"Performance Testing", DETAILS:"Check query execution details, data scanned, joins, partition pruning and execution time"},
+{STEP:8, ACTIVITY:"Downstream Validation", DETAILS:"Validate that SSAS and Power BI consume the expected data and that reports are not impacted"},
+{STEP:9, ACTIVITY:"Code Review", DETAILS:"SQL code and changes are reviewed according to the project process"},
+{STEP:10, ACTIVITY:"Deployment", DETAILS:"Move the tested changes through the required environments using the project deployment process"},
+{STEP:11, ACTIVITY:"Post-Deployment Validation", DETAILS:"Validate the object and important data in the target environment after deployment"}
+],
+output:[
+{FLOW:"Requirement → Development → Unit Testing → Data Validation → Reconciliation → Regression Testing → Performance Testing → Downstream Validation → Code Review → Deployment → Post-Deployment Validation"},
+{VALIDATION_EXAMPLES:"Row counts, key-level comparison, NULL checks, duplicate checks, business-rule validation, aggregate reconciliation and downstream report validation"}
+],
+answer:`
+Once I develop or modify a Snowflake object, such as a business view in the GCPTSL layer, I follow an end-to-end testing and validation process.
+
+First, I understand the requirement clearly. I identify the source tables, relevant dimensions or facts, business rules, expected output and any downstream objects that may be impacted.
+
+Then I develop or modify the object in the development environment. For example, if I am modifying a view, I validate the joins, filters, calculated columns and business logic.
+
+After development, I perform unit testing. I execute the view with different scenarios and verify whether the output is logically correct.
+
+Then I perform data validation. I compare the output with the upstream data and expected business results. Depending on the requirement, I check record counts, key-level data, NULL values, duplicate records and important business columns or measures.
+
+I also perform reconciliation. For example, if the view contains an important measure, I compare the aggregated value between the source and target or compare it with the existing validated data to make sure there is no unexpected difference.
+
+After that, I perform regression testing. Since I may be modifying an existing view, I make sure that the existing functionality has not been impacted and that existing downstream objects or reports continue to return the expected results.
+
+I also check performance. In Snowflake, I can look at the query execution details and Query Profile to understand whether the change introduced an expensive join, large scan, poor pruning or other performance issues.
+
+Since our Snowflake objects are consumed by the downstream SSAS layer and Power BI reports, I also validate the downstream impact. I make sure the expected data is available to SSAS and that the relevant reports are showing the expected results.
+
+Once the development and testing are completed, the code goes through the required code review and deployment process. After deployment to the higher environment, I perform post-deployment validation to confirm that the object was deployed correctly and the expected data is available.
+
+So, my overall testing flow is:
+
+Requirement analysis → Development → Unit testing → Data validation → Reconciliation → Regression testing → Performance testing → Downstream validation → Code review → Deployment → Post-deployment validation.
+
+The important point is that I don't consider testing as only checking whether the SQL query runs successfully. I validate both the technical correctness and the business correctness of the data, and I also check the impact on downstream reporting.
+`
+},
 /* End of questions array */
 ];
 
