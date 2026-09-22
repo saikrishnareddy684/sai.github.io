@@ -452,6 +452,110 @@ Requirement analysis → Development → Unit testing → Data validation → Re
 The important point is that I don't consider testing as only checking whether the SQL query runs successfully. I validate both the technical correctness and the business correctness of the data, and I also check the impact on downstream reporting.
 `
 },
+    {
+title: "SQL Server - Recursive CTE to Print Numbers 1 to 10",
+
+question: `
+Using a recursive CTE in SQL Server, write a query to print numbers from 1 to 10.
+
+Expected output:
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+
+Also explain how the recursive CTE works and how you would modify the query to print numbers from 1 to 100.
+`,
+
+dataset:[
+{VALUE:1},
+{VALUE:2},
+{VALUE:3},
+{VALUE:4},
+{VALUE:5},
+{VALUE:6},
+{VALUE:7},
+{VALUE:8},
+{VALUE:9},
+{VALUE:10}
+],
+
+output:[
+{NUMBER:1},
+{NUMBER:2},
+{NUMBER:3},
+{NUMBER:4},
+{NUMBER:5},
+{NUMBER:6},
+{NUMBER:7},
+{NUMBER:8},
+{NUMBER:9},
+{NUMBER:10}
+],
+
+answer:`
+WITH NumberCTE AS
+(
+    -- Anchor member
+    SELECT 1 AS Number
+
+    UNION ALL
+
+    -- Recursive member
+    SELECT Number + 1
+    FROM NumberCTE
+    WHERE Number < 10
+)
+SELECT Number
+FROM NumberCTE;
+
+The CTE has two parts:
+
+1. Anchor member:
+   SELECT 1 AS Number
+
+   This starts the recursion with the value 1.
+
+2. Recursive member:
+   SELECT Number + 1
+   FROM NumberCTE
+   WHERE Number < 10
+
+   This takes the previous value and adds 1.
+
+The recursion continues as:
+
+1 → 2 → 3 → 4 → 5 → 6 → 7 → 8 → 9 → 10
+
+The condition WHERE Number < 10 stops the recursion after reaching 10.
+
+To print numbers from 1 to 100, change the condition to:
+
+WHERE Number < 100
+
+For example:
+
+WITH NumberCTE AS
+(
+    SELECT 1 AS Number
+
+    UNION ALL
+
+    SELECT Number + 1
+    FROM NumberCTE
+    WHERE Number < 100
+)
+SELECT Number
+FROM NumberCTE
+OPTION (MAXRECURSION 100);
+`
+},
 /* End of questions array */
 ];
 
