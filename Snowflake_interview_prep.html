@@ -1929,6 +1929,225 @@ Time Travel is useful for accidental data deletion, data recovery, historical co
 `
 }
 ,
+    {
+title: "Snowflake L2 - EXPLAIN Query",
+
+question: `What is EXPLAIN in Snowflake? Why is it used, and how is it different from Query Profile?`,
+
+dataset:[
+{
+COMMAND:"EXPLAIN",
+PURPOSE:"View the planned execution plan without executing the query"
+},
+{
+COMMAND:"QUERY PROFILE",
+PURPOSE:"Analyze the actual execution after the query has run"
+}
+],
+
+output:[
+{
+EXPLAIN:"Shows the planned execution of the SQL statement.",
+QUERY_PROFILE:"Shows how the query actually executed and helps identify real performance bottlenecks."
+}
+],
+
+answer:`
+EXPLAIN is used in Snowflake to view the execution plan that Snowflake intends to use for a SQL statement without actually executing the query.
+
+For example:
+
+EXPLAIN
+SELECT *
+FROM CUSTOMER
+WHERE CUSTOMER_ID = 100;
+
+We can also use:
+
+EXPLAIN USING TEXT
+SELECT *
+FROM CUSTOMER
+WHERE CUSTOMER_ID = 100;
+
+EXPLAIN helps us understand the planned operations, such as table scans, filters, joins, aggregations and other query operations.
+
+It is useful when analyzing a query before execution and understanding how Snowflake plans to process the SQL.
+
+For example:
+
+EXPLAIN
+SELECT c.CustomerName, SUM(o.Amount)
+FROM Customers c
+JOIN Orders o
+ON c.CustomerID = o.CustomerID
+GROUP BY c.CustomerName;
+
+The important distinction is between EXPLAIN and Query Profile.
+
+EXPLAIN shows what Snowflake plans to do before the query executes.
+
+Query Profile shows what Snowflake actually did after the query executes.
+
+EXPLAIN does not tell us the actual query runtime.
+
+For a slow-query investigation, I would first use EXPLAIN to understand the planned execution and identify potentially expensive operations. After executing the query, I would use Query Profile to analyze the actual execution, including execution time, data scanned, partition pruning, spills, joins and other bottlenecks.
+
+A simple way to remember it is:
+
+EXPLAIN → What does Snowflake PLAN to do?
+
+Query Profile → What DID Snowflake actually do?
+`
+},
+
+{
+title: "Snowflake L2 - EXPLAIN Query",
+
+question: `What is EXPLAIN in Snowflake? Why is it used, and how is it different from Query Profile?`,
+
+dataset:[
+{
+COMMAND:"EXPLAIN",
+PURPOSE:"View the planned execution plan without executing the query"
+},
+{
+COMMAND:"QUERY PROFILE",
+PURPOSE:"Analyze the actual execution after the query has run"
+}
+],
+
+output:[
+{
+EXPLAIN:"Shows the planned execution of the SQL statement.",
+QUERY_PROFILE:"Shows how the query actually executed and helps identify real performance bottlenecks."
+}
+],
+
+answer:`
+EXPLAIN is used in Snowflake to view the execution plan that Snowflake intends to use for a SQL statement without actually executing the query.
+
+For example:
+
+EXPLAIN
+SELECT *
+FROM CUSTOMER
+WHERE CUSTOMER_ID = 100;
+
+We can also use:
+
+EXPLAIN USING TEXT
+SELECT *
+FROM CUSTOMER
+WHERE CUSTOMER_ID = 100;
+
+EXPLAIN helps us understand the planned operations, such as table scans, filters, joins, aggregations and other query operations.
+
+It is useful when analyzing a query before execution and understanding how Snowflake plans to process the SQL.
+
+For example:
+
+EXPLAIN
+SELECT c.CustomerName, SUM(o.Amount)
+FROM Customers c
+JOIN Orders o
+ON c.CustomerID = o.CustomerID
+GROUP BY c.CustomerName;
+
+The important distinction is between EXPLAIN and Query Profile.
+
+EXPLAIN shows what Snowflake plans to do before the query executes.
+
+Query Profile shows what Snowflake actually did after the query executes.
+
+EXPLAIN does not tell us the actual query runtime.
+
+For a slow-query investigation, I would first use EXPLAIN to understand the planned execution and identify potentially expensive operations. After executing the query, I would use Query Profile to analyze the actual execution, including execution time, data scanned, partition pruning, spills, joins and other bottlenecks.
+
+A simple way to remember it is:
+
+EXPLAIN → What does Snowflake PLAN to do?
+
+Query Profile → What DID Snowflake actually do?
+`
+}
+,
+
+    {
+title: "UAT - User Acceptance Testing",
+
+question: `How do you perform UAT (User Acceptance Testing)?`,
+
+dataset:[
+{
+STEP:"1. Understand Business Requirement",
+PURPOSE:"Understand business requirements, business rules, expected calculations and acceptance criteria."
+},
+{
+STEP:"2. Prepare UAT Test Cases",
+PURPOSE:"Prepare positive, negative, boundary, data-validation and business-rule scenarios."
+},
+{
+STEP:"3. Prepare Test Data",
+PURPOSE:"Identify and prepare the required source and target test data in the test environment."
+},
+{
+STEP:"4. Source-to-Target Validation",
+PURPOSE:"Validate record counts, key fields, measures and important attributes from source to target."
+},
+{
+STEP:"5. Validate Business Rules",
+PURPOSE:"Verify that the transformations and business rules implemented in SQL/Snowflake match the requirements."
+},
+{
+STEP:"6. Business User Validation",
+PURPOSE:"Business users validate the output using the agreed UAT scenarios and expected results."
+},
+{
+STEP:"7. Defect Resolution",
+PURPOSE:"Analyze defects, identify the root cause, fix the issue and perform retesting."
+},
+{
+STEP:"8. Regression Testing",
+PURPOSE:"Verify that the fix has not impacted existing functionality or related data."
+},
+{
+STEP:"9. UAT Sign-off",
+PURPOSE:"After critical scenarios pass and blocking defects are resolved, obtain business sign-off before production deployment."
+}
+],
+
+output:[
+{
+RESULT:"UAT Passed",
+MEANING:"Business users have validated that the solution meets the agreed requirements and acceptance criteria."
+}
+],
+
+answer:`
+UAT stands for User Acceptance Testing. It is mainly performed to verify that the solution meets the business requirements from the business user's perspective.
+
+First, I understand the business requirements, business rules and acceptance criteria.
+
+Then I prepare UAT test cases covering positive scenarios, negative scenarios, boundary cases, data validation and business-rule validation.
+
+Next, I prepare the required test data and execute the ETL or ELT process in the test environment.
+
+I then perform source-to-target validation. I compare record counts, key fields, measures and important business attributes between the source and target.
+
+After that, I validate the business rules to make sure that the transformations implemented in SQL or Snowflake produce the expected business results.
+
+The business users then validate the output using the agreed UAT scenarios.
+
+If they identify any defects, I analyze the issue to determine whether it is a data issue, transformation issue, requirement misunderstanding or environment issue. I fix the issue and perform retesting.
+
+After the fix, I also perform regression testing to make sure the change has not impacted existing functionality.
+
+Finally, once all critical scenarios pass and there are no blocking defects, the business provides UAT sign-off and the solution can proceed toward production deployment.
+
+The important point is that UAT is not only technical testing. The main purpose is business validation, where the business users confirm that the solution meets their requirements.
+`
+},
+
 /* End of questions array */
 ];
 
