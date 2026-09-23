@@ -2762,6 +2762,76 @@ Interview answer:
 "dbt stands for data build tool. It is primarily used for data transformation and modeling inside a cloud data warehouse such as Snowflake. In an ELT architecture, data is first loaded into Snowflake, and dbt is used to transform that data into staging and business models using SQL. dbt also provides features such as model materializations, dependency management using ref(), source management using source(), data-quality testing, documentation and lineage. I have more experience with Snowflake SQL and ETL, but I understand the role and core concepts of dbt."
 `
 },
+{
+title: "Data Lineage Error - Backtracking and Troubleshooting",
+
+question: `Suppose you get an error or incorrect data in the lineage. How would you backtrack and resolve the issue?`,
+
+dataset:[
+{
+CONCEPT:"Data Lineage",
+DEFINITION:"Data lineage tracks how data flows from the source system through different transformation layers to the final target."
+},
+{
+CONCEPT:"Backtracking Flow",
+FLOW:"Target → Transformation/View/Procedure → Staging → Source"
+},
+{
+CONCEPT:"Validation",
+PURPOSE:"Compare the data at each layer to identify where the incorrect value or issue was introduced."
+}
+],
+
+output:[
+{
+FLOW:"Target → Transformation → Staging → Source → Root Cause → Fix → Rerun → Validation"
+}
+],
+
+answer:`
+Yes, I understand data lineage as tracking how data flows from the source system through different transformation layers until it reaches the final target.
+
+If I get an issue in lineage, first I identify the exact target column or object where the error is occurring.
+
+Then I backtrack the data flow step by step from the target to the source.
+
+For example:
+
+Target Table
+↓
+Transformation / View / Procedure
+↓
+Staging Table
+↓
+Source Table / File
+
+At each layer, I compare the data and transformation logic to identify where the value changed incorrectly.
+
+I would also check the ETL or Snowflake execution history and logs to see whether there were any failures, data-quality issues, or unexpected changes during the load.
+
+Once I identify the layer where the issue was introduced, I check the SQL transformation or business rule, fix the issue, and rerun the affected process.
+
+Finally, I perform source-to-target validation and regression testing to make sure the correction has not impacted other data.
+
+Interview answer:
+
+"Yes, I understand data lineage as tracking how data flows from the source system through different transformation layers until it reaches the final target.
+
+If I get an issue in lineage, first I identify the exact target column or object where the error is occurring. Then I backtrack the data flow step by step from the target to the source.
+
+For example, I would trace:
+
+Target → Transformation/View/Procedure → Staging → Source.
+
+At each layer, I compare the data and transformation logic to identify where the incorrect value was introduced. I also check the ETL or Snowflake execution history and logs for any failures or data-quality issues.
+
+Once I identify the layer where the issue was introduced, I check the transformation logic or business rule, fix the issue, and rerun the affected process.
+
+Finally, I perform source-to-target validation and regression testing to make sure the correction has not impacted other data.
+
+So my approach is: identify the incorrect target data, trace backward through the lineage, compare data at each layer, identify the root cause, fix it, rerun the process, and validate the results."
+`
+},
 
 
 /* End of questions array */
