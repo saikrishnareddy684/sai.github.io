@@ -1220,6 +1220,156 @@ Using only MONTH(OrderDate) can cause incorrect results when the table contains 
 `
 },
 
+    {
+title: "SQL - Latest Completed Order for Every Customer",
+
+question: `
+You have two tables:
+
+Customers:
+
+CustomerID | CustomerName
+1          | John
+2          | David
+3          | Sarah
+4          | Mike
+
+Orders:
+
+OrderID | CustomerID | OrderDate | Amount | Status
+101     | 1          | 2026-01-10 | 500 | Completed
+102     | 1          | 2026-03-15 | 700 | Cancelled
+103     | 1          | 2026-04-20 | 900 | Completed
+104     | 2          | 2026-02-10 | 400 | Completed
+105     | 2          | 2026-05-10 | 600 | Completed
+106     | 3          | 2026-01-15 | 300 | Cancelled
+
+Requirement:
+
+Return every customer along with their latest Completed order.
+
+Customers who have never placed a Completed order must still appear, with NULL order information.
+
+Expected result:
+
+John  -> Order 103
+David -> Order 105
+Sarah -> NULL
+Mike  -> NULL
+
+Interview question:
+
+How would you solve this?
+
+Consider:
+
+1. How to find the latest Completed order for each customer.
+2. How to retain customers who have no Completed orders.
+   `,
+
+dataset:[
+{CustomerID:1, CustomerName:"John"},
+{CustomerID:2, CustomerName:"David"},
+{CustomerID:3, CustomerName:"Sarah"},
+{CustomerID:4, CustomerName:"Mike"},
+
+{OrderID:101, CustomerID:1, OrderDate:"2026-01-10", Amount:500, Status:"Completed"},
+{OrderID:102, CustomerID:1, OrderDate:"2026-03-15", Amount:700, Status:"Cancelled"},
+{OrderID:103, CustomerID:1, OrderDate:"2026-04-20", Amount:900, Status:"Completed"},
+{OrderID:104, CustomerID:2, OrderDate:"2026-02-10", Amount:400, Status:"Completed"},
+{OrderID:105, CustomerID:2, OrderDate:"2026-05-10", Amount:600, Status:"Completed"},
+{OrderID:106, CustomerID:3, OrderDate:"2026-01-15", Amount:300, Status:"Cancelled"}
+],
+
+output:[
+{CustomerID:1, CustomerName:"John", OrderID:103, OrderDate:"2026-04-20", Amount:900},
+{CustomerID:2, CustomerName:"David", OrderID:105, OrderDate:"2026-05-10", Amount:600},
+{CustomerID:3, CustomerName:"Sarah", OrderID:null, OrderDate:null, Amount:null},
+{CustomerID:4, CustomerName:"Mike", OrderID:null, OrderDate:null, Amount:null}
+],
+
+answer:`
+A valid approach is to first find the latest Completed order date for each customer using MAX(OrderDate), and then join that result back to the Orders table.
+
+The important points are:
+
+1. Filter Status = 'Completed' before calculating MAX(OrderDate).
+2. Start from Customers because every customer must be returned.
+3. Use LEFT JOIN so customers without a Completed order are retained.
+4. Join the aggregated result back to Orders to retrieve OrderID and other order details.
+
+SQL:
+
+SELECT
+c.CustomerID,
+c.CustomerName,
+a.OrderID,
+a.OrderDate,
+a.Amount
+FROM Customers c
+LEFT JOIN
+(
+SELECT
+CustomerID,
+MAX(OrderDate) AS LatestOrderDate
+FROM Orders
+WHERE Status = 'Completed'
+GROUP BY CustomerID
+) b
+ON c.CustomerID = b.CustomerID
+LEFT JOIN Orders a
+ON a.CustomerID = b.CustomerID
+AND a.OrderDate = b.LatestOrderDate
+AND a.Status = 'Completed';
+
+Explanation:
+
+For John:
+
+Completed orders are:
+
+Order 101 -> 2026-01-10
+Order 103 -> 2026-04-20
+
+MAX(OrderDate) = 2026-04-20
+
+Therefore, Order 103 is returned.
+
+For David:
+
+Completed orders are:
+
+Order 104 -> 2026-02-10
+Order 105 -> 2026-05-10
+
+MAX(OrderDate) = 2026-05-10
+
+Therefore, Order 105 is returned.
+
+For Sarah:
+
+The only order is Cancelled.
+
+Therefore, Sarah has no Completed order and the LEFT JOIN produces NULL order information.
+
+For Mike:
+
+Mike has no orders at all.
+
+Therefore, the LEFT JOIN also produces NULL order information.
+
+Important interview point:
+
+Do not calculate MAX(OrderDate) from all orders and then filter Status = 'Completed'.
+
+The Completed filter must happen before MAX(), because the requirement is the latest Completed order, not simply the latest order.
+
+Another important point:
+
+If two Completed orders have exactly the same latest OrderDate, the MAX(OrderDate) approach can return multiple rows. In that situation, ROW_NUMBER() is safer because it allows us to select exactly one record using an additional tie-breaker such as OrderID.
+`
+},
+
 /* End of questions array */
 ];
 
