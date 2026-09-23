@@ -1370,6 +1370,565 @@ If two Completed orders have exactly the same latest OrderDate, the MAX(OrderDat
 `
 },
 
+    {
+title: "Snowflake L2 - External Stage and Storage Integration",
+
+question: `What is an External Stage and Storage Integration in Snowflake? Why are they required, and how do they work together?`,
+
+dataset:[
+{
+CLOUD_STORAGE:"Google Cloud Storage",
+BUCKET:"gs://my-snowflake-ingest-bucket-sai/",
+STORAGE_INTEGRATION:"gcs_snowflake_int",
+EXTERNAL_STAGE:"my_gcs_stage"
+}
+],
+
+output:[
+{
+FLOW:"GCS Bucket → Storage Integration → External Stage → COPY INTO / Snowpipe → Snowflake Table",
+PURPOSE:"Storage Integration provides secure access to the external cloud location, while the External Stage defines the location Snowflake accesses."
+}
+],
+
+answer:`
+A Storage Integration is a Snowflake object that provides a secure way for Snowflake to access external cloud storage such as GCS, Amazon S3, or Azure Blob Storage.
+
+It avoids storing cloud credentials directly in the stage definition. We configure the cloud provider and specify the locations that Snowflake is allowed to access.
+
+For example:
+
+CREATE OR REPLACE STORAGE INTEGRATION gcs_snowflake_int
+TYPE = EXTERNAL_STAGE
+STORAGE_PROVIDER = 'GCS'
+ENABLED = TRUE
+STORAGE_ALLOWED_LOCATIONS = (
+'gcs://my-snowflake-ingest-bucket-sai/'
+);
+
+The External Stage is a Snowflake object that points to the actual external storage location and uses the Storage Integration for secure access.
+
+For example:
+
+CREATE OR REPLACE STAGE my_gcs_stage
+URL = 'gcs://my-snowflake-ingest-bucket-sai/'
+STORAGE_INTEGRATION = gcs_snowflake_int;
+
+The Storage Integration defines where Snowflake is allowed to access, while the External Stage defines the specific location that the stage points to.
+
+The overall flow is:
+
+GCS Bucket → Storage Integration → External Stage → COPY INTO / Snowpipe → Snowflake Table.
+
+The URL can appear in both the integration and stage, but they serve different purposes. The integration defines the allowed storage location, while the stage defines the actual location used by that stage.
+`
+},
+
+{
+title: "Snowflake L2 - Internal Stage vs External Stage",
+
+question: `What is the difference between an Internal Stage and an External Stage in Snowflake?`,
+
+dataset:[
+{
+INTERNAL_STAGE:"Managed by Snowflake",
+EXTERNAL_STAGE:"Points to external cloud storage",
+EXAMPLES:"GCS, S3, Azure Blob Storage"
+}
+],
+
+output:[
+{
+INTERNAL_STAGE:"Files are stored in Snowflake-managed storage.",
+EXTERNAL_STAGE:"Files remain in external cloud storage and Snowflake accesses them through the stage."
+}
+],
+
+answer:`
+An Internal Stage is managed by Snowflake and is used to store files inside Snowflake-managed storage.
+
+Snowflake provides different types of internal stages, such as user stages, table stages, and named internal stages.
+
+An External Stage points to a location in external cloud storage such as GCS, Amazon S3, or Azure Blob Storage.
+
+For external stages, we can use a Storage Integration to securely authorize Snowflake to access the external storage.
+
+The main difference is:
+
+Internal Stage → Snowflake manages the storage.
+
+External Stage → The files remain in external cloud storage and Snowflake accesses them through the external stage.
+`
+},
+
+{
+title: "Snowflake L2 - Snowpipe",
+
+question: `What is Snowpipe? How does it automatically load files into a Snowflake table?`,
+
+dataset:[
+{
+SOURCE:"GCS / S3 / Azure",
+STAGE:"External Stage",
+PIPE:"Snowpipe",
+TARGET:"Snowflake Table"
+}
+],
+
+output:[
+{
+FLOW:"External Storage → External Stage → Snowpipe → Snowflake Table",
+AUTO_INGEST:"TRUE"
+}
+],
+
+answer:`
+Snowpipe is a continuous data ingestion service in Snowflake that automatically loads new files from a stage into a target Snowflake table.
+
+When a new file arrives in external storage, a configured event notification mechanism can notify Snowpipe that a new file is available. Snowpipe then loads the file into the target table.
+
+A basic Snowpipe definition is:
+
+CREATE OR REPLACE PIPE my_pipe
+AUTO_INGEST = TRUE
+AS
+COPY INTO my_table
+FROM @my_gcs_stage
+FILE_FORMAT = (
+TYPE = 'CSV'
+SKIP_HEADER = 1
+);
+
+AUTO_INGEST = TRUE enables automatic ingestion when the required cloud event notification configuration is in place.
+
+Snowpipe loads data in this direction:
+
+External Storage → External Stage → Snowpipe → Snowflake Table.
+
+It does not copy data from a Snowflake table back to a stage.
+`
+},
+
+{
+title: "Snowflake L2 - Streams and Tasks",
+
+question: `What are Snowflake Streams and Tasks? Why would you use them together?`,
+
+dataset:[
+{
+STREAM:"Tracks table changes",
+TASK:"Schedules or automates SQL processing",
+USE_CASE:"CDC and incremental processing"
+}
+],
+
+output:[
+{
+FLOW:"Source Table → Stream → Task → Target Table",
+TASK_SCHEDULE:"Every 5 minutes"
+}
+],
+
+answer:`
+A Stream records metadata about changes made to a source table, such as inserts, updates, and deletes. Streams are commonly used for Change Data Capture and incremental processing.
+
+Syntax:
+
+CREATE OR REPLACE STREAM my_stream
+ON TABLE my_table;
+
+A Task is a Snowflake object used to schedule and automate SQL statements or stored procedures.
+
+For example:
+
+CREATE OR REPLACE TASK my_task
+WAREHOUSE = my_warehouse
+SCHEDULE = '5 MINUTE'
+AS
+INSERT INTO target_table
+SELECT *
+FROM my_stream;
+
+After creating the task, we need to resume it:
+
+ALTER TASK my_task RESUME;
+
+To suspend it:
+
+ALTER TASK my_task SUSPEND;
+
+To manually execute it:
+
+EXECUTE TASK my_task;
+
+Streams and Tasks can be combined for incremental processing.
+
+The Stream tracks changes, and the Task periodically processes those changes.
+
+The flow is:
+
+Source Table → Stream → Task → Target Table.
+`
+},
+
+{
+title: "Snowflake L2 - Snowflake Architecture",
+
+question: `Explain the architecture of Snowflake. What are the three main layers and what is the role of each layer?`,
+
+dataset:[
+{
+STORAGE_LAYER:"Stores table data",
+COMPUTE_LAYER:"Virtual Warehouses",
+CLOUD_SERVICES:"Control and coordination layer"
+}
+],
+
+output:[
+{
+STORAGE:"Micro-partitions, compressed columnar data",
+COMPUTE:"Query execution and processing",
+CLOUD_SERVICES:"Authentication, authorization, metadata, query parsing and optimization"
+}
+],
+
+answer:`
+Snowflake has three major architectural layers: Storage, Compute, and Cloud Services.
+
+The Storage Layer stores the actual table data. Snowflake automatically organizes data into micro-partitions and stores it in an optimized, compressed columnar format.
+
+The Compute Layer consists of Virtual Warehouses. Warehouses provide the compute resources required to execute SQL queries and data-processing workloads.
+
+A warehouse can scale up by increasing its size, for example from Small to Medium or Large.
+
+It can also scale out using multiple clusters to handle concurrency.
+
+The Cloud Services Layer acts as the control and coordination layer. It handles authentication, authorization, metadata management, query parsing, query optimization, and coordination of requests.
+
+The major architectural advantage is the separation of compute and storage.
+
+Different virtual warehouses can independently access the same underlying data without duplicating the data.
+
+At a high level:
+
+SQL Query
+→ Cloud Services
+→ Query Optimization
+→ Virtual Warehouse
+→ Snowflake Storage
+→ Result.
+`
+},
+
+{
+title: "Snowflake L2 - Create Virtual Warehouse",
+
+question: `How do you create a Virtual Warehouse in Snowflake? Explain the important warehouse properties.`,
+
+dataset:[
+{
+WAREHOUSE:"my_warehouse",
+SIZE:"MEDIUM",
+AUTO_SUSPEND:"300 seconds",
+AUTO_RESUME:"TRUE",
+MIN_CLUSTER_COUNT:"1",
+MAX_CLUSTER_COUNT:"3"
+}
+],
+
+output:[
+{
+SCALE_UP:"Increase warehouse size",
+SCALE_OUT:"Increase number of clusters"
+}
+],
+
+answer:`
+A Virtual Warehouse provides compute resources for executing queries and data-processing workloads.
+
+A basic syntax is:
+
+CREATE OR REPLACE WAREHOUSE my_warehouse
+WAREHOUSE_SIZE = 'X-SMALL'
+AUTO_SUSPEND = 300
+AUTO_RESUME = TRUE;
+
+A more complete example is:
+
+CREATE OR REPLACE WAREHOUSE my_warehouse
+WAREHOUSE_SIZE = 'MEDIUM'
+AUTO_SUSPEND = 300
+AUTO_RESUME = TRUE
+MIN_CLUSTER_COUNT = 1
+MAX_CLUSTER_COUNT = 3
+SCALING_POLICY = 'STANDARD'
+INITIALLY_SUSPENDED = TRUE
+COMMENT = 'Warehouse for ETL processing';
+
+WAREHOUSE_SIZE controls the compute size.
+
+AUTO_SUSPEND suspends the warehouse after the configured period of inactivity.
+
+AUTO_RESUME automatically starts the warehouse when a workload requires it.
+
+MIN_CLUSTER_COUNT and MAX_CLUSTER_COUNT are used for multi-cluster warehouses.
+
+Scaling up means increasing the warehouse size:
+
+ALTER WAREHOUSE my_warehouse
+SET WAREHOUSE_SIZE = 'LARGE';
+
+Scaling out means increasing the number of clusters:
+
+ALTER WAREHOUSE my_warehouse
+SET MAX_CLUSTER_COUNT = 3;
+`
+},
+
+{
+title: "Snowflake L2 - Cluster Key",
+
+question: `What is a Cluster Key in Snowflake? How do you create one and why is it used?`,
+
+dataset:[
+{
+TABLE:"CUSTOMER",
+COLUMN:"CUSTOMER_ID",
+CLUSTER_KEY:"CUSTOMER_ID"
+}
+],
+
+output:[
+{
+PURPOSE:"Improve data organization for suitable large tables and query patterns",
+BENEFIT:"Better micro-partition pruning"
+}
+],
+
+answer:`
+Snowflake automatically stores table data in micro-partitions.
+
+A Cluster Key tells Snowflake which column or expression is important for organizing data for clustering purposes.
+
+For example:
+
+ALTER TABLE CUSTOMER
+CLUSTER BY (CUSTOMER_ID);
+
+It can also be defined while creating a table:
+
+CREATE TABLE CUSTOMER
+(
+CUSTOMER_ID NUMBER,
+CUSTOMER_NAME VARCHAR,
+CITY VARCHAR
+)
+CLUSTER BY (CUSTOMER_ID);
+
+A Cluster Key does not create traditional partitions or indexes.
+
+Instead, it helps Snowflake maintain a useful clustering organization of the data for appropriate large tables and query patterns.
+
+Better clustering can improve micro-partition pruning and therefore reduce the amount of data that needs to be scanned.
+`
+},
+
+{
+title: "Snowflake L2 - Caching",
+
+question: `What types of cache are available in Snowflake, and where is the cache stored?`,
+
+dataset:[
+{
+RESULT_CACHE:"Cached query results",
+WAREHOUSE_CACHE:"Local cache associated with a running warehouse",
+METADATA:"Metadata used for optimization and pruning"
+}
+],
+
+output:[
+{
+RESULT_CACHE:"Can return an eligible previous query result without re-executing the query.",
+WAREHOUSE_CACHE:"Can reuse data previously accessed by the running warehouse.",
+IMPORTANT:"Warehouse local cache is lost when the warehouse is suspended."
+}
+],
+
+answer:`
+Snowflake has different caching mechanisms.
+
+The Result Cache stores eligible query results so that Snowflake can return the result without re-executing the query when the applicable conditions are satisfied.
+
+A running Virtual Warehouse can also use local SSD cache for data that it has previously accessed. This can help subsequent queries that need the same data.
+
+The warehouse local cache is lost when the warehouse is suspended.
+
+Snowflake also maintains metadata that is used for query optimization and micro-partition pruning.
+
+Therefore, I would not simply say that Snowflake cache is stored in SSD because Snowflake has different caching mechanisms.
+
+In an interview, I would explain that Snowflake has result caching, warehouse local data caching, and metadata used by the optimizer.
+`
+},
+
+{
+title: "Snowflake L2 - Micro-Partitioning and Pruning",
+
+question: `Why does Snowflake use micro-partitions instead of traditional partitions? How does micro-partition pruning improve query performance?`,
+
+dataset:[
+{
+PARTITION_1:"CUSTOMER_ID 1 - 1000",
+PARTITION_2:"CUSTOMER_ID 1001 - 2000",
+PARTITION_3:"CUSTOMER_ID 2001 - 3000",
+PARTITION_4:"CUSTOMER_ID 3001 - 4000"
+},
+{
+QUERY:"WHERE CUSTOMER_ID = 1500"
+}
+],
+
+output:[
+{
+RESULT:"Only relevant micro-partition(s) need to be scanned.",
+PRUNING:"Unnecessary micro-partitions can be skipped."
+}
+],
+
+answer:`
+Snowflake automatically organizes table data into micro-partitions.
+
+Snowflake maintains metadata about these micro-partitions, including information such as value ranges. The query optimizer can use this metadata to determine which micro-partitions may contain the required data.
+
+For example, suppose the data is organized as:
+
+Micro-partition 1 → CustomerID 1-1000
+Micro-partition 2 → CustomerID 1001-2000
+Micro-partition 3 → CustomerID 2001-3000
+Micro-partition 4 → CustomerID 3001-4000
+
+If the query is:
+
+SELECT *
+FROM CUSTOMER
+WHERE CUSTOMER_ID = 1500;
+
+Snowflake can determine that the required value can only exist in the relevant micro-partition and can skip unnecessary micro-partitions.
+
+This is called micro-partition pruning.
+
+Pruning improves performance because Snowflake scans less data, reducing I/O and compute work.
+
+Snowflake automatically creates micro-partitions, unlike traditional databases where partitions are often explicitly designed and maintained by the developer.
+`
+},
+
+{
+title: "Snowflake L2 - Query Performance Troubleshooting",
+
+question: `A Snowflake query that normally takes 30 seconds suddenly takes 10 minutes. How would you investigate the performance issue?`,
+
+dataset:[
+{
+NORMAL_RUNTIME:"30 seconds",
+CURRENT_RUNTIME:"10 minutes",
+TOOLS:"Query History and Query Profile"
+}
+],
+
+output:[
+{
+STEP_1:"Check Query History",
+STEP_2:"Open Query Profile",
+STEP_3:"Identify expensive operators and data scans",
+STEP_4:"Check partition pruning, joins, aggregations, spilling and warehouse/concurrency",
+STEP_5:"Apply the appropriate optimization"
+}
+],
+
+answer:`
+First, I would check Query History and compare the current execution with previous executions.
+
+Then I would open the Query Profile to understand how Snowflake executed the query and identify the expensive operators.
+
+I would check:
+
+1. Bytes scanned.
+2. Partitions scanned and partitions pruned.
+3. Table scan operations.
+4. Join operations.
+5. Aggregations and sorting.
+6. Spilling to local or remote storage.
+7. Warehouse size and workload concurrency.
+
+If partition pruning has decreased, I would investigate the query filters and data organization and evaluate whether clustering is appropriate.
+
+I would also check whether the warehouse is handling a high number of concurrent queries or whether the workload requires a larger warehouse.
+
+Query History helps me understand what happened with the query execution, while Query Profile helps me understand how the query was executed and where the bottleneck occurred.
+`
+},
+
+{
+title: "Snowflake L2 - Time Travel",
+
+question: `What is Time Travel in Snowflake? How can you use it to query or recover historical data?`,
+
+dataset:[
+{
+FEATURE:"Time Travel",
+USE_CASES:"Historical queries, accidental data recovery, comparison of previous data",
+METHODS:"AT, BEFORE, UNDROP"
+}
+],
+
+output:[
+{
+QUERY:"Access historical data",
+RECOVERY:"Recover dropped or accidentally modified data within the applicable retention period"
+}
+],
+
+answer:`
+Time Travel is a Snowflake feature that allows us to access historical versions of data within the configured retention period.
+
+We can query historical data using a timestamp:
+
+SELECT *
+FROM my_table
+AT (TIMESTAMP => '2026-09-23 10:00:00');
+
+We can also use an offset:
+
+SELECT *
+FROM my_table
+AT (OFFSET => -3600);
+
+This accesses the table approximately one hour earlier.
+
+We can use BEFORE with a statement ID:
+
+SELECT *
+FROM my_table
+BEFORE (STATEMENT => 'query_id');
+
+If a table was accidentally dropped, we can use:
+
+UNDROP TABLE my_table;
+
+We can also create a new table from historical data:
+
+CREATE TABLE my_table_backup AS
+SELECT *
+FROM my_table
+AT (TIMESTAMP => '2026-09-23 10:00:00');
+
+The historical data is available only within the applicable Time Travel retention period.
+
+Time Travel is useful for accidental data deletion, data recovery, historical comparison and troubleshooting.
+`
+}
+,
 /* End of questions array */
 ];
 
