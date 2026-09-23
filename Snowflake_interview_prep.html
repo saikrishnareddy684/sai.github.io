@@ -2832,7 +2832,364 @@ Finally, I perform source-to-target validation and regression testing to make su
 So my approach is: identify the incorrect target data, trace backward through the lineage, compare data at each layer, identify the root cause, fix it, rerun the process, and validate the results."
 `
 },
+{
+title: "Airflow - Experience and Activities",
 
+question: `Do you have any experience with Apache Airflow? What are the different things you do in Airflow?`,
+
+dataset:[
+{
+CONCEPT:"DAG",
+DEFINITION:"A Directed Acyclic Graph (DAG) defines the overall workflow and execution order of a data pipeline."
+},
+{
+CONCEPT:"Tasks",
+DEFINITION:"Tasks represent individual steps or operations within an Airflow DAG."
+},
+{
+CONCEPT:"Task Dependencies",
+DEFINITION:"Dependencies define the order in which tasks should execute."
+},
+{
+CONCEPT:"Scheduling",
+DEFINITION:"Airflow can schedule DAGs to run at a defined time or interval."
+},
+{
+CONCEPT:"XCom",
+DEFINITION:"XCom is used to pass small amounts of information or values between Airflow tasks."
+},
+{
+CONCEPT:"Connections",
+DEFINITION:"Airflow connections store configuration required to connect to external systems such as Snowflake."
+},
+{
+CONCEPT:"Monitoring",
+DEFINITION:"Airflow provides task status, execution history and logs to monitor and troubleshoot pipelines."
+}
+],
+
+output:[
+{
+FLOW:"Source → Extract/Load → Snowflake → Transformation → Validation → Target"
+}
+],
+
+answer:`
+"Yes, I have experience with Apache Airflow, mainly around creating and managing DAGs for data pipelines.
+
+I have worked with DAGs, tasks, task dependencies, scheduling, XCom, connections and monitoring.
+
+For example, I can create a DAG where one task performs an operation and passes a value to the next task using XCom. I have also worked with Snowflake connections from Airflow and executed Snowflake queries from Airflow tasks.
+
+I understand that a DAG defines the overall workflow, tasks represent individual steps, and dependencies control the execution order.
+
+I have also worked with scheduling, monitoring task status, checking logs and troubleshooting failed tasks.
+
+In a typical data pipeline, Airflow can orchestrate the flow like:
+
+Source
+↓
+Extract / Load
+↓
+Snowflake
+↓
+Transformation
+↓
+Validation
+↓
+Final Target
+
+So my main experience with Airflow is around workflow orchestration, task dependencies, scheduling, monitoring, XCom and integrating Airflow with Snowflake."
+`
+},
+
+{
+title: "Airflow - DAG Creation and Scheduling",
+
+question: `How do you create DAGs and perform scheduling in Airflow?`,
+
+dataset:[
+{
+CONCEPT:"DAG Creation",
+PROCESS:"Create a DAG using Python and define the DAG ID, schedule, start date and other configuration."
+},
+{
+CONCEPT:"Tasks",
+EXAMPLES:"Create tasks using operators such as PythonOperator or Snowflake-related operators."
+},
+{
+CONCEPT:"Dependencies",
+EXAMPLE:"extract_task >> load_task",
+PURPOSE:"Defines the order in which tasks should execute."
+},
+{
+CONCEPT:"Scheduling",
+EXAMPLES:"Hourly, daily or cron-based schedules can be configured for a DAG."
+},
+{
+CONCEPT:"DAG Folder",
+PURPOSE:"Place the Python DAG file in the Airflow DAGs folder so Airflow can detect and load it."
+},
+{
+CONCEPT:"Airflow UI",
+PURPOSE:"Enable or disable DAGs, trigger them manually, monitor task status and check logs."
+}
+],
+
+output:[
+{
+FLOW:"Create Python DAG → Define Schedule → Create Tasks → Define Dependencies → Place DAG in DAGs Folder → Enable DAG → Monitor Execution"
+}
+],
+
+answer:`
+"In Airflow, I create a DAG using Python.
+
+First, I define the DAG with its DAG ID, schedule, start date and other configuration.
+
+Then I create the required tasks using operators, for example PythonOperator or Snowflake-related operators.
+
+After creating the tasks, I define the dependencies between them. For example, if the load task should run after the extraction task, I can define:
+
+extract_task >> load_task
+
+For scheduling, I can specify a schedule such as hourly, daily, or using a cron expression. Airflow's scheduler checks the DAG and triggers it according to that schedule.
+
+Once the DAG file is placed in the Airflow DAGs folder, Airflow detects it and the DAG becomes available in the Airflow UI.
+
+From the UI, I can enable or disable the DAG, trigger it manually, monitor task status and check logs if a task fails.
+
+So the overall process is:
+
+Create Python DAG
+↓
+Define Schedule
+↓
+Create Tasks
+↓
+Define Dependencies
+↓
+Place DAG in DAGs Folder
+↓
+Enable DAG
+↓
+Monitor Execution
+
+This is how I create, schedule and monitor DAGs in Airflow."
+`
+},
+
+    {
+title: "Snowflake - Handling Streaming Data",
+
+question: `How do you handle streaming or near-real-time data in Snowflake?`,
+
+dataset:[
+{
+CONCEPT:"Snowpipe",
+PURPOSE:"Continuously or automatically loads new files from cloud storage into Snowflake."
+},
+{
+CONCEPT:"Stream",
+PURPOSE:"Captures changes made to a Snowflake table, such as inserted, updated or deleted records."
+},
+{
+CONCEPT:"Task",
+PURPOSE:"Processes the changes captured by the Stream and loads or transforms the data into a target table."
+},
+{
+CONCEPT:"Typical Flow",
+FLOW:"Cloud Storage → Snowpipe → Raw/Staging Table → Stream → Task → Target Table"
+}
+],
+
+output:[
+{
+FLOW:"Cloud Storage → Snowpipe → Raw/Staging Table → Stream → Task → Target Table"
+}
+],
+
+answer:`
+"For streaming or near-real-time data in Snowflake, I would typically use Snowpipe for continuous ingestion and Streams and Tasks for downstream processing.
+
+First, the incoming files are placed in cloud storage such as GCS, S3 or Azure Blob. Snowpipe automatically loads the new files into a raw or staging table.
+
+Then I create a Snowflake Stream on the staging table. The Stream captures changes such as newly inserted records.
+
+A Task can then run at a defined interval or when the Stream has data. The Task processes those changes and loads them into the target table.
+
+So the typical flow is:
+
+Cloud Storage
+↓
+Snowpipe
+↓
+Raw / Staging Table
+↓
+Stream
+↓
+Task
+↓
+Target Table
+
+This approach avoids repeatedly processing the entire table because the downstream process can work with the changes captured by the Stream.
+
+For example, if new customer transaction files arrive in GCS, Snowpipe loads them into the staging table. The Stream captures the new records, and the Task processes those records and loads them into the final transaction table.
+
+I would also monitor Snowpipe load history, Task history and failures to make sure the pipeline is working correctly."
+`
+},
+{
+title: "Snowflake - Batch Ingestion",
+
+question: `What is batch ingestion and how do you perform batch ingestion in Snowflake?`,
+
+dataset:[
+{
+CONCEPT:"Batch Ingestion",
+DEFINITION:"Data is collected over a period of time and loaded into Snowflake at scheduled intervals rather than continuously."
+},
+{
+CONCEPT:"External Stage",
+PURPOSE:"Points Snowflake to the location of files in external cloud storage such as GCS, S3 or Azure Blob."
+},
+{
+CONCEPT:"COPY INTO",
+PURPOSE:"Loads files from a Snowflake stage into a Snowflake table."
+},
+{
+CONCEPT:"Airflow",
+PURPOSE:"Can be used to schedule and orchestrate the batch ingestion process."
+},
+{
+CONCEPT:"Validation",
+EXAMPLES:"Record-count validation, source-to-target validation and data-quality checks."
+}
+],
+
+output:[
+{
+FLOW:"Source System → Files → Cloud Storage → External Stage → COPY INTO → Snowflake Table → Validation"
+}
+],
+
+answer:`
+"Batch ingestion means data is collected and loaded into Snowflake at scheduled intervals rather than continuously.
+
+For example, suppose the source system generates CSV files every night and places them in GCS.
+
+The typical process would be:
+
+Source System
+↓
+CSV Files
+↓
+GCS
+↓
+Snowflake External Stage
+↓
+COPY INTO
+↓
+Staging / Target Table
+↓
+Validation
+
+First, I create an external stage that points to the GCS location.
+
+Then I use COPY INTO to load the files from the stage into a Snowflake staging or target table.
+
+For example:
+
+COPY INTO CUSTOMER
+FROM @my_gcs_stage
+FILE_FORMAT = (TYPE = 'CSV' SKIP_HEADER = 1);
+
+The batch process can be scheduled and orchestrated using a tool such as Airflow.
+
+After the load, I perform validations such as record-count validation, source-to-target validation and data-quality checks.
+
+So, in simple terms, batch ingestion is periodic data loading, and in Snowflake I can commonly use an external stage and COPY INTO, with Airflow or another orchestration tool used for scheduling."
+`
+},
+{
+title: "Snowflake - Extraction from External Storage",
+
+question: `Can Snowflake extract data from external storage? If yes, how is that different from traditional ETL extraction?`,
+
+dataset:[
+{
+CONCEPT:"External Storage",
+EXAMPLES:"GCS, Amazon S3, Azure Blob Storage"
+},
+{
+CONCEPT:"External Stage",
+PURPOSE:"Provides Snowflake access to files stored in external cloud storage."
+},
+{
+CONCEPT:"COPY INTO",
+PURPOSE:"Reads files from the stage and loads their data into a Snowflake table."
+},
+{
+CONCEPT:"Source-System Extraction",
+EXAMPLES:"SQL Server, Oracle, APIs, SaaS applications"
+},
+{
+CONCEPT:"Dedicated Ingestion Tools",
+EXAMPLES:"Fivetran, ADF, Informatica, Matillion"
+}
+],
+
+output:[
+{
+FLOW:"GCS / S3 / Azure Blob → External Stage → COPY INTO → Snowflake Table"
+},
+{
+TRADITIONAL_ETL_FLOW:"Source System → Ingestion Tool → Snowflake → Transformation"
+}
+],
+
+answer:`
+"Yes, Snowflake can read data from external storage such as GCS, Amazon S3 or Azure Blob Storage.
+
+For example, in my GCS practice, the flow is:
+
+GCS
+↓
+External Stage
+↓
+COPY INTO
+↓
+Snowflake Table
+
+I can create an external stage that points to the cloud-storage location and then use COPY INTO to load the files into a Snowflake table.
+
+For example:
+
+COPY INTO CUSTOMER
+FROM @my_gcs_stage
+FILE_FORMAT = (TYPE = 'CSV' SKIP_HEADER = 1);
+
+Here, Snowflake reads the files from GCS and loads their contents into the Snowflake table.
+
+However, this is slightly different from extraction in a traditional ETL sense.
+
+If the source is a database such as SQL Server or Oracle, or an API or SaaS application, the extraction is typically performed by an external ingestion tool such as Fivetran, ADF, Informatica or Matillion.
+
+So the distinction is:
+
+SQL Server → Fivetran / ADF → Snowflake
+
+In this case, the external tool extracts the data.
+
+But:
+
+GCS / S3 / Azure Blob → External Stage → COPY INTO → Snowflake
+
+In this case, Snowflake can read the files from external storage and load them.
+
+Therefore, I would say that Snowflake has strong data-loading and ingestion capabilities, including reading from external cloud storage, but it is primarily a cloud data platform and data warehouse rather than a dedicated ETL tool."
+`
+},
 
 /* End of questions array */
 ];
