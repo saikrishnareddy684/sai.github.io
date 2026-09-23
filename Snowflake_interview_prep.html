@@ -3190,6 +3190,71 @@ In this case, Snowflake can read the files from external storage and load them.
 Therefore, I would say that Snowflake has strong data-loading and ingestion capabilities, including reading from external cloud storage, but it is primarily a cloud data platform and data warehouse rather than a dedicated ETL tool."
 `
 },
+{
+title: "Snowflake - Loading Large Files",
+
+question: `Snowpipe is used for streaming/continuous file ingestion. If large files or large datasets in GBs are coming, which approach would you take to load them into Snowflake?`,
+
+dataset:[
+{
+scenario: "Large batch files",
+flow: "Cloud Storage → External Stage → COPY INTO → Snowflake Table"
+},
+{
+scenario: "Continuous file arrival",
+flow: "Cloud Storage → Snowpipe → Snowflake Table"
+},
+{
+scenario: "True low-latency row-level streaming",
+flow: "Source → Snowpipe Streaming → Snowflake"
+}
+],
+
+output:[
+{
+scenario: "Large batch load",
+approach: "COPY INTO"
+},
+{
+scenario: "Continuous file-based ingestion",
+approach: "Snowpipe"
+},
+{
+scenario: "Low-latency streaming",
+approach: "Snowpipe Streaming"
+}
+],
+
+answer:`
+For large datasets, especially when GB-sized files are arriving as a batch, I would generally use cloud storage with an external stage and COPY INTO.
+
+COPY INTO is suitable for bulk loading and can load multiple files in parallel.
+
+For example:
+
+COPY INTO CUSTOMER
+FROM @my_gcs_stage
+FILE_FORMAT = (TYPE = 'CSV' SKIP_HEADER = 1);
+
+If files are arriving continuously and we need automated ingestion, I would consider Snowpipe.
+
+I would not say that Snowpipe is only for small files. The choice depends mainly on the ingestion pattern and latency requirement.
+
+If the requirement is true low-latency row-level streaming rather than file-based ingestion, Snowpipe Streaming can be considered.
+
+So the basic approach is:
+
+Large batch → Cloud Storage → External Stage → COPY INTO → Snowflake
+
+Continuous file ingestion → Cloud Storage → Snowpipe → Snowflake
+
+Low-latency streaming → Snowpipe Streaming → Snowflake
+
+For large batch loads, I would also prefer multiple reasonably sized files rather than one extremely large file, because Snowflake can process multiple files in parallel.
+
+The key point is: COPY INTO is generally used for bulk/batch loading, while Snowpipe is used for continuous automated file ingestion.
+`
+},
 
 /* End of questions array */
 ];
