@@ -857,7 +857,7 @@ t.Department AS TargetDepartment,
 s.Salary AS SourceSalary,
 t.Salary AS TargetSalary,
 
-```
+
 CASE
     WHEN s.EmployeeID IS NOT NULL
          AND t.EmployeeID IS NULL
@@ -876,7 +876,7 @@ CASE
 
     ELSE 'Matched'
 END AS ValidationStatus
-```
+
 
 FROM Employee_Source s
 FULL OUTER JOIN Employee_Target t
@@ -954,7 +954,272 @@ Also, when comparing columns using <> or =, NULL values need special handling be
 `
 },
 
-    
+    {
+title: "SQL - Tough JOIN Scenario: Duplicate Explosion",
+
+question: `
+You have three tables:
+
+Customers:
+
+CustomerID | CustomerName
+1          | John
+2          | David
+
+Orders:
+
+OrderID | CustomerID | OrderDate
+101     | 1          | 2026-01-01
+102     | 1          | 2026-02-01
+103     | 1          | 2026-03-01
+104     | 2          | 2026-01-15
+
+Customer_Address:
+
+CustomerID | AddressType | City
+1          | Home        | Bangalore
+1          | Office      | Hyderabad
+2          | Home        | Chennai
+
+Requirement:
+
+Return exactly one row per customer, showing:
+
+1. Customer name
+2. The customer's latest order
+3. The customer's Home address
+
+Interview question:
+
+If you directly join Customers, Orders, and Customer_Address using CustomerID, what duplicate or row multiplication problem can occur?
+
+What approach would you use to avoid the duplicate rows?
+`,
+
+dataset:[
+{table:"Customers", rows:[
+{CustomerID:1, CustomerName:"John"},
+{CustomerID:2, CustomerName:"David"}
+]},
+
+{table:"Orders", rows:[
+{OrderID:101, CustomerID:1, OrderDate:"2026-01-01"},
+{OrderID:102, CustomerID:1, OrderDate:"2026-02-01"},
+{OrderID:103, CustomerID:1, OrderDate:"2026-03-01"},
+{OrderID:104, CustomerID:2, OrderDate:"2026-01-15"}
+]},
+
+{table:"Customer_Address", rows:[
+{CustomerID:1, AddressType:"Home", City:"Bangalore"},
+{CustomerID:1, AddressType:"Office", City:"Hyderabad"},
+{CustomerID:2, AddressType:"Home", City:"Chennai"}
+]}
+],
+
+output:[
+{CustomerID:1, CustomerName:"John", LatestOrderID:103, LatestOrderDate:"2026-03-01", HomeCity:"Bangalore"},
+{CustomerID:2, CustomerName:"David", LatestOrderID:104, LatestOrderDate:"2026-01-15", HomeCity:"Chennai"}
+],
+
+answer:`
+The problem is row multiplication because both Orders and Customer_Address contain multiple rows for the same CustomerID.
+
+For John:
+
+Orders has 3 rows.
+
+Customer_Address has 2 rows.
+
+If we directly join both tables using CustomerID:
+
+3 Orders × 2 Addresses = 6 rows.
+
+Therefore, we need to reduce the one-to-many tables before performing the final join.
+
+Step 1: Get the latest order for each customer using ROW_NUMBER:
+
+WITH LatestOrders AS
+(
+SELECT
+OrderID,
+CustomerID,
+OrderDate,
+ROW_NUMBER() OVER
+(
+PARTITION BY CustomerID
+ORDER BY OrderDate DESC
+) AS r
+FROM Orders
+)
+
+Step 2: Filter the address table to Home addresses:
+
+HomeAddress AS
+(
+SELECT
+CustomerID,
+City
+FROM Customer_Address
+WHERE AddressType = 'Home'
+)
+
+Step 3: Join Customers with the reduced datasets:
+
+WITH LatestOrders AS
+(
+SELECT
+OrderID,
+CustomerID,
+OrderDate,
+ROW_NUMBER() OVER
+(
+PARTITION BY CustomerID
+ORDER BY OrderDate DESC
+) AS r
+FROM Orders
+),
+HomeAddress AS
+(
+SELECT
+CustomerID,
+City
+FROM Customer_Address
+WHERE AddressType = 'Home'
+)
+SELECT
+c.CustomerID,
+c.CustomerName,
+o.OrderID AS LatestOrderID,
+o.OrderDate AS LatestOrderDate,
+a.City AS HomeCity
+FROM Customers c
+LEFT JOIN LatestOrders o
+ON c.CustomerID = o.CustomerID
+AND o.r = 1
+LEFT JOIN HomeAddress a
+ON c.CustomerID = a.CustomerID;
+
+The key concept is:
+
+When joining multiple one-to-many tables, first reduce each table to the required grain and then perform the final join.
+
+Here:
+
+Customers = one row per customer
+
+LatestOrders = one row per customer
+
+HomeAddress = one row per customer
+
+Therefore, the final result contains one row per customer.
+
+Important interview point:
+
+AddressType = 'Home' prevents the Office address from being joined, while ROW_NUMBER with r = 1 ensures that only the latest order is joined.
+
+If the data can contain multiple Home addresses for the same customer, we should also use ROW_NUMBER on Customer_Address to select one current or latest Home address.
+`
+},
+{
+title: "SQL - Customers Who Placed Orders in Every Month",
+
+question: `
+You have an Orders table.
+
+Requirement:
+
+Find customers who placed at least one order in every month from January 2026 through March 2026.
+
+Expected result:
+
+Customer 1 because the customer placed orders in January, February, and March.
+
+Customer 2 should not be returned because the customer placed orders in January and March but did not place an order in February.
+
+Customer 3 should be returned because the customer placed orders in January, February, and March.
+
+Interview question:
+
+How would you write the SQL query to find customers who placed at least one order in every required month?
+`,
+
+dataset:[
+{OrderID:101, CustomerID:1, OrderDate:"2026-01-10", Amount:500},
+{OrderID:102, CustomerID:1, OrderDate:"2026-02-15", Amount:700},
+{OrderID:103, CustomerID:1, OrderDate:"2026-03-20", Amount:600},
+{OrderID:104, CustomerID:2, OrderDate:"2026-01-05", Amount:400},
+{OrderID:105, CustomerID:2, OrderDate:"2026-03-12", Amount:800},
+{OrderID:106, CustomerID:3, OrderDate:"2026-01-18", Amount:300},
+{OrderID:107, CustomerID:3, OrderDate:"2026-02-10", Amount:500},
+{OrderID:108, CustomerID:3, OrderDate:"2026-03-25", Amount:900},
+{OrderID:109, CustomerID:3, OrderDate:"2026-03-28", Amount:200}
+],
+
+output:[
+{CustomerID:1},
+{CustomerID:3}
+],
+
+answer:`
+The key is to group the data by CustomerID and count the number of distinct months in which the customer placed an order.
+
+Since the requirement is January, February, and March, we need exactly 3 distinct months.
+
+SQL:
+
+SELECT
+CustomerID
+FROM Orders
+WHERE OrderDate >= '2026-01-01'
+AND OrderDate < '2026-04-01'
+GROUP BY CustomerID
+HAVING COUNT(DISTINCT MONTH(OrderDate)) = 3;
+
+Explanation:
+
+Customer 1 has orders in:
+
+January
+February
+March
+
+COUNT(DISTINCT MONTH(OrderDate)) = 3, so Customer 1 is returned.
+
+Customer 2 has orders in:
+
+January
+March
+
+COUNT(DISTINCT MONTH(OrderDate)) = 2, so Customer 2 is excluded.
+
+Customer 3 has orders in:
+
+January
+February
+March
+
+Customer 3 has two orders in March, but COUNT(DISTINCT MONTH(OrderDate)) counts March only once.
+
+Therefore, Customer 3 is returned.
+
+Important interview point:
+
+For requirements such as:
+
+"Find customers who performed an activity in every month."
+
+Think:
+
+GROUP BY entity
+→ COUNT(DISTINCT required dimension)
+→ HAVING count = required number
+
+Also, use a date range to restrict the required year.
+
+Using only MONTH(OrderDate) can cause incorrect results when the table contains multiple years. For example, January 2025 and January 2026 would both return month number 1.
+`
+},
+
 /* End of questions array */
 ];
 
