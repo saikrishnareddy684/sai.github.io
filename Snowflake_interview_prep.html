@@ -2147,6 +2147,622 @@ Finally, once all critical scenarios pass and there are no blocking defects, the
 The important point is that UAT is not only technical testing. The main purpose is business validation, where the business users confirm that the solution meets their requirements.
 `
 },
+    {
+title: "Snowflake Dynamic Tables - Example and Syntax",
+
+question: `What are Dynamic Tables in Snowflake? How do you create and use a Dynamic Table?`,
+
+dataset:[
+{
+STEP:"1. Create Source Table",
+SQL:`CREATE OR REPLACE TABLE CUSTOMER_ORDERS
+(
+    ORDER_ID NUMBER,
+    CUSTOMER_ID NUMBER,
+    CUSTOMER_NAME VARCHAR,
+    ORDER_DATE DATE,
+    AMOUNT NUMBER(10,2)
+);`
+},
+{
+STEP:"2. Insert Sample Data",
+SQL:`INSERT INTO CUSTOMER_ORDERS VALUES
+(101, 1, 'John',  '2026-09-20', 500),
+(102, 1, 'John',  '2026-09-21', 300),
+(103, 2, 'David', '2026-09-21', 700),
+(104, 3, 'Sarah', '2026-09-22', 400);`
+},
+{
+STEP:"3. Create Dynamic Table",
+SQL:`CREATE OR REPLACE DYNAMIC TABLE CUSTOMER_ORDER_SUMMARY
+TARGET_LAG = '5 MINUTES'
+WAREHOUSE = COMPUTE_WH
+AS
+SELECT
+    CUSTOMER_ID,
+    CUSTOMER_NAME,
+    SUM(AMOUNT) AS TOTAL_AMOUNT
+FROM CUSTOMER_ORDERS
+GROUP BY
+    CUSTOMER_ID,
+    CUSTOMER_NAME;`
+},
+{
+STEP:"4. Query Dynamic Table",
+SQL:`SELECT *
+FROM CUSTOMER_ORDER_SUMMARY
+ORDER BY CUSTOMER_ID;`
+},
+{
+STEP:"5. Add New Source Data",
+SQL:`INSERT INTO CUSTOMER_ORDERS VALUES
+(105, 1, 'John', '2026-09-23', 200);`
+},
+{
+STEP:"6. Check Dynamic Table",
+SQL:`SHOW DYNAMIC TABLES;`
+},
+{
+STEP:"7. Describe Dynamic Table",
+SQL:`DESC DYNAMIC TABLE CUSTOMER_ORDER_SUMMARY;`
+},
+{
+STEP:"8. Change Target Lag",
+SQL:`ALTER DYNAMIC TABLE CUSTOMER_ORDER_SUMMARY
+SET TARGET_LAG = '10 MINUTES';`
+}
+],
+
+output:[
+{
+CUSTOMER_ID:1,
+CUSTOMER_NAME:"John",
+TOTAL_AMOUNT:1000
+},
+{
+CUSTOMER_ID:2,
+CUSTOMER_NAME:"David",
+TOTAL_AMOUNT:700
+},
+{
+CUSTOMER_ID:3,
+CUSTOMER_NAME:"Sarah",
+TOTAL_AMOUNT:400
+}
+],
+
+answer:`
+A Dynamic Table in Snowflake is a table whose contents are automatically maintained by Snowflake based on a defined SQL query and a target freshness requirement.
+
+For example, suppose CUSTOMER_ORDERS is my source table and I want to maintain a customer-level order summary.
+
+I can create the Dynamic Table as:
+
+CREATE OR REPLACE DYNAMIC TABLE CUSTOMER_ORDER_SUMMARY
+TARGET_LAG = '5 MINUTES'
+WAREHOUSE = COMPUTE_WH
+AS
+SELECT
+CUSTOMER_ID,
+CUSTOMER_NAME,
+SUM(AMOUNT) AS TOTAL_AMOUNT
+FROM CUSTOMER_ORDERS
+GROUP BY
+CUSTOMER_ID,
+CUSTOMER_NAME;
+
+TARGET_LAG defines how fresh I want the Dynamic Table to be relative to its source data.
+
+If I insert a new order into CUSTOMER_ORDERS, Snowflake automatically refreshes the Dynamic Table based on the defined target lag.
+
+For example, if John initially has orders of 500 and 300, his total is 800.
+
+If I insert another order of 200:
+
+INSERT INTO CUSTOMER_ORDERS VALUES
+(105, 1, 'John', '2026-09-23', 200);
+
+After the Dynamic Table refreshes, John's total becomes 1000.
+
+The main difference from Streams and Tasks is that with Streams and Tasks, we explicitly implement change tracking and processing logic. With Dynamic Tables, we define the desired result using SQL and specify how fresh the result should be, and Snowflake manages the refresh process.
+
+A simple way to remember:
+
+Streams → Tracks changes.
+
+Tasks → Schedules or triggers processing.
+
+Dynamic Tables → Automatically maintains transformed data based on a target freshness requirement.
+`
+},
+{
+title: "Dynamic Table vs Materialized View",
+
+question: `What is the difference between a Dynamic Table and a Materialized View in Snowflake? What is the syntax for a Materialized View, and where would you use each one?`,
+
+dataset:[
+{
+OBJECT:"Dynamic Table",
+PURPOSE:"Used mainly for data transformation pipelines and maintaining transformed data."
+},
+{
+OBJECT:"Materialized View",
+PURPOSE:"Used mainly to improve query performance by storing precomputed query results."
+},
+{
+OBJECT:"Dynamic Table",
+SYNTAX:`CREATE OR REPLACE DYNAMIC TABLE CUSTOMER_ORDER_DT
+TARGET_LAG = '5 MINUTES'
+WAREHOUSE = COMPUTE_WH
+AS
+SELECT
+    CUSTOMER_ID,
+    SUM(AMOUNT) AS TOTAL_AMOUNT
+FROM CUSTOMER_ORDERS
+GROUP BY CUSTOMER_ID;`
+},
+{
+OBJECT:"Materialized View",
+SYNTAX:`CREATE OR REPLACE MATERIALIZED VIEW CUSTOMER_ORDER_MV
+AS
+SELECT
+    CUSTOMER_ID,
+    SUM(AMOUNT) AS TOTAL_AMOUNT
+FROM CUSTOMER_ORDERS
+GROUP BY CUSTOMER_ID;`
+}
+],
+
+output:[
+{
+OBJECT:"Dynamic Table",
+USE_CASE:"Source → Staging → Transformation → Curated/Reporting data"
+},
+{
+OBJECT:"Materialized View",
+USE_CASE:"Large base table → Frequently executed expensive query → Faster query results"
+}
+],
+
+answer:`
+A Dynamic Table and a Materialized View both maintain precomputed data, but they are designed for different purposes.
+
+A Dynamic Table is primarily used for data transformation pipelines.
+
+For example:
+
+CUSTOMER_ORDERS
+↓
+CUSTOMER_CLEAN_DT
+↓
+CUSTOMER_SUMMARY_DT
+↓
+Reporting
+
+We define the transformation query and specify how fresh we want the Dynamic Table to be using TARGET_LAG.
+
+Example:
+
+CREATE OR REPLACE DYNAMIC TABLE CUSTOMER_ORDER_DT
+TARGET_LAG = '5 MINUTES'
+WAREHOUSE = COMPUTE_WH
+AS
+SELECT
+CUSTOMER_ID,
+SUM(AMOUNT) AS TOTAL_AMOUNT
+FROM CUSTOMER_ORDERS
+GROUP BY CUSTOMER_ID;
+
+A Materialized View is primarily used for query performance.
+
+Suppose I have a very large CUSTOMER_ORDERS table and users frequently execute an expensive aggregation:
+
+SELECT
+CUSTOMER_ID,
+SUM(AMOUNT)
+FROM CUSTOMER_ORDERS
+GROUP BY CUSTOMER_ID;
+
+I can create a Materialized View containing the precomputed result:
+
+CREATE OR REPLACE MATERIALIZED VIEW CUSTOMER_ORDER_MV
+AS
+SELECT
+CUSTOMER_ID,
+SUM(AMOUNT) AS TOTAL_AMOUNT
+FROM CUSTOMER_ORDERS
+GROUP BY CUSTOMER_ID;
+
+The main difference is the purpose.
+
+Dynamic Table → Used to build and maintain transformed data.
+
+Materialized View → Used to improve the performance of repeated or expensive queries.
+
+For example, in an ETL/ELT pipeline, I would consider a Dynamic Table when I need to maintain a transformed or curated data layer.
+
+If I already have a large table and a particular query is repeatedly expensive, I would consider a Materialized View as a query-performance optimization.
+
+Memory trick:
+
+Dynamic Table → Transform and maintain data.
+
+Materialized View → Precompute to improve query performance.
+`
+},
+{
+title: "Snowflake Tasks - Task Dependency, Completion and Failure Behavior",
+
+question: `How would you create task dependencies in Snowflake if one procedure needs to run first and then a child procedure needs to run after it? How would you handle task completion and failure behavior?`,
+
+dataset:[
+{
+TASK:"TASK_LOAD_CUSTOMER",
+PROCEDURE:"PROC_LOAD_CUSTOMER",
+TYPE:"Parent Task",
+PURPOSE:"Runs the first procedure."
+},
+{
+TASK:"TASK_LOAD_ORDERS",
+PROCEDURE:"PROC_LOAD_ORDERS",
+TYPE:"Child Task",
+PURPOSE:"Runs after TASK_LOAD_CUSTOMER based on the dependency condition."
+},
+{
+DEPENDENCY:"AFTER TASK_LOAD_CUSTOMER",
+PURPOSE:"Creates the dependency between the parent and child task."
+},
+{
+SUCCESS_BEHAVIOR:"Parent task completes successfully",
+RESULT:"Child task can be triggered."
+},
+{
+FAILURE_BEHAVIOR:"Parent task fails",
+RESULT:"A normal AFTER child task is not triggered because the dependency condition is not satisfied."
+},
+{
+FAILURE_HANDLING:"Use separate failure-handling logic or task graph configuration when failure notifications or alternate processing are required.",
+RESULT:"Failure can be monitored and handled separately."
+}
+],
+
+output:[
+{
+SUCCESS_FLOW:"TASK_LOAD_CUSTOMER → Success → TASK_LOAD_ORDERS"
+},
+{
+FAILURE_FLOW:"TASK_LOAD_CUSTOMER → Failure → Normal child task does not run"
+}
+],
+
+answer:`
+I can orchestrate procedure dependencies using Snowflake Tasks.
+
+Suppose I have two procedures:
+
+PROC_LOAD_CUSTOMER() → loads customer data.
+
+PROC_LOAD_ORDERS() → loads order data and should run after the customer procedure.
+
+First, I create the parent task:
+
+CREATE OR REPLACE TASK TASK_LOAD_CUSTOMER
+WAREHOUSE = COMPUTE_WH
+SCHEDULE = '5 MINUTE'
+AS
+CALL PROC_LOAD_CUSTOMER();
+
+Then I create the child task:
+
+CREATE OR REPLACE TASK TASK_LOAD_ORDERS
+WAREHOUSE = COMPUTE_WH
+AFTER TASK_LOAD_CUSTOMER
+AS
+CALL PROC_LOAD_ORDERS();
+
+The important syntax is:
+
+AFTER TASK_LOAD_CUSTOMER
+
+This establishes the dependency between the parent and child task.
+
+The normal successful execution flow is:
+
+TASK_LOAD_CUSTOMER
+↓
+PROC_LOAD_CUSTOMER()
+↓
+SUCCESS
+↓
+TASK_LOAD_ORDERS
+↓
+PROC_LOAD_ORDERS()
+
+If the parent task completes successfully, the dependency condition for the child is satisfied, so the child task can run.
+
+If the parent task fails, the normal AFTER child task will not run because its dependency condition has not been satisfied.
+
+For example:
+
+TASK_LOAD_CUSTOMER
+↓
+FAILURE
+↓
+TASK_LOAD_ORDERS
+NOT RUN
+
+In a production ETL pipeline, I would monitor task execution and handle failures separately. I would check task history to identify the failed task and investigate the procedure or data issue.
+
+For example, I can monitor task execution using:
+
+SELECT *
+FROM TABLE(INFORMATION_SCHEMA.TASK_HISTORY())
+ORDER BY SCHEDULED_TIME DESC;
+
+For a longer task chain:
+
+TASK_PARENT
+↓
+TASK_A
+↓
+TASK_B
+↓
+TASK_C
+
+Each child task can depend on the successful completion of its parent.
+
+We can also have parallel branches:
+ 
+         TASK_PARENT
+          /        \
+         ↓          ↓
+      TASK_A      TASK_B
+ 
+
+This allows independent processing branches after the parent dependency is satisfied.
+
+The key interview point is:
+
+AFTER → Defines the dependency between tasks.
+
+Parent succeeds → Dependent child can run.
+
+Parent fails → Normal dependent child does not run.
+
+TASK_HISTORY → Used to monitor task execution and investigate failures.
+
+For production workflows, I would also implement appropriate failure monitoring and alerting so that failures are identified quickly and can be investigated or retried according to the ETL design.
+`
+},
+{
+title: "Snowflake Tasks - Dependency, Retry Limits and Exhaustion",
+
+question: `How would you create task dependencies in Snowflake? What happens when a task fails, how do retries work, and what happens when the retry limit is exhausted?`,
+
+dataset:[
+{
+CONCEPT:"Task Dependency",
+SYNTAX:"AFTER TASK_PARENT",
+PURPOSE:"Defines the relationship between a child task and its parent task."
+},
+{
+CONCEPT:"Automatic Retry",
+SYNTAX:"TASK_AUTO_RETRY_ATTEMPTS = 3",
+PURPOSE:"Limits the number of automatic retry attempts for a task."
+},
+{
+CONCEPT:"Retry Limit",
+EXAMPLE:"TASK_AUTO_RETRY_ATTEMPTS = 3",
+PURPOSE:"Snowflake makes up to the configured number of retry attempts; it is not unlimited."
+},
+{
+CONCEPT:"Retry Exhaustion",
+RESULT:"If the task continues to fail after the configured retry attempts, automatic retries stop and the task run remains failed."
+},
+{
+CONCEPT:"Manual Recovery",
+SYNTAX:"EXECUTE TASK TASK_NAME",
+PURPOSE:"Can be used to manually trigger the task after investigating and resolving the issue."
+},
+{
+CONCEPT:"Resume",
+SYNTAX:"ALTER TASK TASK_NAME RESUME",
+PURPOSE:"Re-enables a suspended task; RESUME is different from retrying a failed run."
+},
+{
+CONCEPT:"Monitoring",
+SYNTAX:"TABLE(INFORMATION_SCHEMA.TASK_HISTORY())",
+PURPOSE:"Used to review task execution status and investigate failures."
+}
+],
+
+output:[
+{
+NORMAL_FLOW:"Parent Task → SUCCESS → Child Task runs"
+},
+{
+RETRY_FLOW:"Task → FAILURE → Automatic Retry → FAILURE → Retry → SUCCESS"
+},
+{
+EXHAUSTION_FLOW:"Task → FAILURE → Retry → FAILURE → Retry limit reached → Task remains failed"
+},
+{
+RECOVERY_FLOW:"Investigate/Fix issue → Manually execute or resume task as appropriate"
+}
+],
+
+answer:`
+In Snowflake, task dependencies can be created using the AFTER clause.
+
+For example:
+
+CREATE OR REPLACE TASK TASK_LOAD_ORDERS
+WAREHOUSE = COMPUTE_WH
+AFTER TASK_LOAD_CUSTOMER
+AS
+CALL PROC_LOAD_ORDERS();
+
+This means TASK_LOAD_ORDERS is dependent on TASK_LOAD_CUSTOMER.
+
+For automatic retries, I can configure a retry limit using TASK_AUTO_RETRY_ATTEMPTS.
+
+For example:
+
+CREATE OR REPLACE TASK TASK_LOAD_CUSTOMER
+WAREHOUSE = COMPUTE_WH
+SCHEDULE = '5 MINUTE'
+TASK_AUTO_RETRY_ATTEMPTS = 3
+AS
+CALL PROC_LOAD_CUSTOMER();
+
+The important point is that the retry count is limited. It is not an unlimited retry mechanism.
+
+If the task fails, Snowflake can make the configured automatic retry attempts.
+
+For example:
+
+TASK_LOAD_CUSTOMER
+↓
+FAILURE
+↓
+RETRY 1
+↓
+FAILURE
+↓
+RETRY 2
+↓
+FAILURE
+↓
+RETRY 3
+↓
+SUCCESS
+
+If the task continues to fail and the configured retry limit is exhausted, Snowflake stops the automatic retries and the task run remains failed.
+
+At that point, I would check TASK_HISTORY to understand the failure.
+
+SELECT *
+FROM TABLE(INFORMATION_SCHEMA.TASK_HISTORY())
+ORDER BY SCHEDULED_TIME DESC;
+
+After identifying and fixing the root cause, I can manually trigger the task when appropriate:
+
+EXECUTE TASK TASK_LOAD_CUSTOMER;
+
+I can also resume a suspended task using:
+
+ALTER TASK TASK_LOAD_CUSTOMER RESUME;
+
+However, RESUME and RETRY are different concepts.
+
+RESUME → Makes a suspended task active again.
+
+RETRY → Attempts execution again after a failed run according to the configured retry behavior.
+
+EXECUTE TASK → Manually triggers a task.
+
+In an interview, I would summarize it as:
+
+"I create dependencies using the AFTER clause. For transient failures, I can configure TASK_AUTO_RETRY_ATTEMPTS with a defined retry limit. If all retry attempts are exhausted, automatic retries stop and the task remains failed. I then check TASK_HISTORY, identify and resolve the root cause, and manually execute or resume the task as appropriate. I would also monitor the downstream task dependency to make sure the ETL flow continues correctly after recovery."
+`
+},
+{
+title: "dbt - Interview Definition",
+
+question: `What is dbt and how is it used in a Snowflake data engineering project?`,
+
+dataset:[
+{
+CONCEPT:"dbt",
+DEFINITION:"dbt stands for data build tool and is primarily used for transforming and modeling data inside a data warehouse such as Snowflake."
+},
+{
+CONCEPT:"ELT",
+ROLE:"dbt mainly performs the Transform step of an ELT process."
+},
+{
+CONCEPT:"Models",
+PURPOSE:"SQL files used to define data transformations and create tables or views in the warehouse."
+},
+{
+CONCEPT:"Materializations",
+TYPES:"View, Table, Incremental and Ephemeral."
+},
+{
+CONCEPT:"source()",
+PURPOSE:"Used to reference source tables defined in dbt."
+},
+{
+CONCEPT:"ref()",
+PURPOSE:"Used to reference another dbt model and establish dependencies between models."
+},
+{
+CONCEPT:"Tests",
+EXAMPLES:"unique, not_null and other data-quality validations."
+}
+],
+
+output:[
+{
+FLOW:"Source Data → Snowflake → dbt Transformation → Staging/Business Models → Reporting"
+}
+],
+
+answer:`
+dbt stands for data build tool.
+
+It is a data transformation and modeling tool used to transform data inside a cloud data warehouse such as Snowflake.
+
+In a typical ELT process, the data is first loaded into Snowflake using tools such as Snowpipe, Fivetran, ADF or other ingestion tools. dbt is then used mainly for the transformation layer.
+
+For example:
+
+Source System
+↓
+Data Loading
+↓
+Snowflake RAW Tables
+↓
+dbt Transformations
+↓
+Staging / Business Models
+↓
+Reporting
+
+In dbt, transformations are mainly written using SQL.
+
+The important dbt concepts I know are:
+
+1. Models
+   Models are SQL files that define transformations and create objects such as tables or views.
+
+2. Materializations
+   They define how a dbt model is created in the warehouse. Common types are View, Table, Incremental and Ephemeral.
+
+3. source()
+   The source() function is used to reference source tables defined in dbt.
+
+4. ref()
+   The ref() function is used to reference another dbt model and helps dbt understand the dependency between models.
+
+For example:
+
+{{ ref('stg_orders') }}
+
+means the current model depends on the stg_orders model.
+
+5. Data Testing
+   dbt provides data-quality tests such as unique and not_null to validate the data.
+
+6. Documentation and Lineage
+   dbt can also provide documentation and show dependencies between models.
+
+Interview answer:
+
+"dbt stands for data build tool. It is primarily used for data transformation and modeling inside a cloud data warehouse such as Snowflake. In an ELT architecture, data is first loaded into Snowflake, and dbt is used to transform that data into staging and business models using SQL. dbt also provides features such as model materializations, dependency management using ref(), source management using source(), data-quality testing, documentation and lineage. I have more experience with Snowflake SQL and ETL, but I understand the role and core concepts of dbt."
+`
+},
+
 
 /* End of questions array */
 ];
