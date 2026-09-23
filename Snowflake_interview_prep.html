@@ -556,6 +556,405 @@ FROM NumberCTE
 OPTION (MAXRECURSION 100);
 `
 },
+{
+title: "Snowflake - Recursive CTE Employee Hierarchy",
+
+question: `
+You have an Employee table with the following columns:
+
+EmployeeID
+EmployeeName
+ManagerID
+
+Sample data:
+
+EmployeeID | EmployeeName | ManagerID
+1          | John         | NULL
+2          | David        | 1
+3          | Sarah        | 1
+4          | Mike         | 2
+5          | Lisa         | 2
+6          | Robert       | 3
+7          | James        | 3
+8          | Peter        | 4
+9          | Emma         | 4
+10         | Alex         | 6
+
+Using a recursive CTE, display the complete employee hierarchy with:
+
+EmployeeID
+EmployeeName
+ManagerID
+Level
+
+John should be Level 0.
+
+Also explain how the recursive CTE works.
+
+Additionally, write a query to classify each employee as:
+
+CEO
+Manager
+Employee
+`,
+
+dataset:[
+{EmployeeID:1,EmployeeName:"John",ManagerID:null},
+{EmployeeID:2,EmployeeName:"David",ManagerID:1},
+{EmployeeID:3,EmployeeName:"Sarah",ManagerID:1},
+{EmployeeID:4,EmployeeName:"Mike",ManagerID:2},
+{EmployeeID:5,EmployeeName:"Lisa",ManagerID:2},
+{EmployeeID:6,EmployeeName:"Robert",ManagerID:3},
+{EmployeeID:7,EmployeeName:"James",ManagerID:3},
+{EmployeeID:8,EmployeeName:"Peter",ManagerID:4},
+{EmployeeID:9,EmployeeName:"Emma",ManagerID:4},
+{EmployeeID:10,EmployeeName:"Alex",ManagerID:6}
+],
+
+output:[
+{EmployeeID:1,EmployeeName:"John",ManagerID:null,Level:0},
+{EmployeeID:2,EmployeeName:"David",ManagerID:1,Level:1},
+{EmployeeID:3,EmployeeName:"Sarah",ManagerID:1,Level:1},
+{EmployeeID:4,EmployeeName:"Mike",ManagerID:2,Level:2},
+{EmployeeID:5,EmployeeName:"Lisa",ManagerID:2,Level:2},
+{EmployeeID:6,EmployeeName:"Robert",ManagerID:3,Level:2},
+{EmployeeID:7,EmployeeName:"James",ManagerID:3,Level:2},
+{EmployeeID:8,EmployeeName:"Peter",ManagerID:4,Level:3},
+{EmployeeID:9,EmployeeName:"Emma",ManagerID:4,Level:3},
+{EmployeeID:10,EmployeeName:"Alex",ManagerID:6,Level:3}
+],
+
+answer:`
+-- Version 1: Recursive CTE with Level
+
+WITH EmployeeHierarchy AS
+(
+    -- Anchor member
+    SELECT
+        EmployeeID,
+        EmployeeName,
+        ManagerID,
+        0 AS Level
+    FROM Employee
+    WHERE ManagerID IS NULL
+
+    UNION ALL
+
+    -- Recursive member
+    SELECT
+        e.EmployeeID,
+        e.EmployeeName,
+        e.ManagerID,
+        h.Level + 1 AS Level
+    FROM Employee e
+    INNER JOIN EmployeeHierarchy h
+        ON e.ManagerID = h.EmployeeID
+)
+SELECT
+    EmployeeID,
+    EmployeeName,
+    ManagerID,
+    Level
+FROM EmployeeHierarchy
+ORDER BY Level, EmployeeID;
+
+
+Explanation:
+
+The recursive CTE has two parts:
+
+1. Anchor member:
+
+    SELECT
+        EmployeeID,
+        EmployeeName,
+        ManagerID,
+        0 AS Level
+    FROM Employee
+    WHERE ManagerID IS NULL
+
+This identifies the top-level employee.
+
+In our example, John has ManagerID = NULL, so John becomes Level 0.
+
+2. Recursive member:
+
+    SELECT
+        e.EmployeeID,
+        e.EmployeeName,
+        e.ManagerID,
+        h.Level + 1 AS Level
+    FROM Employee e
+    INNER JOIN EmployeeHierarchy h
+        ON e.ManagerID = h.EmployeeID
+
+This finds employees who report to the employees from the previous level.
+
+For example:
+
+John → David and Sarah
+
+David → Mike and Lisa
+
+Sarah → Robert and James
+
+Mike → Peter and Emma
+
+Robert → Alex
+
+The recursion continues until there are no more employees reporting to the previous level.
+
+
+-- Version 2: Classify employees as CEO, Manager or Employee
+
+SELECT
+    e.EmployeeID,
+    e.EmployeeName,
+    e.ManagerID,
+    CASE
+        WHEN e.ManagerID IS NULL THEN 'CEO'
+
+        WHEN EXISTS
+        (
+            SELECT 1
+            FROM Employee m
+            WHERE m.ManagerID = e.EmployeeID
+        )
+        THEN 'Manager'
+
+        ELSE 'Employee'
+    END AS Role
+FROM Employee e
+ORDER BY e.EmployeeID;
+
+
+Explanation:
+
+1. CEO:
+
+    WHEN e.ManagerID IS NULL THEN 'CEO'
+
+An employee with no manager is considered the CEO.
+
+2. Manager:
+
+    WHEN EXISTS
+    (
+        SELECT 1
+        FROM Employee m
+        WHERE m.ManagerID = e.EmployeeID
+    )
+    THEN 'Manager'
+
+This checks whether another employee has this employee's EmployeeID as their ManagerID.
+
+If someone reports to the employee, that employee is a Manager.
+
+3. Employee:
+
+    ELSE 'Employee'
+
+If the employee has a manager and nobody reports to them, they are classified as an Employee.
+
+
+Important relationship:
+
+e.ManagerID = m.EmployeeID
+
+For example:
+
+David:
+EmployeeID = 2
+ManagerID = 1
+
+John:
+EmployeeID = 1
+ManagerID = NULL
+
+Therefore:
+
+David.ManagerID = John.EmployeeID
+1              = 1
+
+This establishes John as David's manager.
+`
+},
+
+    {
+title: "SQL - FULL OUTER JOIN: Source vs Target Validation",
+
+question: `
+You have two tables used for ETL source-to-target validation.
+
+Employee_Source:
+
+EmployeeID | EmployeeName | Department | Salary
+101        | John         | IT         | 70000
+102        | David        | Finance    | 80000
+103        | Sarah        | HR         | 75000
+104        | Mike         | IT         | 65000
+
+Employee_Target:
+
+EmployeeID | EmployeeName | Department | Salary
+101        | John         | IT         | 70000
+102        | David        | Finance    | 85000
+103        | Sarah        | HR         | 75000
+105        | Robert       | IT         | 60000
+
+Requirement:
+
+During ETL validation, identify all employees where the source and target do not match.
+
+The validation should identify three cases:
+
+1. Employee exists in Source but not in Target.
+2. Employee exists in Target but not in Source.
+3. Employee exists in both Source and Target, but one or more attributes such as Salary or Department are different.
+
+Interview question:
+
+Which JOIN would you use?
+
+How would you identify each of these three cases?
+`,
+
+dataset:[
+{table:"Employee_Source", rows:[
+{EmployeeID:101, EmployeeName:"John", Department:"IT", Salary:70000},
+{EmployeeID:102, EmployeeName:"David", Department:"Finance", Salary:80000},
+{EmployeeID:103, EmployeeName:"Sarah", Department:"HR", Salary:75000},
+{EmployeeID:104, EmployeeName:"Mike", Department:"IT", Salary:65000}
+]},
+
+{table:"Employee_Target", rows:[
+{EmployeeID:101, EmployeeName:"John", Department:"IT", Salary:70000},
+{EmployeeID:102, EmployeeName:"David", Department:"Finance", Salary:85000},
+{EmployeeID:103, EmployeeName:"Sarah", Department:"HR", Salary:75000},
+{EmployeeID:105, EmployeeName:"Robert", Department:"IT", Salary:60000}
+]}
+],
+
+output:[
+{EmployeeID:101, Status:"Matched"},
+{EmployeeID:102, Status:"Data Mismatch"},
+{EmployeeID:103, Status:"Matched"},
+{EmployeeID:104, Status:"Source Only"},
+{EmployeeID:105, Status:"Target Only"}
+],
+
+answer:`
+Use a FULL OUTER JOIN because we need to identify records from both Source and Target, including records that exist in only one table.
+
+Join the tables using EmployeeID:
+
+SELECT
+COALESCE(s.EmployeeID, t.EmployeeID) AS EmployeeID,
+s.EmployeeName AS SourceName,
+t.EmployeeName AS TargetName,
+s.Department AS SourceDepartment,
+t.Department AS TargetDepartment,
+s.Salary AS SourceSalary,
+t.Salary AS TargetSalary,
+
+```
+CASE
+    WHEN s.EmployeeID IS NOT NULL
+         AND t.EmployeeID IS NULL
+        THEN 'Source Only'
+
+    WHEN s.EmployeeID IS NULL
+         AND t.EmployeeID IS NOT NULL
+        THEN 'Target Only'
+
+    WHEN s.EmployeeID = t.EmployeeID
+         AND (
+             s.Salary <> t.Salary
+             OR s.Department <> t.Department
+         )
+        THEN 'Data Mismatch'
+
+    ELSE 'Matched'
+END AS ValidationStatus
+```
+
+FROM Employee_Source s
+FULL OUTER JOIN Employee_Target t
+ON s.EmployeeID = t.EmployeeID;
+
+Explanation:
+
+1. Source Only
+
+Use:
+
+s.EmployeeID IS NOT NULL
+AND t.EmployeeID IS NULL
+
+This means the employee exists in Source but there is no matching record in Target.
+
+In this example:
+
+EmployeeID 104 = Source Only.
+
+2. Target Only
+
+Use:
+
+s.EmployeeID IS NULL
+AND t.EmployeeID IS NOT NULL
+
+This means the employee exists in Target but there is no matching record in Source.
+
+In this example:
+
+EmployeeID 105 = Target Only.
+
+3. Data Mismatch
+
+Use:
+
+s.EmployeeID = t.EmployeeID
+AND (
+s.Salary <> t.Salary
+OR s.Department <> t.Department
+)
+
+This means the employee exists in both tables, but one or more attributes are different.
+
+In this example:
+
+EmployeeID 102 = Data Mismatch because Source Salary is 80000 while Target Salary is 85000.
+
+4. Matched
+
+If the EmployeeID exists in both tables and all compared attributes are equal, the record is considered matched.
+
+In this example:
+
+101 and 103 = Matched.
+
+Important interview point:
+
+If using a FULL OUTER JOIN, there is no need to run separate queries using NOT IN to find Source Only and Target Only records.
+
+The FULL OUTER JOIN already gives us unmatched records as NULLs on the missing side.
+
+For example:
+
+Source Only:
+s.EmployeeID IS NOT NULL AND t.EmployeeID IS NULL
+
+Target Only:
+s.EmployeeID IS NULL AND t.EmployeeID IS NOT NULL
+
+This is a common ETL source-to-target reconciliation scenario.
+
+Also, when comparing columns using <> or =, NULL values need special handling because normal comparison operators do not treat NULL as an ordinary value.
+`
+},
+
+    
 /* End of questions array */
 ];
 
