@@ -3255,6 +3255,165 @@ For large batch loads, I would also prefer multiple reasonably sized files rathe
 The key point is: COPY INTO is generally used for bulk/batch loading, while Snowpipe is used for continuous automated file ingestion.
 `
 },
+{
+title: "Git Pull Request - Feature Branch to Deployment",
+
+question: `Once development is completed and pushed to the Git feature branch, how do you raise a Pull Request and what happens after creating the Pull Request?`,
+
+dataset:[
+{
+feature_branch: "feature/customer-risk-change",
+target_branch: "develop/main",
+example_change: "Added customer risk transformation"
+}
+],
+
+output:[
+"Feature Branch → Pull Request → CI Checks → Code Review → Approval → Merge → CD Pipeline",
+"Changes requested → Developer updates same feature branch → Push → Existing PR is automatically updated"
+],
+
+answer:`
+Once development is completed, I commit and push my changes to the feature branch.
+
+Example:
+
+git add .
+git commit -m "Added customer risk transformation"
+git push origin feature/customer-risk-change
+
+After pushing the feature branch, I create a Pull Request from the feature branch to the target branch, usually develop or main.
+
+While creating the Pull Request, I provide:
+
+* Title
+* Description of the changes
+* Related ticket or story
+* Testing details
+* Deployment considerations, if required
+* Required reviewers or approvers
+
+After the Pull Request is created, the following process generally happens:
+
+Feature Branch
+↓
+Pull Request
+↓
+Automated CI Checks
+↓
+Code Review
+↓
+Approval
+↓
+Merge to Develop/Main
+↓
+CD Pipeline
+↓
+DEV → UAT → PROD
+
+CI checks may validate:
+
+* SQL syntax
+* Code quality
+* Automated tests
+* Deployment scripts
+* Security checks
+
+Reviewers check the SQL logic, business rules, naming standards, and implementation.
+
+If reviewers request changes, I modify the code in the same feature branch, commit and push the changes again. The existing Pull Request is automatically updated.
+
+Once all required checks pass and the required approvals are received, the Pull Request is merged.
+
+After the merge, the CD pipeline can deploy the approved code to the next environment.
+
+Interview answer:
+
+"Once development is completed, I commit and push my changes to the feature branch. Then I create a Pull Request from the feature branch to the target branch, usually develop or main. I provide the change details and assign the required reviewers. After the PR is created, automated CI checks run and reviewers perform code review. If there are comments, I make the required changes and push them to the same feature branch, which updates the PR. Once the checks pass and the required approvals are received, the PR is merged. After merging, the CD pipeline can deploy the approved code to the next environment."
+`
+},
+{
+title: "Snowflake - Semi-Structured Data",
+
+question: `How do you store semi-structured data in Snowflake?`,
+
+dataset:[
+{
+data_type: "VARIANT",
+example_format: "JSON",
+customer_data: {
+name: "John",
+city: "Bangalore",
+age: 30
+}
+}
+],
+
+output:[
+"VARIANT is the most commonly used data type for semi-structured data.",
+"OBJECT and ARRAY can also be used.",
+"JSON attributes can be accessed using Snowflake path notation."
+],
+
+answer:`
+Snowflake supports semi-structured data using data types such as VARIANT, OBJECT, and ARRAY.
+
+The most commonly used data type is VARIANT because it can store JSON, XML, and other semi-structured data.
+
+Example:
+
+CREATE OR REPLACE TABLE CUSTOMER_JSON
+(
+ID NUMBER,
+DATA VARIANT
+);
+
+We can insert JSON using PARSE_JSON():
+
+INSERT INTO CUSTOMER_JSON
+SELECT
+101,
+PARSE_JSON('{
+"name": "John",
+"city": "Bangalore",
+"age": 30
+}');
+
+The JSON is stored in the VARIANT column.
+
+We can extract individual attributes using Snowflake path notation:
+
+SELECT
+DATA:name::VARCHAR AS CUSTOMER_NAME,
+DATA:city::VARCHAR AS CITY,
+DATA:age::NUMBER AS AGE
+FROM CUSTOMER_JSON;
+
+Output:
+
+CUSTOMER_NAME | CITY      | AGE
+John          | Bangalore | 30
+
+For JSON files coming from GCS, S3, or Azure Blob, we can create a JSON file format:
+
+CREATE OR REPLACE FILE FORMAT JSON_FORMAT
+TYPE = 'JSON';
+
+Then load the JSON file through a stage:
+
+COPY INTO CUSTOMER_JSON
+FROM @my_gcs_stage
+FILE_FORMAT = JSON_FORMAT;
+
+Interview answer:
+
+"Snowflake supports semi-structured data using data types such as VARIANT, OBJECT, and ARRAY. Most commonly, I use VARIANT to store JSON, XML, or similar semi-structured data. For JSON, I can load the file into a VARIANT column and then use Snowflake's colon notation and type casting to extract individual attributes."
+
+Memory:
+
+Semi-structured data → VARIANT → JSON/XML → DATA:field::datatype
+`
+},
 
 /* End of questions array */
 ];
