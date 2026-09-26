@@ -1,9 +1,11 @@
-const QUESTIONS_FILE = "questions.json";
+const QUESTIONS_FILE = "./questions.json";
+
+let parsedQuestion = null;
 
 
-/* -----------------------------
-   LOAD EXISTING QUESTIONS
------------------------------ */
+// ----------------------------------------
+// Load existing questions
+// ----------------------------------------
 
 async function loadQuestions() {
 
@@ -17,171 +19,140 @@ async function loadQuestions() {
 }
 
 
-/* -----------------------------
-   PARSE QUESTION
------------------------------ */
+// ----------------------------------------
+// Parse pasted question
+// ----------------------------------------
 
 function parseQuestion(text) {
 
-    const result = {
-
-        q: "",
-        options: [],
-        answer: null,
-        time: 40,
-        level: "Medium",
-        topic: "",
-        dataset: "",
-        expectedOutput: "",
-        explanation: ""
-
-    };
-
-
-    /* Question */
-
     const questionMatch =
-        text.match(/Question\s*:\s*([\s\S]*?)(?=\n\s*Options\s*:)/i);
-
-    if (questionMatch) {
-
-        result.q =
-            questionMatch[1].trim();
-
-    }
-
-
-    /* Options */
+        text.match(/Question:\s*([\s\S]*?)(?=\n\s*Options:)/i);
 
     const optionsMatch =
-        text.match(/Options\s*:\s*([\s\S]*?)(?=\n\s*Answer\s*:)/i);
-
-    if (optionsMatch) {
-
-        const lines =
-            optionsMatch[1]
-            .split("\n")
-            .map(x => x.trim())
-            .filter(x => x);
-
-        result.options =
-            lines.map(line =>
-                line.replace(/^\d+[\.\)]\s*/, "")
-                    .trim()
-            );
-
-    }
-
-
-    /* Answer */
+        text.match(/Options:\s*([\s\S]*?)(?=\n\s*Answer:)/i);
 
     const answerMatch =
-        text.match(/Answer\s*:\s*([^\n]+)/i);
-
-    if (answerMatch) {
-
-        const answerText =
-            answerMatch[1].trim();
-
-        const numberMatch =
-            answerText.match(/^(\d+)/);
-
-        if (numberMatch) {
-
-            result.answer =
-                parseInt(numberMatch[1]) - 1;
-
-        }
-
-    }
-
-
-    /* Dataset */
+        text.match(/Answer:\s*(\d+)/i);
 
     const datasetMatch =
-        text.match(/Dataset\s*:\s*([\s\S]*?)(?=\n\s*(Expected Output|Level|Topic|Explanation)\s*:)/i);
+        text.match(/Dataset:\s*([\s\S]*?)(?=\n\s*Expected Output:)/i);
 
-    if (datasetMatch) {
-
-        result.dataset =
-            datasetMatch[1].trim();
-
-    }
-
-
-    /* Expected Output */
-
-    const outputMatch =
-        text.match(/Expected Output\s*:\s*([\s\S]*?)(?=\n\s*(Dataset|Level|Topic|Explanation)\s*:)/i);
-
-    if (outputMatch) {
-
-        result.expectedOutput =
-            outputMatch[1].trim();
-
-    }
-
-
-    /* Level */
+    const expectedOutputMatch =
+        text.match(/Expected Output:\s*([\s\S]*?)(?=\n\s*Level:)/i);
 
     const levelMatch =
-        text.match(/Level\s*:\s*([^\n]+)/i);
-
-    if (levelMatch) {
-
-        result.level =
-            levelMatch[1].trim();
-
-    }
-
-
-    /* Topic */
+        text.match(/Level:\s*([^\n]+)/i);
 
     const topicMatch =
-        text.match(/Topic\s*:\s*([^\n]+)/i);
-
-    if (topicMatch) {
-
-        result.topic =
-            topicMatch[1].trim();
-
-    }
-
-
-    /* Explanation */
+        text.match(/Topic:\s*([^\n]+)/i);
 
     const explanationMatch =
-        text.match(/Explanation\s*:\s*([\s\S]*)/i);
+        text.match(/Explanation:\s*([\s\S]*)/i);
 
-    if (explanationMatch) {
 
-        result.explanation =
-            explanationMatch[1].trim();
+    if (!questionMatch) {
+        throw new Error("Question section not found.");
+    }
 
+    if (!optionsMatch) {
+        throw new Error("Options section not found.");
+    }
+
+    if (!answerMatch) {
+        throw new Error("Answer section not found.");
     }
 
 
-    return result;
+    const question =
+        questionMatch[1].trim();
+
+
+    const options =
+        optionsMatch[1]
+            .trim()
+            .split("\n")
+            .map(line =>
+                line.replace(/^\s*\d+\.\s*/, "").trim()
+            )
+            .filter(Boolean);
+
+
+    if (options.length !== 4) {
+        throw new Error(
+            "Exactly four options are required."
+        );
+    }
+
+
+    const answer =
+        parseInt(answerMatch[1], 10) - 1;
+
+
+    if (answer < 0 || answer >= options.length) {
+        throw new Error("Invalid answer number.");
+    }
+
+
+    return {
+
+        q: question,
+
+        options: options,
+
+        answer: answer,
+
+        time: 40,
+
+        level:
+            levelMatch
+                ? levelMatch[1].trim()
+                : "Medium",
+
+        topic:
+            topicMatch
+                ? topicMatch[1].trim()
+                : "",
+
+        dataset:
+            datasetMatch
+                ? datasetMatch[1].trim()
+                : "",
+
+        expectedOutput:
+            expectedOutputMatch
+                ? expectedOutputMatch[1].trim()
+                : "",
+
+        explanation:
+            explanationMatch
+                ? explanationMatch[1].trim()
+                : ""
+    };
 }
 
 
-/* -----------------------------
-   CHECK & ADD
------------------------------ */
+// ----------------------------------------
+// Check question and show preview
+// ----------------------------------------
 
 async function checkAndAdd() {
 
     const status =
         document.getElementById("status");
 
-    const text =
+    const input =
         document.getElementById("questionInput").value.trim();
 
 
-    if (!text) {
+    document
+        .getElementById("previewContainer")
+        .classList.add("hidden");
+
+
+    if (!input) {
 
         status.innerHTML =
-            "<strong>Please paste a question.</strong>";
+            '<div class="error">Please paste a question.</div>';
 
         return;
     }
@@ -189,150 +160,208 @@ async function checkAndAdd() {
 
     try {
 
-        const newQuestion =
-            parseQuestion(text);
+        parsedQuestion =
+            parseQuestion(input);
 
-
-        /* Validate */
-
-        if (!newQuestion.q) {
-
-            status.innerHTML =
-                "<strong>Could not find Question.</strong>";
-
-            return;
-        }
-
-
-        if (newQuestion.options.length !== 4) {
-
-            status.innerHTML =
-                `<strong>Expected 4 options but found ${newQuestion.options.length}.</strong>`;
-
-            return;
-        }
-
-
-        if (
-            newQuestion.answer === null ||
-            newQuestion.answer < 0 ||
-            newQuestion.answer >= newQuestion.options.length
-        ) {
-
-            status.innerHTML =
-                "<strong>Could not determine the correct answer.</strong>";
-
-            return;
-        }
-
-
-        /* Load existing questions */
 
         const questions =
             await loadQuestions();
 
 
-        /* Duplicate check */
-
+        // Exact duplicate check
         const duplicate =
-            questions.find(q =>
-                q.q &&
-                q.q.trim().toLowerCase() ===
-                newQuestion.q.trim().toLowerCase()
+            questions.find(existing =>
+                existing.q.trim().toLowerCase() ===
+                parsedQuestion.q.trim().toLowerCase()
             );
 
 
         if (duplicate) {
 
+            parsedQuestion = null;
+
             status.innerHTML = `
-                <strong>⚠ Duplicate question found!</strong>
-                <br><br>
-                ${escapeHtml(duplicate.q)}
+                <div class="error">
+                    Duplicate question found!
+                </div>
+
+                <div class="preview">
+                    <strong>Existing question:</strong>
+                    <br><br>
+                    ${escapeHtml(duplicate.q)}
+                </div>
             `;
 
             return;
         }
 
 
-        /* Display parsed result */
-
         status.innerHTML = `
-
-            <h3>Question Parsed Successfully</h3>
-
-            <p>
-                <strong>Question:</strong><br>
-                ${escapeHtml(newQuestion.q)}
-            </p>
-
-            <p>
-                <strong>Topic:</strong>
-                ${escapeHtml(newQuestion.topic)}
-            </p>
-
-            <p>
-                <strong>Level:</strong>
-                ${escapeHtml(newQuestion.level)}
-            </p>
-
-            <p>
-                <strong>Correct Option:</strong>
-                ${newQuestion.answer + 1}
-            </p>
-
-            <hr>
-
-            <pre>${escapeHtml(
-                JSON.stringify(newQuestion, null, 2)
-            )}</pre>
-
-            <strong>
-                Ready for GitHub save.
-            </strong>
+            <div class="success">
+                Question Parsed Successfully
+            </div>
         `;
 
 
-    } catch (error) {
+        showPreview(parsedQuestion);
+
+    }
+    catch (error) {
 
         console.error(error);
 
-        status.innerHTML =
-            "<strong>Error reading questions.json</strong>";
+        parsedQuestion = null;
 
+        status.innerHTML = `
+            <div class="error">
+                ${escapeHtml(error.message)}
+            </div>
+        `;
     }
-
 }
 
 
-/* -----------------------------
-   CLEAR
------------------------------ */
+// ----------------------------------------
+// Display preview
+// ----------------------------------------
+
+function showPreview(question) {
+
+    document.getElementById("previewQuestion")
+        .textContent = question.q;
+
+
+    const optionsContainer =
+        document.getElementById("previewOptions");
+
+    optionsContainer.innerHTML = "";
+
+
+    question.options.forEach((option, index) => {
+
+        const div =
+            document.createElement("div");
+
+        div.className = "option";
+
+        if (index === question.answer) {
+            div.classList.add("correct");
+        }
+
+        div.textContent =
+            `${index + 1}. ${option}`;
+
+        optionsContainer.appendChild(div);
+
+    });
+
+
+    document.getElementById("previewAnswer")
+        .textContent =
+        `${question.answer + 1}. ${question.options[question.answer]}`;
+
+
+    document.getElementById("previewLevel")
+        .textContent =
+        question.level;
+
+
+    document.getElementById("previewTopic")
+        .textContent =
+        question.topic;
+
+
+    document.getElementById("previewDataset")
+        .textContent =
+        question.dataset;
+
+
+    document.getElementById("previewExpectedOutput")
+        .textContent =
+        question.expectedOutput;
+
+
+    document.getElementById("previewExplanation")
+        .textContent =
+        question.explanation;
+
+
+    document
+        .getElementById("previewContainer")
+        .classList.remove("hidden");
+}
+
+
+// ----------------------------------------
+// Add Question
+// ----------------------------------------
+
+function addQuestion() {
+
+    if (!parsedQuestion) {
+
+        alert(
+            "Please check and preview the question first."
+        );
+
+        return;
+    }
+
+
+    const status =
+        document.getElementById("status");
+
+
+    status.innerHTML = `
+        <div class="success">
+            Question is ready to be added.
+        </div>
+        <br>
+        <strong>
+            GitHub saving will be connected in the next step.
+        </strong>
+    `;
+
+
+    console.log(
+        "Question ready:",
+        parsedQuestion
+    );
+}
+
+
+// ----------------------------------------
+// Clear
+// ----------------------------------------
 
 function clearForm() {
 
-    document.getElementById(
-        "questionInput"
-    ).value = "";
+    document.getElementById("questionInput")
+        .value = "";
 
-    document.getElementById(
-        "status"
-    ).innerHTML = "";
 
+    document.getElementById("previewContainer")
+        .classList.add("hidden");
+
+
+    document.getElementById("status")
+        .innerHTML = "";
+
+
+    parsedQuestion = null;
 }
 
 
-/* -----------------------------
-   HTML ESCAPE
------------------------------ */
+// ----------------------------------------
+// HTML escaping
+// ----------------------------------------
 
 function escapeHtml(str) {
 
     return String(str)
-
         .replace(/&/g, "&amp;")
-
         .replace(/</g, "&lt;")
-
-        .replace(/>/g, "&gt;");
-
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
 }
