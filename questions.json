@@ -1,1 +1,18 @@
-[]
+[
+  {
+    "q": "Test question - What is Snowflake?",
+    "options": [
+      "A database",
+      "A cloud data platform",
+      "A programming language",
+      "An operating system"
+    ],
+    "answer": 1,
+    "time": 40,
+    "level": "Easy",
+    "topic": "Snowflake",
+    "dataset": "No dataset required",
+    "expectedOutput": "Snowflake is a cloud-based data platform.",
+    "explanation": "Snowflake is a cloud data platform designed for data warehousing, analytics and data engineering."
+  }
+]
