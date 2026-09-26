@@ -2019,6 +2019,7 @@ function createJumpButtons() {
     });
 }
     */
+    /*
     function createJumpButtons() {
 
     const container = document.getElementById('jumpButtons');
@@ -2046,7 +2047,37 @@ function createJumpButtons() {
     });
 
 }
+*/
+    function createJumpButtons() {
 
+    const container = document.getElementById('jumpButtons');
+
+    container.innerHTML = '';
+
+    questions.forEach((q, idx) => {
+
+        const btn = document.createElement('button');
+
+        btn.innerHTML = `
+            <strong>${q.topic || 'General'}</strong><br>
+            ${q.title}
+        `;
+
+        btn.title = q.title;
+
+        btn.onclick = () => {
+
+            currentQuestion = idx;
+
+            renderQuestion(idx);
+
+        };
+
+        container.appendChild(btn);
+
+    });
+
+}
 function renderTableFromObjects(list) {
     if (!list || list.length === 0) return '';
     const cols = Object.keys(list[0]);
