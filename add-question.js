@@ -295,7 +295,83 @@ function showPreview(question) {
 // ----------------------------------------
 // Add Question
 // ----------------------------------------
+async function addQuestion() {
+    if (!parsedQuestion) {
+        alert("Please check and preview the question first.");
+        return;
+    }
 
+    const token = document.getElementById("githubToken").value.trim();
+    const status = document.getElementById("status");
+
+    if (!token) {
+        status.innerHTML = `
+            <div class="error">
+                Please enter your GitHub token.
+            </div>
+        `;
+        return;
+    }
+
+    status.innerHTML = `
+        <div class="success">
+            Sending question to GitHub...
+        </div>
+    `;
+
+    try {
+        const response = await fetch(
+            "https://api.github.com/repos/saikrishnareddy684/sai.github.io/actions/workflows/add-question.yml/dispatches",
+            {
+                method: "POST",
+                headers: {
+                    "Accept": "application/vnd.github+json",
+                    "Authorization": `Bearer ${token}`,
+                    "X-GitHub-Api-Version": "2022-11-28",
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    ref: "main",
+                    inputs: {
+                        question: JSON.stringify(parsedQuestion)
+                    }
+                })
+            }
+        );
+
+        if (!response.ok) {
+            const errorText = await response.text();
+            throw new Error(
+                `GitHub API error (${response.status}): ${errorText}`
+            );
+        }
+
+        status.innerHTML = `
+            <div class="success">
+                Question sent successfully to GitHub!
+            </div>
+            <br>
+            GitHub Actions is now updating questions.json.
+            <br>
+            It may take a few seconds to complete.
+        `;
+
+        document.getElementById("githubToken").value = "";
+
+    } catch (error) {
+        console.error(error);
+
+        status.innerHTML = `
+            <div class="error">
+                Failed to send question to GitHub.
+                <br><br>
+                ${escapeHtml(error.message)}
+            </div>
+        `;
+    }
+}
+
+/*
 function addQuestion() {
 
     if (!parsedQuestion) {
@@ -328,7 +404,7 @@ function addQuestion() {
         parsedQuestion
     );
 }
-
+*/
 
 // ----------------------------------------
 // Clear
