@@ -1,0 +1,1039 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>Snowflake Syntax & Scenario Questions — Topic-Wise</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f4f4f9;
+            color: #222;
+        }
+        .container {
+            width: 95%;
+            max-width: 1100px;
+            margin: 0 auto;
+        } 
+        h1 { margin: 0 0 8px; font-size: 22px; }
+        h2 { margin: 18px 0 6px; font-size: 18px; color: #333; }
+        h3 { margin: 8px 0; font-size: 16px; color: #333; }
+        .box {
+            background: white;
+            padding: 18px;
+            margin-top: 14px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.06);
+        }
+        .jump-buttons {
+            margin-bottom: 12px;
+        }
+        .jump-buttons button {
+            background-color: #008CBA;
+            color: white;
+            border: none;
+            padding: 10px 14px;
+            margin: 6px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 13px;
+            width: 280px;
+            height: 65px;
+            text-align: left;
+            white-space: normal;
+            line-height: 18px;
+            vertical-align: top;
+        }
+        .jump-buttons button:hover {
+            background: #007399;
+        }
+        table, th, td { border: 1px solid #ddd; }
+        th, td { padding: 8px; text-align: left; font-size: 13px; }
+        th { background: #fafafa; }
+        pre {
+            background: #272822;
+            color: #f8f8f2;
+            padding: 14px;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-size: 13px;
+            line-height: 1.45;
+        }
+        .nav-buttons {
+            margin-top: 14px;
+            display: flex;
+            justify-content: space-between;
+            gap: 8px;
+        }
+        .nav-controls button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+        .nav-controls button:hover { background-color: #45a049; }
+        .small-muted { color: #666; font-size: 13px; margin-top: 6px; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>📚 Snowflake Syntax & Scenario Questions & Answers</h1>
+    <div class="small-muted">Click any question button to jump directly to that question. Questions are sorted topic-wise.</div>
+
+    <!-- Jump buttons (auto-generated) -->
+    <div id="jumpButtons" class="jump-buttons"></div>
+
+    <!-- Question area -->
+    <div id="questionBox" class="box"></div>
+
+    <h3>Sample Dataset</h3>
+    <div id="datasetBox" class="box"></div>
+
+    <h3>Sample Dataset 2</h3>
+    <div id="datasetBox2" class="box"></div>
+
+    <h3>Sample Dataset 3</h3>
+    <div id="datasetBox3" class="box"></div>
+    
+    <h3>Expected Output</h3>
+    <div id="outputBox" class="box"></div>
+
+    <h2>🟢 SQL Answer</h2>
+    <div class="box">
+        <pre id="answerBox"></pre>
+    </div>
+
+    <div class="nav-buttons">
+        <div class="nav-controls">
+            <button id="prevBtn">⬅ Previous</button>
+            <button id="nextBtn">Next ➡</button>
+        </div>
+        <div class="small-muted" id="questionCounter"></div>
+    </div>
+</div>
+
+<script>
+/* ============================
+   QUESTIONS ARRAY (Topic-Wise Sorted)
+   ============================ */
+const questions = [
+
+  /* ----------------------------------------------------
+     CATEGORY 1: STORED PROCEDURES & FLOW CONTROL
+     ---------------------------------------------------- */
+  {
+    topic: "Stored Procedures",
+    title: "Stored Procedure - Fetch Customer By ID",
+    question: `
+Create a SQL Stored Procedure named fetchCustomerById.
+
+Requirements:
+1. Accept customer id as an input parameter.
+2. Fetch all columns from CUSTOMER_DIM.
+3. Store the SELECT result in a RESULTSET.
+4. Return the result using RETURN TABLE().
+`,
+    dataset: [
+      {ID: 1, NAME: "John", CITY: "London"},
+      {ID: 2, NAME: "David", CITY: "Paris"},
+      {ID: 3, NAME: "Alex", CITY: "Tokyo"}
+    ],
+    output: [
+      {ID: 2, NAME: "David", CITY: "Paris"}
+    ],
+    answer: `
+CREATE OR REPLACE PROCEDURE fetchCustomerById(p_id INT)
+RETURNS TABLE()
+LANGUAGE SQL
+AS
+$$
+DECLARE
+    rs RESULTSET;
+BEGIN
+
+    rs := (
+        SELECT *
+        FROM CUSTOMER_DIM
+        WHERE ID=:p_id
+    );
+
+    RETURN TABLE(rs);
+
+END;
+$$;
+
+CALL fetchCustomerById(2);
+`
+  },
+  {
+    topic: "Stored Procedures",
+    title: "Stored Procedure - Get Customer Count",
+    question: `
+Create a stored procedure named getCustomerCount.
+
+Requirements:
+1. Count customers in CUSTOMER_DIM.
+2. Store count in a variable.
+3. Return a string like: Total Customers : 500
+`,
+    dataset: [
+      {ID: 1}, {ID: 2}, {ID: 3}, {ID: 4}
+    ],
+    output: [
+      {"Result": "Total Customers : 4"}
+    ],
+    answer: `
+CREATE OR REPLACE PROCEDURE getCustomerCount()
+RETURNS STRING
+LANGUAGE SQL
+AS
+$$
+DECLARE
+    v_count NUMBER;
+BEGIN
+
+    SELECT COUNT(*)
+    INTO :v_count
+    FROM CUSTOMER_DIM;
+
+    RETURN 'Total Customers : '||v_count;
+
+END;
+$$;
+
+CALL getCustomerCount();
+`
+  },
+  {
+    topic: "Stored Procedures",
+    title: "Stored Procedure - Fetch Customers By City",
+    question: `
+Create a stored procedure.
+
+Input: City Name
+Return: All customers belonging to that city using RESULTSET.
+`,
+    dataset: [
+      {ID: 1, NAME: "John", CITY: "London"},
+      {ID: 2, NAME: "David", CITY: "Paris"},
+      {ID: 3, NAME: "Alex", CITY: "London"}
+    ],
+    output: [
+      {ID: 1, NAME: "John", CITY: "London"},
+      {ID: 3, NAME: "Alex", CITY: "London"}
+    ],
+    answer: `
+CREATE OR REPLACE PROCEDURE fetchCustomerByCity(p_city STRING)
+RETURNS TABLE()
+LANGUAGE SQL
+AS
+$$
+DECLARE
+    rs RESULTSET;
+BEGIN
+
+    rs := (
+        SELECT *
+        FROM CUSTOMER_DIM
+        WHERE CITY=:p_city
+    );
+
+    RETURN TABLE(rs);
+
+END;
+$$;
+
+CALL fetchCustomerByCity('London');
+`
+  },
+  {
+    topic: "Stored Procedures",
+    title: "Stored Procedure - Update Salary If Customer Exists",
+    question: `
+Create a SQL Stored Procedure named updatecustomer.
+
+Requirements:
+1. Accept Customer ID as an input parameter.
+2. Check whether the customer exists.
+3. If the customer exists:
+   - Increase the salary by 10%.
+   - If salary is NULL, treat it as 10 before increasing.
+4. Return a success message.
+5. If the customer does not exist, return a "Customer not found" message.
+`,
+    dataset: [
+      {ID: 1, NAME: "John", SALARY: 50000},
+      {ID: 2, NAME: "David", SALARY: null},
+      {ID: 3, NAME: "Alex", SALARY: 75000}
+    ],
+    output: [
+      {"Result": "Salary updated for ID 1"}
+    ],
+    answer: `
+CREATE OR REPLACE PROCEDURE updatecustomer(pid INT)
+RETURNS STRING
+LANGUAGE SQL
+AS
+$$
+BEGIN
+
+    IF (EXISTS (
+        SELECT 1
+        FROM customers
+        WHERE id = :pid
+    )) THEN
+
+        UPDATE customers
+        SET salary = COALESCE(salary,10) * 1.10
+        WHERE id = :pid;
+
+        RETURN 'Salary updated for ID ' || :pid;
+
+    ELSE
+
+        RETURN 'Customer ID ' || :pid || ' not found';
+
+    END IF;
+
+END;
+$$;
+
+CALL updatecustomer(1);
+`
+  },
+  {
+    topic: "Stored Procedures",
+    title: "Stored Procedure - Delete Customer If Exists",
+    question: `
+Create a SQL Stored Procedure named deleteifexistscustomer.
+
+Requirements:
+1. Accept Customer ID as an input parameter.
+2. Check whether the customer exists.
+3. If the customer exists:
+   - Delete the customer record.
+   - Return a success message.
+4. If the customer does not exist:
+   - Return a "Customer not found" message.
+`,
+    dataset: [
+      {ID: 1, NAME: "John", CITY: "London"},
+      {ID: 2, NAME: "David", CITY: "Paris"},
+      {ID: 3, NAME: "Alex", CITY: "Tokyo"}
+    ],
+    output: [
+      {"Result": "Deleted the rows for Customer ID 1"}
+    ],
+    answer: `
+CREATE OR REPLACE PROCEDURE deleteifexistscustomer(pid INT)
+RETURNS STRING
+LANGUAGE SQL
+AS
+$$
+BEGIN
+
+    IF (EXISTS (
+        SELECT 1
+        FROM customers
+        WHERE id = :pid
+    )) THEN
+
+        DELETE
+        FROM customers
+        WHERE id = :pid;
+
+        RETURN 'Deleted the rows for Customer ID ' || :pid;
+
+    ELSE
+
+        RETURN 'Customer not found for Customer ID ' || :pid;
+
+    END IF;
+
+END;
+$$;
+
+CALL deleteifexistscustomer(1);
+`
+  },
+  {
+    topic: "Stored Procedures",
+    title: "Stored Procedure - Delete Customer & Return Rows Deleted",
+    question: `
+Create a SQL Stored Procedure named deleteifexistscustomer.
+
+Requirements:
+1. Accept Customer ID as an input parameter.
+2. Check whether the customer exists.
+3. If the customer exists:
+   - Delete the customer record.
+   - Return a message containing Customer ID and Number of rows deleted using SQLROWCOUNT.
+4. If the customer does not exist, return a "Customer not found" message.
+`,
+    dataset: [
+      {ID: 1, NAME: "John", CITY: "London"},
+      {ID: 2, NAME: "David", CITY: "Paris"},
+      {ID: 3, NAME: "Alex", CITY: "Tokyo"}
+    ],
+    output: [
+      {"Result": "Deleted Customer ID 1. Rows Deleted = 1"}
+    ],
+    answer: `
+CREATE OR REPLACE PROCEDURE deleteifexistscustomer(pid INT)
+RETURNS STRING
+LANGUAGE SQL
+AS
+$$
+BEGIN
+
+    IF EXISTS (
+        SELECT 1
+        FROM customers
+        WHERE id = :pid
+    ) THEN
+
+        DELETE
+        FROM customers
+        WHERE id = :pid;
+
+        RETURN 'Deleted Customer ID '
+            || :pid
+            || '. Rows Deleted = '
+            || SQLROWCOUNT;
+
+    ELSE
+
+        RETURN 'Customer ID '
+            || :pid
+            || ' not found.';
+
+    END IF;
+
+END;
+$$;
+
+CALL deleteifexistscustomer(1);
+`
+  },
+  {
+    topic: "Stored Procedures",
+    title: "Stored Procedure - Insert Rows by Parameter",
+    question: `
+Create a stored procedure.
+
+Input: Customer Id, Customer Name, City
+Insert a record into CUSTOMER_DIM.
+Return: Customer Inserted Successfully.
+`,
+    dataset: [],
+    output: [
+      {"Result": "Customer Inserted Successfully"}
+    ],
+    answer: `
+CREATE OR REPLACE PROCEDURE insertCustomer
+(
+    p_id INT,
+    p_name STRING,
+    p_city STRING
+)
+RETURNS STRING
+LANGUAGE SQL
+AS
+$$
+BEGIN
+
+    INSERT INTO CUSTOMER_DIM
+    VALUES
+    (
+        :p_id,
+        :p_name,
+        :p_city
+    );
+
+    RETURN 'Customer Inserted Successfully';
+
+END;
+$$;
+`
+  },
+
+  /* ----------------------------------------------------
+     CATEGORY 2: TABLE FUNCTIONS
+     ---------------------------------------------------- */
+  {
+    topic: "Table Functions",
+    title: "Table Function - Return Table Data",
+    question: `
+You need to return all customer records from the CUSTOMER_DIM table.
+
+Requirements:
+1. Return the CUSTOMER_ID and CUSTOMER_NAME columns.
+2. The object should return the rows so that they can be queried using a SELECT statement.
+3. Write the appropriate Snowflake object and demonstrate how to call it.
+`,
+    dataset: [
+      {CUSTOMER_ID: 1, CUSTOMER_NAME: "John"},
+      {CUSTOMER_ID: 2, CUSTOMER_NAME: "David"},
+      {CUSTOMER_ID: 3, CUSTOMER_NAME: "Alex"}
+    ],
+    output: [
+      {CUSTOMER_ID: 1, CUSTOMER_NAME: "John"},
+      {CUSTOMER_ID: 2, CUSTOMER_NAME: "David"},
+      {CUSTOMER_ID: 3, CUSTOMER_NAME: "Alex"}
+    ],
+    answer: `
+CREATE OR REPLACE FUNCTION sdf()
+RETURNS TABLE
+(
+    CUSTOMER_ID NUMBER,
+    CUSTOMER_NAME STRING
+)
+AS
+$$
+SELECT
+    CUSTOMER_ID,
+    CUSTOMER_NAME
+FROM CUSTOMER_DIM
+$$;
+
+-- Call the function
+SELECT *
+FROM TABLE(sdf());
+`,
+    explanation: `
+Note:
+Unlike SQL Server, a Snowflake SQL Stored Procedure cannot directly return a table using a simple SELECT statement. If your requirement is to return tabular rows to be queried via SELECT * FROM ..., create a TABLE FUNCTION instead.
+`
+  },
+
+  /* ----------------------------------------------------
+     CATEGORY 3: DATA INGESTION & EXTERNAL OBJECTS
+     ---------------------------------------------------- */
+  {
+    topic: "Data Ingestion & Stages",
+    title: "External Stage - Load CSV File from S3 into Snowflake",
+    question: `
+A CSV file named employees.csv is uploaded to: s3://company-data/employees/
+
+Perform the following tasks:
+1. Create target table EMPLOYEES and CSV File Format.
+2. Create Storage Integration and External Stage.
+3. Verify files, validate without loading, load data, force reload, pattern loading, and error handling.
+`,
+    dataset: [
+      {EMP_ID: 1, EMP_NAME: "John", DEPARTMENT: "IT", SALARY: 60000},
+      {EMP_ID: 2, EMP_NAME: "Alice", DEPARTMENT: "HR", SALARY: 55000},
+      {EMP_ID: 3, EMP_NAME: "Bob", DEPARTMENT: "Finance", SALARY: 70000}
+    ],
+    output: [
+      {EMP_ID: 1, EMP_NAME: "John", DEPARTMENT: "IT", SALARY: 60000},
+      {EMP_ID: 2, EMP_NAME: "Alice", DEPARTMENT: "HR", SALARY: 55000},
+      {EMP_ID: 3, EMP_NAME: "Bob", DEPARTMENT: "Finance", SALARY: 70000}
+    ],
+    answer: `
+-- 1. Create Target Table
+CREATE OR REPLACE TABLE EMPLOYEES (
+    EMP_ID NUMBER,
+    EMP_NAME STRING,
+    DEPARTMENT STRING,
+    SALARY NUMBER
+);
+
+-- 2. Create File Format
+CREATE OR REPLACE FILE FORMAT CSV_FORMAT
+    TYPE = CSV
+    FIELD_DELIMITER = ','
+    SKIP_HEADER = 1
+    FIELD_OPTIONALLY_ENCLOSED_BY = '"'
+    NULL_IF = ('NULL', '');
+
+-- 3. Create Storage Integration
+CREATE OR REPLACE STORAGE INTEGRATION S3_INT
+    TYPE = EXTERNAL_STAGE
+    STORAGE_PROVIDER = S3
+    ENABLED = TRUE
+    STORAGE_AWS_ROLE_ARN = 'arn:aws:iam::123456789012:role/SnowflakeRole'
+    STORAGE_ALLOWED_LOCATIONS = ('s3://company-data/');
+
+-- 4. Create External Stage
+CREATE OR REPLACE STAGE EMP_STAGE
+    URL = 's3://company-data/employees/'
+    STORAGE_INTEGRATION = S3_INT
+    FILE_FORMAT = CSV_FORMAT;
+
+-- 5. List & Validate Files
+LIST @EMP_STAGE;
+
+COPY INTO EMPLOYEES
+FROM @EMP_STAGE
+VALIDATION_MODE = 'RETURN_ERRORS';
+
+-- 6. Load Data with Options
+COPY INTO EMPLOYEES
+FROM @EMP_STAGE
+PATTERN = '.*employees.*\\.csv'
+ON_ERROR = 'CONTINUE'
+FORCE = TRUE;
+
+SELECT * FROM EMPLOYEES;
+`
+  },
+  {
+    topic: "Data Ingestion & Stages",
+    title: "Snowpipe - Load CSV from S3 Stage into Raw Table",
+    question: `
+Create an automated Snowpipe to continuously load employee CSV files uploaded to S3 into EMPLOYEE_RAW.
+`,
+    dataset: [
+      {EMP_ID: 101, EMP_NAME: "John"},
+      {EMP_ID: 102, EMP_NAME: "Alice"}
+    ],
+    output: [
+      {EMP_ID: 101, EMP_NAME: "John"},
+      {EMP_ID: 102, EMP_NAME: "Alice"}
+    ],
+    answer: `
+CREATE OR REPLACE FILE FORMAT CSV_FORMAT
+    TYPE = CSV
+    SKIP_HEADER = 1
+    FIELD_DELIMITER = ',';
+
+CREATE OR REPLACE STAGE EMP_STAGE
+    URL = 's3://my-practice-bucket-sai-123/'
+    STORAGE_INTEGRATION = S3_INT
+    FILE_FORMAT = CSV_FORMAT;
+
+CREATE OR REPLACE TABLE EMPLOYEE_RAW (
+    EMP_ID NUMBER,
+    EMP_NAME STRING
+);
+
+CREATE OR REPLACE PIPE EMPLOYEE_PIPE
+AS
+COPY INTO EMPLOYEE_RAW
+FROM @EMP_STAGE
+PATTERN = '.*employee.*\\.csv'
+FILE_FORMAT = (FORMAT_NAME = 'CSV_FORMAT');
+
+ALTER PIPE EMPLOYEE_PIPE REFRESH;
+
+SELECT * FROM EMPLOYEE_RAW;
+`
+  },
+  {
+    topic: "Data Ingestion & Stages",
+    title: "External Table - Query CSV Files from Amazon S3",
+    question: `
+Create an External Table to directly query customer CSV files residing in Amazon S3 without loading them into Snowflake tables.
+`,
+    dataset: [
+      {CUSTOMER_ID: 1, CUSTOMER_NAME: "John", CITY: "London"},
+      {CUSTOMER_ID: 2, CUSTOMER_NAME: "David", CITY: "Paris"}
+    ],
+    output: [
+      {CUSTOMER_ID: 1, CUSTOMER_NAME: "John", CITY: "London"},
+      {CUSTOMER_ID: 2, CUSTOMER_NAME: "David", CITY: "Paris"}
+    ],
+    answer: `
+CREATE OR REPLACE FILE FORMAT CSV_FORMAT
+    TYPE = CSV
+    SKIP_HEADER = 1;
+
+CREATE OR REPLACE STAGE CUSTOMER_STAGE
+    URL = 's3://my-practice-bucket-sai-123/'
+    STORAGE_INTEGRATION = S3_INT
+    FILE_FORMAT = CSV_FORMAT;
+
+CREATE OR REPLACE EXTERNAL TABLE EXT_CUSTOMERS
+(
+    CUSTOMER_ID NUMBER AS (VALUE:c1::NUMBER),
+    CUSTOMER_NAME STRING AS (VALUE:c2::STRING),
+    CITY STRING AS (VALUE:c3::STRING)
+)
+LOCATION = @CUSTOMER_STAGE
+PATTERN = '.*customers\\.csv'
+AUTO_REFRESH = FALSE
+FILE_FORMAT = (FORMAT_NAME = 'CSV_FORMAT');
+
+ALTER EXTERNAL TABLE EXT_CUSTOMERS REFRESH;
+
+SELECT * FROM EXT_CUSTOMERS;
+`
+  },
+
+  /* ----------------------------------------------------
+     CATEGORY 4: AUTOMATION, CDC, STREAMS & TASKS
+     ---------------------------------------------------- */
+  {
+    topic: "Automation & CDC",
+    title: "Stored Procedure - Load Data from Stream to Target Table",
+    question: `
+Read data from the STREAMCUSTOMER stream and insert only INSERT records into the CUSTOMERS table using METADATA$ACTION filtering.
+`,
+    dataset: [
+      {ID: 1, NAME: "John", SALARY: 50000, METADATA_ACTION: "INSERT"},
+      {ID: 2, NAME: "David", SALARY: 65000, METADATA_ACTION: "INSERT"},
+      {ID: 3, NAME: "Alex", SALARY: 70000, METADATA_ACTION: "DELETE"}
+    ],
+    output: [
+      {"Result": "Inserts 2 rows to customer table"}
+    ],
+    answer: `
+CREATE OR REPLACE PROCEDURE insertsp()
+RETURNS STRING
+LANGUAGE SQL
+AS
+$$
+BEGIN
+
+    INSERT INTO customers (id, name, salary)
+    SELECT id, name, salary
+    FROM streamcustomer
+    WHERE METADATA$ACTION='INSERT';
+
+    RETURN 'Inserts ' || SQLROWCOUNT || ' rows to customer table';
+
+END;
+$$;
+
+CALL insertsp();
+`
+  },
+  {
+    topic: "Automation & CDC",
+    title: "Stored Procedure - Load SCD Type 2 Using Stream and Merge",
+    question: `
+Create a procedure to perform SCD Type 2 processing by reading changes from a Stream, updating expired dimension records, and inserting new active versions.
+`,
+    dataset: [
+      {CUSTOMER_ID: 101, CUSTOMER_NAME: "John", SALARY: 5000, CURRENT_FLAG: "Y"}
+    ],
+    dataset2: [
+      {CUSTOMER_ID: 101, CUSTOMER_NAME: "John", SALARY: 6500, METADATA_ACTION: "INSERT"}
+    ],
+    output: [
+      {"Result": "Updated = 1, Inserted = 1"}
+    ],
+    answer: `
+CREATE OR REPLACE PROCEDURE LOAD_SCD2()
+RETURNS STRING
+LANGUAGE SQL
+AS
+$$
+DECLARE
+    V_UPDATED NUMBER;
+    V_INSERTED NUMBER;
+BEGIN
+
+    CREATE OR REPLACE TEMP TABLE TMP_CHANGES AS
+    SELECT CUSTOMER_ID, CUSTOMER_NAME, SALARY
+    FROM STG_CUSTOMER_STREAM
+    WHERE METADATA$ACTION='INSERT';
+
+    -- Step 1: Expire old active records
+    MERGE INTO DIM_CUSTOMER T
+    USING TMP_CHANGES S
+    ON T.CUSTOMER_ID=S.CUSTOMER_ID AND T.CURRENT_FLAG='Y'
+    WHEN MATCHED AND (T.CUSTOMER_NAME<>S.CUSTOMER_NAME OR T.SALARY<>S.SALARY)
+    THEN UPDATE SET CURRENT_FLAG='N', END_DATE=CURRENT_DATE();
+
+    V_UPDATED := SQLROWCOUNT;
+
+    -- Step 2: Insert new current records
+    INSERT INTO DIM_CUSTOMER (CUSTOMER_ID, CUSTOMER_NAME, SALARY, START_DATE, END_DATE, CURRENT_FLAG)
+    SELECT S.CUSTOMER_ID, S.CUSTOMER_NAME, S.SALARY, CURRENT_DATE(), NULL, 'Y'
+    FROM TMP_CHANGES S
+    LEFT JOIN DIM_CUSTOMER D ON S.CUSTOMER_ID=D.CUSTOMER_ID AND D.CURRENT_FLAG='Y'
+    WHERE D.CUSTOMER_ID IS NULL;
+
+    V_INSERTED := SQLROWCOUNT;
+
+    RETURN 'Updated = ' || V_UPDATED || ', Inserted = ' || V_INSERTED;
+
+END;
+$$;
+
+CALL LOAD_SCD2();
+`
+  },
+  {
+    topic: "Automation & CDC",
+    title: "Snowpipe + Stream + Task - Incremental Employee Load",
+    question: `
+Build an end-to-end automated ETL pipeline using Snowpipe, a Stream, and a Task to process incremental updates into a Dimension table.
+`,
+    dataset: [
+      {EMP_ID: 101, EMP_NAME: "John"},
+      {EMP_ID: 102, EMP_NAME: "Alice"}
+    ],
+    output: [
+      {EMP_ID: 101, EMP_NAME: "John"},
+      {EMP_ID: 102, EMP_NAME: "Alice"}
+    ],
+    answer: `
+-- Step 1: Raw Table & Snowpipe
+CREATE TABLE EMPLOYEE_RAW (EMP_ID NUMBER, EMP_NAME STRING);
+
+CREATE PIPE EMPLOYEE_PIPE AS
+COPY INTO EMPLOYEE_RAW FROM @EMP_STAGE PATTERN='.*employee.*\\.csv';
+
+-- Step 2: Stream on Raw Table
+CREATE STREAM EMPLOYEE_STREAM ON TABLE EMPLOYEE_RAW;
+
+-- Step 3: Target Table & Automated Task
+CREATE TABLE EMPLOYEE_DIM (EMP_ID NUMBER, EMP_NAME STRING);
+
+CREATE TASK EMPLOYEE_TASK
+  WAREHOUSE = COMPUTE_WH
+  SCHEDULE = '1 MINUTE'
+  WHEN SYSTEM$STREAM_HAS_DATA('EMPLOYEE_STREAM')
+AS
+  MERGE INTO EMPLOYEE_DIM T
+  USING EMPLOYEE_STREAM S ON T.EMP_ID = S.EMP_ID
+  WHEN MATCHED THEN UPDATE SET T.EMP_NAME = S.EMP_NAME
+  WHEN NOT MATCHED THEN INSERT (EMP_ID, EMP_NAME) VALUES (S.EMP_ID, S.EMP_NAME);
+
+ALTER TASK EMPLOYEE_TASK RESUME;
+`
+  },
+
+  /* ----------------------------------------------------
+     CATEGORY 5: DATA WAREHOUSING & DIMENSIONAL MODELING
+     ---------------------------------------------------- */
+  {
+    topic: "Data Warehousing",
+    title: "Surrogate Key & SCD Type 2 in Dimension and Fact Tables",
+    question: `
+Implement SCD Type 2 tracking with Surrogate Keys (SKs) for DIM_CUSTOMER, and populate FACT_SALES by joining on effective date ranges.
+`,
+    dataset: {
+      SRC_CUSTOMER: [{CUSTOMER_ID: 101, CUSTOMER_NAME: "Sai", CITY: "Bangalore"}],
+      SRC_SALES: [{ORDER_ID: 1001, CUSTOMER_ID: 101, SALES_AMOUNT: 500, SALES_DATE: "2026-03-15"}]
+    },
+    output: {
+      DIM_CUSTOMER: [{CUSTOMER_SK: 1011, CUSTOMER_ID: 101, IS_CURRENT: "N"}, {CUSTOMER_SK: 1012, CUSTOMER_ID: 101, IS_CURRENT: "Y"}],
+      FACT_SALES: [{ORDER_ID: 1001, CUSTOMER_SK: 1011, SALES_AMOUNT: 500}]
+    },
+    answer: `
+-- Fact Table Load with SK Lookup based on Date Range
+INSERT INTO FACT_SALES
+SELECT
+    S.ORDER_ID,
+    D.CUSTOMER_SK,
+    S.SALES_AMOUNT,
+    S.SALES_DATE
+FROM SRC_SALES S
+JOIN DIM_CUSTOMER D
+  ON S.CUSTOMER_ID = D.CUSTOMER_ID
+ AND S.SALES_DATE BETWEEN D.START_DATE AND COALESCE(D.END_DATE, '9999-12-31');
+`
+  },
+  {
+    topic: "Data Warehousing",
+    title: "Conformed Dimension - Shared Across Multiple Fact Tables",
+    question: `
+Demonstrate a Conformed Dimension (DIM_CUSTOMER) shared across two distinct Fact tables (FACT_SALES and FACT_RETURNS).
+`,
+    dataset: {
+      DIM_CUSTOMER: [{CUSTOMER_SK: 1, CUSTOMER_NAME: "Sai"}],
+      FACT_SALES: [{ORDER_ID: 1001, CUSTOMER_SK: 1, SALES_AMOUNT: 500}],
+      FACT_RETURNS: [{RETURN_ID: 2001, CUSTOMER_SK: 1, REFUND_AMOUNT: 500}]
+    },
+    output: [
+      {CUSTOMER_NAME: "Sai", TOTAL_SALES: 500, TOTAL_REFUNDS: 500}
+    ],
+    answer: `
+-- Combined Customer Sales and Refunds Report
+WITH SALES AS (
+    SELECT CUSTOMER_SK, SUM(SALES_AMOUNT) AS TOTAL_SALES
+    FROM FACT_SALES GROUP BY CUSTOMER_SK
+),
+RETURNS AS (
+    SELECT CUSTOMER_SK, SUM(REFUND_AMOUNT) AS TOTAL_REFUNDS
+    FROM FACT_RETURNS GROUP BY CUSTOMER_SK
+)
+SELECT
+    C.CUSTOMER_NAME,
+    COALESCE(S.TOTAL_SALES, 0) AS TOTAL_SALES,
+    COALESCE(R.TOTAL_REFUNDS, 0) AS TOTAL_REFUNDS
+FROM DIM_CUSTOMER C
+LEFT JOIN SALES S ON C.CUSTOMER_SK = S.CUSTOMER_SK
+LEFT JOIN RETURNS R ON C.CUSTOMER_SK = R.CUSTOMER_SK;
+`
+  },
+  {
+    topic: "Data Warehousing",
+    title: "Degenerate Dimension - Transaction ID in Fact Table",
+    question: `
+Implement a Degenerate Dimension where ORDER_ID is stored directly in FACT_SALES without creating an explicit DIM_ORDER table.
+`,
+    dataset: [
+      {ORDER_ID: 1001, CUSTOMER_SK: 1, PRODUCT_SK: 11, SALES_AMOUNT: 500}
+    ],
+    output: [
+      {ORDER_ID: 1001, CUSTOMER_NAME: "Sai", PRODUCT_NAME: "Laptop", SALES_AMOUNT: 500}
+    ],
+    answer: `
+-- Retrieve Sales Report with Degenerate Dimension ORDER_ID
+SELECT
+    F.ORDER_ID,
+    C.CUSTOMER_NAME,
+    P.PRODUCT_NAME,
+    F.SALES_AMOUNT
+FROM FACT_SALES F
+JOIN DIM_CUSTOMER C ON F.CUSTOMER_SK = C.CUSTOMER_SK
+JOIN DIM_PRODUCT P ON F.PRODUCT_SK = P.PRODUCT_SK;
+
+-- Explanation: ORDER_ID is a degenerate dimension because it lives in the fact 
+-- table without requiring a standalone dimension table.
+`
+  },
+  {
+    topic: "Data Warehousing",
+    title: "Junk Dimension - Consolidating Low-Cardinality Flags",
+    question: `
+Create and load a Junk Dimension (DIM_JUNK) by extracting distinct combinations of low-cardinality flags (IS_PROMOTION, PAYMENT_MODE, etc.) from raw sales data.
+`,
+    dataset: [
+      {SALES_ID: 1, IS_PROMOTION: "Y", PAYMENT_MODE: "Card", IS_ONLINE: "Y", IS_RETURNED: "N", SALES_AMOUNT: 1500}
+    ],
+    output: [
+      {SALES_ID: 1, JUNK_KEY: 1, SALES_AMOUNT: 1500}
+    ],
+    answer: `
+-- Step 1: Create Junk Dimension Table
+CREATE OR REPLACE TABLE DIM_JUNK (
+    JUNK_KEY INT IDENTITY(1,1),
+    IS_PROMOTION STRING,
+    PAYMENT_MODE STRING,
+    IS_ONLINE STRING,
+    IS_RETURNED STRING
+);
+
+INSERT INTO DIM_JUNK (IS_PROMOTION, PAYMENT_MODE, IS_ONLINE, IS_RETURNED)
+SELECT DISTINCT IS_PROMOTION, PAYMENT_MODE, IS_ONLINE, IS_RETURNED
+FROM SALES_RAW;
+
+-- Step 2: Load Fact Table replacing flags with JUNK_KEY
+CREATE OR REPLACE TABLE FACT_SALES (
+    SALES_ID INT,
+    PRODUCT_KEY INT,
+    CUSTOMER_KEY INT,
+    JUNK_KEY INT,
+    SALES_AMOUNT NUMBER(10,2)
+);
+
+INSERT INTO FACT_SALES
+SELECT
+    S.SALES_ID,
+    S.PRODUCT_KEY,
+    S.CUSTOMER_KEY,
+    J.JUNK_KEY,
+    S.SALES_AMOUNT
+FROM SALES_RAW S
+JOIN DIM_JUNK J
+  ON S.IS_PROMOTION = J.IS_PROMOTION
+ AND S.PAYMENT_MODE = J.PAYMENT_MODE
+ AND S.IS_ONLINE = J.IS_ONLINE
+ AND S.IS_RETURNED = J.IS_RETURNED;
+`
+  }
+];
+
+/* ============================
+   UI & Rendering Logic
+   ============================ */
+
+let currentQuestion = 0;
+
+function createJumpButtons() {
+    const container = document.getElementById('jumpButtons');
+    container.innerHTML = '';
+
+    questions.forEach((q, idx) => {
+        const btn = document.createElement('button');
+        btn.textContent = `[${q.topic}] ${q.title}`;
+        btn.title = q.title;
+        btn.onclick = () => {
+            currentQuestion = idx;
+            renderQuestion(idx);
+        };
+        container.appendChild(btn);
+    });
+}
+
+function renderTableFromObjects(list) {
+    if (!list || list.length === 0) return '<p>No data available.</p>';
+    if (typeof list === 'object' && !Array.isArray(list)) {
+        return `<pre>${JSON.stringify(list, null, 2)}</pre>`;
+    }
+    const cols = Object.keys(list[0]);
+    let html = '<table><thead><tr>';
+    cols.forEach(c => html += `<th>${c}</th>`);
+    html += '</tr></thead><tbody>';
+    list.forEach(r => {
+        html += '<tr>';
+        cols.forEach(c => html += `<td>${r[c] !== null ? r[c] : 'NULL'}</td>`);
+        html += '</tr>';
+    });
+    html += '</tbody></table>';
+    return html;
+}
+
+function renderQuestion(index) {
+    const q = questions[index];
+    
+    // Header & Question
+    document.getElementById('questionBox').innerHTML = `
+        <span style="background:#008CBA; color:white; padding:3px 8px; border-radius:4px; font-size:12px;">${q.topic}</span>
+        <h3>Question ${index + 1}: ${q.title}</h3>
+        <p>${q.question.replace(/\n/g, '<br>')}</p>
+    `;
+
+    // Dataset 1
+    document.getElementById('datasetBox').innerHTML = renderTableFromObjects(q.dataset);
+
+    // Dataset 2
+    document.getElementById('datasetBox2').innerHTML = renderTableFromObjects(q.dataset2);
+
+    // Dataset 3
+    document.getElementById('datasetBox3').innerHTML = renderTableFromObjects(q.dataset3);
+
+    // Output
+    document.getElementById('outputBox').innerHTML = renderTableFromObjects(q.output);
+
+    // Answer & Explanation
+    let answerText = '';
+    if (q.answer) answerText += q.answer.trim() + '\n\n';
+    if (q.explanation) answerText += '-- Explanation:\n' + q.explanation.trim();
+
+    document.getElementById('answerBox').textContent = answerText || '-- No answer provided --';
+
+    // Update Counter
+    document.getElementById('questionCounter').textContent = `Question ${index + 1} of ${questions.length}`;
+}
+
+/* Navigation event listeners */
+document.getElementById('prevBtn').addEventListener('click', () => {
+    if (currentQuestion > 0) {
+        currentQuestion--;
+        renderQuestion(currentQuestion);
+    }
+});
+document.getElementById('nextBtn').addEventListener('click', () => {
+    if (currentQuestion < questions.length - 1) {
+        currentQuestion++;
+        renderQuestion(currentQuestion);
+    }
+});
+
+/* Initialize UI */
+createJumpButtons();
+renderQuestion(0);
+
+</script>
+</body>
+</html>
