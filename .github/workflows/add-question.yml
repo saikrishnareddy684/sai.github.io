@@ -1,1 +1,59 @@
 
+name: Add Interview Question
+
+on:
+  workflow_dispatch:
+    inputs:
+      question:
+        description: "Complete question JSON"
+        required: true
+        type: string
+
+permissions:
+  contents: write
+
+jobs:
+  add-question:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Add question to questions.json
+        env:
+          QUESTION_JSON: ${{ inputs.question }}
+        run: |
+          python - <<'PY'
+          import json
+          import os
+
+          file = "questions.json"
+
+          with open(file, "r", encoding="utf-8") as f:
+              questions = json.load(f)
+
+          new_question = json.loads(os.environ["QUESTION_JSON"])
+
+          questions.append(new_question)
+
+          with open(file, "w", encoding="utf-8") as f:
+              json.dump(
+                  questions,
+                  f,
+                  indent=2,
+                  ensure_ascii=False
+              )
+              f.write("\n")
+          PY
+
+      - name: Commit changes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git add questions.json
+
+          git commit -m "Add interview question"
+
+          git push
