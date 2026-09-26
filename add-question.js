@@ -1,5 +1,10 @@
 const QUESTIONS_FILE = "questions.json";
 
+
+/* -----------------------------
+   LOAD EXISTING QUESTIONS
+----------------------------- */
+
 async function loadQuestions() {
 
     const response = await fetch(QUESTIONS_FILE);
@@ -12,71 +17,235 @@ async function loadQuestions() {
 }
 
 
-function getQuestionFromForm() {
+/* -----------------------------
+   PARSE QUESTION
+----------------------------- */
 
-    return {
+function parseQuestion(text) {
 
-        q: document.getElementById("question").value.trim(),
+    const result = {
 
-        options: [
-            document.getElementById("option1").value.trim(),
-            document.getElementById("option2").value.trim(),
-            document.getElementById("option3").value.trim(),
-            document.getElementById("option4").value.trim()
-        ],
-
-        answer: parseInt(
-            document.getElementById("answer").value
-        ),
-
+        q: "",
+        options: [],
+        answer: null,
         time: 40,
+        level: "Medium",
+        topic: "",
+        dataset: "",
+        expectedOutput: "",
+        explanation: ""
 
-        level: document.getElementById("level").value,
-
-        topic: document.getElementById("topic").value.trim(),
-
-        dataset: document.getElementById("dataset").value.trim(),
-
-        expectedOutput:
-            document.getElementById("expectedOutput").value.trim(),
-
-        explanation:
-            document.getElementById("explanation").value.trim()
     };
+
+
+    /* Question */
+
+    const questionMatch =
+        text.match(/Question\s*:\s*([\s\S]*?)(?=\n\s*Options\s*:)/i);
+
+    if (questionMatch) {
+
+        result.q =
+            questionMatch[1].trim();
+
+    }
+
+
+    /* Options */
+
+    const optionsMatch =
+        text.match(/Options\s*:\s*([\s\S]*?)(?=\n\s*Answer\s*:)/i);
+
+    if (optionsMatch) {
+
+        const lines =
+            optionsMatch[1]
+            .split("\n")
+            .map(x => x.trim())
+            .filter(x => x);
+
+        result.options =
+            lines.map(line =>
+                line.replace(/^\d+[\.\)]\s*/, "")
+                    .trim()
+            );
+
+    }
+
+
+    /* Answer */
+
+    const answerMatch =
+        text.match(/Answer\s*:\s*([^\n]+)/i);
+
+    if (answerMatch) {
+
+        const answerText =
+            answerMatch[1].trim();
+
+        const numberMatch =
+            answerText.match(/^(\d+)/);
+
+        if (numberMatch) {
+
+            result.answer =
+                parseInt(numberMatch[1]) - 1;
+
+        }
+
+    }
+
+
+    /* Dataset */
+
+    const datasetMatch =
+        text.match(/Dataset\s*:\s*([\s\S]*?)(?=\n\s*(Expected Output|Level|Topic|Explanation)\s*:)/i);
+
+    if (datasetMatch) {
+
+        result.dataset =
+            datasetMatch[1].trim();
+
+    }
+
+
+    /* Expected Output */
+
+    const outputMatch =
+        text.match(/Expected Output\s*:\s*([\s\S]*?)(?=\n\s*(Dataset|Level|Topic|Explanation)\s*:)/i);
+
+    if (outputMatch) {
+
+        result.expectedOutput =
+            outputMatch[1].trim();
+
+    }
+
+
+    /* Level */
+
+    const levelMatch =
+        text.match(/Level\s*:\s*([^\n]+)/i);
+
+    if (levelMatch) {
+
+        result.level =
+            levelMatch[1].trim();
+
+    }
+
+
+    /* Topic */
+
+    const topicMatch =
+        text.match(/Topic\s*:\s*([^\n]+)/i);
+
+    if (topicMatch) {
+
+        result.topic =
+            topicMatch[1].trim();
+
+    }
+
+
+    /* Explanation */
+
+    const explanationMatch =
+        text.match(/Explanation\s*:\s*([\s\S]*)/i);
+
+    if (explanationMatch) {
+
+        result.explanation =
+            explanationMatch[1].trim();
+
+    }
+
+
+    return result;
 }
 
 
+/* -----------------------------
+   CHECK & ADD
+----------------------------- */
+
 async function checkAndAdd() {
 
-    const status = document.getElementById("status");
+    const status =
+        document.getElementById("status");
+
+    const text =
+        document.getElementById("questionInput").value.trim();
+
+
+    if (!text) {
+
+        status.innerHTML =
+            "<strong>Please paste a question.</strong>";
+
+        return;
+    }
+
 
     try {
 
-        const newQuestion = getQuestionFromForm();
+        const newQuestion =
+            parseQuestion(text);
+
+
+        /* Validate */
 
         if (!newQuestion.q) {
-            alert("Please enter the question.");
+
+            status.innerHTML =
+                "<strong>Could not find Question.</strong>";
+
             return;
         }
+
+
+        if (newQuestion.options.length !== 4) {
+
+            status.innerHTML =
+                `<strong>Expected 4 options but found ${newQuestion.options.length}.</strong>`;
+
+            return;
+        }
+
 
         if (
-            newQuestion.options.some(option => option === "")
+            newQuestion.answer === null ||
+            newQuestion.answer < 0 ||
+            newQuestion.answer >= newQuestion.options.length
         ) {
-            alert("Please enter all four options.");
+
+            status.innerHTML =
+                "<strong>Could not determine the correct answer.</strong>";
+
             return;
         }
 
-        const questions = await loadQuestions();
 
-        const duplicate = questions.find(q =>
-            q.q.toLowerCase() === newQuestion.q.toLowerCase()
-        );
+        /* Load existing questions */
+
+        const questions =
+            await loadQuestions();
+
+
+        /* Duplicate check */
+
+        const duplicate =
+            questions.find(q =>
+                q.q &&
+                q.q.trim().toLowerCase() ===
+                newQuestion.q.trim().toLowerCase()
+            );
+
 
         if (duplicate) {
 
-            status.className = "";
             status.innerHTML = `
-                <strong>Duplicate question found!</strong>
+                <strong>⚠ Duplicate question found!</strong>
                 <br><br>
                 ${escapeHtml(duplicate.q)}
             `;
@@ -84,57 +253,86 @@ async function checkAndAdd() {
             return;
         }
 
-        /*
-         * TEMPORARY:
-         * Display the JSON that would be added.
-         *
-         * GitHub API integration comes next.
-         */
 
-        status.className = "";
+        /* Display parsed result */
 
         status.innerHTML = `
-            <strong>Question is ready to add.</strong>
-            <br><br>
-            ${escapeHtml(newQuestion.q)}
-            <br><br>
+
+            <h3>Question Parsed Successfully</h3>
+
+            <p>
+                <strong>Question:</strong><br>
+                ${escapeHtml(newQuestion.q)}
+            </p>
+
+            <p>
+                <strong>Topic:</strong>
+                ${escapeHtml(newQuestion.topic)}
+            </p>
+
+            <p>
+                <strong>Level:</strong>
+                ${escapeHtml(newQuestion.level)}
+            </p>
+
+            <p>
+                <strong>Correct Option:</strong>
+                ${newQuestion.answer + 1}
+            </p>
+
+            <hr>
+
             <pre>${escapeHtml(
                 JSON.stringify(newQuestion, null, 2)
             )}</pre>
+
+            <strong>
+                Ready for GitHub save.
+            </strong>
         `;
+
 
     } catch (error) {
 
         console.error(error);
 
-        status.className = "";
-
         status.innerHTML =
-            "Error loading questions.json.";
+            "<strong>Error reading questions.json</strong>";
 
     }
+
 }
 
+
+/* -----------------------------
+   CLEAR
+----------------------------- */
 
 function clearForm() {
 
-    document.querySelectorAll(
-        "input, textarea"
-    ).forEach(element => {
-        element.value = "";
-    });
+    document.getElementById(
+        "questionInput"
+    ).value = "";
 
-    document.getElementById("answer").value = "0";
-    document.getElementById("level").value = "Easy";
+    document.getElementById(
+        "status"
+    ).innerHTML = "";
 
-    document.getElementById("status").className = "hidden";
 }
 
+
+/* -----------------------------
+   HTML ESCAPE
+----------------------------- */
 
 function escapeHtml(str) {
 
     return String(str)
+
         .replace(/&/g, "&amp;")
+
         .replace(/</g, "&lt;")
+
         .replace(/>/g, "&gt;");
+
 }
