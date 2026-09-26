@@ -30,5 +30,21 @@
     "dataset": "No dataset required",
     "expectedOutput": "The virtual warehouse provides the compute resources required to execute queries and data manipulation operations.",
     "explanation": "A Snowflake Virtual Warehouse is a cluster of compute resources used to execute SQL queries, load data, and perform other data processing operations."
+  },
+  {
+    "q": "What is the purpose of a Snowflake Virtual Warehouse?",
+    "options": [
+      "To store database tables permanently",
+      "To provide compute resources for executing queries and DML operations",
+      "To define database schemas",
+      "To store files in an external cloud location"
+    ],
+    "answer": 1,
+    "time": 40,
+    "level": "Medium",
+    "topic": "Snowflake",
+    "dataset": "No dataset required",
+    "expectedOutput": "The virtual warehouse provides the compute resources required to execute queries and data manipulation operations.",
+    "explanation": "A Snowflake Virtual Warehouse is a cluster of compute resources used to execute SQL queries, load data, and perform other data processing operations."
   }
 ]
