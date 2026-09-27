@@ -1995,6 +1995,461 @@ FROM TABLE(testtable(2));
 `
 }
 ,
+
+    {
+title: "Snowflake Technical User - Key Pair + ODBC + SQL Server Linked Server",
+
+
+question: `
+
+
+How do you create a Snowflake technical/service user and configure key-pair authentication, ODBC, and a SQL Server Linked Server to connect SQL Server with Snowflake?
+
+Explain the complete setup step by step, including:
+
+1. Creating the Snowflake service user
+2. Creating a dedicated role
+3. Generating an encrypted RSA private key (.p8)
+4. Generating the public key (.pub)
+5. Assigning the public key to the Snowflake user
+6. Granting the role to the service user
+7. Retrieving Snowflake connection details
+8. Installing and verifying the Snowflake ODBC driver
+9. Creating a 64-bit System DSN
+10. Configuring SNOWFLAKE_JWT authentication
+11. Configuring the encrypted .p8 private key and passphrase
+12. Granting database, schema, table, and view permissions
+13. Creating the SQL Server Linked Server using MSDASQL
+14. Configuring the Linked Server login mapping
+15. Testing the connection
+16. Querying Snowflake tables from SQL Server using OPENQUERY
+    `,
+dataset:[
+],
+
+output:[
+],
+    answer: `
+    STEP 1 — CREATE THE SNOWFLAKE TECHNICAL USER
+
+Use USERADMIN:
+
+USE ROLE USERADMIN;
+
+CREATE USER SNOWFLAKE_TECH_USER
+TYPE = SERVICE
+COMMENT = 'Technical service user for Snowflake integrations';
+
+STEP 2 — CREATE A DEDICATED ROLE
+
+Create a custom role for the technical user:
+
+USE ROLE USERADMIN;
+
+CREATE ROLE SNOWFLAKE_TECH_ROLE
+COMMENT = 'Role for Snowflake technical service integrations';
+
+STEP 3 — GENERATE THE ENCRYPTED PRIVATE KEY
+
+Create a folder for the Snowflake keys:
+
+New-Item -ItemType Directory -Path "C:\SnowflakeKeys" -Force
+
+Generate an encrypted 2048-bit RSA private key:
+
+& "C:\Program Files\OpenSSL-Win64\bin\openssl.exe" genpkey -algorithm RSA -aes-256-cbc -out "C:\SnowflakeKeys\snowflake_tech_user.p8" -pkeyopt rsa_keygen_bits:2048
+
+OpenSSL will ask for a passphrase.
+
+IMPORTANT:
+The .p8 file is the private key.
+Keep the private key and passphrase secure.
+Never share them.
+
+STEP 4 — GENERATE THE PUBLIC KEY
+
+Generate the public key from the private key:
+
+& "C:\Program Files\OpenSSL-Win64\bin\openssl.exe" pkey -in "C:\SnowflakeKeys\snowflake_tech_user.p8" -pubout -out "C:\SnowflakeKeys\snowflake_tech_user.pub"
+
+The files are now:
+
+Private key:
+C:\SnowflakeKeys\snowflake_tech_user.p8
+
+Public key:
+C:\SnowflakeKeys\snowflake_tech_user.pub
+
+STEP 5 — REGISTER THE PUBLIC KEY IN SNOWFLAKE
+
+Take the Base64 public-key value from:
+
+C:\SnowflakeKeys\snowflake_tech_user.pub
+
+and assign it to:
+
+SNOWFLAKE_TECH_USER
+
+The public key is stored with the Snowflake user.
+
+The private .p8 key remains on the client machine.
+
+Authentication relationship:
+
+Private Key (.p8)
+↓
+Client / Application
+↓
+Snowflake
+↓
+Verify using registered Public Key
+↓
+SNOWFLAKE_TECH_USER
+
+STEP 6 — GRANT THE ROLE TO THE TECHNICAL USER
+
+USE ROLE USERADMIN;
+
+GRANT ROLE SNOWFLAKE_TECH_ROLE
+TO USER SNOWFLAKE_TECH_USER;
+
+STEP 7 — GET SNOWFLAKE CONNECTION DETAILS
+
+Run:
+
+SELECT
+CURRENT_ORGANIZATION_NAME() || '-' || CURRENT_ACCOUNT_NAME() AS ACCOUNT_IDENTIFIER,
+CURRENT_REGION() AS REGION,
+CURRENT_ACCOUNT() AS ACCOUNT_LOCATOR,
+CURRENT_WAREHOUSE() AS WAREHOUSE,
+CURRENT_DATABASE() AS DATABASE_NAME,
+CURRENT_SCHEMA() AS SCHEMA_NAME;
+
+Use these values to determine the correct ODBC configuration.
+
+The server uses the account identifier:
+
+<ACCOUNT_IDENTIFIER>.snowflakecomputing.com
+
+STEP 8 — INSTALL THE SNOWFLAKE ODBC DRIVER
+
+Install the 64-bit Snowflake ODBC driver.
+
+Verify it using PowerShell:
+
+Get-OdbcDriver |
+Where-Object {$_.Name -eq "SnowflakeDSIIDriver"} |
+Format-List Name, Version, Platform
+
+Expected driver:
+
+SnowflakeDSIIDriver
+
+Expected platform:
+
+64-bit
+
+STEP 9 — OPEN THE 64-BIT ODBC ADMINISTRATOR
+
+Open:
+
+C:\Windows\System32\odbcad32.exe
+
+Go to:
+
+System DSN
+
+Create a new DSN using:
+
+SnowflakeDSIIDriver
+
+Name the DSN:
+
+SNOWFLAKE_TECH
+
+STEP 10 — CONFIGURE THE SNOWFLAKE ODBC DSN
+
+Configure the DSN approximately as follows:
+
+Data Source / DSN:
+SNOWFLAKE_TECH
+
+Server:
+<ACCOUNT_IDENTIFIER>.snowflakecomputing.com
+
+User:
+SNOWFLAKE_TECH_USER
+
+Password:
+Leave blank
+
+Database:
+SAI
+
+Schema:
+PUBLIC
+
+Warehouse:
+COMPUTE_WH
+
+Role:
+SNOWFLAKE_TECH_ROLE
+
+Tracking:
+Leave blank
+
+Proxy:
+Leave blank
+
+Authentication:
+SNOWFLAKE_JWT
+
+Private Key File:
+C:\SnowflakeKeys\snowflake_tech_user.p8
+
+Private Key Passphrase:
+The passphrase used when creating the encrypted .p8 file.
+
+IMPORTANT:
+
+The normal Snowflake Password field is not the same as the private-key passphrase.
+
+For key-pair authentication:
+
+Password:
+Blank
+
+Private Key:
+snowflake_tech_user.p8
+
+Private Key Passphrase:
+Your .p8 encryption passphrase
+
+STEP 11 — TEST THE ODBC CONNECTION
+
+Use the Test Connection option in the Snowflake ODBC configuration.
+
+If the .p8 file is encrypted, the private-key passphrase must be supplied.
+
+Example error when the passphrase was missing:
+
+[28000] [Snowflake][Snowflake ODBC Driver][Snowflake]Failed to login
+
+Authentication failed
+
+Invalid private key format
+
+After entering the correct private-key passphrase, the ODBC connection succeeded.
+
+STEP 12 — GRANT DATABASE ACCESS
+
+Grant database USAGE:
+
+USE ROLE ACCOUNTADMIN;
+
+GRANT USAGE ON DATABASE SAI
+TO ROLE SNOWFLAKE_TECH_ROLE;
+
+STEP 13 — GRANT SCHEMA ACCESS
+
+Grant schema USAGE:
+
+GRANT USAGE ON SCHEMA SAI.PUBLIC
+TO ROLE SNOWFLAKE_TECH_ROLE;
+
+STEP 14 — GRANT SELECT ON EXISTING TABLES
+
+Grant read-only access to existing tables:
+
+GRANT SELECT ON ALL TABLES IN SCHEMA SAI.PUBLIC
+TO ROLE SNOWFLAKE_TECH_ROLE;
+
+STEP 15 — GRANT SELECT ON EXISTING VIEWS
+
+Grant read-only access to existing views:
+
+GRANT SELECT ON ALL VIEWS IN SCHEMA SAI.PUBLIC
+TO ROLE SNOWFLAKE_TECH_ROLE;
+
+STEP 16 — GRANT SELECT ON FUTURE TABLES
+
+Automatically grant SELECT on future tables:
+
+GRANT SELECT ON FUTURE TABLES IN SCHEMA SAI.PUBLIC
+TO ROLE SNOWFLAKE_TECH_ROLE;
+
+STEP 17 — GRANT SELECT ON FUTURE VIEWS
+
+Automatically grant SELECT on future views:
+
+GRANT SELECT ON FUTURE VIEWS IN SCHEMA SAI.PUBLIC
+TO ROLE SNOWFLAKE_TECH_ROLE;
+
+FINAL PERMISSION STRUCTURE:
+
+SNOWFLAKE_TECH_USER
+↓
+SNOWFLAKE_TECH_ROLE
+↓
+SAI DATABASE
+↓
+PUBLIC SCHEMA
+↓
+SELECT
+↓
+Existing Tables / Views
+↓
+Future Tables / Views
+
+STEP 18 — VERIFY ROLE GRANTS
+
+SHOW GRANTS TO ROLE SNOWFLAKE_TECH_ROLE;
+
+STEP 19 — VERIFY USER ROLE
+
+SHOW GRANTS TO USER SNOWFLAKE_TECH_USER;
+
+STEP 20 — VERIFY MSDASQL PROVIDER IN SQL SERVER
+
+Open SSMS and run:
+
+EXEC master.dbo.sp_enum_oledb_providers;
+
+Verify that:
+
+MSDASQL
+
+is available.
+
+STEP 21 — CREATE THE SQL SERVER LINKED SERVER
+
+Run in SSMS:
+
+USE master;
+GO
+
+EXEC master.dbo.sp_addlinkedserver
+@server     = N'SNOWFLAKE_TECH',
+@srvproduct = N'Snowflake',
+@provider   = N'MSDASQL',
+@datasrc    = N'SNOWFLAKE_TECH';
+GO
+
+STEP 22 — CONFIGURE LINKED SERVER LOGIN MAPPING
+
+Configure the Linked Server to not use the local SQL Server credentials:
+
+EXEC master.dbo.sp_addlinkedsrvlogin
+@rmtsrvname = N'SNOWFLAKE_TECH',
+@useself = N'False',
+@locallogin = NULL;
+GO
+
+STEP 23 — QUERY A SNOWFLAKE TABLE FROM SQL SERVER
+
+Use OPENQUERY:
+
+SELECT *
+FROM OPENQUERY(
+SNOWFLAKE_TECH,
+'SELECT * FROM SAI.PUBLIC.CUSTOMER LIMIT 5'
+);
+
+STEP 24 — TEST AN AGGREGATE QUERY
+
+For example:
+
+SELECT *
+FROM OPENQUERY(
+SNOWFLAKE_TECH,
+'SELECT COUNT(*) AS CUSTOMER_COUNT FROM SAI.PUBLIC.CUSTOMER'
+);
+
+STEP 25 — FINAL CONNECTION FLOW
+
+SQL Server
+↓
+SQL Server Linked Server
+↓
+MSDASQL
+↓
+Snowflake ODBC Driver
+↓
+System DSN: SNOWFLAKE_TECH
+↓
+SNOWFLAKE_JWT
+↓
+Encrypted Private Key (.p8)
+↓
+Private Key Passphrase
+↓
+Snowflake
+↓
+SNOWFLAKE_TECH_USER
+↓
+SNOWFLAKE_TECH_ROLE
+↓
+SAI.PUBLIC
+↓
+SELECT access
+↓
+Snowflake Tables / Views
+
+KEY CONCEPTS:
+
+1. Technical User
+
+SNOWFLAKE_TECH_USER is a service identity used by applications and integrations.
+
+2. Dedicated Role
+
+SNOWFLAKE_TECH_ROLE contains the permissions required by the service user.
+
+3. Private Key
+
+The .p8 file is the secret private key and remains on the client machine.
+
+4. Public Key
+
+The .pub key is registered with the Snowflake user and is used by Snowflake to verify the private-key authentication.
+
+5. ODBC
+
+ODBC provides the connectivity layer between SQL Server and Snowflake.
+
+6. MSDASQL
+
+MSDASQL allows SQL Server Linked Server to communicate with an ODBC data source.
+
+7. System DSN
+
+SNOWFLAKE_TECH stores the Snowflake ODBC connection configuration.
+
+8. SNOWFLAKE_JWT
+
+SNOWFLAKE_JWT is used for key-pair authentication.
+
+9. OPENQUERY
+
+OPENQUERY allows SQL Server to send a pass-through SQL query to Snowflake through the Linked Server.
+
+10. Security Model
+
+The technical role should receive only the permissions required by the integration.
+
+In this setup, the role has:
+
+USAGE on database
+USAGE on schema
+SELECT on tables
+SELECT on views
+SELECT on future tables
+SELECT on future views
+
+It does not require INSERT, UPDATE, DELETE, or ACCOUNTADMIN privileges for normal read-only querying.
+`
+},
+
 /* End of questions array */
 ];
 
