@@ -258,6 +258,81 @@ Therefore, Data Management can be summarized as:
 Data Management = Architecture + Modeling + Integration + Quality + Security + Governance + Master Data + Metadata + Data Warehousing & BI + other data management capabilities.
 `
 },
+    {
+title: "Data Governance - Project Without Governance",
+
+question: `
+Suppose you join a project where no formal Data Governance framework has been implemented.
+
+What would you do in this situation?
+
+Requirements:
+1. Explain what happens when there is no formal Data Governance.
+2. Identify the key governance areas that should be established.
+3. Explain how you would introduce governance into the project.
+4. Explain the difference between Data Governance and Data Quality.
+5. Provide a practical example from a Snowflake project.
+`,
+
+dataset:[
+{AREA:"Data Ownership",EXAMPLE:"Define who is responsible for each critical dataset"},
+{AREA:"Data Quality",EXAMPLE:"Define and validate accuracy, completeness and consistency rules"},
+{AREA:"Data Security",EXAMPLE:"Control access to sensitive data using roles and security policies"},
+{AREA:"Metadata & Lineage",EXAMPLE:"Document data definitions, sources and data flow"},
+{AREA:"Naming Standards",EXAMPLE:"Define standard naming conventions for databases, schemas, tables and columns"},
+{AREA:"Change Management",EXAMPLE:"Control changes through development, testing and production processes"},
+{AREA:"Data Retention",EXAMPLE:"Define how long data should be retained and when it should be archived"}
+],
+
+output:[
+{AREA:"Data Governance",RESULT:"Formal processes, policies, ownership and controls established for managing data"}
+],
+
+answer:`
+If there is no formal Data Governance framework in the project, I would first identify the critical data assets, data owners, data flows, quality requirements and security requirements.
+
+I would then gradually establish basic governance practices such as:
+
+1. Data Ownership
+Identify business and technical owners for critical datasets.
+
+2. Data Quality
+Define rules for accuracy, completeness, consistency, validity and uniqueness, and implement appropriate data quality checks.
+
+3. Data Security
+Define who can access which data and implement appropriate Snowflake roles, privileges, masking or other security controls where required.
+
+4. Metadata and Data Lineage
+Document important data definitions, sources, transformations and downstream usage.
+
+5. Naming Standards
+Establish consistent naming conventions for databases, schemas, tables, columns and other objects.
+
+6. Change Management
+Ensure changes to data structures, business rules and pipelines go through proper development, testing and production processes.
+
+7. Data Retention
+Define how long data should be retained and when it should be archived or removed based on business and regulatory requirements.
+
+I would work with the business, data owners, security team and technical teams to formalize these practices instead of treating Data Governance as only a separate tool or team.
+
+For example, in a Snowflake project, we could define that CUSTOMER_ID cannot be NULL and must be unique.
+
+The governance rule would be:
+
+CUSTOMER_ID must be unique and NOT NULL.
+
+A Data Quality check would then validate the actual data and identify NULL or duplicate CUSTOMER_ID values.
+
+Therefore:
+
+Data Governance = Defines how data should be managed.
+
+Data Quality = Checks whether the data meets the defined requirements.
+
+If there is no governance at all, it can result in unclear ownership, inconsistent data, poor data quality, security risks and untrusted reporting. The goal would be to introduce governance progressively based on the project's critical data and business requirements.
+`
+},
 /* End of questions array */
 ];
 
