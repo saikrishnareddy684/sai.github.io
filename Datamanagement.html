@@ -434,6 +434,99 @@ Data Quality = Ensuring that data is accurate, complete, consistent, valid, uniq
 The objective is to make sure that data is trustworthy and fit for consumption by downstream systems, reports and business users.
 `
 },
+    {
+title: "Data Governance vs Data Quality - Key Differences",
+
+topic: "Data Management",
+
+question: `
+What is the difference between Data Quality and Data Governance?
+
+Requirements:
+1. Explain Data Quality.
+2. Explain Data Governance.
+3. Explain the key differences between them.
+4. Explain how Data Governance and Data Quality work together.
+5. Provide a practical example using CUSTOMER_ID in a Snowflake project.
+`,
+
+dataset:[
+{CUSTOMER_ID:101,NAME:"John",STATUS:"ACTIVE"},
+{CUSTOMER_ID:102,NAME:"David",STATUS:"ACTIVE"},
+{CUSTOMER_ID:102,NAME:"Alex",STATUS:"ACTIVE"},
+{CUSTOMER_ID:null,NAME:"Robert",STATUS:"ACTIVE"}
+],
+
+output:[
+{AREA:"Data Governance",RESULT:"Defines the rule that CUSTOMER_ID must be unique and cannot be NULL"},
+{AREA:"Data Quality",RESULT:"Identifies CUSTOMER_ID 102 as a duplicate and the NULL CUSTOMER_ID as a data-quality issue"}
+],
+
+answer:`
+Data Governance defines the policies, standards, ownership, responsibilities and rules for managing data.
+
+Data Quality focuses on measuring and improving the actual condition of the data.
+
+The key difference is:
+
+Data Governance = Defines what the data should be and how it should be managed.
+
+Data Quality = Checks whether the actual data meets those requirements.
+
+For example, suppose the business defines the following rule:
+
+CUSTOMER_ID must be unique and cannot be NULL.
+
+This is a Data Governance requirement because it defines a standard that the data must follow.
+
+Data Quality then checks the actual data to identify violations of that rule.
+
+For example, the following query can identify duplicate CUSTOMER_ID values:
+
+SELECT CUSTOMER_ID, COUNT(*)
+FROM CUSTOMER
+GROUP BY CUSTOMER_ID
+HAVING COUNT(*) > 1;
+
+To identify NULL CUSTOMER_ID values:
+
+SELECT *
+FROM CUSTOMER
+WHERE CUSTOMER_ID IS NULL;
+
+In the given dataset:
+
+CUSTOMER_ID 102 appears twice, so it is a uniqueness issue.
+
+CUSTOMER_ID is NULL for one record, so it is a completeness issue.
+
+Therefore, Data Governance establishes the rules, while Data Quality validates the actual data against those rules.
+
+They work together as follows:
+
+Data Governance
+      ↓
+Defines Data Rules & Standards
+      ↓
+Data Quality
+      ↓
+Validates Actual Data
+      ↓
+Identifies Data Issues
+      ↓
+Corrective Action
+
+In a Snowflake project, governance can define standards for data ownership, security, naming conventions, retention and business rules. Data Quality processes can then validate the data using checks for NULL values, duplicates, invalid values, reconciliation and other quality dimensions.
+
+Interview summary:
+
+Data Governance = Policies, standards, ownership and rules.
+
+Data Quality = Accuracy, completeness, consistency, validity, uniqueness and timeliness of actual data.
+
+Therefore, Governance defines the requirements, while Quality measures whether the data satisfies those requirements.
+`
+},
 /* End of questions array */
 ];
 
