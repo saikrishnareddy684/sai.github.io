@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>data management Question & Answer — Full</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f4f4f9;
+            color: #222;
+        }
+        .container {
+            width: 95%;
+            max-width: 1100px;
+            margin: 0 auto;
+        } 
+        h1 { margin: 0 0 8px; font-size: 22px; }
+        h2 { margin: 18px 0 6px; font-size: 18px; color: #333; }
+        h3 { margin: 8px 0; font-size: 16px; color: #333; }
+        .box {
+            background: white;
+            padding: 18px;
+            margin-top: 14px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.06);
+        }
+        .jump-buttons {
+            margin-bottom: 12px;
+        }
+        /*
+        .jump-buttons button {
+            background-color: #008CBA;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            margin-right: 8px;
+            margin-bottom: 8px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 13px;
+        }
+        .jump-buttons button:hover { background-color: #007399; }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-top: 10px;
+        }
+        */
+        .jump-buttons button {
+
+    background-color:#008CBA;
+
+    color:white;
+
+    border:none;
+
+    padding:10px 14px;
+
+    margin:6px;
+
+    border-radius:6px;
+
+    cursor:pointer;
+
+    font-size:13px;
+
+    width:280px;
+
+    height:65px;
+
+    text-align:left;
+
+    white-space:normal;
+
+    line-height:18px;
+
+    vertical-align:top;
+
+}
+
+.jump-buttons button:hover {
+
+    background:#007399;
+
+}
+        table, th, td { border: 1px solid #ddd; }
+        th, td { padding: 8px; text-align: left; font-size: 13px; }
+        th { background: #fafafa; }
+        pre {
+            background: #272822;
+            color: #f8f8f2;
+            padding: 14px;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-size: 13px;
+            line-height: 1.45;
+        }
+        .nav-buttons {
+            margin-top: 14px;
+            display: flex;
+            justify-content: space-between;
+            gap: 8px;
+        }
+        .nav-controls button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+        .nav-controls button:hover { background-color: #45a049; }
+        .small-muted { color: #666; font-size: 13px; margin-top: 6px; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>📚 data management  Questions & Answers</h1>
+    <div class="small-muted">Click any question button to jump directly to that question. Buttons are auto-generated from the `questions` array — add new question objects there and a button appears automatically.</div>
+
+    <!-- Jump buttons (auto-generated) -->
+    <div id="jumpButtons" class="jump-buttons"></div>
+
+    <!-- Question area -->
+    <div id="questionBox" class="box"></div>
+
+    <h3>Sample Dataset</h3>
+    <div id="datasetBox" class="box"></div>
+
+    <h3>Sample Dataset</h3>
+    <div id="datasetBox2" class="box"></div>
+
+    <h3>Sample Dataset</h3>
+    <div id="datasetBox3" class="box"></div>
+    
+    <h3>Expected Output</h3>
+    <div id="outputBox" class="box"></div>
+
+    <h2>🟢 SQL Answer</h2>
+    <div class="box">
+        <pre id="answerBox"></pre>
+    </div>
+
+    <div class="nav-buttons">
+        <div class="nav-controls">
+            <button id="prevBtn">⬅ Previous</button>
+            <button id="nextBtn">Next ➡</button>
+        </div>
+        <div class="small-muted" id="questionCounter"></div>
+    </div>
+</div>
+
+<script>
+/* ============================
+   QUESTIONS ARRAY (6 questions)
+   Keep the same object format when adding new questions.
+   Buttons will be generated automatically.
+   ============================ */
+const questions = [
+
+/* QUESTION 1 — Employee Visit Tracking */
+{
+title: "Data Management Framework",
+
+question: `
+What is a Data Management Framework?
+
+Requirements:
+1. Explain what Data Management is.
+2. Explain what a Data Management Framework is.
+3. Explain the major areas covered by a Data Management Framework.
+4. Explain the difference between Data Management and Data Warehousing.
+5. Explain how Data Management applies to a Snowflake environment.
+`,
+
+dataset:[
+{AREA:"Data Architecture",PURPOSE:"Defines the overall structure of data systems and data flows"},
+{AREA:"Data Modeling & Design",PURPOSE:"Defines tables, relationships, keys, facts and dimensions"},
+{AREA:"Data Quality",PURPOSE:"Ensures data is accurate, complete, consistent and valid"},
+{AREA:"Data Storage & Operations",PURPOSE:"Manages how data is stored, maintained and operated"},
+{AREA:"Data Security",PURPOSE:"Protects data through access controls and security mechanisms"},
+{AREA:"Data Governance",PURPOSE:"Defines policies, ownership, standards and responsibilities"},
+{AREA:"Data Integration & Interoperability",PURPOSE:"Moves and integrates data between different systems"},
+{AREA:"Document & Content Management",PURPOSE:"Manages documents and other unstructured content"},
+{AREA:"Reference & Master Data",PURPOSE:"Maintains trusted common data such as Customer, Product and Country"},
+{AREA:"Data Warehousing & BI",PURPOSE:"Organizes data for analytics, reporting and business intelligence"},
+{AREA:"Metadata Management",PURPOSE:"Manages information about data such as definitions, lineage and ownership"}
+],
+
+output:[
+{AREA:"Data Management",PURPOSE:"Overall discipline for managing data throughout its lifecycle"}
+],
+
+answer:`
+Data Management is the planning, implementation and control of processes used to manage data throughout its lifecycle. The objective is to ensure that data is accurate, secure, available, governed and fit for consumption by data consumers.
+
+A Data Management Framework is a structured set of processes, policies, standards, roles and controls used to manage data effectively across an organization.
+
+The major areas of a Data Management Framework include:
+
+1. Data Architecture
+Defines how data systems, databases, applications and data flows are structured.
+
+2. Data Modeling & Design
+Defines tables, columns, relationships, primary keys, foreign keys, facts, dimensions and other data structures.
+
+3. Data Quality
+Ensures that data is accurate, complete, consistent, valid and timely.
+
+4. Data Storage & Operations
+Defines how data is stored, maintained, monitored, backed up and operated.
+
+5. Data Security
+Protects data using access controls, encryption, masking and other security mechanisms.
+
+6. Data Governance
+Defines data policies, ownership, standards, responsibilities and controls.
+
+7. Data Integration & Interoperability
+Handles the movement and integration of data between different systems using ETL or ELT processes.
+
+8. Document & Content Management
+Manages documents and other unstructured content.
+
+9. Reference & Master Data
+Manages common and trusted business entities such as Customer, Product, Country and other reference data.
+
+10. Data Warehousing & BI
+Organizes integrated data for analytics, reporting and business intelligence.
+
+11. Metadata Management
+Manages information about data, such as column definitions, data sources, ownership and data lineage.
+
+Data Management is broader than Data Warehousing. Data Warehousing is one capability within Data Management.
+
+For example, in a Snowflake environment:
+
+Source Systems
+      ↓
+Data Integration
+      ↓
+Snowflake
+      ↓
+Data Modeling
+      ↓
+Data Warehouse
+      ↓
+Data Quality / Governance / Security
+      ↓
+Power BI / SSAS / Reporting
+
+Data Management covers the complete process, while the Data Warehouse is primarily used to store and organize integrated data for analytics and reporting.
+
+Therefore, Data Management can be summarized as:
+
+Data Management = Architecture + Modeling + Integration + Quality + Security + Governance + Master Data + Metadata + Data Warehousing & BI + other data management capabilities.
+`
+},
+/* End of questions array */
+];
+
+/* ============================
+   UI & Rendering Helpers
+   ============================ */
+
+let currentQuestion = 0;
+/*
+function createJumpButtons() {
+    const container = document.getElementById('jumpButtons');
+    container.innerHTML = '';
+    questions.forEach((q, idx) => {
+        const btn = document.createElement('button');
+        btn.textContent = 'Q' + (idx + 1);
+        btn.title = 'Go to Question ' + (idx + 1);
+        btn.onclick = () => {
+            currentQuestion = idx;
+            renderQuestion(idx);
+        };
+        container.appendChild(btn);
+    });
+}
+    */
+    /*
+    function createJumpButtons() {
+
+    const container = document.getElementById('jumpButtons');
+
+    container.innerHTML = '';
+
+    questions.forEach((q, idx) => {
+
+        const btn = document.createElement('button');
+
+        btn.textContent = q.title;
+
+        btn.title = q.title;
+
+        btn.onclick = () => {
+
+            currentQuestion = idx;
+
+            renderQuestion(idx);
+
+        };
+
+        container.appendChild(btn);
+
+    });
+
+}
+*/
+    function createJumpButtons() {
+
+    const container = document.getElementById('jumpButtons');
+
+    container.innerHTML = '';
+
+    questions.forEach((q, idx) => {
+
+        const btn = document.createElement('button');
+
+        btn.innerHTML = `
+            <strong>${q.topic || 'General'}</strong><br>
+            ${q.title}
+        `;
+
+        btn.title = q.title;
+
+        btn.onclick = () => {
+
+            currentQuestion = idx;
+
+            renderQuestion(idx);
+
+        };
+
+        container.appendChild(btn);
+
+    });
+
+}
+function renderTableFromObjects(list) {
+    if (!list || list.length === 0) return '';
+    const cols = Object.keys(list[0]);
+    let html = '<table><thead><tr>';
+    cols.forEach(c => html += `<th>${c}</th>`);
+    html += '</tr></thead><tbody>';
+    list.forEach(r => {
+        html += '<tr>';
+        cols.forEach(c => html += `<td>${r[c]}</td>`);
+        html += '</tr>';
+    });
+    html += '</tbody></table>';
+    return html;
+}
+
+function renderQuestion(index) {
+    const q = questions[index];
+    // Question text
+    document.getElementById('questionBox').innerHTML = `<h3>Question ${index + 1}</h3><p>${q.question.replace(/\n\s+/g,'\n')}</p>`;
+
+    // Dataset
+    const datasetHtml = q.dataset && q.dataset.length ? renderTableFromObjects(q.dataset) : '<p>No dataset for this question.</p>';
+    document.getElementById('datasetBox').innerHTML = datasetHtml;
+
+    // Dataset2
+    const datasetHtml2 = q.dataset2 && q.dataset2.length ? renderTableFromObjects(q.dataset2) : '<p>No dataset for this question.</p>';
+    document.getElementById('datasetBox2').innerHTML = datasetHtml2;
+
+    // Dataset3
+    const datasetHtml3 = q.dataset3 && q.dataset3.length ? renderTableFromObjects(q.dataset3) : '<p>No dataset for this question.</p>';
+    document.getElementById('datasetBox3').innerHTML = datasetHtml3;
+
+    
+    // Output
+    const outputHtml = q.output && q.output.length ? renderTableFromObjects(q.output) : '<p>No output for this question.</p>';
+    document.getElementById('outputBox').innerHTML = outputHtml;
+
+    // Answers: combine answer, answer_1, answer_2, explanation
+    let answerText = '';
+    if (q.answer) answerText += q.answer.trim() + '\n\n';
+    if (q.answer_1) answerText += '-- Solution 1:\n' + q.answer_1.trim() + '\n\n';
+    if (q.answer_2) answerText += '-- Solution 2:\n' + q.answer_2.trim() + '\n\n';
+    if (q.explanation) answerText += '-- Explanation:\n' + q.explanation.trim();
+
+    document.getElementById('answerBox').textContent = answerText || '-- No answer provided --';
+
+    // update counter
+    document.getElementById('questionCounter').textContent = `Question ${index+1} of ${questions.length}`;
+}
+
+/* Navigation buttons */
+document.getElementById('prevBtn').addEventListener('click', () => {
+    if (currentQuestion > 0) {
+        currentQuestion--;
+        renderQuestion(currentQuestion);
+    }
+});
+document.getElementById('nextBtn').addEventListener('click', () => {
+    if (currentQuestion < questions.length - 1) {
+        currentQuestion++;
+        renderQuestion(currentQuestion);
+    }
+});
+
+/* Initialize UI */
+createJumpButtons();
+renderQuestion(0);
+
+</script>
+</body>
+</html>
