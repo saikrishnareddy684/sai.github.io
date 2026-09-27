@@ -527,6 +527,178 @@ Data Quality = Accuracy, completeness, consistency, validity, uniqueness and tim
 Therefore, Governance defines the requirements, while Quality measures whether the data satisfies those requirements.
 `
 },
+
+    {
+title: "Data Governance - Concepts and Practical Examples",
+
+topic: "Data Management",
+
+question: `
+What is Data Governance?
+
+Requirements:
+1. Explain what Data Governance is.
+2. Explain the objectives of Data Governance.
+3. Explain the major components of Data Governance.
+4. Provide practical examples for each component.
+5. Explain how Data Governance can be implemented in a Snowflake project.
+`,
+
+dataset:[
+{AREA:"Data Ownership",EXAMPLE:"Define who is responsible for Customer data"},
+{AREA:"Data Policies",EXAMPLE:"Define how sensitive customer data should be handled"},
+{AREA:"Data Quality Standards",EXAMPLE:"CUSTOMER_ID must be unique and cannot be NULL"},
+{AREA:"Data Security",EXAMPLE:"Only authorized users can access sensitive customer information"},
+{AREA:"Metadata Management",EXAMPLE:"Document the meaning and source of CUSTOMER_ID"},
+{AREA:"Data Lineage",EXAMPLE:"Track CUSTOMER_ID from source system to Snowflake to Power BI"},
+{AREA:"Data Retention",EXAMPLE:"Define how long customer data should be retained"},
+{AREA:"Data Standards",EXAMPLE:"Use consistent naming conventions for tables and columns"}
+],
+
+output:[
+{AREA:"Data Ownership",RESULT:"A responsible business or technical owner is assigned"},
+{AREA:"Data Quality Standards",RESULT:"Data validation rules are defined and monitored"},
+{AREA:"Data Security",RESULT:"Access to sensitive data is controlled"},
+{AREA:"Metadata & Lineage",RESULT:"Data definitions, sources and data flows are documented"},
+{AREA:"Data Retention",RESULT:"Data retention and archival rules are defined"},
+{AREA:"Data Standards",RESULT:"Consistent standards are applied across the data environment"}
+],
+
+answer:`
+Data Governance is a framework of policies, standards, processes, roles and responsibilities used to ensure that data is properly managed, secure, trustworthy and used appropriately across an organization.
+
+The main objective of Data Governance is to establish clear rules for how data should be created, stored, accessed, protected, maintained and used.
+
+Major components of Data Governance include:
+
+1. Data Ownership
+
+Data Governance defines who is responsible for a particular dataset.
+
+Example:
+
+The Customer Data team may be responsible for CUSTOMER data, while the Finance team may be responsible for financial data.
+
+In Snowflake, ownership can be represented through database roles and object ownership.
+
+2. Data Policies
+
+Policies define how data should be handled.
+
+Example:
+
+Customer personal information should only be accessible to authorized users.
+
+3. Data Quality Standards
+
+Governance defines the expected quality rules for important data.
+
+Example:
+
+CUSTOMER_ID must be unique and cannot be NULL.
+
+Data Quality processes can then validate the actual data against these rules.
+
+4. Data Security
+
+Governance defines who should be allowed to access particular data.
+
+Example:
+
+A business user may be allowed to view customer information, while sensitive fields such as phone numbers or email addresses may require additional restrictions.
+
+In Snowflake, this can be implemented using roles, privileges, masking policies and row access policies.
+
+5. Metadata Management
+
+Governance ensures that important information about data is documented.
+
+Example:
+
+CUSTOMER_ID:
+- Business meaning: Unique identifier for a customer
+- Source: CRM system
+- Data type: INTEGER
+- Owner: Customer Data Team
+
+6. Data Lineage
+
+Data Governance helps track where data comes from and where it is used.
+
+Example:
+
+CRM
+  ↓
+ETL / ELT
+  ↓
+Snowflake STAGING
+  ↓
+Snowflake CORE
+  ↓
+Power BI
+
+This allows users to understand the origin and transformation of data.
+
+7. Data Retention
+
+Governance defines how long data should be retained.
+
+Example:
+
+Customer transaction data may need to be retained for a defined number of years based on business and regulatory requirements.
+
+8. Data Standards
+
+Governance establishes common standards across the organization.
+
+Example:
+
+Instead of different teams using:
+
+CUSTOMER_ID
+CustomerId
+Cust_ID
+
+the organization can define a standard such as:
+
+CUSTOMER_ID
+
+This improves consistency across datasets.
+
+In a Snowflake project, Data Governance can therefore be implemented through:
+
+- Roles and access controls
+- Data classification
+- Masking policies
+- Row access policies
+- Data quality rules
+- Naming standards
+- Metadata and data dictionaries
+- Data lineage
+- Data ownership
+- Retention policies
+- Change management
+
+A simple example is:
+
+Business Rule:
+CUSTOMER_ID must be unique and cannot be NULL.
+
+Data Governance:
+Defines this rule and assigns ownership to the responsible data team.
+
+Data Quality:
+Checks the actual Snowflake table for duplicate or NULL CUSTOMER_ID values.
+
+Therefore:
+
+Data Governance = Defines the rules, policies, ownership and responsibilities.
+
+Data Quality = Checks whether the actual data meets the defined requirements.
+
+The overall objective of Data Governance is to make sure that data is trusted, secure, properly managed and fit for business consumption.
+`
+},
 /* End of questions array */
 ];
 
