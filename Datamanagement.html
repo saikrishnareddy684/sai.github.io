@@ -699,6 +699,146 @@ Data Quality = Checks whether the actual data meets the defined requirements.
 The overall objective of Data Governance is to make sure that data is trusted, secure, properly managed and fit for business consumption.
 `
 },
+    {
+title: "Data Management vs Data Governance",
+
+topic: "Data Management",
+
+question: `
+What is the difference between Data Management and Data Governance?
+
+Requirements:
+1. Explain what Data Management is.
+2. Explain what Data Governance is.
+3. Explain the key differences between Data Management and Data Governance.
+4. Explain the relationship between Data Management and Data Governance.
+5. Provide a practical example using a CUSTOMER table in Snowflake.
+`,
+
+dataset:[
+{AREA:"Data Architecture",DATA_MANAGEMENT_EXAMPLE:"Define how data systems, databases and data flows are structured"},
+{AREA:"Data Integration",DATA_MANAGEMENT_EXAMPLE:"Load customer data from CRM into Snowflake using ETL/ELT"},
+{AREA:"Data Quality",DATA_MANAGEMENT_EXAMPLE:"Check for NULL, duplicate and invalid customer records"},
+{AREA:"Data Security",DATA_MANAGEMENT_EXAMPLE:"Protect customer data using roles and access controls"},
+{AREA:"Data Ownership",DATA_GOVERNANCE_EXAMPLE:"Define which business or technical team owns customer data"},
+{AREA:"Data Standards",DATA_GOVERNANCE_EXAMPLE:"Define that CUSTOMER_ID must be unique and cannot be NULL"},
+{AREA:"Data Policies",DATA_GOVERNANCE_EXAMPLE:"Define who can access sensitive customer information"},
+{AREA:"Metadata & Lineage",DATA_GOVERNANCE_EXAMPLE:"Define business meaning, source and lineage of CUSTOMER_ID"}
+],
+
+output:[
+{AREA:"Data Management",RESULT:"Overall discipline for managing data throughout its lifecycle"},
+{AREA:"Data Governance",RESULT:"Defines policies, standards, ownership, responsibilities and rules for managing data"}
+],
+
+answer:`
+Data Management is the broader discipline of managing data throughout its lifecycle. It includes activities such as data architecture, data modeling, data integration, data storage, data quality, data security, metadata management, master data management and data warehousing.
+
+Data Governance is a key part of Data Management. It establishes the policies, standards, ownership, responsibilities and rules that determine how data should be managed.
+
+The main difference is:
+
+Data Management = Managing and operating data.
+
+Data Governance = Defining the rules, policies, ownership and responsibilities for managing data.
+
+Data Management covers areas such as:
+
+1. Data Architecture
+Defines how data systems, databases and data flows are structured.
+
+2. Data Modeling
+Defines tables, columns, relationships, keys, facts and dimensions.
+
+3. Data Integration
+Moves and integrates data between different source systems and target systems.
+
+4. Data Storage & Operations
+Defines how data is stored, maintained, monitored and operated.
+
+5. Data Quality
+Checks whether data is accurate, complete, consistent, valid, unique and timely.
+
+6. Data Security
+Protects data through access controls and other security mechanisms.
+
+7. Metadata Management
+Manages information about data such as definitions, sources and lineage.
+
+8. Data Warehousing & BI
+Organizes data for analytics, reporting and business intelligence.
+
+Data Governance focuses on areas such as:
+
+1. Data Ownership
+Defines who is responsible for a particular dataset.
+
+2. Data Policies
+Defines how data should be accessed, protected, retained and used.
+
+3. Data Standards
+Defines common rules and standards for data.
+
+4. Data Stewardship
+Defines responsibilities for maintaining and managing data.
+
+5. Data Definitions
+Defines the business meaning of important data elements.
+
+6. Data Lineage
+Defines requirements for tracking where data originates and how it is transformed.
+
+For example, suppose we have a CUSTOMER table in Snowflake.
+
+Data Management activities could include:
+
+- Loading customer data from a CRM system into Snowflake.
+- Designing the CUSTOMER table.
+- Transforming the data.
+- Performing data-quality checks.
+- Storing and managing the data.
+- Providing the data to Power BI.
+
+Data Governance activities could include:
+
+- Defining who owns the CUSTOMER data.
+- Defining that CUSTOMER_ID cannot be NULL.
+- Defining that CUSTOMER_ID should be unique.
+- Defining who can access sensitive customer information.
+- Defining the business meaning of CUSTOMER_ID.
+- Defining data retention and security policies.
+
+The relationship can be represented as:
+
+DATA MANAGEMENT
+       ↓
+Overall management of organizational data
+       ↓
+Data Architecture
+Data Modeling
+Data Integration
+Data Quality
+Data Security
+Metadata
+Data Warehousing
+       ↓
+DATA GOVERNANCE
+       ↓
+Policies + Standards + Ownership + Responsibilities + Rules
+
+Therefore, Data Governance is not the same as Data Management.
+
+Data Management is the broader discipline, while Data Governance provides the policies, standards, ownership and controls that guide how data should be managed.
+
+Interview summary:
+
+Data Management = Managing data throughout its lifecycle.
+
+Data Governance = Defining how data should be managed.
+
+Data Governance is a key component of the broader Data Management discipline.
+`
+},
 /* End of questions array */
 ];
 
