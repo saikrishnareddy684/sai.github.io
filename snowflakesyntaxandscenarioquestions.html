@@ -2450,6 +2450,336 @@ It does not require INSERT, UPDATE, DELETE, or ACCOUNTADMIN privileges for norma
 `
 },
 
+    {
+title: "ETL - Handling Source Datatype Mismatch",
+
+
+question: `
+Suppose the source system sends a wrong datatype.
+
+For example, the CUSTOMER_ID column is expected to be an INTEGER,
+but the source sends a DECIMAL value such as 101.75, causing the ETL
+job to fail.
+
+How would you handle this situation?
+`,
+
+dataset: [
+    {
+        source_column: "CUSTOMER_ID",
+        expected_datatype: "INTEGER",
+        received_value: "101.75",
+        issue: "Datatype mismatch"
+    }
+],
+
+answer: `
+First, I would check the ETL/job logs to identify the exact column
+and transformation where the datatype mismatch occurred.
+
+I would not immediately change the target datatype or blindly cast
+the value because converting 101.75 to INTEGER could result in data
+loss.
+
+I would first validate the data in the staging layer.
+
+For example:
+
+SELECT *
+FROM STG_CUSTOMER
+WHERE CUSTOMER_ID IS NOT NULL
+  AND CUSTOMER_ID != TRUNC(CUSTOMER_ID);
+
+This helps identify values that contain a decimal portion.
+
+I would then separate valid and invalid records:
+
+Source
+   |
+   v
+Staging
+   |
+   v
+Data Validation
+   |
+   +---- Valid Records ------> Target Table
+   |
+   +---- Invalid Records ----> Error/Reject Table
+
+The error table can contain information such as:
+
+CUSTOMER_ID
+SOURCE_FILE
+LOAD_DATE
+ERROR_REASON
+
+I would then notify the source/application team and confirm whether
+the datatype change was intentional or whether the source data is
+incorrect.
+
+If the source data is corrected, I would reprocess the failed or
+rejected records.
+
+If the business confirms that decimal values are actually valid,
+then I would discuss whether the target datatype should be changed
+or whether an explicit conversion should be implemented.
+
+In Snowflake, TRY_CAST can also be useful for validation because it
+returns NULL instead of failing when conversion is not possible.
+
+Example:
+
+SELECT
+    CUSTOMER_ID,
+    TRY_CAST(CUSTOMER_ID AS INTEGER) AS CUSTOMER_ID_INT
+FROM STG_CUSTOMER;
+
+To identify records that cannot be converted:
+
+SELECT *
+FROM STG_CUSTOMER
+WHERE TRY_CAST(CUSTOMER_ID AS INTEGER) IS NULL
+  AND CUSTOMER_ID IS NOT NULL;
+
+The important point is that I would not blindly cast the data.
+I would validate it, identify the invalid records, preserve them
+in an error/reject process, fix the source or mapping issue, and
+then reprocess the data.
+
+
+interview_answer: 
+First, I would identify the datatype mismatch from the ETL logs.
+
+I would not immediately alter the target datatype or blindly cast
+the value because that could cause data loss.
+
+I would validate the data in staging, separate valid and invalid
+records, send invalid records to an error table with the source
+file and error reason, and notify the source team.
+
+Once the source data is corrected or the business confirms the
+datatype change is valid, I would update the mapping if required
+and reprocess the rejected records.
+
+In Snowflake, I can also use TRY_CAST to safely validate whether
+the values can be converted without causing the entire process
+to fail.
+`
+
+
+},
+
+    {
+topic: "SQL",
+
+title: "Correcting a Defective Customer Transaction Query",
+
+question:`
+The interviewer provided the following CUSTOMER and TRANSACTIONS tables
+with a defective query.
+
+CUSTOMER:
+
+CUSTOMER_ID | CUSTOMER_NAME | STATUS
+101         | Arun          | ACTIVE
+102         | Meena         | ACTIVE
+103         | John          | INACTIVE
+104         | Divya         | ACTIVE
+105         | Kiran         | ACTIVE
+
+TRANSACTIONS:
+
+TXN_ID | CUSTOMER_ID | AMOUNT | TXN_STATUS | TXN_DATE
+1      | 101         | 100    | SUCCESS     | 2024-01-01
+2      | 101         | 200    | SUCCESS     | 2024-01-05
+3      | 102         | 300    | FAILED      | 2024-01-03
+4      | 102         | 400    | SUCCESS     | 2024-01-04
+5      | 103         | 500    | SUCCESS     | 2024-01-02
+6      | 104         | 600    | SUCCESS     | 2024-01-06
+7      | 104         | 150    | FAILED      | 2024-01-07
+8      | 105         | 250    | SUCCESS     | 2024-01-02
+9      | 105         | 350    | SUCCESS     | 2024-01-08
+
+Defective Query:
+
+SELECT
+c.CUSTOMER_ID,
+c.CUSTOMER_NAME,
+COUNT(t.AMOUNT) AS TOTAL_SUCCESS_AMOUNT,
+MAX(t.AMOUNT) AS LATEST_SUCCESS_AMOUNT,
+t.TXN_DATE AS LATEST_SUCCESS_TXN_DATE
+FROM CUSTOMER c
+LEFT JOIN TRANSACTIONS t
+ON c.CUSTOMER_ID = t.TXN_ID
+WHERE c.STATUS = 'ACTIVE'
+AND t.TXN_STATUS = 'SUCCESS'
+GROUP BY
+c.CUSTOMER_ID,
+c.CUSTOMER_NAME,
+t.TXN_DATE
+ORDER BY TOTAL_SUCCESS_AMOUNT DESC;
+
+Identify the issues and write the corrected Snowflake SQL query.
+
+Requirements:
+
+1. Correct the JOIN condition.
+2. Calculate the total successful transaction amount for each customer.
+3. Identify the latest successful transaction amount.
+4. Identify the date of the latest successful transaction.
+5. Return one row per active customer with successful transactions.
+   `,
+
+dataset:[
+{CUSTOMER_ID:101,CUSTOMER_NAME:"Arun",STATUS:"ACTIVE"},
+{CUSTOMER_ID:102,CUSTOMER_NAME:"Meena",STATUS:"ACTIVE"},
+{CUSTOMER_ID:103,CUSTOMER_NAME:"John",STATUS:"INACTIVE"},
+{CUSTOMER_ID:104,CUSTOMER_NAME:"Divya",STATUS:"ACTIVE"},
+{CUSTOMER_ID:105,CUSTOMER_NAME:"Kiran",STATUS:"ACTIVE"},
+{TXN_ID:1,CUSTOMER_ID:101,AMOUNT:100,TXN_STATUS:"SUCCESS",TXN_DATE:"2024-01-01"},
+{TXN_ID:2,CUSTOMER_ID:101,AMOUNT:200,TXN_STATUS:"SUCCESS",TXN_DATE:"2024-01-05"},
+{TXN_ID:3,CUSTOMER_ID:102,AMOUNT:300,TXN_STATUS:"FAILED",TXN_DATE:"2024-01-03"},
+{TXN_ID:4,CUSTOMER_ID:102,AMOUNT:400,TXN_STATUS:"SUCCESS",TXN_DATE:"2024-01-04"},
+{TXN_ID:5,CUSTOMER_ID:103,AMOUNT:500,TXN_STATUS:"SUCCESS",TXN_DATE:"2024-01-02"},
+{TXN_ID:6,CUSTOMER_ID:104,AMOUNT:600,TXN_STATUS:"SUCCESS",TXN_DATE:"2024-01-06"},
+{TXN_ID:7,CUSTOMER_ID:104,AMOUNT:150,TXN_STATUS:"FAILED",TXN_DATE:"2024-01-07"},
+{TXN_ID:8,CUSTOMER_ID:105,AMOUNT:250,TXN_STATUS:"SUCCESS",TXN_DATE:"2024-01-02"},
+{TXN_ID:9,CUSTOMER_ID:105,AMOUNT:350,TXN_STATUS:"SUCCESS",TXN_DATE:"2024-01-08"}
+],
+
+output:[
+{CUSTOMER_ID:105,CUSTOMER_NAME:"Kiran",TOTAL_SUCCESS_AMOUNT:600,LATEST_SUCCESS_AMOUNT:350,LATEST_SUCCESS_TXN_DATE:"2024-01-08"},
+{CUSTOMER_ID:104,CUSTOMER_NAME:"Divya",TOTAL_SUCCESS_AMOUNT:600,LATEST_SUCCESS_AMOUNT:600,LATEST_SUCCESS_TXN_DATE:"2024-01-06"},
+{CUSTOMER_ID:102,CUSTOMER_NAME:"Meena",TOTAL_SUCCESS_AMOUNT:400,LATEST_SUCCESS_AMOUNT:400,LATEST_SUCCESS_TXN_DATE:"2024-01-04"},
+{CUSTOMER_ID:101,CUSTOMER_NAME:"Arun",TOTAL_SUCCESS_AMOUNT:300,LATEST_SUCCESS_AMOUNT:200,LATEST_SUCCESS_TXN_DATE:"2024-01-05"}
+],
+
+answer:`
+SELECT
+c.CUSTOMER_ID,
+c.CUSTOMER_NAME,
+
+
+SUM(t.AMOUNT) OVER (
+    PARTITION BY c.CUSTOMER_ID
+) AS TOTAL_SUCCESS_AMOUNT,
+
+t.AMOUNT AS LATEST_SUCCESS_AMOUNT,
+t.TXN_DATE AS LATEST_SUCCESS_TXN_DATE
+
+
+FROM CUSTOMER c
+
+JOIN TRANSACTIONS t
+ON c.CUSTOMER_ID = t.CUSTOMER_ID
+
+WHERE c.STATUS = 'ACTIVE'
+AND t.TXN_STATUS = 'SUCCESS'
+
+QUALIFY ROW_NUMBER() OVER (
+PARTITION BY c.CUSTOMER_ID
+ORDER BY t.TXN_DATE DESC
+) = 1
+
+ORDER BY TOTAL_SUCCESS_AMOUNT DESC;
+
+Key corrections:
+
+1. JOIN was incorrect:
+
+   c.CUSTOMER_ID = t.TXN_ID
+
+   Correct:
+
+   c.CUSTOMER_ID = t.CUSTOMER_ID
+
+2. COUNT(t.AMOUNT) returns the number of transactions,
+   not the total transaction amount.
+
+   Correct:
+
+   SUM(t.AMOUNT)
+
+3. MAX(t.AMOUNT) returns the highest transaction amount,
+   not the latest transaction amount.
+
+   ROW_NUMBER() is used to identify the latest transaction.
+
+4. t.TXN_DATE should not be included in GROUP BY because
+   that would produce multiple rows for the same customer.
+
+5. QUALIFY is used in Snowflake to keep only the latest
+   successful transaction for each customer.
+   `
+   },
+
+    {
+topic: "DML",
+
+title: "MERGE Statement - Insert and Update Records",
+
+question:`
+Write a Snowflake MERGE statement to synchronize CUSTOMER_SOURCE
+with CUSTOMER_TARGET.
+
+Requirements:
+
+1. If CUSTOMER_ID already exists in the target, update CUSTOMER_NAME
+   and STATUS.
+2. If CUSTOMER_ID does not exist in the target, insert the new record.
+3. Match records using CUSTOMER_ID.
+   `,
+
+dataset:[
+{CUSTOMER_ID:101,CUSTOMER_NAME:"Arun",STATUS:"ACTIVE"},
+{CUSTOMER_ID:102,CUSTOMER_NAME:"Meena",STATUS:"ACTIVE"},
+{CUSTOMER_ID:104,CUSTOMER_NAME:"Divya",STATUS:"INACTIVE"}
+],
+
+output:[
+{"CUSTOMER_ID":101,"CUSTOMER_NAME":"Arun","STATUS":"ACTIVE","ACTION":"UPDATED"},
+{"CUSTOMER_ID":102,"CUSTOMER_NAME":"Meena","STATUS":"ACTIVE","ACTION":"NO CHANGE"},
+{"CUSTOMER_ID":104,"CUSTOMER_NAME":"Divya","STATUS":"INACTIVE","ACTION":"INSERTED"}
+],
+
+answer:`
+MERGE INTO CUSTOMER_TARGET AS T
+USING CUSTOMER_SOURCE AS S
+ON T.CUSTOMER_ID = S.CUSTOMER_ID
+
+WHEN MATCHED THEN
+UPDATE SET
+T.CUSTOMER_NAME = S.CUSTOMER_NAME,
+T.STATUS = S.STATUS
+
+WHEN NOT MATCHED THEN
+INSERT (
+CUSTOMER_ID,
+CUSTOMER_NAME,
+STATUS
+)
+VALUES (
+S.CUSTOMER_ID,
+S.CUSTOMER_NAME,
+S.STATUS
+);
+
+Explanation:
+
+WHEN MATCHED:
+If CUSTOMER_ID already exists in CUSTOMER_TARGET,
+the existing record is updated.
+
+WHEN NOT MATCHED:
+If CUSTOMER_ID does not exist in CUSTOMER_TARGET,
+a new record is inserted.
+
+The ON condition determines whether the source record
+matches an existing target record.
+`
+},
+
+    
 /* End of questions array */
 ];
 
