@@ -3221,6 +3221,142 @@ The basic approach is:
 
 The recursive CTE is used here to generate the sequence of numbers.`
 }
+    ,
+    {
+    question: `
+A company tracks sales transactions. The same Date dimension is used for three different business roles:
+- Order Date
+- Ship Date
+- Delivery Date
+
+Determine:
+- Order Year
+- Ship Month
+- Delivery Quarter
+- Sale ID
+
+Output columns: Order Year, Ship Month, Delivery Quarter, Sale ID.
+`,
+    dataset: [
+        {sale_id:"1", customer_id:"101", order_date:"2026-01-01", ship_date:"2026-01-15", delivery_date:"2026-02-10", amount:"1000"},
+        {sale_id:"2", customer_id:"102", order_date:"2026-02-10", ship_date:"2026-03-20", delivery_date:"2026-04-05", amount:"1500"},
+        {sale_id:"3", customer_id:"103", order_date:"2026-03-20", ship_date:"2026-04-05", delivery_date:"2026-05-12", amount:"2000"},
+        {sale_id:"4", customer_id:"104", order_date:"2026-05-12", ship_date:"2026-06-25", delivery_date:"2026-07-10", amount:"2500"},
+        {sale_id:"5", customer_id:"105", order_date:"2026-07-10", ship_date:"2026-08-18", delivery_date:"2026-09-30", amount:"3000"},
+        {sale_id:"6", customer_id:"106", order_date:"2026-08-18", ship_date:"2026-09-30", delivery_date:"2026-10-07", amount:"3500"}
+    ],
+    output: [
+        {order_year:"2026", ship_month:"January", delivery_quarter:"Q1", sale_id:"1"},
+        {order_year:"2026", ship_month:"March", delivery_quarter:"Q2", sale_id:"2"},
+        {order_year:"2026", ship_month:"April", delivery_quarter:"Q2", sale_id:"3"},
+        {order_year:"2026", ship_month:"June", delivery_quarter:"Q3", sale_id:"4"},
+        {order_year:"2026", ship_month:"August", delivery_quarter:"Q3", sale_id:"5"},
+        {order_year:"2026", ship_month:"September", delivery_quarter:"Q4", sale_id:"6"}
+    ],
+    answer: `
+SELECT 
+    o.year AS order_year,
+    s.month_name AS ship_month,
+    d.quarter AS delivery_quarter,
+    f.sale_id
+FROM FactSales f
+LEFT JOIN DimDate o
+    ON f.order_date = o.calendar_date
+LEFT JOIN DimDate s
+    ON f.ship_date = s.calendar_date
+LEFT JOIN DimDate d
+    ON f.delivery_date = d.calendar_date;
+`
+},
+    {
+    question: `
+A company tracks sales transactions using the same Date dimension.
+
+Determine:
+- Total sales amount by Order Year
+- Delivery Quarter
+- Include transactions where Delivery Date is NULL
+
+Output columns: Order Year, Delivery Quarter, Total Sales.
+`,
+    dataset: [
+        {sale_id:"1", customer_id:"101", order_date:"2026-01-01", ship_date:"2026-01-15", delivery_date:"2026-02-10", amount:"1000"},
+        {sale_id:"2", customer_id:"102", order_date:"2026-02-10", ship_date:"2026-03-20", delivery_date:"2026-04-05", amount:"1500"},
+        {sale_id:"3", customer_id:"103", order_date:"2026-03-20", ship_date:"2026-04-05", delivery_date:"2026-05-12", amount:"2000"},
+        {sale_id:"4", customer_id:"104", order_date:"2026-05-12", ship_date:"2026-06-25", delivery_date:"2026-07-10", amount:"2500"},
+        {sale_id:"5", customer_id:"105", order_date:"2026-07-10", ship_date:"2026-08-18", delivery_date:"2026-09-30", amount:"3000"},
+        {sale_id:"6", customer_id:"106", order_date:"2026-08-18", ship_date:"2026-09-30", delivery_date:"2026-10-07", amount:"3500"},
+        {sale_id:"7", customer_id:"107", order_date:"2026-10-07", ship_date:"2026-11-15", delivery_date:null, amount:"4000"}
+    ],
+    output: [
+        {order_year:"2026", delivery_quarter:"Q1", total_sales:"1000"},
+        {order_year:"2026", delivery_quarter:"Q2", total_sales:"3500"},
+        {order_year:"2026", delivery_quarter:"Q3", total_sales:"5500"},
+        {order_year:"2026", delivery_quarter:"Q4", total_sales:"3500"},
+        {order_year:"2026", delivery_quarter:null, total_sales:"4000"}
+    ],
+    answer: `
+SELECT 
+    d.year AS order_year,
+    q.quarter AS delivery_quarter,
+    SUM(f.amount) AS total_sales
+FROM FactSales f
+LEFT JOIN DimDate d
+    ON f.order_date = d.calendar_date
+LEFT JOIN DimDate q
+    ON f.delivery_date = q.calendar_date
+GROUP BY 
+    d.year,
+    q.quarter;
+`
+},
+    {
+    question: `
+A company tracks sales using three date roles:
+- Order Date
+- Ship Date
+- Delivery Date
+
+A customer placed an order on 2026-01-10, it was shipped on 2026-01-15, and delivered during February.
+
+Determine:
+- Order Month
+- Ship Month
+- Delivery Month
+- Total Sales
+
+Output columns: Order Month, Ship Month, Delivery Month, Total Sales.
+`,
+    dataset: [
+        {sale_id:"1", customer_id:"101", order_date:"2026-01-10", ship_date:"2026-01-15", delivery_date:"2026-02-10", amount:"1000"},
+        {sale_id:"2", customer_id:"102", order_date:"2026-02-10", ship_date:"2026-03-20", delivery_date:"2026-04-05", amount:"1500"},
+        {sale_id:"3", customer_id:"103", order_date:"2026-03-20", ship_date:"2026-04-05", delivery_date:"2026-05-12", amount:"2000"}
+    ],
+    output: [
+        {order_month:"January", ship_month:"January", delivery_month:"February", total_sales:"1000"}
+    ],
+    answer: `
+SELECT
+    o.month_name AS order_month,
+    s.month_name AS ship_month,
+    d.month_name AS delivery_month,
+    SUM(f.amount) AS total_sales
+FROM FactSales f
+LEFT JOIN DimDate o
+    ON f.order_date = o.calendar_date
+LEFT JOIN DimDate s
+    ON f.ship_date = s.calendar_date
+LEFT JOIN DimDate d
+    ON f.delivery_date = d.calendar_date
+WHERE f.order_date = '2026-01-10'
+  AND f.ship_date = '2026-01-15'
+  AND MONTH(f.delivery_date) = 2
+GROUP BY
+    o.month_name,
+    s.month_name,
+    d.month_name;
+`
+},
 /* End of questions array */
 ];
 
