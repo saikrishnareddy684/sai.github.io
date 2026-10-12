@@ -3357,6 +3357,69 @@ GROUP BY
     d.month_name;
 `
 },
+    /* QUESTION 2 — Cumulative Sales Count by Days */
+{
+question: `
+A company tracks sales based on the number of days taken to complete each sale.
+
+Determine:
+
+* Total sales completed within 0 to 2 days
+* Total sales completed within 0 to 5 days
+* Total sales completed within 0 to 10 days
+
+Important:
+The ranges are cumulative.
+Sales counted in 0 to 2 days must also be included in 0 to 5 days and 0 to 10 days.
+Sales counted in 0 to 5 days must also be included in 0 to 10 days.
+
+Output columns: Sales Range, Sales Count.
+`,
+    dataset: [
+        {sale_id:"1", days_taken:"1"},
+        {sale_id:"2", days_taken:"2"},
+        {sale_id:"3", days_taken:"4"},
+        {sale_id:"4", days_taken:"5"},
+        {sale_id:"5", days_taken:"8"},
+        {sale_id:"6", days_taken:"10"},
+        {sale_id:"7", days_taken:"12"}
+    ],
+    output: [
+        {sales_range:"0-2 Days", sales_count:"2"},
+        {sales_range:"0-5 Days", sales_count:"4"},
+        {sales_range:"0-10 Days", sales_count:"6"}
+    ],
+    answer: `
+SELECT
+'0-2 Days' AS sales_range,
+COUNT(CASE
+WHEN days_taken BETWEEN 0 AND 2
+THEN 1
+END) AS sales_count
+FROM sales
+
+UNION ALL
+
+SELECT
+'0-5 Days',
+COUNT(CASE
+WHEN days_taken BETWEEN 0 AND 5
+THEN 1
+END)
+FROM sales
+
+UNION ALL
+
+SELECT
+'0-10 Days',
+COUNT(CASE
+WHEN days_taken BETWEEN 0 AND 10
+THEN 1
+END)
+FROM sales;
+`
+},
+
 /* End of questions array */
 ];
 
