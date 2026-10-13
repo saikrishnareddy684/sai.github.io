@@ -3815,7 +3815,48 @@ col1,
 LEN(col2) - LEN(REPLACE(col2, ',', '')) + 1 AS total_count
 FROM PracticeData;
 `
+} ,
+    {
+question: `
+You are given a table named transaction_table containing user transactions.
+Each transaction has a user_id, spend amount, and transaction_date.
+
+A user may have multiple transactions, while some users may have only one or two transactions.
+
+Write a SQL query to retrieve the third transaction for each user based on transaction_date.
+
+Output columns: user_id, spend, transaction_date.
+`,
+    dataset: [
+        {user_id:111, spend:100, transaction_date:"2022-01-01"},
+        {user_id:111, spend:200, transaction_date:"2022-01-05"},
+        {user_id:111, spend:300, transaction_date:"2022-01-10"},
+        {user_id:112, spend:150, transaction_date:"2022-01-03"},
+        {user_id:113, spend:250, transaction_date:"2022-01-07"}
+    ],
+    output: [
+        {user_id:111, spend:300, transaction_date:"2022-01-10"}
+    ],
+    answer: `
+SELECT
+user_id,
+spend,
+transaction_date
+FROM (
+SELECT
+user_id,
+spend,
+transaction_date,
+ROW_NUMBER() OVER (
+PARTITION BY user_id
+ORDER BY transaction_date
+) AS rn
+FROM transaction_table
+) AS a
+WHERE rn = 3;
+`
 } 
+
 
 /* End of questions array */
 ];
