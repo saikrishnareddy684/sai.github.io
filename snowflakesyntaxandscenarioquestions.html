@@ -2779,7 +2779,217 @@ matches an existing target record.
 `
 },
 
-    
+    {
+title: "Snowflake - Traditional Index vs Clustering Key",
+
+question: `
+
+Explain the difference between traditional database indexes
+and Snowflake clustering keys.
+
+Requirements:
+
+Explain how a traditional SQL Server index works.
+Explain how Snowflake micro-partitions and clustering keys work.
+Explain the differences in storage, maintenance, performance,
+and cost.
+Provide a Snowflake example using a large fact table.
+
+Explain when a clustering key should be considered.
+`,
+
+dataset: [
+{
+TABLE_NAME:"FACT_TRANSACTIONS",
+ROW_COUNT:"Trillions of records",
+TRANSACTION_DATE:"2026-01-15",
+CUSTOMER_ID:1001,
+TRANSACTION_AMOUNT:5000
+},
+{
+TABLE_NAME:"FACT_TRANSACTIONS",
+ROW_COUNT:"Trillions of records",
+TRANSACTION_DATE:"2026-01-20",
+CUSTOMER_ID:1002,
+TRANSACTION_AMOUNT:2500
+},
+{
+TABLE_NAME:"FACT_TRANSACTIONS",
+ROW_COUNT:"Trillions of records",
+TRANSACTION_DATE:"2026-02-10",
+CUSTOMER_ID:1001,
+TRANSACTION_AMOUNT:3500
+}
+],
+
+output: [
+{
+DATABASE:"SQL Server",
+TECHNIQUE:"Traditional Index",
+PURPOSE:"Locate rows efficiently using an index structure"
+},
+{
+DATABASE:"Snowflake",
+TECHNIQUE:"Clustering Key",
+PURPOSE:"Improve micro-partition pruning for suitable queries"
+}
+],
+
+answer: `
+-- SQL Server example: traditional index
+
+CREATE INDEX IX_FACT_TRANSACTIONS_DATE
+ON FACT_TRANSACTIONS (TRANSACTION_DATE);
+
+-- Snowflake example: clustering key
+
+ALTER TABLE FACT_TRANSACTIONS
+CLUSTER BY (TRANSACTION_DATE);
+
+-- Example reporting query
+
+SELECT
+CUSTOMER_ID,
+SUM(TRANSACTION_AMOUNT) AS TOTAL_AMOUNT
+FROM FACT_TRANSACTIONS
+WHERE TRANSACTION_DATE >= '2026-01-01'
+AND TRANSACTION_DATE < '2026-02-01'
+GROUP BY CUSTOMER_ID;
+
+-- Do not assume clustering is always beneficial.
+-- Inspect Query Profile and partition pruning first.
+`
+},
+
+/* QUESTION 3 — Optimize Slow Power BI Reports on Snowflake DirectQuery */
+{
+title: "Power BI + Snowflake - Troubleshoot Slow DirectQuery Reports",
+
+question: `
+
+A Power BI report is taking too long to load.
+The report connects directly to Snowflake using DirectQuery.
+
+Explain how you would identify and fix the performance problem.
+
+Requirements:
+
+Identify whether the bottleneck is in Power BI, Snowflake,
+the warehouse, or the network.
+Explain how to use Power BI Performance Analyzer.
+Explain how to use Snowflake Query History and Query Profile.
+Optimize SQL, joins, filtering, aggregation, and micro-partition pruning.
+Explain warehouse sizing, concurrency, and query queueing.
+Explain Power BI visual and DAX optimization.
+Discuss clustering keys, aggregate tables, and caching where appropriate.
+Explain when to consider Import mode with incremental refresh.
+
+Compare report performance before and after optimization.
+`,
+
+dataset: [
+{
+ISSUE:"Slow visual",
+TOOL:"Power BI Performance Analyzer",
+ACTION:"Identify expensive visuals and queries"
+},
+{
+ISSUE:"High bytes scanned",
+TOOL:"Snowflake Query Profile",
+ACTION:"Optimize filtering, SQL, and partition pruning"
+},
+{
+ISSUE:"High queue time",
+TOOL:"Snowflake Query History",
+ACTION:"Investigate warehouse contention and concurrency"
+},
+{
+ISSUE:"Excessive returned rows",
+TOOL:"Power BI and Snowflake SQL",
+ACTION:"Select required columns and aggregate appropriately"
+},
+{
+ISSUE:"Slow report rendering",
+TOOL:"Power BI Performance Analyzer",
+ACTION:"Optimize visuals, DAX, and model design"
+}
+],
+
+output: [
+{
+BOTTLENECK:"SQL execution",
+SOLUTION:"Optimize SQL, joins, filtering, and aggregation"
+},
+{
+BOTTLENECK:"Warehouse queueing",
+SOLUTION:"Review warehouse size, concurrency, and workload isolation"
+},
+{
+BOTTLENECK:"Excessive data scanning",
+SOLUTION:"Improve partition pruning and evaluate clustering"
+},
+{
+BOTTLENECK:"Power BI rendering",
+SOLUTION:"Reduce unnecessary visuals and optimize DAX and model design"
+},
+{
+BOTTLENECK:"DirectQuery overhead",
+SOLUTION:"Optimize generated queries or consider Import/composite mode"
+}
+],
+
+answer: `
+-- Step 1: Example of an optimized reporting query
+
+SELECT
+DATE_TRUNC('MONTH', TRANSACTION_DATE) AS SALES_MONTH,
+REGION,
+SUM(TRANSACTION_AMOUNT) AS TOTAL_SALES
+FROM FACT_TRANSACTIONS
+WHERE TRANSACTION_DATE >= '2026-01-01'
+AND TRANSACTION_DATE < '2027-01-01'
+GROUP BY
+DATE_TRUNC('MONTH', TRANSACTION_DATE),
+REGION;
+
+-- Step 2: Investigate Snowflake Query History
+
+SELECT
+QUERY_ID,
+QUERY_TEXT,
+EXECUTION_STATUS,
+TOTAL_ELAPSED_TIME,
+BYTES_SCANNED,
+ROWS_PRODUCED,
+QUEUED_PROVISIONING_TIME,
+QUEUED_OVERLOAD_TIME
+FROM SNOWFLAKE.ACCOUNT_USAGE.QUERY_HISTORY
+WHERE START_TIME >= DATEADD('DAY', -1, CURRENT_TIMESTAMP())
+AND QUERY_TYPE = 'SELECT'
+ORDER BY TOTAL_ELAPSED_TIME DESC;
+
+-- Step 3: Investigate partition pruning and execution
+-- Open the relevant query in Snowflake Query Profile.
+-- Check partitions scanned versus total partitions,
+-- bytes scanned, join operations, spilling, and queue time.
+
+-- Step 4: Consider clustering only if justified
+
+ALTER TABLE FACT_TRANSACTIONS
+CLUSTER BY (TRANSACTION_DATE);
+
+-- Step 5: Reporting architecture decisions
+-- Use DirectQuery when low-latency access to Snowflake is required.
+-- Use Import mode with incremental refresh when the business
+-- can tolerate scheduled refresh and benefits from in-memory queries.
+-- Consider aggregate tables or a composite model for large datasets.
+
+-- Final validation:
+-- Compare report load time, SQL execution time, bytes scanned,
+-- warehouse queue time, data freshness, and credit consumption
+-- before and after the changes.
+`
+}
 /* End of questions array */
 ];
 
