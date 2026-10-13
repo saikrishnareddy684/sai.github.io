@@ -3419,6 +3419,149 @@ END)
 FROM sales;
 `
 },
+    {
+    title: "Invoice Currency Conversion Using Effective Exchange Rates",
+
+    question: `
+A company maintains invoice transactions in different currencies and an exchange rate table containing currency conversion rates with effective dates.
+
+Write a SQL query to display:
+1. Invoice number
+2. Invoice date
+3. Invoice amount
+4. Currency
+5. Applicable INR conversion rate
+6. Converted invoice amount in INR
+
+For each invoice, select the latest exchange rate whose effective date is less than or equal to the invoice date.
+
+Provide two approaches:
+1. Using a window function.
+2. Using a correlated subquery.
+`,
+
+    dataset: [
+        {
+            inv_number: "ABC",
+            inv_date: "2022-01-24",
+            amount: 100,
+            currency: "USD"
+        },
+        {
+            inv_number: "XYZ",
+            inv_date: "2022-02-28",
+            amount: 88,
+            currency: "EUR"
+        }
+    ],
+
+    exchange_rate_dataset: [
+        { currency: "USD", inr_conv_value: 85, effective_from: "2021-12-25" },
+        { currency: "USD", inr_conv_value: 82, effective_from: "2022-01-21" },
+        { currency: "EUR", inr_conv_value: 100, effective_from: "2022-01-24" },
+        { currency: "USD", inr_conv_value: 88, effective_from: "2022-01-26" },
+        { currency: "EUR", inr_conv_value: 102, effective_from: "2022-02-28" }
+    ],
+
+    output: [
+        {
+            inv_number: "ABC",
+            inv_date: "2022-01-24",
+            amount: 100,
+            currency: "USD",
+            inr_conv_value: 82,
+            amount_in_inr: 8200
+        },
+        {
+            inv_number: "XYZ",
+            inv_date: "2022-02-28",
+            amount: 88,
+            currency: "EUR",
+            inr_conv_value: 102,
+            amount_in_inr: 8976
+        }
+    ],
+
+    answer: `
+/* SETUP SCRIPT */
+
+CREATE TABLE sales_Transaction (
+    [Inv number] VARCHAR(10),
+    [Inv Date] DATE,
+    Amount DECIMAL(10,2),
+    Currency VARCHAR(3)
+);
+
+INSERT INTO sales_Transaction
+VALUES
+('ABC', '2022-01-24', 100, 'USD'),
+('XYZ', '2022-02-28', 88, 'EUR');
+
+
+CREATE TABLE exchange_rate_tabel (
+    Currency VARCHAR(3),
+    [INR Conv Value] DECIMAL(10,2),
+    [Effective From] DATE
+);
+
+INSERT INTO exchange_rate_tabel
+VALUES
+('USD', 85, '2021-12-25'),
+('USD', 82, '2022-01-21'),
+('EUR', 100, '2022-01-24'),
+('USD', 88, '2022-01-26'),
+('EUR', 102, '2022-02-28');
+
+
+/* APPROACH 1 — USING A WINDOW FUNCTION */
+
+SELECT
+    s.[Inv number],
+    s.[Inv Date],
+    s.Amount,
+    s.Currency,
+    e.[INR Conv Value],
+    s.Amount * e.[INR Conv Value] AS [Amount in INR]
+FROM sales_Transaction s
+LEFT JOIN (
+    SELECT
+        Currency,
+        [INR Conv Value],
+        [Effective From],
+        COALESCE(
+            LAG([Effective From]) OVER (
+                PARTITION BY Currency
+                ORDER BY [Effective From] DESC
+            ),
+            CAST('9999-12-31' AS DATE)
+        ) AS end_date
+    FROM exchange_rate_tabel
+) e
+    ON s.Currency = e.Currency
+    AND s.[Inv Date] >= e.[Effective From]
+    AND s.[Inv Date] < e.end_date;
+
+
+/* APPROACH 2 — USING A CORRELATED SUBQUERY */
+
+SELECT
+    s.[Inv number],
+    s.[Inv Date],
+    s.Amount,
+    s.Currency,
+    e.[INR Conv Value],
+    s.Amount * e.[INR Conv Value] AS [Amount in INR]
+FROM sales_Transaction s
+LEFT JOIN exchange_rate_tabel e
+    ON s.Currency = e.Currency
+    AND e.[Effective From] = (
+        SELECT MAX(e2.[Effective From])
+        FROM exchange_rate_tabel e2
+        WHERE e2.Currency = s.Currency
+          AND e2.[Effective From] <= s.[Inv Date]
+    );
+`
+}
 
 /* End of questions array */
 ];
