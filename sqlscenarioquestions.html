@@ -3778,6 +3778,44 @@ GROUP BY Region
 ORDER BY Region;
 `
 } 
+,
+   {
+question: `
+You are given a table named PracticeData with two columns: col1 and col2.
+The col2 column contains comma-separated values.
+
+Write a SQL query to count the number of values in col2 for each col1, without using STRING_SPLIT().
+
+Output columns: col1, total_count.
+`,
+    dataset: [
+        {col1:1, col2:"a,b,c"},
+        {col1:2, col2:"a,b"}
+    ],
+    output: [
+        {col1:1, total_count:3},
+        {col1:2, total_count:2}
+    ],
+    answer: `
+-- Create table
+CREATE TABLE PracticeData (
+col1 INT,
+col2 VARCHAR(100)
+);
+
+-- Insert sample data
+INSERT INTO PracticeData (col1, col2)
+VALUES
+(1, 'a,b,c'),
+(2, 'a,b');
+
+-- Solution without STRING_SPLIT()
+SELECT
+col1,
+LEN(col2) - LEN(REPLACE(col2, ',', '')) + 1 AS total_count
+FROM PracticeData;
+`
+} 
 
 /* End of questions array */
 ];
