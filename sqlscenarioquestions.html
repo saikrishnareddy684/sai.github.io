@@ -3856,7 +3856,45 @@ FROM transaction_table
 WHERE rn = 3;
 `
 } 
+,
+    {
+question: `
+You are given a table containing customer IDs and email addresses.
 
+Write a SQL query to extract the domain name from each email address using SUBSTRING() and CHARINDEX(), without using built-in email parsing functions.
+
+For example:
+
+* [sai@gmail.com](mailto:sai@gmail.com) → gmail.com
+* [user@yahoo.com](mailto:user@yahoo.com) → yahoo.com
+* [user@google.com](mailto:user@google.com) → google.com
+
+Output columns: cid, email, domain_name.
+`,
+    dataset: [
+        {cid:1, email:"sai@gmail.com"},
+        {cid:2, email:"user@yahoo.com"},
+        {cid:3, email:"user@google.com"},
+        {cid:4, email:"test@gmail.com"}
+    ],
+    output: [
+        {cid:1, email:"sai@gmail.com", domain_name:"gmail.com"},
+        {cid:2, email:"user@yahoo.com", domain_name:"yahoo.com"},
+        {cid:3, email:"user@google.com", domain_name:"google.com"},
+        {cid:4, email:"test@gmail.com", domain_name:"gmail.com"}
+    ],
+    answer: `
+SELECT
+cid,
+email,
+SUBSTRING(
+email,
+CHARINDEX('@', email) + 1,
+LEN(email)
+) AS domain_name
+FROM your_table;
+`
+}
 
 /* End of questions array */
 ];
