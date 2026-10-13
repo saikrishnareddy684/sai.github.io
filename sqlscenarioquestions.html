@@ -3562,7 +3562,174 @@ LEFT JOIN exchange_rate_tabel e
     );
 `
 }
+,
+    
+{
+    title: "Find the Second Purchase Within 30 Days",
 
+    question: `
+An e-commerce company wants to identify customers who made their second purchase within 30 days of their first purchase.
+
+Requirements:
+1. Find the first and second distinct purchase dates for each customer.
+2. Multiple orders on the same date count as one purchase date.
+3. Include customers whose second purchase occurred within 30 days of their first purchase, inclusive.
+4. Exclude customers who have fewer than two distinct purchase dates.
+5. Return one row per qualifying customer.
+6. Display CustomerID, FirstPurchaseDate, SecondPurchaseDate, and DaysBetweenPurchases.
+`,
+
+    dataset: [
+        { order_id: 101, customer_id: "C001", order_date: "2022-01-01", amount: 100.00 },
+        { order_id: 102, customer_id: "C001", order_date: "2022-01-01", amount: 50.00 },
+        { order_id: 103, customer_id: "C001", order_date: "2022-01-10", amount: 200.00 },
+        { order_id: 104, customer_id: "C001", order_date: "2022-02-15", amount: 75.00 },
+        { order_id: 105, customer_id: "C002", order_date: "2022-01-05", amount: 300.00 },
+        { order_id: 106, customer_id: "C002", order_date: "2022-02-10", amount: 150.00 },
+        { order_id: 107, customer_id: "C003", order_date: "2022-01-01", amount: 120.00 },
+        { order_id: 108, customer_id: "C003", order_date: "2022-01-31", amount: 80.00 },
+        { order_id: 109, customer_id: "C004", order_date: "2022-01-10", amount: 60.00 },
+        { order_id: 110, customer_id: "C005", order_date: "2022-01-01", amount: 90.00 },
+        { order_id: 111, customer_id: "C005", order_date: "2022-01-15", amount: 40.00 },
+        { order_id: 112, customer_id: "C005", order_date: "2022-01-20", amount: 30.00 }
+    ],
+
+    output: [
+        {
+            customer_id: "C001",
+            first_purchase_date: "2022-01-01",
+            second_purchase_date: "2022-01-10",
+            days_between_purchases: 9
+        },
+        {
+            customer_id: "C003",
+            first_purchase_date: "2022-01-01",
+            second_purchase_date: "2022-01-31",
+            days_between_purchases: 30
+        },
+        {
+            customer_id: "C005",
+            first_purchase_date: "2022-01-01",
+            second_purchase_date: "2022-01-15",
+            days_between_purchases: 14
+        }
+    ],
+
+    answer: `
+/* SETUP SCRIPT */
+
+CREATE TABLE Orders (
+    OrderID INT,
+    CustomerID VARCHAR(10),
+    OrderDate DATE,
+    Amount DECIMAL(10, 2)
+);
+
+INSERT INTO Orders
+    (OrderID, CustomerID, OrderDate, Amount)
+VALUES
+    (101, 'C001', '2022-01-01', 100.00),
+    (102, 'C001', '2022-01-01', 50.00),
+    (103, 'C001', '2022-01-10', 200.00),
+    (104, 'C001', '2022-02-15', 75.00),
+    (105, 'C002', '2022-01-05', 300.00),
+    (106, 'C002', '2022-02-10', 150.00),
+    (107, 'C003', '2022-01-01', 120.00),
+    (108, 'C003', '2022-01-31', 80.00),
+    (109, 'C004', '2022-01-10', 60.00),
+    (110, 'C005', '2022-01-01', 90.00),
+    (111, 'C005', '2022-01-15', 40.00),
+    (112, 'C005', '2022-01-20', 30.00);
+
+
+/* APPROACH 1 — DISTINCT DATES AND LEAD() */
+
+WITH DistinctPurchaseDates AS (
+    SELECT DISTINCT
+        CustomerID,
+        OrderDate
+    FROM Orders
+),
+RankedPurchases AS (
+    SELECT
+        CustomerID,
+        OrderDate,
+        ROW_NUMBER() OVER (
+            PARTITION BY CustomerID
+            ORDER BY OrderDate
+        ) AS rn
+    FROM DistinctPurchaseDates
+),
+PurchaseComparison AS (
+    SELECT
+        CustomerID,
+        OrderDate AS FirstPurchaseDate,
+        LEAD(OrderDate) OVER (
+            PARTITION BY CustomerID
+            ORDER BY OrderDate
+        ) AS SecondPurchaseDate
+    FROM RankedPurchases
+    WHERE rn <= 2
+)
+SELECT
+    CustomerID,
+    FirstPurchaseDate,
+    SecondPurchaseDate,
+    DATEDIFF(
+        DAY,
+        FirstPurchaseDate,
+        SecondPurchaseDate
+    ) AS DaysBetweenPurchases
+FROM PurchaseComparison
+WHERE SecondPurchaseDate IS NOT NULL
+  AND DATEDIFF(
+        DAY,
+        FirstPurchaseDate,
+        SecondPurchaseDate
+      ) BETWEEN 0 AND 30
+ORDER BY CustomerID;
+
+
+/* APPROACH 2 — CORRELATED SUBQUERY */
+
+WITH DistinctPurchaseDates AS (
+    SELECT DISTINCT
+        CustomerID,
+        OrderDate
+    FROM Orders
+),
+FirstPurchase AS (
+    SELECT
+        CustomerID,
+        MIN(OrderDate) AS FirstPurchaseDate
+    FROM DistinctPurchaseDates
+    GROUP BY CustomerID
+)
+SELECT
+    f.CustomerID,
+    f.FirstPurchaseDate,
+    s.SecondPurchaseDate,
+    DATEDIFF(
+        DAY,
+        f.FirstPurchaseDate,
+        s.SecondPurchaseDate
+    ) AS DaysBetweenPurchases
+FROM FirstPurchase f
+CROSS APPLY (
+    SELECT MIN(d.OrderDate) AS SecondPurchaseDate
+    FROM DistinctPurchaseDates d
+    WHERE d.CustomerID = f.CustomerID
+      AND d.OrderDate > f.FirstPurchaseDate
+) s
+WHERE s.SecondPurchaseDate IS NOT NULL
+  AND DATEDIFF(
+        DAY,
+        f.FirstPurchaseDate,
+        s.SecondPurchaseDate
+      ) BETWEEN 0 AND 30
+ORDER BY f.CustomerID;
+`
+}
 /* End of questions array */
 ];
 
