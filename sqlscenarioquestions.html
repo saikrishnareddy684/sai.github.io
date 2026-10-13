@@ -3729,7 +3729,56 @@ WHERE s.SecondPurchaseDate IS NOT NULL
       ) BETWEEN 0 AND 30
 ORDER BY f.CustomerID;
 `
-}
+},
+    {
+question: `
+A company maintains sales order records for different regions, including North, South, and West.
+
+Write a SQL query to calculate:
+
+* Total sales amount for January
+* Total sales amount for February
+* Total sales amount for March
+* Overall sales amount for each region
+
+Output columns: Region, Jan, Feb, Mar, TotalSales.
+`,
+    dataset: [
+        {region:"North", order_date:"2022-01-05", amount:1000},
+        {region:"North", order_date:"2022-01-15", amount:2000},
+        {region:"North", order_date:"2022-02-10", amount:1500},
+        {region:"South", order_date:"2022-01-20", amount:3000},
+        {region:"South", order_date:"2022-03-05", amount:2500},
+        {region:"West", order_date:"2022-02-12", amount:4000},
+        {region:"West", order_date:"2022-03-18", amount:1000}
+    ],
+    output: [
+        {region:"North", jan:3000, feb:1500, mar:0, total_sales:4500},
+        {region:"South", jan:3000, feb:0, mar:2500, total_sales:5500},
+        {region:"West", jan:0, feb:4000, mar:1000, total_sales:5000}
+    ],
+    answer: `
+SELECT
+Region,
+SUM(CASE
+WHEN MONTH(Order_Date) = 1 THEN Amount
+ELSE 0
+END) AS Jan,
+SUM(CASE
+WHEN MONTH(Order_Date) = 2 THEN Amount
+ELSE 0
+END) AS Feb,
+SUM(CASE
+WHEN MONTH(Order_Date) = 3 THEN Amount
+ELSE 0
+END) AS Mar,
+SUM(Amount) AS TotalSales
+FROM Sales_Orders
+GROUP BY Region
+ORDER BY Region;
+`
+} 
+
 /* End of questions array */
 ];
 
