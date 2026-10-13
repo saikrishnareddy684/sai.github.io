@@ -2990,6 +2990,298 @@ CLUSTER BY (TRANSACTION_DATE);
 -- before and after the changes.
 `
 }
+    ,
+    /* QUESTION 4 — Snowflake Data Pipeline for Trillions of Records */
+{
+title: "Snowflake - End-to-End Data Pipeline for Trillions of Records",
+
+
+question: `
+
+A company receives trillions of records from its source systems.
+The data arrives in an Amazon S3 bucket, and business users
+need to access the processed data in Power BI reports as quickly
+as possible.
+
+Design an end-to-end Snowflake data pipeline.
+
+Requirements:
+
+1. Configure secure connectivity between Snowflake and Amazon S3.
+2. Create a Storage Integration and External Stage.
+3. Configure S3 event notifications and Snowpipe for automated ingestion.
+4. Load incoming data into a RAW or STAGING table.
+5. Use Streams to capture changes in Snowflake tables.
+6. Use Tasks or Dynamic Tables for incremental transformation.
+7. Use MERGE to insert and update records.
+8. Implement SCD Type 2 to preserve historical records and
+   maintain active and inactive versions.
+9. Optimize ingestion and transformation for trillions of records.
+10. Make processed data available to Power BI with low latency.
+11. Explain monitoring, error handling, recovery, and data validation.
+12. Explain how you would meet the business data-freshness SLA.
+    `,
+
+    dataset: [
+    {
+    SOURCE_SYSTEM:"BANKING_SOURCE",
+    FILE_NAME:"transactions_001.csv.gz",
+    TRANSACTION_ID:1001,
+    CUSTOMER_ID:101,
+    TRANSACTION_DATE:"2026-10-12",
+    AMOUNT:5000,
+    OPERATION:"INSERT"
+    },
+    {
+    SOURCE_SYSTEM:"BANKING_SOURCE",
+    FILE_NAME:"transactions_002.csv.gz",
+    TRANSACTION_ID:1002,
+    CUSTOMER_ID:102,
+    TRANSACTION_DATE:"2026-10-12",
+    AMOUNT:7500,
+    OPERATION:"INSERT"
+    },
+    {
+    SOURCE_SYSTEM:"BANKING_SOURCE",
+    FILE_NAME:"transactions_003.csv.gz",
+    TRANSACTION_ID:1001,
+    CUSTOMER_ID:101,
+    TRANSACTION_DATE:"2026-10-12",
+    AMOUNT:6000,
+    OPERATION:"UPDATE"
+    },
+    {
+    SOURCE_SYSTEM:"BANKING_SOURCE",
+    FILE_NAME:"transactions_004.csv.gz",
+    TRANSACTION_ID:1003,
+    CUSTOMER_ID:103,
+    TRANSACTION_DATE:"2026-10-12",
+    AMOUNT:2500,
+    OPERATION:"INSERT"
+    }
+    ],
+
+    output: [
+    {
+    TRANSACTION_ID:1001,
+    CUSTOMER_ID:101,
+    AMOUNT:6000,
+    RECORD_STATUS:"CURRENT"
+    },
+    {
+    TRANSACTION_ID:1002,
+    CUSTOMER_ID:102,
+    AMOUNT:7500,
+    RECORD_STATUS:"CURRENT"
+    },
+    {
+    TRANSACTION_ID:1003,
+    CUSTOMER_ID:103,
+    AMOUNT:2500,
+    RECORD_STATUS:"CURRENT"
+    }
+    ],
+
+    answer: `
+    -- STEP 1: Create a database and schemas
+
+CREATE DATABASE IF NOT EXISTS BANKING_DWH;
+
+CREATE SCHEMA IF NOT EXISTS BANKING_DWH.RAW;
+CREATE SCHEMA IF NOT EXISTS BANKING_DWH.CURATED;
+
+-- STEP 2: Create a Storage Integration
+-- An administrator must configure the required AWS IAM trust
+-- relationship and grant access to the S3 bucket.
+
+CREATE STORAGE INTEGRATION S3_BANKING_INT
+TYPE = EXTERNAL_STAGE
+STORAGE_PROVIDER = S3
+ENABLED = TRUE
+STORAGE_AWS_ROLE_ARN =
+'arn:aws:iam::123456789012:role/snowflake-s3-role'
+STORAGE_ALLOWED_LOCATIONS =
+('s3://banking-data-bucket/transactions/');
+
+-- STEP 3: Create a file format
+
+CREATE OR REPLACE FILE FORMAT
+BANKING_DWH.RAW.CSV_GZIP_FORMAT
+TYPE = CSV
+COMPRESSION = AUTO
+SKIP_HEADER = 1
+FIELD_OPTIONALLY_ENCLOSED_BY = '"';
+
+-- STEP 4: Create an external stage
+
+CREATE OR REPLACE STAGE
+BANKING_DWH.RAW.BANKING_S3_STAGE
+URL = 's3://banking-data-bucket/transactions/'
+STORAGE_INTEGRATION = S3_BANKING_INT
+FILE_FORMAT = BANKING_DWH.RAW.CSV_GZIP_FORMAT;
+
+-- STEP 5: Create a RAW landing table
+
+CREATE TABLE IF NOT EXISTS BANKING_DWH.RAW.TRANSACTIONS (
+TRANSACTION_ID NUMBER,
+CUSTOMER_ID NUMBER,
+TRANSACTION_DATE DATE,
+AMOUNT NUMBER(18,2),
+OPERATION VARCHAR,
+SOURCE_FILE VARCHAR,
+LOAD_TIMESTAMP TIMESTAMP_NTZ
+);
+
+-- STEP 6: Create a Snowpipe
+
+CREATE OR REPLACE PIPE
+BANKING_DWH.RAW.TRANSACTIONS_PIPE
+AUTO_INGEST = TRUE
+AS
+COPY INTO BANKING_DWH.RAW.TRANSACTIONS
+(
+TRANSACTION_ID,
+CUSTOMER_ID,
+TRANSACTION_DATE,
+AMOUNT,
+OPERATION,
+SOURCE_FILE,
+LOAD_TIMESTAMP
+)
+FROM
+(
+SELECT
+$1:TRANSACTION_ID::NUMBER,
+$1:CUSTOMER_ID::NUMBER,
+$1:TRANSACTION_DATE::DATE,
+$1:AMOUNT::NUMBER(18,2),
+$1:OPERATION::VARCHAR,
+METADATA$FILENAME,
+CURRENT_TIMESTAMP()::TIMESTAMP_NTZ
+FROM @BANKING_DWH.RAW.BANKING_S3_STAGE
+)
+FILE_FORMAT = (
+TYPE = CSV
+SKIP_HEADER = 1
+FIELD_OPTIONALLY_ENCLOSED_BY = '"'
+);
+
+-- Configure the required S3 event notification to the
+-- Snowflake-provided notification channel.
+-- Verify the channel and notification configuration before
+-- enabling production ingestion.
+
+-- STEP 7: Create a Stream on the RAW table
+
+CREATE OR REPLACE STREAM
+BANKING_DWH.RAW.TRANSACTIONS_STREAM
+ON TABLE BANKING_DWH.RAW.TRANSACTIONS;
+
+-- STEP 8: Create the curated target table
+
+CREATE TABLE IF NOT EXISTS BANKING_DWH.CURATED.TRANSACTIONS (
+TRANSACTION_ID NUMBER,
+CUSTOMER_ID NUMBER,
+TRANSACTION_DATE DATE,
+AMOUNT NUMBER(18,2),
+IS_CURRENT BOOLEAN,
+VALID_FROM TIMESTAMP_NTZ,
+VALID_TO TIMESTAMP_NTZ
+);
+
+-- STEP 9: Apply incremental changes using MERGE
+-- This example illustrates current-state upserts.
+-- For SCD Type 2, use a separate change-expiration and
+-- version-insertion process as explained below.
+
+MERGE INTO BANKING_DWH.CURATED.TRANSACTIONS T
+USING (
+SELECT
+TRANSACTION_ID,
+CUSTOMER_ID,
+TRANSACTION_DATE,
+AMOUNT
+FROM BANKING_DWH.RAW.TRANSACTIONS_STREAM
+QUALIFY ROW_NUMBER() OVER (
+PARTITION BY TRANSACTION_ID
+ORDER BY LOAD_TIMESTAMP DESC
+) = 1
+) S
+ON T.TRANSACTION_ID = S.TRANSACTION_ID
+AND T.IS_CURRENT = TRUE
+
+WHEN MATCHED AND (
+T.CUSTOMER_ID <> S.CUSTOMER_ID
+OR T.TRANSACTION_DATE <> S.TRANSACTION_DATE
+OR T.AMOUNT <> S.AMOUNT
+)
+THEN UPDATE SET
+T.CUSTOMER_ID = S.CUSTOMER_ID,
+T.TRANSACTION_DATE = S.TRANSACTION_DATE,
+T.AMOUNT = S.AMOUNT
+
+WHEN NOT MATCHED THEN INSERT (
+TRANSACTION_ID,
+CUSTOMER_ID,
+TRANSACTION_DATE,
+AMOUNT,
+IS_CURRENT,
+VALID_FROM,
+VALID_TO
+)
+VALUES (
+S.TRANSACTION_ID,
+S.CUSTOMER_ID,
+S.TRANSACTION_DATE,
+S.AMOUNT,
+TRUE,
+CURRENT_TIMESTAMP()::TIMESTAMP_NTZ,
+NULL
+);
+
+-- STEP 10: SCD TYPE 2 IMPLEMENTATION
+-- For dimensions requiring history:
+-- 1. Detect changes in tracked attributes.
+-- 2. Expire the existing active row by setting IS_CURRENT = FALSE
+--    and VALID_TO to the change timestamp.
+-- 3. Insert a new version with IS_CURRENT = TRUE.
+-- 4. Insert new business keys as the first active version.
+-- Use a staged change set and a carefully designed transactional
+-- process to expire and insert versions without losing history.
+-- Handle multiple changes to the same key in the correct order.
+
+-- STEP 11: Create a reporting Dynamic Table
+
+CREATE OR REPLACE DYNAMIC TABLE
+BANKING_DWH.CURATED.MONTHLY_TRANSACTION_SUMMARY
+TARGET_LAG = '5 MINUTES'
+WAREHOUSE = REPORTING_WH
+AS
+SELECT
+DATE_TRUNC('MONTH', TRANSACTION_DATE) AS TRANSACTION_MONTH,
+CUSTOMER_ID,
+SUM(AMOUNT) AS TOTAL_AMOUNT
+FROM BANKING_DWH.CURATED.TRANSACTIONS
+WHERE IS_CURRENT = TRUE
+GROUP BY
+DATE_TRUNC('MONTH', TRANSACTION_DATE),
+CUSTOMER_ID;
+
+-- STEP 12: Validate pipeline results
+
+SELECT
+COUNT(*) AS TOTAL_RECORDS,
+SUM(AMOUNT) AS TOTAL_AMOUNT
+FROM BANKING_DWH.CURATED.TRANSACTIONS
+WHERE IS_CURRENT = TRUE;
+
+-- STEP 13: Production monitoring
+-- Monitor Snowpipe load history, failed files, stream staleness,
+-- task or Dynamic Table refresh history, warehouse queues,
+-- query performance, reconciliation results, and data freshness.
+`
+},
+
 /* End of questions array */
 ];
 
