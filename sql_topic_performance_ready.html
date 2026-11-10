@@ -580,7 +580,17 @@ let originalQuestions = [
     "answer": 1,
     "time": 20
   },
-  
+  {
+    "q": "What is a Covered Index in SQL Server?",
+    "options": [
+      "An index that includes all the columns requested in the query, allowing the query to complete without looking up the data row.",
+      "It is a feature related to distributed transactions only.",
+      "The index is stored in memory (RAM) only.",
+      "The index structure is a Hash Table (Hash map)."
+    ],
+    "answer": 0,
+    "time": 20
+  },
   {
     "q": "What is the difference between WHERE and HAVING clauses in SQL Server?",
     "options": [
@@ -603,7 +613,17 @@ let originalQuestions = [
     "answer": 1,
     "time": 20
   },
- 
+  {
+    "q": "What is the key difference between Stored Procedure and Function in SQL Server?",
+    "options": [
+      "Functions can modify data and cannot be used in `SELECT` statements; Procedures can only return a single value.",
+      "Stored Procedures can modify data and return 0 or more values; Functions cannot modify data (usually) and return a single value or table.",
+      "The command is unsupported and results in an error.",
+      "Functions can modify data; Procedures are read-only."
+    ],
+    "answer": 1,
+    "time": 20
+  },
   {
     "q": "What is the difference between Local Temporary Table and Global Temporary Table?",
     "options": [
@@ -1275,7 +1295,17 @@ let originalQuestions = [
     "answer": 1,
     "time": 20
   },
-  
+  {
+    "q": "What is difference between primary and foreign key?",
+    "options": [
+      "A primary key establishes a unique row identifier; a foreign key links two tables by referencing the primary key of another table.",
+      "Both are the same, but the foreign key is faster.",
+      "A primary key allows one NULL value; a foreign key does not allow any NULL values.",
+      "The solution is to use the `ROLLBACK` command."
+    ],
+    "answer": 0,
+    "time": 20
+  },
   {
     "q": "Which statement best describes the relationship between a primary key and candidate keys?",
     "options": [
@@ -1404,17 +1434,6 @@ let originalQuestions = [
       "A property on a column that automatically generates sequential numeric values when new rows are inserted.",
       "A column that enforces referential integrity between tables.",
       "A setting that restricts duplicate values in a table."
-    ],
-    "answer": 1,
-    "time": 20
-  },
-  {
-    "q": "What is difference between Primary Key and Foreign Key?",
-    "options": [
-      "A primary key links two tables; a foreign key ensures data uniqueness.",
-      "A primary key uniquely identifies a row in a table; a foreign key establishes a relationship by referencing the primary key in another table.",
-      "A foreign key can only be created on temporary tables.",
-      "Both enforce uniqueness at the column level."
     ],
     "answer": 1,
     "time": 20
@@ -2025,39 +2044,6 @@ let originalQuestions = [
     "time": 20
   },
   {
-    "q": "What is the key difference between CHAR and VARCHAR?",
-    "options": [
-      "CHAR uses fixed length; VARCHAR uses variable length and saves space.",
-      "VARCHAR is fixed-length while CHAR is variable-length.",
-      "Both occupy equal storage regardless of data size.",
-      "CHAR allows NULLs; VARCHAR does not."
-    ],
-    "answer": 0,
-    "time": 20
-  },
-  {
-    "q": "What is the key difference between View and Indexed View?",
-    "options": [
-      "Indexed views physically store their result set and use a unique clustered index; Views are only stored queries.",
-      "Indexed views are temporary and only allowed on temporary tables.",
-      "Views allow data modification; Indexed views do not.",
-      "Indexed views cannot be queried directly."
-    ],
-    "answer": 0,
-    "time": 20
-  },
-  {
-    "q": "What is the key difference between Stored Procedure and Function?",
-    "options": [
-      "Functions can modify data; Procedures cannot modify data.",
-      "Stored Procedures can modify data and return multiple result sets; Functions return a single value or table and usually cannot modify data.",
-      "Functions can return multiple result sets like Procedures.",
-      "Procedures are read-only, Functions can modify tables."
-    ],
-    "answer": 1,
-    "time": 20
-  },
-  {
     "q": "What is the key difference between Subquery and CTE?",
     "options": [
       "A CTE is a named temporary result set that can be referenced multiple times; a Subquery is only defined and used within a single statement.",
@@ -2075,17 +2061,6 @@ let originalQuestions = [
       "UNION ALL removes duplicates automatically; UNION retains all rows.",
       "Both UNION and UNION ALL remove duplicates.",
       "UNION can be used only with numeric columns; UNION ALL with all types."
-    ],
-    "answer": 0,
-    "time": 20
-  },
-  {
-    "q": "What is the key difference between INNER JOIN and OUTER JOIN?",
-    "options": [
-      "Inner Join returns only matching rows; Outer Join returns matching rows plus non-matching rows from one or both sides.",
-      "Outer Join returns only matching rows; Inner Join returns all rows.",
-      "Inner Join returns unmatched rows only; Outer Join returns matched rows only.",
-      "Both Inner and Outer Joins return all rows regardless of matches."
     ],
     "answer": 0,
     "time": 20
@@ -2113,34 +2088,12 @@ let originalQuestions = [
     "time": 20
   },
   {
-    "q": "What is the key difference between Index Rebuild and Index Reorganize?",
-    "options": [
-      "Rebuild creates a new index and drops the old one; Reorganize physically reorders the leaf-level pages in place.",
-      "Reorganize creates a new index; Rebuild modifies the existing one in place.",
-      "Both operations are identical and have no performance impact.",
-      "Rebuild only works on Non-Clustered Indexes; Reorganize only works on Clustered Indexes."
-    ],
-    "answer": 0,
-    "time": 20
-  },
-  {
     "q": "What is Fill Factor in SQL Server Index?",
     "options": [
       "It is a value from 0 to 100 that specifies the percentage of space to leave empty on each leaf-level page.",
       "Fill Factor determines the maximum number of indexes on a table.",
       "It sets the CPU utilization for index creation.",
       "Fill Factor is the total memory allocated to an index."
-    ],
-    "answer": 0,
-    "time": 20
-  },
-  {
-    "q": "What is Covered Index in SQL Server?",
-    "options": [
-      "An index that includes all the columns requested in the query, allowing the query to complete without looking up the data row.",
-      "An index that is stored only in tempdb.",
-      "An index used only for primary keys.",
-      "A clustered index that covers multiple tables."
     ],
     "answer": 0,
     "time": 20
@@ -2200,7 +2153,6 @@ let originalQuestions = [
     "answer": 0,
     "time": 20
   },
-   
   {
     "q": "What is difference between Normalization and Denormalization?",
     "options": [
@@ -2208,30 +2160,6 @@ let originalQuestions = [
       "Normalization merges tables; Denormalization splits tables.",
       "Denormalization eliminates all null values; Normalization allows them.",
       "Normalization is only used in NoSQL databases."
-    ],
-    "answer": 0,
-    "time": 20
-  },
-   
-  {
-    "q": "What is difference between Primary Key and Unique Key?",
-    "options": [
-      "Primary Key enforces non-NULL values and allows only one per table; Unique Key allows one NULL value and multiple per table.",
-      "Unique Key can never be null; Primary Key can have multiple nulls.",
-      "Primary Key allows duplicates; Unique Key does not.",
-      "Unique Key is used only for temporary tables."
-    ],
-    "answer": 0,
-    "time": 20
-  },
-  
-  {
-    "q": "What is a CTE in SQL Server?",
-    "options": [
-      "Common Table Expression (CTE) is a named temporary result set defined within the execution scope of a single statement.",
-      "A permanent table created dynamically during query execution.",
-      "A special type of index to optimize queries.",
-      "A stored procedure that returns multiple tables."
     ],
     "answer": 0,
     "time": 20
@@ -2265,17 +2193,6 @@ let originalQuestions = [
       "Non-Clustered Index stores data physically; Clustered Index does not.",
       "Clustered Index can only be created on temporary tables.",
       "They are identical and interchangeable."
-    ],
-    "answer": 0,
-    "time": 20
-  },
-  {
-    "q": "What is Cross Join in SQL Server?",
-    "options": [
-      "A join that returns the Cartesian product of the rows from the tables in the join.",
-      "A join that only returns matching rows.",
-      "A join that merges tables physically.",
-      "A join that can be applied only to indexed tables."
     ],
     "answer": 0,
     "time": 20
@@ -2320,17 +2237,6 @@ let originalQuestions = [
       "Simple Plan and Complex Plan.",
       "Clustered Plan and Non-Clustered Plan.",
       "Logical Plan and Physical Plan only."
-    ],
-    "answer": 0,
-    "time": 20
-  },
-  {
-    "q": "How to generate an Execution Plan?",
-    "options": [
-      "By using `SET SHOWPLAN_ALL ON` or using the graphical display tools in SQL Server Management Studio (SSMS).",
-      "By creating a temporary table with execution details.",
-      "By running `DBCC CHECKDB` on the database.",
-      "By enabling TRACE flag 1111."
     ],
     "answer": 0,
     "time": 20
@@ -2531,17 +2437,6 @@ let originalQuestions = [
       "Remove all indexes first."
     ],
     "answer": 1,
-    "time": 20
-  },
-  {
-    "q": "Which command is used to drop a SEQUENCE object in SQL Server?",
-    "options": [
-      "REMOVE SEQUENCE seq_name",
-      "DELETE SEQUENCE seq_name",
-      "DROP SEQUENCE seq_name",
-      "TRUNCATE SEQUENCE seq_name"
-    ],
-    "answer": 2,
     "time": 20
   },
   {
@@ -6461,17 +6356,6 @@ let originalQuestions = [
     "time": 20
   },
   {
-    "q": "What happens if you try to modify a TVP inside a procedure?",
-    "options": [
-      "It works like a normal table",
-      "It throws an error because TVPs are READONLY",
-      "It ignores the changes silently",
-      "It allows only DELETE operations"
-    ],
-    "answer": 1,
-    "time": 15
-  },
-  {
     "q": "How can you assign the latest ID from a table to a variable in SQL Server?",
     "options": [
       "DECLARE @ID INT = (SELECT MAX(ID) FROM Table);",
@@ -6480,28 +6364,6 @@ let originalQuestions = [
       "SELECT MAX(ID) INTO @ID FROM Table;"
     ],
     "answer": 0,
-    "time": 20
-  },
-  {
-    "q": "Which of the following can you NOT do directly with a UDTT variable?",
-    "options": [
-      "Insert multiple rows",
-      "Select rows",
-      "Join with other tables",
-      "Create foreign key relationships referencing other tables"
-    ],
-    "answer": 3,
-    "time": 20
-  },
-  {
-    "q": "If you want to skip 100 rows and fetch the next 50 for pagination, which syntax is correct?",
-    "options": [
-      "OFFSET 50 ROWS FETCH NEXT 100 ROWS ONLY",
-      "OFFSET 100 ROWS FETCH NEXT 50 ROWS ONLY",
-      "LIMIT 50,100",
-      "SELECT TOP 50 SKIP 100"
-    ],
-    "answer": 1,
     "time": 20
   },
   {
@@ -7000,17 +6862,6 @@ let originalQuestions = [
     "time": 20
   },
   {
-    "q": "How do you assign a table value to a variable in SQL Server?",
-    "options": [
-      "DECLARE @Var TABLE (...); INSERT INTO @Var SELECT ...",
-      "SET @Var = SELECT ...",
-      "SELECT ... INTO @Var",
-      "CREATE TABLE @Var AS SELECT ..."
-    ],
-    "answer": 0,
-    "time": 25
-  },
-  {
     "q": "Which CONVERT style code returns '21 Jul 2016 07:57:59:553'?",
     "options": [
       "113",
@@ -7031,17 +6882,6 @@ let originalQuestions = [
     ],
     "answer": 0,
     "time": 15
-  },
-  {
-    "q": "How can you calculate a person’s age on a specific date in SQL Server?",
-    "options": [
-      "Using a scalar function with YEAR difference and a CASE adjustment",
-      "DATEDIFF(MONTH, DOB, GETDATE())",
-      "Subtracting years directly from DOB",
-      "Using a table-valued function only"
-    ],
-    "answer": 0,
-    "time": 25
   },
   {
     "q": "How do you capture inserted rows with their identity values in SQL Server?",
@@ -7171,17 +7011,6 @@ let originalQuestions = [
       "EXEC sp_helpindex 'TableName'",
       "DESCRIBE TableName",
       "SHOW INDEX FROM TableName"
-    ],
-    "answer": 0,
-    "time": 20
-  },
-  {
-    "q": "What is the main difference between SQL and T-SQL?",
-    "options": [
-      "SQL is standard; T-SQL is Microsoft-specific extension with procedural features",
-      "SQL supports variables; T-SQL does not",
-      "SQL only works in SQL Server; T-SQL works everywhere",
-      "T-SQL is deprecated"
     ],
     "answer": 0,
     "time": 20
@@ -7330,17 +7159,6 @@ let originalQuestions = [
     "time": 25
   },
   {
-    "q": "How many clustered indexes can a SQL Server table have?",
-    "options": [
-      "1",
-      "5",
-      "Unlimited",
-      "2"
-    ],
-    "answer": 0,
-    "time": 15
-  },
-  {
     "q": "Which SQL command removes all rows but keeps the table structure?",
     "options": [
       "DELETE",
@@ -7440,17 +7258,6 @@ let originalQuestions = [
     "time": 15
   },
   {
-    "q": "What is the difference between DELETE and TRUNCATE?",
-    "options": [
-      "DELETE removes all rows and cannot be rolled back; TRUNCATE removes selected rows only",
-      "DELETE removes rows one by one with full logging and can use WHERE; TRUNCATE removes all rows with minimal logging and cannot use WHERE",
-      "Both remove all rows and are identical",
-      "DELETE is faster than TRUNCATE"
-    ],
-    "answer": 1,
-    "time": 25
-  },
-  {
     "q": "Which method is recommended to avoid using cursors for performance?",
     "options": [
       "Use row-by-row operations",
@@ -7506,34 +7313,12 @@ let originalQuestions = [
     "time": 20
   },
   {
-    "q": "Which option ensures that RAISERROR stops execution without using RETURN or THROW?",
-    "options": [
-      "SET NOCOUNT ON",
-      "SET XACT_ABORT ON",
-      "Use UNION ALL",
-      "Use SELECT *"
-    ],
-    "answer": 1,
-    "time": 20
-  },
-  {
     "q": "Which of the following will capture the last inserted identity in a table?",
     "options": [
       "SCOPE_IDENTITY()",
       "@@IDENTITY",
       "IDENT_CURRENT()",
       "All of the above"
-    ],
-    "answer": 0,
-    "time": 20
-  },
-  {
-    "q": "What is the correct way to execute a stored procedure with an OUTPUT parameter?",
-    "options": [
-      "EXEC ProcedureName @Param OUTPUT",
-      "EXEC ProcedureName @Param = 5",
-      "EXEC ProcedureName @Param = 'Test'",
-      "EXEC ProcedureName"
     ],
     "answer": 0,
     "time": 20
@@ -8078,17 +7863,6 @@ let originalQuestions = [
     "time": 25
   },
   {
-    "q": "What is the key difference between a normal view and an indexed (materialized) view?",
-    "options": [
-      "Normal view stores data physically, indexed view does not",
-      "Normal view recalculates every query, indexed view stores results physically",
-      "Normal view allows indexes, indexed view does not",
-      "Both are physically stored"
-    ],
-    "answer": 1,
-    "time": 20
-  },
-  {
     "q": "Scenario: You want to print numbers from 1 to 100 using a **set-based approach** instead of loops. Which method is best?",
     "options": [
       "WHILE loop",
@@ -8320,17 +8094,6 @@ let originalQuestions = [
     "time": 20
   },
   {
-    "q": "What is the difference between a normal view and an indexed view?",
-    "options": [
-      "Normal view stores data physically, indexed view does not",
-      "Normal view recalculates every query, indexed view stores results physically",
-      "Normal view allows non-clustered indexes, indexed view does not",
-      "Both store data physically"
-    ],
-    "answer": 1,
-    "time": 20
-  },
-  {
     "q": "Scenario: You need a sequence of numbers without creating loops or temp tables. Which is the best method?",
     "options": [
       "WHILE loop",
@@ -8350,17 +8113,6 @@ let originalQuestions = [
       "Use ROW_NUMBER() function"
     ],
     "answer": 0,
-    "time": 20
-  },
-  {
-    "q": "Scenario: After inserting with IDENTITY_INSERT ON, what happens to the next auto-generated identity value?",
-    "options": [
-      "Resets to 1",
-      "Continues from last identity seed",
-      "Skips next value",
-      "Next insert fails"
-    ],
-    "answer": 1,
     "time": 20
   },
   {
@@ -8966,17 +8718,6 @@ let originalQuestions = [
       "Temp tables"
     ],
     "answer": 1,
-    "time": 20
-  },
-  {
-    "q": "Which statement about Stored Procedures is TRUE?",
-    "options": [
-      "They must return a value",
-      "They cannot use transactions",
-      "They can modify database state",
-      "They cannot accept parameters"
-    ],
-    "answer": 2,
     "time": 20
   },
   {
@@ -10113,17 +9854,6 @@ let originalQuestions = [
     "time": 30
   },
   {
-    "q": "Which statement is TRUE about UNIQUE constraints in SQL Server?",
-    "options": [
-      "A table can have only one UNIQUE constraint",
-      "UNIQUE constraint does not allow NULL values",
-      "UNIQUE constraint allows one NULL value",
-      "UNIQUE constraint is the same as PRIMARY KEY"
-    ],
-    "answer": 2,
-    "time": 30
-  },
-  {
     "q": "Which method is safer for executing Dynamic SQL in SQL Server?",
     "options": [
       "EXEC()",
@@ -10165,17 +9895,6 @@ let originalQuestions = [
       "-1"
     ],
     "answer": 2,
-    "time": 30
-  },
-  {
-    "q": "Which JOIN returns only matching rows from both tables?",
-    "options": [
-      "LEFT OUTER JOIN",
-      "RIGHT OUTER JOIN",
-      "FULL OUTER JOIN",
-      "INNER JOIN"
-    ],
-    "answer": 3,
     "time": 30
   },
   {
@@ -10872,28 +10591,6 @@ let originalQuestions = [
     "time": 30
   },
   {
-    "q": "Find employees whose salaries equal the average salary of their department.",
-    "options": [
-      "SELECT first_name, last_name, salary FROM employees WHERE salary = ANY (SELECT AVG(salary) FROM employees GROUP BY department_id)",
-      "SELECT * FROM employees WHERE salary = AVG(salary)",
-      "SELECT * FROM employees",
-      "SELECT salary FROM employees"
-    ],
-    "answer": 0,
-    "time": 30
-  },
-  {
-    "q": "What does DB_ID() return in SQL Server?",
-    "options": [
-      "The ID number of a database",
-      "The name of a database",
-      "The number of tables in the database",
-      "The current user ID"
-    ],
-    "answer": 0,
-    "time": 30
-  },
-  {
     "q": "What does DB_NAME() return when called without arguments?",
     "options": [
       "The name of the current database",
@@ -10922,17 +10619,6 @@ let originalQuestions = [
       "SELECT salary FROM employees",
       "SELECT CASE salary END FROM employees",
       "SELECT * FROM employees"
-    ],
-    "answer": 0,
-    "time": 30
-  },
-  {
-    "q": "How do you count male and female employees per department using CASE?",
-    "options": [
-      "SELECT department, COUNT(CASE WHEN gender='M' THEN 1 END) AS male_count, COUNT(CASE WHEN gender='F' THEN 1 END) AS female_count FROM employees GROUP BY department",
-      "SELECT department, COUNT(gender) FROM employees",
-      "SELECT * FROM employees",
-      "SELECT gender, COUNT(*) FROM employees"
     ],
     "answer": 0,
     "time": 30
@@ -11565,17 +11251,6 @@ let originalQuestions = [
     "time": 20
   },
   {
-    "q": "In an actual execution plan, what does a large difference between Estimated Rows and Actual Rows usually indicate?",
-    "options": [
-      "Missing clustered index",
-      "Outdated or inaccurate statistics",
-      "Implicit data type conversion",
-      "Query recompilation"
-    ],
-    "answer": 1,
-    "time": 30
-  },
-  {
     "q": "Why does a Key Lookup become a serious performance issue in SQL Server?",
     "options": [
       "Because it forces a table scan",
@@ -11736,17 +11411,6 @@ let originalQuestions = [
       "Parameter sniffing",
       "Missing primary key",
       "Deadlock"
-    ],
-    "answer": 1,
-    "time": 30
-  },
-  {
-    "q": "Why can a non-clustered index on a heap table be less efficient than on a clustered table?",
-    "options": [
-      "Because heaps do not allow non-clustered indexes",
-      "Because it uses RID lookups instead of clustered key lookups",
-      "Because heaps are always scanned fully",
-      "Because non-clustered indexes are ignored on heaps"
     ],
     "answer": 1,
     "time": 30
@@ -12014,17 +11678,6 @@ let originalQuestions = [
     ],
     "answer": 1,
     "time": 30
-  },
-  {
-    "q": "In an execution plan, what does a Key Lookup indicate?",
-    "options": [
-      "Query optimizer error",
-      "Lookup into non-clustered index",
-      "Fetching missing columns from clustered index",
-      "Table scan operation"
-    ],
-    "answer": 2,
-    "time": 25
   },
   {
     "q": "Which query pattern avoids Key Lookups most effectively?",
@@ -12357,17 +12010,6 @@ let originalQuestions = [
     "time": 20
   },
   {
-    "q": "In a TRY...CATCH block, what does @@ROWCOUNT return after execution?",
-    "options": [
-      "Rows affected in TRY block only",
-      "Rows affected in CATCH block only",
-      "Rows affected by the last executed statement",
-      "Always returns 0"
-    ],
-    "answer": 2,
-    "time": 20
-  },
-  {
     "q": "Which index type does NOT change the physical order of data in a table?",
     "options": [
       "Clustered Index",
@@ -12442,17 +12084,6 @@ let originalQuestions = [
       "INNER JOIN"
     ],
     "answer": 3,
-    "time": 20
-  },
-  {
-    "q": "Which scenario most likely causes an Index Scan instead of an Index Seek?",
-    "options": [
-      "Highly selective predicate",
-      "Filter on indexed column",
-      "Non-selective filter returning most rows",
-      "Equality condition on primary key"
-    ],
-    "answer": 2,
     "time": 20
   },
   {
@@ -13248,17 +12879,6 @@ let originalQuestions = [
     "time": 20
   },
   {
-    "q": "Which flag identifies the active record in an SCD Type 2 table?",
-    "options": [
-      "IsDeleted",
-      "IsLatest",
-      "IsCurrent",
-      "IsValid"
-    ],
-    "answer": 2,
-    "time": 20
-  },
-  {
     "q": "What is the main advantage of SCD Type 2?",
     "options": [
       "Smaller table size",
@@ -14035,17 +13655,6 @@ let originalQuestions = [
       "SELECT c.MonthNumber, c.Sales AS CurrentSales, n.Sales AS NextMonthSales FROM Sales c LEFT JOIN Sales n ON c.MonthNumber = n.MonthNumber;",
       "SELECT c.MonthNumber, c.Sales AS CurrentSales, n.Sales AS NextMonthSales FROM Sales c LEFT JOIN Sales n ON c.MonthNumber = n.MonthNumber + 1;",
       "SELECT MonthNumber, Sales FROM Sales;"
-    ],
-    "answer": 0,
-    "time": 30
-  },
-  {
-    "q": "Which SQL query correctly returns the current month's sales along with the next month's sales using a self join (alternative join condition using next month - 1)?",
-    "options": [
-      "SELECT c.MonthNumber, c.Sales AS CurrentSales, n.Sales AS NextMonthSales FROM Sales c LEFT JOIN Sales n ON c.MonthNumber = n.MonthNumber - 1;",
-      "SELECT c.MonthNumber, c.Sales AS CurrentSales, n.Sales AS NextMonthSales FROM Sales c LEFT JOIN Sales n ON c.MonthNumber = n.MonthNumber + 1;",
-      "SELECT c.MonthNumber, c.Sales AS CurrentSales, n.Sales AS NextMonthSales FROM Sales c LEFT JOIN Sales n ON c.MonthNumber + 1 = n.MonthNumber;",
-      "SELECT c.MonthNumber, c.Sales FROM Sales c;"
     ],
     "answer": 0,
     "time": 30
