@@ -1,0 +1,4049 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>SQL Question & Answer — Full</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f4f4f9;
+            color: #222;
+        }
+        .container {
+            width: 95%;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+        h1 { margin: 0 0 8px; font-size: 22px; }
+        h2 { margin: 18px 0 6px; font-size: 18px; color: #333; }
+        h3 { margin: 8px 0; font-size: 16px; color: #333; }
+        .box {
+            background: white;
+            padding: 18px;
+            margin-top: 14px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.06);
+        }
+        .jump-buttons {
+            margin-bottom: 12px;
+        }
+        .jump-buttons button {
+            background-color: #008CBA;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            margin-right: 8px;
+            margin-bottom: 8px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 13px;
+        }
+        .jump-buttons button:hover { background-color: #007399; }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-top: 10px;
+        }
+        table, th, td { border: 1px solid #ddd; }
+        th, td { padding: 8px; text-align: left; font-size: 13px; }
+        th { background: #fafafa; }
+        pre {
+            background: #272822;
+            color: #f8f8f2;
+            padding: 14px;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-size: 13px;
+            line-height: 1.45;
+        }
+        .nav-buttons {
+            margin-top: 14px;
+            display: flex;
+            justify-content: space-between;
+            gap: 8px;
+        }
+        .nav-controls button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+        .nav-controls button:hover { background-color: #45a049; }
+        .small-muted { color: #666; font-size: 13px; margin-top: 6px; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>📚 SQL Questions & Answers</h1>
+    <div class="small-muted">Click any question button to jump directly to that question. Buttons are auto-generated from the `questions` array — add new question objects there and a button appears automatically.</div>
+
+    <!-- Jump buttons (auto-generated) -->
+    <div id="jumpButtons" class="jump-buttons"></div>
+
+    <!-- Question area -->
+    <div id="questionBox" class="box"></div>
+
+    <h3>Sample Dataset</h3>
+    <div id="datasetBox" class="box"></div>
+
+    <h3>Sample Dataset</h3>
+    <div id="datasetBox2" class="box"></div>
+
+    <h3>Sample Dataset</h3>
+    <div id="datasetBox3" class="box"></div>
+    
+    <h3>Expected Output</h3>
+    <div id="outputBox" class="box"></div>
+
+    <h2>🟢 SQL Answer</h2>
+    <div class="box">
+        <pre id="answerBox"></pre>
+    </div>
+
+    <div class="nav-buttons">
+        <div class="nav-controls">
+            <button id="prevBtn">⬅ Previous</button>
+            <button id="nextBtn">Next ➡</button>
+        </div>
+        <div class="small-muted" id="questionCounter"></div>
+    </div>
+</div>
+
+<script>
+/* ============================
+   QUESTIONS ARRAY (6 questions)
+   Keep the same object format when adding new questions.
+   Buttons will be generated automatically.
+   ============================ */
+const questions = [
+
+/* QUESTION 1 — Employee Visit Tracking */
+{
+    question: `
+A company tracks employee visits, allowing only one entry per employee per day.
+A loophole allows multiple entries using different email IDs.
+
+Determine:
+- Total visits
+- Most visited floor
+- Distinct resources used
+
+Output columns: Name, Total Visits, Most Visited Floor, Used Resources.
+`,
+    dataset: [
+        {name:"A    ", address:"Bangalore", email:"A@gmail.com  ", floor:"1    ", resources:"CPU     "},
+        {name:"A    ", address:"Bangalore", email:"A1@gmail.com ", floor:"1    ", resources:"CPU     "},
+        {name:"A    ", address:"Bangalore", email:"A2@gmail.com ", floor:"2    ", resources:"DESKTOP "},
+        {name:"B    ", address:"Bangalore", email:"B@gmail.com  ", floor:"2    ", resources:"DESKTOP "},
+        {name:"B    ", address:"Bangalore", email:"B1@gmail.com ", floor:"2    ", resources:"DESKTOP "},
+        {name:"B    ", address:"Bangalore", email:"B2@gmail.com ", floor:"1    ", resources:"MONITOR "}
+    ],
+    output: [
+        {name:"A    ", total_visits:"3", most_visited_floor:"1    ", resources_used:"CPU,DESKTOP   "},
+        {name:"B    ", total_visits:"3", most_visited_floor:"2    ", resources_used:"DESKTOP,MONITOR"}
+    ],
+    answer: `
+WITH floor_rank AS (
+    SELECT 
+        name,
+        floor,
+        COUNT(*) AS floor_visit_count,
+        RANK() OVER (PARTITION BY name ORDER BY COUNT(*) DESC) AS rn
+    FROM resources_data
+    GROUP BY name, floor
+),
+distinct_resources AS (
+    SELECT DISTINCT name, resources 
+    FROM resources_data
+),
+resource_list AS (
+    SELECT name, STRING_AGG(resources, ',') AS used_resources
+    FROM distinct_resources
+    GROUP BY name
+),
+total_visits AS (
+    SELECT name, COUNT(*) AS total_visits
+    FROM resources_data
+    GROUP BY name
+)
+SELECT 
+    FR.name,
+    TV.total_visits,
+    FR.floor AS most_visited_floor,
+    RL.used_resources
+FROM floor_rank FR
+JOIN total_visits TV ON FR.name = TV.name
+JOIN resource_list RL ON FR.name = RL.name
+WHERE FR.rn = 1;
+`
+},
+
+/* QUESTION 2 — Team Match Results */
+{
+    question: `
+Using the match result dataset, write a SQL query to:
+
+1. Total matches played  
+2. Total wins  
+3. Total losses  
+4. Display team_name, matches_played, wins, losses  
+5. Order by wins desc  
+`,
+    dataset: [
+        {Team_1:"India", Team_2:"SL", Winner:"India"},
+        {Team_1:"SL", Team_2:"Aus", Winner:"Aus"},
+        {Team_1:"SA", Team_2:"Eng", Winner:"Eng"},
+        {Team_1:"Eng", Team_2:"NZ", Winner:"NZ"},
+        {Team_1:"Aus", Team_2:"India", Winner:"India"}
+    ],
+    output: [
+        {Team_Name:"India", Matches_played:2, no_of_wins:2, no_of_losses:0},
+        {Team_Name:"SL", Matches_played:2, no_of_wins:0, no_of_losses:2},
+        {Team_Name:"SA", Matches_played:1, no_of_wins:0, no_of_losses:1},
+        {Team_Name:"Eng", Matches_played:2, no_of_wins:1, no_of_losses:1},
+        {Team_Name:"Aus", Matches_played:2, no_of_wins:1, no_of_losses:1},
+        {Team_Name:"NZ", Matches_played:1, no_of_wins:1, no_of_losses:0}
+    ],
+    answer: `
+WITH team_name AS (
+   SELECT team_name, COUNT(*) matches_played FROM (
+       SELECT Team_1 AS team_name FROM MatchResults
+       UNION ALL
+       SELECT Team_2 FROM MatchResults
+   ) a GROUP BY team_name
+),
+no_of_wins AS (
+    SELECT team_name, SUM(no_of_wins) AS no_of_wins FROM (
+        SELECT Team_1 AS team_name,
+               SUM(CASE WHEN Team_1 = Winner THEN 1 ELSE 0 END) AS no_of_wins
+        FROM MatchResults GROUP BY Team_1
+
+        UNION ALL
+
+        SELECT Team_2 AS team_name,
+               SUM(CASE WHEN Team_2 = Winner THEN 1 ELSE 0 END) AS no_of_wins
+        FROM MatchResults GROUP BY Team_2
+    ) a GROUP BY team_name
+)
+SELECT 
+    a.team_name,
+    a.matches_played,
+    b.no_of_wins,
+    a.matches_played - b.no_of_wins AS no_of_losses
+FROM team_name a
+JOIN no_of_wins b ON a.team_name = b.team_name
+ORDER BY b.no_of_wins DESC;
+`
+},
+
+/* QUESTION 3 — Daily New vs Repeat Customers */
+{
+    question: `
+Given the daily orders dataset, write a SQL query to determine:
+
+1. How many customers are NEW on each order date  
+2. How many customers are REPEAT on each order date  
+3. Display order_date, first_visit_flag (new customers), repeat_visit_flag (repeat customers)  
+4. Order the results by order_date  
+`,
+    dataset: [
+        {order_id:1, customer_id:100, order_date:"2022-01-01", order_amount:2000},
+        {order_id:2, customer_id:200, order_date:"2022-01-01", order_amount:2500},
+        {order_id:3, customer_id:300, order_date:"2022-01-01", order_amount:2100},
+        {order_id:4, customer_id:100, order_date:"2022-01-02", order_amount:2000},
+        {order_id:5, customer_id:400, order_date:"2022-01-02", order_amount:2200},
+        {order_id:6, customer_id:500, order_date:"2022-01-02", order_amount:2700},
+        {order_id:7, customer_id:100, order_date:"2022-01-03", order_amount:3000},
+        {order_id:8, customer_id:400, order_date:"2022-01-03", order_amount:1000},
+        {order_id:9, customer_id:600, order_date:"2022-01-03", order_amount:3000}
+    ],
+    output: [
+        {order_date:"2022-01-01", first_visit_flag:3, repeat_visit_flag:0},
+        {order_date:"2022-01-02", first_visit_flag:2, repeat_visit_flag:1},
+        {order_date:"2022-01-03", first_visit_flag:1, repeat_visit_flag:2}
+    ],
+    answer: `
+SELECT 
+    a.order_date,
+    SUM(CASE WHEN b.customer_id IS NOT NULL THEN 1 ELSE 0 END) AS first_visit_flag,
+    SUM(CASE WHEN b.customer_id IS NULL THEN 1 ELSE 0 END) AS repeat_visit_flag
+FROM orders a
+LEFT JOIN (
+    SELECT customer_id, MIN(order_date) AS first_order_date
+    FROM orders
+    GROUP BY customer_id
+) b 
+ON a.customer_id = b.customer_id
+AND a.order_date = b.first_order_date
+GROUP BY a.order_date
+ORDER BY a.order_date;
+`
+},
+
+/* QUESTION 4 — Daily Revenue (New vs Repeat) */
+{
+    question: `
+Extend the previous analysis to compute:
+
+1. New customer count per day  
+2. Repeat customer count per day  
+3. Revenue by new customers  
+4. Revenue by repeat customers  
+`,
+    dataset: [
+        {order_id:1, customer_id:100, order_date:"2022-01-01", order_amount:2000},
+        {order_id:2, customer_id:200, order_date:"2022-01-01", order_amount:2500},
+        {order_id:3, customer_id:300, order_date:"2022-01-01", order_amount:2100},
+        {order_id:4, customer_id:100, order_date:"2022-01-02", order_amount:2000},
+        {order_id:5, customer_id:400, order_date:"2022-01-02", order_amount:2200},
+        {order_id:6, customer_id:500, order_date:"2022-01-02", order_amount:2700},
+        {order_id:7, customer_id:100, order_date:"2022-01-03", order_amount:3000},
+        {order_id:8, customer_id:400, order_date:"2022-01-03", order_amount:1000},
+        {order_id:9, customer_id:600, order_date:"2022-01-03", order_amount:3000}
+    ],
+    output: [
+        {order_date:"2022-01-01", first_visit:3, repeat_visit:0, new_customer_amount:6600, old_customer_amount:0},
+        {order_date:"2022-01-02", first_visit:2, repeat_visit:1, new_customer_amount:4900, old_customer_amount:2000},
+        {order_date:"2022-01-03", first_visit:1, repeat_visit:2, new_customer_amount:3000, old_customer_amount:4000}
+    ],
+    answer: `
+WITH first_order AS (
+    SELECT customer_id, MIN(order_date) AS first_order_date
+    FROM orders
+    GROUP BY customer_id
+),
+visits AS (
+    SELECT 
+        a.order_date,
+        SUM(CASE WHEN a.order_date = b.first_order_date THEN 1 ELSE 0 END) AS first_visit,
+        SUM(CASE WHEN a.order_date <> b.first_order_date THEN 1 ELSE 0 END) AS repeat_visit
+    FROM orders a
+    JOIN first_order b
+        ON a.customer_id = b.customer_id
+    GROUP BY a.order_date
+),
+amount AS (
+    SELECT 
+        a.order_date,
+        SUM(CASE WHEN a.order_date = b.first_order_date THEN order_amount ELSE 0 END) AS new_customer_amount,
+        SUM(CASE WHEN a.order_date <> b.first_order_date THEN order_amount ELSE 0 END) AS old_customer_amount
+    FROM orders a
+    JOIN first_order b
+        ON a.customer_id = b.customer_id
+    GROUP BY a.order_date
+)
+SELECT 
+    v.order_date,
+    v.first_visit,
+    v.repeat_visit,
+    a.new_customer_amount,
+    a.old_customer_amount
+FROM visits v
+JOIN amount a ON v.order_date = a.order_date
+ORDER BY v.order_date;
+`
+},
+
+/* QUESTION 5 — Nth Future Sunday */
+{
+    question: `
+Write a SQL query to find the date of the Nth occurrence of Sunday in the future from a given starting date.
+
+Provide two solutions:
+1. Using a date generator (loop or recursive method)
+2. Using a direct mathematical formula
+
+Also explain why (n - 1) and (8 - weekday) are used.
+`,
+    dataset: [],
+    output: [],
+    answer_1: `
+-- Approach 1: Using date generation (loop)
+
+DROP TABLE IF EXISTS ##date_list;
+
+CREATE TABLE ##date_list (dt DATE);
+
+DECLARE @startdate DATE = CONVERT(DATE, GETDATE());
+DECLARE @enddate DATE = DATEADD(WEEK, 10, @startdate);
+DECLARE @dt DATE = @startdate;
+
+WHILE @dt <= @enddate
+BEGIN
+    INSERT INTO ##date_list VALUES (@dt);
+    SET @dt = DATEADD(DAY, 1, @dt);
+END;
+
+DECLARE @n INT = 3, @weekday VARCHAR(10) = 'Sunday';
+
+SELECT TOP 1 dt
+FROM (
+    SELECT dt,
+           DATENAME(WEEKDAY, dt) AS weekday,
+           ROW_NUMBER() OVER (PARTITION BY DATENAME(WEEKDAY, dt) ORDER BY dt) AS rn
+    FROM ##date_list
+) x
+WHERE weekday = @weekday AND rn = @n
+ORDER BY dt;
+`,
+    answer_2: `
+-- Approach 2: Direct mathematical formula
+
+DECLARE @today_date DATE = CONVERT(DATE, GETDATE());
+DECLARE @n INT = 3;
+
+SELECT DATEADD(
+           WEEK, @n - 1,
+           DATEADD(DAY, 8 - DATEPART(WEEKDAY, @today_date), @today_date)
+       ) AS nth_future_sunday;
+`,
+    explanation: `
+Explanation:
+
+1. DATEPART(WEEKDAY, @today_date)
+   Returns 1–7 (Sunday–Saturday).
+
+2. (8 - weekday):
+   Gives number of days until next Sunday.
+
+3. (n - 1):
+   1st Sunday → +0 weeks
+   2nd Sunday → +1 week
+   3rd Sunday → +2 weeks
+   Nth Sunday → (n - 1) additional weeks.
+`
+},
+
+/* QUESTION 6 — Order Shipping Analysis */
+{
+    question: `
+Given the below order dataset with columns (order_id, customer_id, order_date, ship_date),
+calculate the following for each order:
+
+1. days_to_ship  → Total days between order_date and ship_date  
+2. week_between_days → Number of complete weeks between the dates  
+3. business_days_to_ship → Count of business days (Mon–Fri), excluding weekends
+
+Return all columns including the calculated ones.
+`,
+    dataset: [
+        {order_id:"1000", customer_id:"1", order_date:"2022-01-05", ship_date:"2022-01-11"},
+        {order_id:"1001", customer_id:"2", order_date:"2022-02-04", ship_date:"2022-02-16"},
+        {order_id:"1002", customer_id:"3", order_date:"2022-01-01", ship_date:"2022-01-19"},
+        {order_id:"1003", customer_id:"4", order_date:"2022-01-06", ship_date:"2022-01-30"},
+        {order_id:"1004", customer_id:"1", order_date:"2022-02-07", ship_date:"2022-02-13"},
+        {order_id:"1005", customer_id:"4", order_date:"2022-01-07", ship_date:"2022-01-31"},
+        {order_id:"1006", customer_id:"3", order_date:"2022-02-08", ship_date:"2022-02-26"},
+        {order_id:"1007", customer_id:"2", order_date:"2022-02-09", ship_date:"2022-02-21"},
+        {order_id:"1008", customer_id:"4", order_date:"2022-02-10", ship_date:"2022-03-06"}
+    ],
+    output: [
+        {order_id:"1000", customer_id:"1", order_date:"2022-01-05", ship_date:"2022-01-11", days_to_ship:"6",  week_between_days:"1", business_days_to_ship:"4"},
+        {order_id:"1001", customer_id:"2", order_date:"2022-02-04", ship_date:"2022-02-16", days_to_ship:"12", week_between_days:"2", business_days_to_ship:"8"},
+        {order_id:"1002", customer_id:"3", order_date:"2022-01-01", ship_date:"2022-01-19", days_to_ship:"18", week_between_days:"3", business_days_to_ship:"12"},
+        {order_id:"1003", customer_id:"4", order_date:"2022-01-06", ship_date:"2022-01-30", days_to_ship:"24", week_between_days:"4", business_days_to_ship:"16"},
+        {order_id:"1004", customer_id:"1", order_date:"2022-02-07", ship_date:"2022-02-13", days_to_ship:"6",  week_between_days:"1", business_days_to_ship:"4"},
+        {order_id:"1005", customer_id:"4", order_date:"2022-01-07", ship_date:"2022-01-31", days_to_ship:"24", week_between_days:"4", business_days_to_ship:"16"},
+        {order_id:"1006", customer_id:"3", order_date:"2022-02-08", ship_date:"2022-02-26", days_to_ship:"18", week_between_days:"2", business_days_to_ship:"14"},
+        {order_id:"1007", customer_id:"2", order_date:"2022-02-09", ship_date:"2022-02-21", days_to_ship:"12", week_between_days:"2", business_days_to_ship:"8"},
+        {order_id:"1008", customer_id:"4", order_date:"2022-02-10", ship_date:"2022-03-06", days_to_ship:"24", week_between_days:"4", business_days_to_ship:"16"}
+    ],
+    answer: `
+SELECT
+    order_id,
+    customer_id,
+    order_date,
+    ship_date,
+
+    -- 1. Total days between the dates
+    DATEDIFF(day, order_date, ship_date) AS days_to_ship,
+
+    -- 2. Number of complete weeks between dates
+    DATEDIFF(week, order_date, ship_date) AS week_between_days,
+
+    -- 3. Business days between dates (Mon–Fri)
+    (
+        (DATEDIFF(day, order_date, ship_date) + 1)                  -- total days inclusive
+        - 2 * (DATEDIFF(week, order_date, ship_date))              -- remove Saturdays & Sundays
+        - CASE WHEN DATENAME(weekday, order_date) = 'Sunday' THEN 1 ELSE 0 END
+        - CASE WHEN DATENAME(weekday, ship_date) = 'Saturday' THEN 1 ELSE 0 END
+    ) AS business_days_to_ship
+
+FROM orders_data;
+`
+}
+    ,
+    {
+    question: `
+A company wants to identify the key products contributing to most of its revenue
+using the Pareto Principle (80/20 Rule).
+
+Determine:
+- Total sales per product
+- Running cumulative sales (highest to lowest)
+- Products that together contribute to 80% of total sales
+
+Output columns:
+Product_ID, Product_Sales, Running_Sales, Total_Sales_80_Percent
+`,
+    dataset: [
+        {product_id:"P1", sales:5000},
+        {product_id:"P2", sales:3000},
+        {product_id:"P3", sales:2000},
+        {product_id:"P4", sales:1500},
+        {product_id:"P5", sales:1000},
+        {product_id:"P6", sales:800},
+        {product_id:"P7", sales:700},
+        {product_id:"P8", sales:500}
+    ],
+    output: [
+        {product_id:"P1", product_sales:5000, running_sales:5000, total_sales_80_percent:11200},
+        {product_id:"P2", product_sales:3000, running_sales:8000, total_sales_80_percent:11200},
+        {product_id:"P3", product_sales:2000, running_sales:10000, total_sales_80_percent:11200},
+        {product_id:"P4", product_sales:1500, running_sales:11500, total_sales_80_percent:11200}
+    ],
+    answer: `
+WITH product_sales AS (
+    SELECT 
+        product_id,
+        SUM(sales) AS product_sales
+    FROM orders
+    GROUP BY product_id
+),
+running_totals AS (
+    SELECT *,
+           SUM(product_sales) OVER (
+               ORDER BY product_sales DESC
+               ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW
+           ) AS running_sales,
+           0.8 * SUM(product_sales) OVER () AS total_sales_80_percent
+    FROM product_sales
+)
+SELECT 
+    product_id,
+    product_sales,
+    running_sales,
+    total_sales_80_percent
+FROM running_totals
+WHERE running_sales <= total_sales_80_percent;
+`
+},
+   {
+  question: `
+Given two tables:
+1) PersonScores (person details and scores)
+2) PersonFriends (person to friend mapping)
+
+Write a query to find:
+- Person ID
+- Person Name
+- Number of friends
+- Total score of all their friends
+
+Return only those persons whose friends' total score is greater than 100.
+
+Output columns:
+PersonID, Total_Friend_Score, No_Of_Friends, Person_Name
+`,
+  dataset: [
+    { PersonID: 1, Name: "Alice", Email: "alice2018@hotmail.com", Score: 88 },
+    { PersonID: 2, Name: "Bob",   Email: "bob2018@hotmail.com",   Score: 11 },
+    { PersonID: 3, Name: "Davis", Email: "davis2018@hotmail.com", Score: 27 },
+    { PersonID: 4, Name: "Tara",  Email: "tara2018@hotmail.com",  Score: 45 },
+    { PersonID: 5, Name: "John",  Email: "john2018@hotmail.com",  Score: 63 }
+  ],
+
+  dataset_2: [
+    { PersonID: 1, FriendID: 2 },
+    { PersonID: 1, FriendID: 3 },
+    { PersonID: 2, FriendID: 1 },
+    { PersonID: 2, FriendID: 3 },
+    { PersonID: 3, FriendID: 5 },
+    { PersonID: 4, FriendID: 2 },
+    { PersonID: 4, FriendID: 3 },
+    { PersonID: 4, FriendID: 5 }
+  ],
+
+  output: [
+    { PersonID: 2, Total_Friend_Score: 115, No_Of_Friends: 2, Person_Name: "Bob" },
+    { PersonID: 4, Total_Friend_Score: 101, No_Of_Friends: 3, Person_Name: "Tara" }
+  ],
+
+  answer: "SELECT f.PersonID, SUM(ps.Score) AS Total_Friend_Score, COUNT(f.FriendID) AS No_Of_Friends, p.Name AS Person_Name FROM dataset_2 f JOIN dataset ps ON f.FriendID = ps.PersonID JOIN dataset p ON p.PersonID = f.PersonID GROUP BY f.PersonID, p.Name HAVING SUM(ps.Score) > 100;"
+}
+
+,
+    {
+    question: `
+Given two tables:
+1) PersonScores (person details and scores)
+2) PersonFriends (person to friend mapping)
+
+Write a query to find:
+- Person ID
+- Person Name
+- Number of friends
+- Total score of all their friends
+
+Return only those persons whose friends' total score is greater than 100.
+
+Output columns:
+PersonID, Total_Friend_Score, No_Of_Friends, Person_Name
+`,
+    dataset: {
+        PersonScores: [
+            {PersonID:1, Name:"Alice", Email:"alice2018@hotmail.com", Score:88},
+            {PersonID:2, Name:"Bob",   Email:"bob2018@hotmail.com",   Score:11},
+            {PersonID:3, Name:"Davis", Email:"davis2018@hotmail.com", Score:27},
+            {PersonID:4, Name:"Tara",  Email:"tara2018@hotmail.com",  Score:45},
+            {PersonID:5, Name:"John",  Email:"john2018@hotmail.com",  Score:63}
+        ],
+        PersonFriends: [
+            {PersonID:1, FriendID:2},
+            {PersonID:1, FriendID:3},
+            {PersonID:2, FriendID:1},
+            {PersonID:2, FriendID:3},
+            {PersonID:3, FriendID:5},
+            {PersonID:4, FriendID:2},
+            {PersonID:4, FriendID:3},
+            {PersonID:4, FriendID:5}
+        ]
+    },
+    output: [
+        {personid:2, total_friend_score:115, no_of_friends:2, person_name:"Bob"},
+        {personid:4, total_friend_score:101, no_of_friends:3, person_name:"Tara"}
+    ],
+    answer: `
+SELECT a.PersonID,
+       a.total_friend_score,
+       a.no_of_friends,
+       p.Name AS person_name
+FROM (
+    SELECT 
+        f.PersonID,
+        COUNT(f.FriendID) AS no_of_friends,
+        SUM(ps.Score) AS total_friend_score
+    FROM PersonFriends f
+    JOIN PersonScores ps
+        ON ps.PersonID = f.FriendID
+    GROUP BY f.PersonID
+    HAVING SUM(ps.Score) > 100
+) a
+LEFT JOIN PersonScores p
+    ON a.PersonID = p.PersonID;
+`
+}
+,
+     
+{
+    question: `
+Find customers who placed orders in all months of 2024.
+
+A customer qualifies only if they have at least one order
+in every month (January–December) of the year 2024.
+
+Output columns: Customer, Count_of_Months.
+`,
+    dataset: [
+        {customer:"A", order_date:"2024-01-15", calmonth:"1"},
+        {customer:"A", order_date:"2024-02-20", calmonth:"2"},
+        {customer:"A", order_date:"2024-03-05", calmonth:"3"},
+        {customer:"A", order_date:"2024-04-12", calmonth:"4"},
+        {customer:"A", order_date:"2024-05-30", calmonth:"5"},
+        {customer:"A", order_date:"2024-06-10", calmonth:"6"},
+        {customer:"A", order_date:"2024-07-01", calmonth:"7"},
+        {customer:"A", order_date:"2024-08-22", calmonth:"8"},
+        {customer:"A", order_date:"2024-09-18", calmonth:"9"},
+        {customer:"A", order_date:"2024-10-11", calmonth:"10"},
+        {customer:"A", order_date:"2024-11-25", calmonth:"11"},
+        {customer:"A", order_date:"2024-12-03", calmonth:"12"},
+
+        {customer:"B", order_date:"2024-01-10", calmonth:"1"},
+        {customer:"B", order_date:"2024-02-17", calmonth:"2"},
+        {customer:"B", order_date:"2024-03-21", calmonth:"3"},
+        {customer:"B", order_date:"2024-05-08", calmonth:"5"},
+        {customer:"B", order_date:"2024-06-14", calmonth:"6"},
+
+        {customer:"C", order_date:"2024-01-05", calmonth:"1"},
+        {customer:"C", order_date:"2024-02-08", calmonth:"2"},
+        {customer:"C", order_date:"2024-03-15", calmonth:"3"},
+        {customer:"C", order_date:"2024-04-12", calmonth:"4"},
+        {customer:"C", order_date:"2024-05-19", calmonth:"5"},
+        {customer:"C", order_date:"2024-06-22", calmonth:"6"},
+        {customer:"C", order_date:"2024-07-30", calmonth:"7"},
+        {customer:"C", order_date:"2024-08-09", calmonth:"8"},
+        {customer:"C", order_date:"2024-09-14", calmonth:"9"},
+        {customer:"C", order_date:"2024-10-20", calmonth:"10"},
+        {customer:"C", order_date:"2024-11-25", calmonth:"11"},
+        {customer:"C", order_date:"2024-12-31", calmonth:"12"}
+    ],
+    output: [
+        {customer:"A", count:"12"},
+        {customer:"C", count:"12"}
+    ],
+    answer: `
+WITH months_2024 AS (
+    SELECT COUNT(DISTINCT calmonth) AS total_months
+    FROM orders
+    WHERE YEAR(order_date) = 2024
+)
+SELECT
+    customer,
+    COUNT(DISTINCT calmonth) AS count
+FROM orders
+WHERE YEAR(order_date) = 2024
+GROUP BY customer
+HAVING COUNT(DISTINCT calmonth) = (SELECT total_months FROM months_2024);
+`
+},
+    {
+    question: `
+Explain SQL Performance Optimization Techniques.
+The answer should be interview-ready, practical, and cover both query-level and database-level optimizations.
+`,
+    dataset: [
+        { table: "orders", columns: ["order_id", "customer_id", "order_date", "amount"] },
+        { table: "customers", columns: ["customer_id", "customer_name"] }
+    ],
+    output: [
+        { area: "Indexing", focus: "JOIN, WHERE, ORDER BY columns" },
+        { area: "Query Design", focus: "Filter early, avoid SELECT *" },
+        { area: "Execution Plan", focus: "Remove scans, key lookups" }
+    ],
+    answer: `
+-- SQL Performance Optimization Techniques
+
+-- 1) Indexing (Most Important)
+-- Create indexes on JOIN / WHERE / GROUP BY columns
+
+CREATE INDEX idx_orders_customer_date
+ON orders(customer_id, order_date);
+
+-- Covering index to avoid key lookups
+CREATE INDEX idx_orders_cover
+ON orders(customer_id)
+INCLUDE (order_date, amount);
+
+
+-- 2) Query Design Best Practices
+-- Avoid SELECT *
+-- Filter early
+
+SELECT customer_id, SUM(amount)
+FROM orders
+WHERE order_date >= '2024-01-01'
+GROUP BY customer_id;
+
+-- Avoid functions on indexed columns
+-- BAD
+-- WHERE YEAR(order_date) = 2024
+
+-- GOOD
+WHERE order_date >= '2024-01-01'
+  AND order_date < '2025-01-01';
+
+
+-- 3) Execution Plan Analysis
+SET STATISTICS IO ON;
+SET STATISTICS TIME ON;
+-- Check for table scans, key lookups, missing indexes
+
+
+-- 4) Aggregation Before Join
+WITH agg_orders AS (
+    SELECT customer_id, SUM(amount) AS total_amount
+    FROM orders
+    GROUP BY customer_id
+)
+SELECT c.customer_name, a.total_amount
+FROM agg_orders a
+JOIN customers c
+ON a.customer_id = c.customer_id;
+
+
+-- 5) Data Types & Storage
+-- Use INT over VARCHAR for numeric data
+-- Use DATE instead of DATETIME if time not required
+
+
+-- 6) Statistics & Index Maintenance
+UPDATE STATISTICS orders;
+
+ALTER INDEX ALL ON orders REBUILD;
+
+
+-- 7) Partitioning (Large Tables)
+-- Partition by date for pruning
+PARTITION BY RANGE (order_date);
+
+
+-- 8) Avoid Cursors & RBAR
+-- Prefer set-based operations over row-by-row logic
+
+
+-- 9) Temporary Objects
+-- Use temp tables if reused multiple times
+CREATE TABLE #temp_orders (...);
+
+
+-- 10) Concurrency & Locking
+-- Keep transactions short
+-- Use NOLOCK only if dirty reads are acceptable
+
+
+-- One-line Interview Answer:
+-- SQL performance optimization focuses on proper indexing,
+-- efficient query design, minimizing scans, and analyzing execution plans.
+`
+}
+,
+{
+    question: `
+Find employees who earn more than the average salary of all employees.
+
+Return only those employees whose salary is strictly greater than the overall average salary.
+
+Output columns:
+EmpID, Salary
+`,
+    dataset: [
+        { EmpID: 1, Name: "Alice",   Department: "HR",        Salary: 50000 },
+        { EmpID: 2, Name: "Bob",     Department: "IT",        Salary: 75000 },
+        { EmpID: 3, Name: "Charlie", Department: "Finance",   Salary: 62000 },
+        { EmpID: 4, Name: "Diana",   Department: "IT",        Salary: 80000 },
+        { EmpID: 5, Name: "Ethan",   Department: "HR",        Salary: 48000 },
+        { EmpID: 6, Name: "Fiona",   Department: "Marketing", Salary: 54000 },
+        { EmpID: 7, Name: "George",  Department: "Finance",   Salary: 70000 }
+    ],
+    output: [
+        { EmpID: 2, Salary: 75000 },
+        { EmpID: 4, Salary: 80000 },
+        { EmpID: 7, Salary: 70000 }
+    ],
+    answer_1: `
+-- Approach 1: Subquery (most common & interview-friendly)
+
+SELECT EmpID, Salary
+FROM Employees
+WHERE Salary > (
+    SELECT AVG(Salary)
+    FROM Employees
+);
+`,
+    answer_2: `
+-- Approach 2: Window function (clean & modern SQL)
+
+SELECT EmpID, Salary
+FROM (
+    SELECT
+        EmpID,
+        Salary,
+        AVG(Salary) OVER () AS avg_salary
+    FROM Employees
+) t
+WHERE Salary > avg_salary;
+`,
+    answer_3: `
+-- Approach 3: Aggregation + window function
+-- Useful when multiple salary rows exist per employee
+
+SELECT EmpID, Salary
+FROM (
+    SELECT
+        EmpID,
+        Salary,
+        AVG(Salary) OVER () AS avg_salary
+    FROM (
+        SELECT
+            EmpID,
+            SUM(Salary) AS Salary
+        FROM Employees
+        GROUP BY EmpID
+    ) a
+) b
+WHERE Salary > avg_salary;
+`,
+    explanation: `
+Explanation:
+
+1. Average salary is calculated across all employees.
+2. Only employees whose salary is greater than this average are returned.
+3. Approach 1 uses a scalar subquery.
+4. Approach 2 uses a window function to compute the average once.
+5. Approach 3 first aggregates salary per employee, then compares against the overall average.
+`
+}
+,
+    {
+    question: `
+A company wants to report customers and their related data.
+The requirement is to ALWAYS return all customers, even if no matching records exist
+on the right-side tables.
+
+This question tests common SQL traps where LEFT JOIN unintentionally turns into INNER JOIN.
+
+Identify and fix the mistakes.
+
+Output varies per case but customers with no matches must NOT be removed.
+`,
+    dataset: [
+        { customer_id: 1, customer_name: "Alice" },
+        { customer_id: 2, customer_name: "Bob" },
+        { customer_id: 3, customer_name: "Charlie" },
+        { customer_id: 4, customer_name: "Diana" }
+    ],
+    dataset_orders: [
+        { order_id: 101, customer_id: 1, order_date: "2024-03-15", status: "Completed", amount: 1000 },
+        { order_id: 102, customer_id: 1, order_date: "2023-11-10", status: "Cancelled", amount: 500 },
+        { order_id: 103, customer_id: 2, order_date: "2024-06-20", status: "Completed", amount: 1500 },
+        { order_id: 104, customer_id: 3, order_date: "2022-08-05", status: "Completed", amount: 800 }
+        // Diana has no orders
+    ],
+    output: [
+        { customer_id: 1, order_id: 101 },
+        { customer_id: 2, order_id: 103 },
+        { customer_id: 3, order_id: null },
+        { customer_id: 4, order_id: null }
+    ],
+    answer: `
+----------------------------------------------------
+1️⃣ WHERE filter on RIGHT table (Classic Trap)
+----------------------------------------------------
+
+❌ WRONG
+SELECT c.customer_id, o.order_id
+FROM customers c
+LEFT JOIN orders o ON c.customer_id = o.customer_id
+WHERE o.status = 'Completed';
+
+-- LEFT JOIN becomes INNER JOIN
+
+
+✅ CORRECT
+SELECT c.customer_id, o.order_id
+FROM customers c
+LEFT JOIN orders o
+  ON c.customer_id = o.customer_id
+ AND o.status = 'Completed';
+
+
+
+----------------------------------------------------
+2️⃣ Date filter in WHERE
+----------------------------------------------------
+
+❌ WRONG
+WHERE o.order_date >= '2024-01-01';
+
+✅ CORRECT
+AND o.order_date >= '2024-01-01';
+
+
+
+----------------------------------------------------
+3️⃣ YEAR() / MONTH() in WHERE
+----------------------------------------------------
+
+❌ WRONG
+WHERE YEAR(o.order_date) = 2024;
+
+-- Removes NULLs + blocks index usage
+
+
+✅ CORRECT
+AND o.order_date >= '2024-01-01'
+AND o.order_date <  '2025-01-01';
+
+
+
+----------------------------------------------------
+4️⃣ HAVING removes customers with no orders
+----------------------------------------------------
+
+❌ WRONG
+SELECT c.customer_id, COUNT(o.order_id)
+FROM customers c
+LEFT JOIN orders o ON c.customer_id = o.customer_id
+GROUP BY c.customer_id
+HAVING COUNT(o.order_id) > 0;
+
+
+✅ CORRECT
+SELECT c.customer_id, COUNT(o.order_id)
+FROM customers c
+LEFT JOIN orders o ON c.customer_id = o.customer_id
+GROUP BY c.customer_id;
+
+
+
+----------------------------------------------------
+5️⃣ COUNT(*) instead of COUNT(right_table_column)
+----------------------------------------------------
+
+❌ WRONG
+COUNT(*)   -- counts even NULL-matched rows
+
+
+✅ CORRECT
+COUNT(o.order_id);
+
+
+
+----------------------------------------------------
+6️⃣ SUM without COALESCE
+----------------------------------------------------
+
+❌ WRONG
+SUM(o.amount)  -- returns NULL for no matches
+
+
+✅ CORRECT
+COALESCE(SUM(o.amount), 0);
+
+
+
+----------------------------------------------------
+7️⃣ Filtering RIGHT table in subquery
+----------------------------------------------------
+
+❌ WRONG
+LEFT JOIN (
+    SELECT * FROM orders WHERE status = 'Completed'
+) o ON c.customer_id = o.customer_id;
+
+
+✅ CORRECT
+LEFT JOIN orders o
+  ON c.customer_id = o.customer_id
+ AND o.status = 'Completed';
+
+
+
+----------------------------------------------------
+8️⃣ OR condition to keep NULLs (Anti-pattern)
+----------------------------------------------------
+
+❌ WRONG
+WHERE o.status = 'Completed'
+   OR o.status IS NULL;
+
+
+✅ CORRECT
+AND o.status = 'Completed';
+
+
+
+----------------------------------------------------
+🎯 MASTER INTERVIEW RULE
+----------------------------------------------------
+Any filter on the RIGHT table of a LEFT JOIN
+MUST be placed inside the JOIN condition.
+
+Otherwise:
+LEFT JOIN ➜ INNER JOIN (silently)
+`
+}
+
+,{
+    question: `
+Write a query to print total number of unique hackers who made at least 1 submission each day(starting on the first day of the contest),
+and find the hacker_id and name of the hacker who made maximum number of submissions each day.
+If more than one such hacker has a maximum number of submissions, print the lowest hacker_id.
+The query should print this information for each day of the contest, sorted by the date
+
+Output columns:
+submission_date, hacker_id, unique_count
+`,
+
+    dataset: [
+        {submission_date:"2016-03-01", submission_id:8494,  hacker_id:20703, score:0},
+        {submission_date:"2016-03-01", submission_id:22403, hacker_id:53473, score:15},
+        {submission_date:"2016-03-01", submission_id:23965, hacker_id:79722, score:60},
+        {submission_date:"2016-03-01", submission_id:30173, hacker_id:36396, score:70},
+
+        {submission_date:"2016-03-02", submission_id:34928, hacker_id:20703, score:0},
+        {submission_date:"2016-03-02", submission_id:38740, hacker_id:15758, score:60},
+        {submission_date:"2016-03-02", submission_id:42769, hacker_id:79722, score:25},
+        {submission_date:"2016-03-02", submission_id:44364, hacker_id:79722, score:60},
+
+        {submission_date:"2016-03-03", submission_id:45440, hacker_id:20703, score:0},
+        {submission_date:"2016-03-03", submission_id:49050, hacker_id:36396, score:70},
+        {submission_date:"2016-03-03", submission_id:50273, hacker_id:79722, score:5},
+
+        {submission_date:"2016-03-04", submission_id:50344, hacker_id:20703, score:0},
+        {submission_date:"2016-03-04", submission_id:51360, hacker_id:44065, score:90},
+        {submission_date:"2016-03-04", submission_id:54404, hacker_id:53473, score:65},
+        {submission_date:"2016-03-04", submission_id:61533, hacker_id:79722, score:15},
+
+        {submission_date:"2016-03-05", submission_id:72852, hacker_id:20703, score:0},
+        {submission_date:"2016-03-05", submission_id:74546, hacker_id:38289, score:0},
+        {submission_date:"2016-03-05", submission_id:76487, hacker_id:62529, score:0},
+        {submission_date:"2016-03-05", submission_id:82439, hacker_id:36396, score:10},
+        {submission_date:"2016-03-05", submission_id:90006, hacker_id:36396, score:40},
+
+        {submission_date:"2016-03-06", submission_id:90404, hacker_id:20703, score:0}
+    ],
+
+    output: [
+        {submission_date:"2016-03-01", hacker_id:20703, unique_count:4},
+        {submission_date:"2016-03-02", hacker_id:79722, unique_count:2},
+        {submission_date:"2016-03-03", hacker_id:20703, unique_count:2},
+        {submission_date:"2016-03-04", hacker_id:20703, unique_count:2},
+        {submission_date:"2016-03-05", hacker_id:36396, unique_count:1},
+        {submission_date:"2016-03-06", hacker_id:20703, unique_count:1}
+    ],
+
+    answer: `
+WITH cte AS (
+    SELECT 
+        submission_date,
+        hacker_id,
+        COUNT(*) AS no_of_submissions,
+        DENSE_RANK() OVER (ORDER BY submission_date) AS day_number
+    FROM submissions
+    GROUP BY submission_date, hacker_id
+),
+cte2 AS (
+    SELECT *,
+        COUNT(*) OVER (PARTITION BY hacker_id ORDER BY submission_date) AS till_date_submissions,
+        CASE 
+            WHEN day_number = COUNT(*) OVER (PARTITION BY hacker_id ORDER BY submission_date)
+            THEN 1 ELSE 0 
+        END AS unique_flag
+    FROM cte
+),
+cte3 AS (
+    SELECT *,
+        SUM(unique_flag) OVER (PARTITION BY submission_date) AS unique_count,
+        ROW_NUMBER() OVER (
+            PARTITION BY submission_date 
+            ORDER BY no_of_submissions DESC, hacker_id
+        ) AS rn
+    FROM cte2
+)
+SELECT submission_date, hacker_id, unique_count
+FROM cte3
+WHERE rn = 1
+ORDER BY submission_date;
+`
+}
+,
+{
+  question: `
+A table stores a list of integers, but some numbers in the sequence are missing.
+
+Write an SQL query to identify and return all the missing numbers 
+between the minimum and maximum values present in the table.
+
+Output column: Missing_Number
+  `,
+  dataset: [
+    {number: 1},
+    {number: 4},
+    {number: 7},
+    {number: 6},
+    {number: 9}
+  ],
+  output: [
+    {missing_number: 2},
+    {missing_number: 3},
+    {missing_number: 5},
+    {missing_number: 8}
+  ],
+  answer: `
+WITH cte AS (
+    SELECT
+        ROW_NUMBER() OVER (ORDER BY (SELECT NULL)) AS r
+    FROM sys.objects
+)
+SELECT
+    a.r AS missing_number
+FROM cte a
+LEFT JOIN Missing_Numbers b
+    ON a.r = b.number
+WHERE b.number IS NULL
+  AND a.r <= (SELECT MAX(number) FROM Missing_Numbers)
+ORDER BY a.r;
+  `
+}
+,
+{
+  "question": "A person performs a task every day, and each day the result is either 'success' or 'fail'. Write an SQL query to group consecutive dates with the same state and return the start date, end date, and state for each continuous period.",
+
+  "dataset": [
+    { "date_value": "2019-01-01", "state": "success" },
+    { "date_value": "2019-01-02", "state": "success" },
+    { "date_value": "2019-01-03", "state": "success" },
+    { "date_value": "2019-01-04", "state": "fail" },
+    { "date_value": "2019-01-05", "state": "fail" },
+    { "date_value": "2019-01-06", "state": "success" }
+  ],
+
+  "expected_output": [
+    { "start_date": "2019-01-01", "end_date": "2019-01-03", "state": "success" },
+    { "start_date": "2019-01-04", "end_date": "2019-01-05", "state": "fail" },
+    { "start_date": "2019-01-06", "end_date": "2019-01-06", "state": "success" }
+  ],
+
+  "answer_sql": "WITH cte AS (\n  SELECT *,\n         DATEADD(day, -ROW_NUMBER() OVER (PARTITION BY state ORDER BY date_value), date_value) AS grp\n  FROM tasks\n)\nSELECT\n  MIN(date_value) AS start_date,\n  MAX(date_value) AS end_date,\n  state\nFROM cte\nGROUP BY state, grp\nORDER BY start_date;"
+}
+,
+{
+  "question": "MARKET ANALYSIS: Write an SQL query to find for each seller whether the brand of the second item (by order date) they sold is their favorite brand. If a seller sold less than two items, report the result as NO.",
+
+  dataset: [
+    { "order_id": 1, "order_date": "2019-08-01", "item_id": 4, "buyer_id": 1, "seller_id": 2 },
+    { "order_id": 2, "order_date": "2019-08-02", "item_id": 2, "buyer_id": 1, "seller_id": 3 },
+    { "order_id": 3, "order_date": "2019-08-03", "item_id": 3, "buyer_id": 2, "seller_id": 3 },
+    { "order_id": 4, "order_date": "2019-08-04", "item_id": 1, "buyer_id": 4, "seller_id": 2 },
+    { "order_id": 5, "order_date": "2019-08-04", "item_id": 1, "buyer_id": 3, "seller_id": 4 },
+    { "order_id": 6, "order_date": "2019-08-05", "item_id": 2, "buyer_id": 2, "seller_id": 4 }
+  ],
+
+  dataset2: [
+    { "user_id": 1, "join_date": "2019-01-01", "favorite_brand": "Lenovo" },
+    { "user_id": 2, "join_date": "2019-02-09", "favorite_brand": "Samsung" },
+    { "user_id": 3, "join_date": "2019-01-19", "favorite_brand": "LG" },
+    { "user_id": 4, "join_date": "2019-05-21", "favorite_brand": "HP" }
+  ],
+
+  dataset3: [
+    { "item_id": 1, "item_brand": "Samsung" },
+    { "item_id": 2, "item_brand": "Lenovo" },
+    { "item_id": 3, "item_brand": "LG" },
+    { "item_id": 4, "item_brand": "HP" }
+  ],
+
+  output: [
+    { "seller_id": 1, "second_item_fav_brand": "NO" },
+    { "seller_id": 2, "second_item_fav_brand": "YES" },
+    { "seller_id": 3, "second_item_fav_brand": "YES" },
+    { "seller_id": 4, "second_item_fav_brand": "NO" }
+  ],
+
+  "answer": "WITH ranked_orders AS (\n  SELECT o.seller_id,\n         i.item_brand,\n         ROW_NUMBER() OVER (\n           PARTITION BY o.seller_id\n           ORDER BY o.order_date\n         ) AS rn\n  FROM orders o\n  JOIN items i\n    ON o.item_id = i.item_id\n)\nSELECT u.user_id AS seller_id,\n       CASE\n         WHEN r.item_brand = u.favorite_brand THEN 'YES'\n         ELSE 'NO'\n       END AS second_item_fav_brand\nFROM users u\nLEFT JOIN ranked_orders r\n  ON u.user_id = r.seller_id\n AND r.rn = 2;",
+
+  "answer_1": "WITH finding_second_item AS (\n  SELECT seller_id, item_id\n  FROM (\n    SELECT seller_id,\n           item_id,\n           ROW_NUMBER() OVER (\n             PARTITION BY seller_id\n             ORDER BY order_date\n           ) AS rn\n    FROM orders\n  ) t\n  WHERE rn = 2\n)\nSELECT u.user_id AS seller_id,\n       CASE\n         WHEN u.favorite_brand = i.item_brand THEN 'YES'\n         ELSE 'NO'\n       END AS second_item_fav_brand\nFROM users u\nLEFT JOIN finding_second_item f\n  ON u.user_id = f.seller_id\nLEFT JOIN items i\n  ON f.item_id = i.item_id;"
+},
+    {
+  "question": "TRIP CANCELLATION RATE: Write an SQL query to calculate the daily cancellation rate of trips. Only consider trips where both the client and the driver are not banned. A trip is considered cancelled if its status is either cancelled_by_client or cancelled_by_driver.",
+
+  "dataset": [
+    { "id": 1, "client_id": 1, "driver_id": 10, "city_id": 1, "status": "completed", "request_at": "2013-10-01" },
+    { "id": 2, "client_id": 2, "driver_id": 11, "city_id": 1, "status": "cancelled_by_driver", "request_at": "2013-10-01" },
+    { "id": 3, "client_id": 3, "driver_id": 12, "city_id": 6, "status": "completed", "request_at": "2013-10-01" },
+    { "id": 4, "client_id": 4, "driver_id": 13, "city_id": 6, "status": "cancelled_by_client", "request_at": "2013-10-01" },
+    { "id": 5, "client_id": 1, "driver_id": 10, "city_id": 1, "status": "completed", "request_at": "2013-10-02" },
+    { "id": 6, "client_id": 2, "driver_id": 11, "city_id": 6, "status": "completed", "request_at": "2013-10-02" },
+    { "id": 7, "client_id": 3, "driver_id": 12, "city_id": 6, "status": "completed", "request_at": "2013-10-02" },
+    { "id": 8, "client_id": 2, "driver_id": 12, "city_id": 12, "status": "completed", "request_at": "2013-10-03" },
+    { "id": 9, "client_id": 3, "driver_id": 10, "city_id": 12, "status": "completed", "request_at": "2013-10-03" },
+    { "id": 10, "client_id": 4, "driver_id": 13, "city_id": 12, "status": "cancelled_by_driver", "request_at": "2013-10-03" }
+  ],
+
+  "dataset2": [
+    { "users_id": 1, "banned": "No", "role": "client" },
+    { "users_id": 2, "banned": "Yes", "role": "client" },
+    { "users_id": 3, "banned": "No", "role": "client" },
+    { "users_id": 4, "banned": "No", "role": "client" },
+    { "users_id": 10, "banned": "No", "role": "driver" },
+    { "users_id": 11, "banned": "No", "role": "driver" },
+    { "users_id": 12, "banned": "No", "role": "driver" },
+    { "users_id": 13, "banned": "No", "role": "driver" }
+  ],
+
+  "output": [
+    {
+      "request_at": "2013-10-01",
+      "cancelled_trips": 1,
+      "total_trips": 3,
+      "cancellation_rate": 33.3333333333
+    },
+    {
+      "request_at": "2013-10-02",
+      "cancelled_trips": 0,
+      "total_trips": 2,
+      "cancellation_rate": 0.0
+    },
+    {
+      "request_at": "2013-10-03",
+      "cancelled_trips": 1,
+      "total_trips": 2,
+      "cancellation_rate": 50.0
+    }
+  ],
+
+  "answer": "SELECT\n  a.request_at,\n  COUNT(\n    CASE\n      WHEN a.status IN ('cancelled_by_client', 'cancelled_by_driver') THEN 1\n      ELSE NULL\n    END\n  ) AS cancelled_trips,\n  COUNT(*) AS total_trips,\n  1.0 * COUNT(\n    CASE\n      WHEN a.status IN ('cancelled_by_client', 'cancelled_by_driver') THEN 1\n      ELSE NULL\n    END\n  ) / COUNT(*) * 100 AS cancellation_rate\nFROM trips a\nJOIN users b\n  ON a.driver_id = b.users_id\nJOIN users c\n  ON a.client_id = c.users_id\nWHERE b.banned = 'No'\n  AND c.banned = 'No'\nGROUP BY a.request_at;"
+}
+,
+    {
+  "question": "Write an SQL query to find the winner in each group. The winner in each group is the player who scored the maximum total points within the group. In case of a tie, the player with the lowest player_id should be selected.",
+
+  "dataset": [
+    { "player_id": 15, "group_id": 1 },
+    { "player_id": 25, "group_id": 1 },
+    { "player_id": 30, "group_id": 1 },
+    { "player_id": 45, "group_id": 1 },
+    { "player_id": 10, "group_id": 2 },
+    { "player_id": 35, "group_id": 2 },
+    { "player_id": 50, "group_id": 2 },
+    { "player_id": 20, "group_id": 3 },
+    { "player_id": 40, "group_id": 3 }
+  ],
+
+  "dataset2": [
+    { "match_id": 1, "first_player": 15, "second_player": 45, "first_score": 3, "second_score": 0 },
+    { "match_id": 2, "first_player": 30, "second_player": 25, "first_score": 1, "second_score": 2 },
+    { "match_id": 3, "first_player": 30, "second_player": 15, "first_score": 2, "second_score": 0 },
+    { "match_id": 4, "first_player": 40, "second_player": 20, "first_score": 5, "second_score": 2 },
+    { "match_id": 5, "first_player": 35, "second_player": 50, "first_score": 1, "second_score": 1 }
+  ],
+
+  "output": [
+    { "group_id": 1, "player_id": 15, "score": 3, "r": 1 },
+    { "group_id": 2, "player_id": 35, "score": 1, "r": 1 },
+    { "group_id": 3, "player_id": 40, "score": 5, "r": 1 }
+  ],
+
+  "answer_1": "SELECT *\nFROM (\n  SELECT *,\n         RANK() OVER (PARTITION BY group_id ORDER BY score DESC, player_id) AS r\n  FROM (\n    SELECT p.group_id,\n           s.player_id,\n           SUM(s.score) AS score\n    FROM players p\n    JOIN (\n      SELECT first_player AS player_id, first_score AS score FROM matches\n      UNION ALL\n      SELECT second_player AS player_id, second_score AS score FROM matches\n    ) s\n      ON p.player_id = s.player_id\n    GROUP BY p.group_id, s.player_id\n  ) t\n) x\nWHERE r = 1;",
+
+  "answer_2": "WITH all_scores AS (\n  SELECT first_player AS player_id, first_score AS score FROM matches\n  UNION ALL\n  SELECT second_player AS player_id, second_score AS score FROM matches\n),\nplayer_scores AS (\n  SELECT p.group_id,\n         a.player_id,\n         SUM(a.score) AS total_score\n  FROM players p\n  LEFT JOIN all_scores a\n    ON p.player_id = a.player_id\n  GROUP BY p.group_id, a.player_id\n),\nranked_players AS (\n  SELECT *,\n         ROW_NUMBER() OVER (\n           PARTITION BY group_id\n           ORDER BY total_score DESC, player_id ASC\n         ) AS r\n  FROM player_scores\n)\nSELECT group_id,\n       player_id,\n       total_score AS score,\n       r\nFROM ranked_players\nWHERE r = 1;"
+}
+    ,{
+    "question": `
+An online shopping platform records user purchases made using either mobile or desktop.
+
+Each row represents a purchase made by a user on a given date and platform.
+
+Write a SQL query to determine, for each spend_date:
+- Total amount spent by users who used mobile only
+- Total amount spent by users who used desktop only
+- Total amount spent by users who used both mobile and desktop
+- Total number of users in each category
+
+Output columns:
+spend_date, platform (mobile / desktop / both), total_amount, total_users
+`,
+    "dataset": [
+        {"user_id":1,"spend_date":"2019-07-01","platform":"mobile","amount":100},
+        {"user_id":1,"spend_date":"2019-07-01","platform":"desktop","amount":100},
+        {"user_id":2,"spend_date":"2019-07-01","platform":"mobile","amount":100},
+        {"user_id":2,"spend_date":"2019-07-02","platform":"mobile","amount":100},
+        {"user_id":3,"spend_date":"2019-07-01","platform":"desktop","amount":100},
+        {"user_id":3,"spend_date":"2019-07-02","platform":"desktop","amount":100}
+    ],
+    "output": [
+        {"spend_date":"2019-07-01","platform":"mobile","total_amount":100,"total_users":1},
+        {"spend_date":"2019-07-01","platform":"desktop","total_amount":100,"total_users":1},
+        {"spend_date":"2019-07-01","platform":"both","total_amount":200,"total_users":1},
+        {"spend_date":"2019-07-02","platform":"mobile","total_amount":100,"total_users":1},
+        {"spend_date":"2019-07-02","platform":"desktop","total_amount":100,"total_users":1},
+        {"spend_date":"2019-07-02","platform":"both","total_amount":0,"total_users":0}
+    ],
+    "answer_1": `
+-- Approach 1: User-level classification, then aggregation
+
+WITH user_level AS (
+    SELECT
+        spend_date,
+        user_id,
+        SUM(CASE WHEN platform = 'mobile' THEN amount ELSE 0 END) AS mobile_amt,
+        SUM(CASE WHEN platform = 'desktop' THEN amount ELSE 0 END) AS desktop_amt
+    FROM user_purchase_platform
+    GROUP BY spend_date, user_id
+),
+classified AS (
+    SELECT
+        spend_date,
+        user_id,
+        CASE
+            WHEN mobile_amt > 0 AND desktop_amt > 0 THEN 'both'
+            WHEN mobile_amt > 0 THEN 'mobile'
+            WHEN desktop_amt > 0 THEN 'desktop'
+        END AS platform,
+        mobile_amt + desktop_amt AS total_amount
+    FROM user_level
+)
+SELECT
+    spend_date,
+    platform,
+    SUM(total_amount) AS total_amount,
+    COUNT(DISTINCT user_id) AS total_users
+FROM classified
+GROUP BY spend_date, platform
+ORDER BY spend_date, platform;
+`,
+    "answer_2": `
+-- Approach 2: Generate all date-platform combinations to include zero rows
+
+WITH user_level AS (
+    SELECT
+        spend_date,
+        user_id,
+        SUM(CASE WHEN platform = 'mobile' THEN amount ELSE 0 END) AS mobile_amt,
+        SUM(CASE WHEN platform = 'desktop' THEN amount ELSE 0 END) AS desktop_amt
+    FROM user_purchase_platform
+    GROUP BY spend_date, user_id
+),
+classified AS (
+    SELECT
+        spend_date,
+        user_id,
+        CASE
+            WHEN mobile_amt > 0 AND desktop_amt > 0 THEN 'both'
+            WHEN mobile_amt > 0 THEN 'mobile'
+            WHEN desktop_amt > 0 THEN 'desktop'
+        END AS platform,
+        mobile_amt + desktop_amt AS total_amount
+    FROM user_level
+),
+agg AS (
+    SELECT
+        spend_date,
+        platform,
+        SUM(total_amount) AS total_amount,
+        COUNT(DISTINCT user_id) AS total_users
+    FROM classified
+    GROUP BY spend_date, platform
+),
+dates AS (
+    SELECT DISTINCT spend_date FROM user_purchase_platform
+),
+platforms AS (
+    SELECT 'mobile' AS platform
+    UNION ALL SELECT 'desktop'
+    UNION ALL SELECT 'both'
+)
+SELECT
+    d.spend_date,
+    p.platform,
+    COALESCE(a.total_amount, 0) AS total_amount,
+    COALESCE(a.total_users, 0) AS total_users
+FROM dates d
+CROSS JOIN platforms p
+LEFT JOIN agg a
+    ON a.spend_date = d.spend_date
+   AND a.platform = p.platform
+ORDER BY d.spend_date, p.platform;
+`,
+    "explanation": `
+Explanation:
+
+1. Users are first grouped by (user_id, spend_date) to determine which platforms they used.
+2. If a user has both mobile and desktop usage on the same date, they are classified as 'both'.
+3. Aggregation is then performed by spend_date and platform.
+4. In Answer 2, a CROSS JOIN between all dates and all platforms ensures that missing categories
+   (like 'both' on 2019-07-02) appear with 0 amount and 0 users.
+5. COALESCE is used to convert NULLs into zeros for total_amount and total_users.
+`
+}
+,
+    {
+    title: "SQL Server - Change Data Capture (CDC)",
+
+    question: `
+A company wants to implement Change Data Capture (CDC) on an EMPLOYEE table to support incremental ETL loads.
+
+Requirements:
+
+- Create a database named CDC_DEMO.
+- Enable CDC at the database level.
+- Create an EMPLOYEE table.
+- Enable CDC on the EMPLOYEE table.
+- Insert initial employee records.
+- Perform the following operations:
+  - Update one employee's salary.
+  - Delete one employee.
+  - Insert a new employee.
+- Query the CDC change table to view all captured changes.
+- Display the operation type (INSERT, DELETE, UPDATE BEFORE, UPDATE AFTER) instead of operation codes.
+- Use the CDC function to retrieve all captured changes between the minimum and maximum LSN.
+`,
+
+    dataset: [
+        {EMP_ID:1, EMP_NAME:"John", DEPARTMENT:"IT", SALARY:5000},
+        {EMP_ID:2, EMP_NAME:"Mary", DEPARTMENT:"HR", SALARY:6000},
+        {EMP_ID:3, EMP_NAME:"David", DEPARTMENT:"Finance", SALARY:7000}
+    ],
+
+    output: [
+        {EMP_ID:1, OPERATION:"INSERT"},
+        {EMP_ID:2, OPERATION:"INSERT"},
+        {EMP_ID:3, OPERATION:"INSERT"},
+        {EMP_ID:3, OPERATION:"UPDATE (Before)"},
+        {EMP_ID:3, OPERATION:"UPDATE (After)"},
+        {EMP_ID:2, OPERATION:"DELETE"},
+        {EMP_ID:4, OPERATION:"INSERT"}
+    ],
+
+    answer: `
+CREATE DATABASE CDC_DEMO;
+GO
+
+USE CDC_DEMO;
+GO
+
+EXEC sys.sp_cdc_enable_db;
+GO
+
+CREATE TABLE EMPLOYEE
+(
+    EMP_ID INT PRIMARY KEY,
+    EMP_NAME VARCHAR(100),
+    DEPARTMENT VARCHAR(50),
+    SALARY DECIMAL(10,2)
+);
+GO
+
+EXEC sys.sp_cdc_enable_table
+    @source_schema='dbo',
+    @source_name='EMPLOYEE',
+    @role_name=NULL;
+GO
+
+INSERT INTO EMPLOYEE
+VALUES
+(1,'John','IT',5000),
+(2,'Mary','HR',6000),
+(3,'David','Finance',7000);
+
+UPDATE EMPLOYEE
+SET SALARY = 7500
+WHERE EMP_ID = 3;
+
+DELETE
+FROM EMPLOYEE
+WHERE EMP_ID = 2;
+
+INSERT INTO EMPLOYEE
+VALUES
+(4,'Sai','IT',8000);
+
+SELECT
+    EMP_ID,
+    EMP_NAME,
+    DEPARTMENT,
+    SALARY,
+    CASE __$operation
+        WHEN 1 THEN 'DELETE'
+        WHEN 2 THEN 'INSERT'
+        WHEN 3 THEN 'UPDATE (Before)'
+        WHEN 4 THEN 'UPDATE (After)'
+    END AS OPERATION
+FROM cdc.dbo_EMPLOYEE_CT;
+
+DECLARE @from_lsn BINARY(10),
+        @to_lsn BINARY(10);
+
+SET @from_lsn = sys.fn_cdc_get_min_lsn('dbo_EMPLOYEE');
+SET @to_lsn = sys.fn_cdc_get_max_lsn();
+
+SELECT *
+FROM cdc.fn_cdc_get_all_changes_dbo_EMPLOYEE
+(
+    @from_lsn,
+    @to_lsn,
+    'all'
+);
+`
+},
+{
+    question: `
+A company has two tables: Employee and Department.
+
+The requirement is to return all employees, including employees
+whose department does not exist in the Department table.
+
+However, display the DepartmentName only when the employee belongs
+to the IT department.
+
+Determine:
+- How to return all employees
+- How to display IT as the department when applicable
+- How to keep non-IT and unmatched employees in the result
+
+Output columns: EmployeeName, DepartmentID, DepartmentName.
+`,
+    dataset: [
+        {employee_id:"1", employee_name:"A", department_id:"10"},
+        {employee_id:"2", employee_name:"B", department_id:"20"},
+        {employee_id:"3", employee_name:"C", department_id:"30"},
+        {employee_id:"4", employee_name:"D", department_id:"40"}
+    ],
+    department_dataset: [
+        {department_id:"10", department_name:"IT"},
+        {department_id:"20", department_name:"HR"},
+        {department_id:"30", department_name:"Finance"}
+    ],
+    output: [
+        {employee_name:"A", department_id:"10", department_name:"IT"},
+        {employee_name:"B", department_id:"20", department_name:"NULL"},
+        {employee_name:"C", department_id:"30", department_name:"NULL"},
+        {employee_name:"D", department_id:"40", department_name:"NULL"}
+    ],
+    answer: `
+SELECT
+    E.EmployeeName,
+    E.DepartmentID,
+    D.DepartmentName
+FROM Employee E
+LEFT JOIN Department D
+    ON E.DepartmentID = D.DepartmentID
+    AND D.DepartmentName = 'IT';
+`
+},
+
+    {
+    question: `
+A company stores customer orders.
+
+Write a SQL query to display each order along with the
+previous order amount for the same customer.
+
+The previous order must be determined based on OrderDate.
+
+Output columns: CustomerID, OrderID, OrderDate, Amount, PreviousOrderAmount.
+`,
+    dataset: [
+        {customer_id:"101", order_id:"O1", order_date:"2026-01-01", amount:"500"},
+        {customer_id:"101", order_id:"O2", order_date:"2026-01-05", amount:"700"},
+        {customer_id:"101", order_id:"O3", order_date:"2026-01-10", amount:"300"},
+        {customer_id:"102", order_id:"O4", order_date:"2026-01-02", amount:"900"},
+        {customer_id:"102", order_id:"O5", order_date:"2026-01-08", amount:"400"}
+    ],
+    output: [
+        {customer_id:"101", order_id:"O1", order_date:"2026-01-01", amount:"500", previous_order_amount:"NULL"},
+        {customer_id:"101", order_id:"O2", order_date:"2026-01-05", amount:"700", previous_order_amount:"500"},
+        {customer_id:"101", order_id:"O3", order_date:"2026-01-10", amount:"300", previous_order_amount:"700"},
+        {customer_id:"102", order_id:"O4", order_date:"2026-01-02", amount:"900", previous_order_amount:"NULL"},
+        {customer_id:"102", order_id:"O5", order_date:"2026-01-08", amount:"400", previous_order_amount:"900"}
+    ],
+    answer: `
+SELECT
+    customer_id,
+    order_id,
+    order_date,
+    amount,
+    LAG(amount) OVER (
+        PARTITION BY customer_id
+        ORDER BY order_date
+    ) AS previous_order_amount
+FROM customer_orders;
+`
+},
+
+    {
+    question: `
+A company has an Employee table containing employee salaries.
+
+Write a SQL query to find the second-highest distinct salary
+in each department, along with the employee name and salary.
+
+If multiple employees have the same second-highest salary,
+return all of those employees.
+
+Output columns: Department, EmployeeName, Salary.
+`,
+    dataset: [
+        {employee_id:"1", employee_name:"A", department:"IT", salary:"50000"},
+        {employee_id:"2", employee_name:"B", department:"IT", salary:"70000"},
+        {employee_id:"3", employee_name:"C", department:"IT", salary:"70000"},
+        {employee_id:"4", employee_name:"D", department:"IT", salary:"60000"},
+        {employee_id:"5", employee_name:"E", department:"HR", salary:"60000"},
+        {employee_id:"6", employee_name:"F", department:"HR", salary:"80000"},
+        {employee_id:"7", employee_name:"G", department:"HR", salary:"80000"},
+        {employee_id:"8", employee_name:"H", department:"HR", salary:"70000"}
+    ],
+    output: [
+        {department:"IT", employee_name:"D", salary:"60000"},
+        {department:"HR", employee_name:"H", salary:"70000"}
+    ],
+    answer: `
+SELECT
+    department,
+    employeename,
+    salary
+FROM (
+    SELECT
+        department,
+        employeename,
+        salary,
+        DENSE_RANK() OVER (
+            PARTITION BY department
+            ORDER BY salary DESC
+        ) AS r
+    FROM employee
+) a
+WHERE r = 2;
+`
+},
+
+    {
+    title: "SQL Window Functions — Interview Definitions",
+
+    question: `
+What are the commonly used SQL Window Functions and their definitions?
+`,
+
+    dataset: `
+No dataset is required because this question focuses on definitions of SQL Window Functions.
+`,
+
+    output: `
+ROW_NUMBER()
+RANK()
+DENSE_RANK()
+LAG()
+LEAD()
+SUM()
+AVG()
+COUNT()
+FIRST_VALUE()
+LAST_VALUE()
+NTILE()
+`,
+
+    answer: `
+1. ROW_NUMBER()
+
+ROW_NUMBER() assigns a unique sequential number to each row based on the specified ordering.
+
+If multiple rows have the same value, they still receive different row numbers.
+
+Example:
+ROW_NUMBER() OVER (PARTITION BY Department ORDER BY Salary DESC)
+
+
+2. RANK()
+
+RANK() assigns the same rank to rows with the same value. When there are ties, the next rank is skipped.
+
+Example:
+If salaries are 90000, 80000, 80000, 70000, the ranks are:
+1, 2, 2, 4
+
+
+3. DENSE_RANK()
+
+DENSE_RANK() assigns the same rank to rows with the same value, but it does not skip ranks after a tie.
+
+Example:
+If salaries are 90000, 80000, 80000, 70000, the ranks are:
+1, 2, 2, 3
+
+
+4. LAG()
+
+LAG() is used to access a value from a previous row within the result set based on the specified ordering.
+
+It is commonly used to find the previous order, previous salary, previous transaction, or previous month's value.
+
+Example:
+LAG(Salary) OVER (PARTITION BY Department ORDER BY Salary)
+
+
+5. LEAD()
+
+LEAD() is used to access a value from a subsequent or next row within the result set based on the specified ordering.
+
+It is commonly used to compare the current row with the next order, next transaction, or next month's value.
+
+Example:
+LEAD(Salary) OVER (PARTITION BY Department ORDER BY Salary)
+
+
+6. SUM()
+
+SUM() calculates the total of a numeric column over a specified window while keeping the individual rows in the result.
+
+Unlike a normal SUM() with GROUP BY, a window SUM() does not collapse the rows.
+
+It can also be used to calculate a running total.
+
+Example:
+SUM(SalesAmount) OVER (
+    PARTITION BY CustomerID
+    ORDER BY OrderDate
+)
+
+
+7. AVG()
+
+AVG() calculates the average of a numeric column over a specified window while keeping the individual rows in the result.
+
+Example:
+AVG(Salary) OVER (PARTITION BY Department)
+
+
+8. COUNT()
+
+COUNT() counts the number of rows or non-null values within a specified window while keeping the individual rows in the result.
+
+Example:
+COUNT(*) OVER (PARTITION BY Department)
+
+
+9. FIRST_VALUE()
+
+FIRST_VALUE() returns the first value from a specified window based on the defined ordering.
+
+Example:
+FIRST_VALUE(Salary) OVER (
+    PARTITION BY Department
+    ORDER BY Salary DESC
+)
+
+
+10. LAST_VALUE()
+
+LAST_VALUE() returns the last value from a specified window based on the defined ordering and window frame.
+
+It is important to understand the window frame when using LAST_VALUE(), because the default frame can sometimes cause unexpected results.
+
+Example:
+LAST_VALUE(Salary) OVER (
+    PARTITION BY Department
+    ORDER BY Salary
+)
+
+
+11. NTILE()
+
+NTILE(n) divides the rows in an ordered result set into approximately equal groups or buckets.
+
+For example, NTILE(4) divides the rows into four groups, which can be used to identify quartiles.
+
+Example:
+NTILE(4) OVER (ORDER BY Salary)
+
+
+Important Window Function Pattern:
+
+FUNCTION() OVER (
+    PARTITION BY column
+    ORDER BY column
+)
+
+PARTITION BY → Defines which group the calculation should be performed within.
+
+ORDER BY → Defines the sequence of rows within that group.
+
+FUNCTION → Defines what calculation or operation should be performed.
+
+
+Easy Interview Memory:
+
+ROW_NUMBER() → Unique numbering
+
+RANK() → Ties + gaps
+
+DENSE_RANK() → Ties + no gaps
+
+LAG() → Look backward / previous row
+
+LEAD() → Look forward / next row
+
+SUM() → Total over a window
+
+AVG() → Average over a window
+
+COUNT() → Count over a window
+
+FIRST_VALUE() → First value in the window
+
+LAST_VALUE() → Last value in the window
+
+NTILE() → Divide rows into buckets
+`
+}
+ ,   {
+    title: "SQL Window SUM vs Running Total",
+
+    question: `
+What is the difference between a normal window SUM() and a running total using SUM()?
+`,
+
+    dataset: `
+Employee
+EmployeeName | Department | Salary
+A            | IT         | 50000
+B            | IT         | 60000
+C            | IT         | 70000
+`,
+
+    output: `
+For a normal window SUM():
+
+EmployeeName | Salary | Total Department Salary
+A            | 50000  | 180000
+B            | 60000  | 180000
+C            | 70000  | 180000
+
+For a running total:
+
+EmployeeName | Salary | Running Total
+A            | 50000  | 50000
+B            | 60000  | 110000
+C            | 70000  | 180000
+`,
+
+    answer: `
+The main difference is the ORDER BY clause used inside the window function.
+
+1. Normal Window SUM()
+
+When SUM() uses only PARTITION BY and does not have ORDER BY, it calculates the total for the entire partition and displays the same total on every row.
+
+Example:
+
+SUM(Salary) OVER (
+    PARTITION BY Department
+)
+
+For the IT department:
+
+50000 + 60000 + 70000 = 180000
+
+So every IT employee will show 180000 as the total department salary.
+
+This is a window aggregate function, but it is not a running total.
+
+
+2. Running Total
+
+When SUM() uses PARTITION BY together with ORDER BY, the SUM is calculated progressively according to the specified row order.
+
+Example:
+
+SUM(Salary) OVER (
+    PARTITION BY Department
+    ORDER BY Salary
+)
+
+The result will be:
+
+50000 → 50000
+60000 → 110000
+70000 → 180000
+
+This is called a running total or cumulative total.
+
+
+Important Point:
+
+It is not specifically ORDER BY Salary DESC that makes it a running total.
+
+Both ASC and DESC can be used.
+
+ASC:
+
+SUM(Salary) OVER (
+    PARTITION BY Department
+    ORDER BY Salary ASC
+)
+
+Running calculation:
+
+50000 → 50000
+60000 → 110000
+70000 → 180000
+
+
+DESC:
+
+SUM(Salary) OVER (
+    PARTITION BY Department
+    ORDER BY Salary DESC
+)
+
+Running calculation:
+
+70000 → 70000
+60000 → 130000
+50000 → 180000
+
+
+Interview Definition:
+
+A window SUM() with only PARTITION BY calculates the aggregate total for the entire partition while retaining the individual rows.
+
+When ORDER BY is added to the window definition, the SUM() is calculated progressively according to the specified row order, which is commonly used to calculate a running or cumulative total.
+
+
+Easy Memory:
+
+PARTITION BY only
+→ Total for the entire group
+
+PARTITION BY + ORDER BY
+→ Progressive / Running Total
+`
+},
+    {
+    title: "Employees Earning More Than Department Average",
+
+    question: `
+Find the employees who earn more than the average salary of their respective department.
+
+Solve the problem using:
+1. A window function
+2. A GROUP BY and JOIN approach without using a window function
+`,
+
+    dataset: `
+Employee
+EmployeeID | EmployeeName | Department | Salary
+1          | A            | IT         | 70000
+2          | B            | IT         | 80000
+3          | C            | IT         | 80000
+4          | D            | HR         | 60000
+5          | E            | HR         | 75000
+6          | F            | HR         | 70000
+`,
+
+    output: `
+EmployeeName | Department | Salary
+B            | IT         | 80000
+C            | IT         | 80000
+E            | HR         | 75000
+F            | HR         | 70000
+`,
+
+    answer: `
+Approach 1: Using a Window Function
+
+SELECT
+    EmployeeID,
+    EmployeeName,
+    Department,
+    Salary
+FROM (
+    SELECT
+        EmployeeID,
+        EmployeeName,
+        Department,
+        Salary,
+        AVG(Salary) OVER (
+            PARTITION BY Department
+        ) AS AvgSalary
+    FROM Employee
+) a
+WHERE Salary > AvgSalary;
+
+
+Explanation:
+
+AVG(Salary) OVER (PARTITION BY Department) calculates the average salary separately for each department while keeping every employee row.
+
+For IT:
+
+70000 + 80000 + 80000 = 230000
+
+Average = 76666.67
+
+Therefore, employees B and C qualify.
+
+For HR:
+
+60000 + 75000 + 70000 = 205000
+
+Average = 68333.33
+
+Therefore, employees E and F qualify.
+
+
+Approach 2: Without a Window Function
+
+We can first calculate the average salary for each department using GROUP BY and then JOIN that result back to the Employee table.
+
+SELECT
+    a.EmployeeID,
+    a.EmployeeName,
+    a.Department,
+    a.Salary
+FROM Employee a
+JOIN (
+    SELECT
+        Department,
+        AVG(Salary) AS AvgSalary
+    FROM Employee
+    GROUP BY Department
+) b
+    ON a.Department = b.Department
+WHERE a.Salary > b.AvgSalary;
+
+
+Explanation:
+
+The subquery calculates one average salary for each department.
+
+Then we join the department average back to every employee using Department.
+
+Finally, the WHERE condition compares each employee's salary with the average salary of their department.
+
+
+Key Difference:
+
+Window Function Approach:
+
+AVG(Salary) OVER (PARTITION BY Department)
+
+This calculates the department average while retaining every employee row.
+
+GROUP BY + JOIN Approach:
+
+SELECT Department, AVG(Salary)
+FROM Employee
+GROUP BY Department
+
+This first produces one row per department, and then we JOIN it back to the Employee table.
+
+Interview Point:
+
+Both approaches produce the same result.
+
+A window function is often more direct because it calculates the department average without collapsing the employee rows.
+`
+}
+,
+    {
+    title: "LAG() — Difference Between Current and Previous Order",
+
+    question: `
+You have an Orders table.
+
+Write a SQL query to find the difference between the current order amount and the previous order amount for each customer.
+
+Use LAG() to identify the previous order amount.
+`,
+
+    dataset: `
+Orders
+CustomerID | OrderID | OrderDate   | Amount
+101        | O1      | 2026-01-01  | 500
+101        | O2      | 2026-01-05  | 700
+101        | O3      | 2026-01-10  | 300
+102        | O4      | 2026-01-02  | 900
+102        | O5      | 2026-01-08  | 400
+`,
+
+    output: `
+CustomerID | OrderID | Amount | PreviousAmount | Difference
+101        | O1      | 500    | NULL           | NULL
+101        | O2      | 700    | 500            | 200
+101        | O3      | 300    | 700            | -400
+102        | O4      | 900    | NULL           | NULL
+102        | O5      | 400    | 900            | -500
+`,
+
+    answer: `
+SELECT
+    CustomerID,
+    OrderID,
+    Amount,
+    PreviousAmount,
+    Amount - PreviousAmount AS Difference
+FROM (
+    SELECT
+        CustomerID,
+        OrderID,
+        Amount,
+        LAG(Amount) OVER (
+            PARTITION BY CustomerID
+            ORDER BY OrderDate
+        ) AS PreviousAmount
+    FROM Orders
+) a;
+
+
+Explanation:
+
+LAG(Amount) is used to retrieve the amount from the previous row.
+
+PARTITION BY CustomerID ensures that the previous amount is taken only from the same customer.
+
+ORDER BY OrderDate determines the sequence of orders and therefore identifies which order is considered the previous order.
+
+For the first order of each customer, there is no previous order, so LAG() returns NULL.
+
+Then the outer query calculates:
+
+Amount - PreviousAmount AS Difference
+
+
+For Customer 101:
+
+O1 → 500, previous amount is NULL, difference is NULL.
+
+O2 → 700, previous amount is 500, difference is 200.
+
+O3 → 300, previous amount is 700, difference is -400.
+
+
+For Customer 102:
+
+O4 → 900, previous amount is NULL, difference is NULL.
+
+O5 → 400, previous amount is 900, difference is -500.
+
+
+Interview Explanation:
+
+I used LAG() to retrieve the previous order amount for each customer. I partitioned the data by CustomerID so that the comparison happens within each customer, and I ordered the rows by OrderDate to determine the previous order. Finally, I subtracted the previous amount from the current amount to calculate the difference.
+
+
+Important Pattern:
+
+LAG(Column) OVER (
+    PARTITION BY GroupColumn
+    ORDER BY SequenceColumn
+)
+
+PARTITION BY → Which group?
+
+ORDER BY → What is the sequence?
+
+LAG() → Get the previous row's value.
+`
+}
+    ,
+    {
+    title: "Highest-Paid Employee in Each Department",
+
+    question: `
+Write a SQL query to find the highest-paid employee in each department.
+
+Solve the problem using:
+1. A window function
+2. A GROUP BY and JOIN approach without using a window function
+
+If multiple employees have the same highest salary in a department, return all of them.
+`,
+
+    dataset: `
+Employee
+EmployeeID | EmployeeName | Department | Salary
+1          | A            | IT         | 70000
+2          | B            | IT         | 80000
+3          | C            | IT         | 60000
+4          | D            | HR         | 75000
+5          | E            | HR         | 65000
+6          | F            | HR         | 55000
+`,
+
+    output: `
+EmployeeName | Salary | Department
+B            | 80000  | IT
+D            | 75000  | HR
+`,
+
+    answer: `
+Approach 1: Using a Window Function
+
+SELECT
+    EmployeeID,
+    EmployeeName,
+    Department,
+    Salary
+FROM (
+    SELECT
+        EmployeeID,
+        EmployeeName,
+        Department,
+        Salary,
+        DENSE_RANK() OVER (
+            PARTITION BY Department
+            ORDER BY Salary DESC
+        ) AS r
+    FROM Employee
+) a
+WHERE r = 1;
+
+
+Explanation:
+
+DENSE_RANK() ranks employees separately within each department.
+
+PARTITION BY Department → Creates a separate ranking for each department.
+
+ORDER BY Salary DESC → Places the highest salary first.
+
+WHERE r = 1 → Returns the highest-paid employee or employees.
+
+DENSE_RANK() also handles ties. If two employees have the same highest salary, both receive rank 1 and both are returned.
+
+
+Approach 2: Without a Window Function
+
+We can use GROUP BY to find the maximum salary for each department and then JOIN that result back to the Employee table.
+
+SELECT
+    a.EmployeeID,
+    a.EmployeeName,
+    a.Department,
+    a.Salary
+FROM Employee a
+JOIN (
+    SELECT
+        Department,
+        MAX(Salary) AS MaxSalary
+    FROM Employee
+    GROUP BY Department
+) b
+    ON a.Department = b.Department
+   AND a.Salary = b.MaxSalary;
+
+
+Explanation:
+
+The subquery calculates the maximum salary for each department.
+
+GROUP BY Department → Calculates MAX(Salary) separately for each department.
+
+Then we JOIN the result back to Employee using Department and Salary.
+
+If multiple employees have the same maximum salary, all matching employees are returned.
+
+
+Example with a Tie:
+
+Suppose IT has:
+
+A → 80000
+B → 80000
+C → 70000
+
+The subquery returns:
+
+IT → 80000
+
+Both A and B match the maximum salary, so both are returned.
+
+
+Key Difference:
+
+Window Function Approach:
+
+DENSE_RANK() OVER (
+    PARTITION BY Department
+    ORDER BY Salary DESC
+)
+
+This ranks every employee and then filters rank 1.
+
+Without Window Function:
+
+MAX(Salary)
+GROUP BY Department
+
+This first finds the maximum salary for each department and then joins it back to the Employee table.
+
+
+Interview Point:
+
+Both approaches can return the same result.
+
+The window function approach is useful when ranking logic is required.
+
+The GROUP BY + JOIN approach is useful when we only need the maximum value for each group and want to join it back to the original table.
+`
+}
+    ,
+    {
+    title: "Highest-Paid Employee in Each Department",
+
+    question: `
+Write a SQL query to find the highest-paid employee in each department.
+
+Solve the problem using:
+1. A window function
+2. A GROUP BY and JOIN approach without using a window function
+
+If multiple employees have the same highest salary in a department, return all of them.
+`,
+
+    dataset: `
+Employee
+EmployeeID | EmployeeName | Department | Salary
+1          | A            | IT         | 70000
+2          | B            | IT         | 80000
+3          | C            | IT         | 60000
+4          | D            | HR         | 75000
+5          | E            | HR         | 65000
+6          | F            | HR         | 55000
+`,
+
+    output: `
+EmployeeName | Salary | Department
+B            | 80000  | IT
+D            | 75000  | HR
+`,
+
+    answer: `
+Approach 1: Using a Window Function
+
+SELECT
+    EmployeeID,
+    EmployeeName,
+    Department,
+    Salary
+FROM (
+    SELECT
+        EmployeeID,
+        EmployeeName,
+        Department,
+        Salary,
+        DENSE_RANK() OVER (
+            PARTITION BY Department
+            ORDER BY Salary DESC
+        ) AS r
+    FROM Employee
+) a
+WHERE r = 1;
+
+
+Explanation:
+
+DENSE_RANK() ranks employees separately within each department.
+
+PARTITION BY Department → Creates a separate ranking for each department.
+
+ORDER BY Salary DESC → Places the highest salary first.
+
+WHERE r = 1 → Returns the highest-paid employee or employees.
+
+DENSE_RANK() also handles ties. If two employees have the same highest salary, both receive rank 1 and both are returned.
+
+
+Approach 2: Without a Window Function
+
+We can use GROUP BY to find the maximum salary for each department and then JOIN that result back to the Employee table.
+
+SELECT
+    a.EmployeeID,
+    a.EmployeeName,
+    a.Department,
+    a.Salary
+FROM Employee a
+JOIN (
+    SELECT
+        Department,
+        MAX(Salary) AS MaxSalary
+    FROM Employee
+    GROUP BY Department
+) b
+    ON a.Department = b.Department
+   AND a.Salary = b.MaxSalary;
+
+
+Explanation:
+
+The subquery calculates the maximum salary for each department.
+
+GROUP BY Department → Calculates MAX(Salary) separately for each department.
+
+Then we JOIN the result back to Employee using Department and Salary.
+
+If multiple employees have the same maximum salary, all matching employees are returned.
+
+
+Example with a Tie:
+
+Suppose IT has:
+
+A → 80000
+B → 80000
+C → 70000
+
+The subquery returns:
+
+IT → 80000
+
+Both A and B match the maximum salary, so both are returned.
+
+
+Key Difference:
+
+Window Function Approach:
+
+DENSE_RANK() OVER (
+    PARTITION BY Department
+    ORDER BY Salary DESC
+)
+
+This ranks every employee and then filters rank 1.
+
+Without Window Function:
+
+MAX(Salary)
+GROUP BY Department
+
+This first finds the maximum salary for each department and then joins it back to the Employee table.
+
+
+Interview Point:
+
+Both approaches can return the same result.
+
+The window function approach is useful when ranking logic is required.
+
+The GROUP BY + JOIN approach is useful when we only need the maximum value for each group and want to join it back to the original table.
+`
+}
+    ,
+    {
+    title: "Top 2 Employees Per Department — Exactly 2 Rows",
+
+    question: `
+Write a SQL query to find the top 2 highest-paid employees in each department.
+
+The requirement is to return exactly 2 employees per department, even if there is a salary tie.
+
+Solve the problem using:
+1. A window function
+2. An approach without a window function
+`,
+
+    dataset: `
+Employee
+EmployeeID | EmployeeName | Department | Salary
+1          | A            | IT         | 70000
+2          | B            | IT         | 80000
+3          | C            | IT         | 80000
+4          | D            | HR         | 60000
+5          | E            | HR         | 75000
+6          | F            | HR         | 75000
+`,
+
+    output: `
+EmployeeID | EmployeeName | Department | Salary
+2          | B            | IT         | 80000
+3          | C            | IT         | 80000
+5          | E            | HR         | 75000
+6          | F            | HR         | 75000
+`,
+
+    answer: `
+Approach 1: Using a Window Function
+
+The best window function for this requirement is ROW_NUMBER() because we need exactly 2 employees from each department.
+
+SELECT
+    EmployeeID,
+    EmployeeName,
+    Department,
+    Salary
+FROM (
+    SELECT
+        EmployeeID,
+        EmployeeName,
+        Department,
+        Salary,
+        ROW_NUMBER() OVER (
+            PARTITION BY Department
+            ORDER BY Salary DESC, EmployeeID
+        ) AS rn
+    FROM Employee
+) a
+WHERE rn <= 2;
+
+
+Explanation:
+
+PARTITION BY Department creates a separate numbering sequence for each department.
+
+ORDER BY Salary DESC puts the highest-paid employees first.
+
+EmployeeID is added as a second ordering column to make the result deterministic when two employees have the same salary.
+
+ROW_NUMBER() assigns a unique number to every employee, even when salaries are tied.
+
+WHERE rn <= 2 returns exactly two employees from each department.
+
+
+Approach 2: Without a Window Function
+
+Without a window function, one common approach is to use a correlated subquery.
+
+SELECT
+    e.EmployeeID,
+    e.EmployeeName,
+    e.Department,
+    e.Salary
+FROM Employee e
+WHERE (
+    SELECT COUNT(*)
+    FROM Employee e2
+    WHERE e2.Department = e.Department
+      AND (
+          e2.Salary > e.Salary
+          OR (
+              e2.Salary = e.Salary
+              AND e2.EmployeeID < e.EmployeeID
+          )
+      )
+) < 2;
+
+
+Explanation:
+
+For each employee, the correlated subquery counts how many employees in the same department should come before that employee.
+
+An employee comes before another employee when:
+
+1. Their salary is higher, or
+2. Their salary is the same but their EmployeeID is smaller.
+
+If fewer than 2 employees come before the current employee, that employee belongs to the top 2.
+
+
+Important Difference Between Ranking Functions:
+
+ROW_NUMBER():
+
+Returns exactly 2 employees per department when filtered using rn <= 2.
+
+Ties receive different row numbers.
+
+RANK():
+
+Can return more than 2 employees because tied employees receive the same rank.
+
+DENSE_RANK():
+
+Can also return more than 2 employees because tied employees receive the same rank.
+
+
+Example:
+
+Suppose IT has:
+
+B → 80000
+C → 80000
+A → 70000
+
+ROW_NUMBER():
+
+B → 1
+C → 2
+A → 3
+
+Filtering rn <= 2 returns B and C.
+
+This gives exactly 2 employees.
+
+
+Interview Point:
+
+When the requirement says "exactly N rows per group", ROW_NUMBER() is generally the appropriate choice.
+
+When the requirement says "top N distinct salary levels including ties", DENSE_RANK() is generally appropriate.
+`
+}
+    ,
+    {
+    title: "Department Maximum Salary Using a Window Function",
+
+    question: `
+Write a SQL query to find the highest salary in each department and display it alongside every employee in that department.
+`,
+
+    dataset: `
+Employee
+EmployeeID | EmployeeName | Department | Salary
+1          | A            | IT         | 70000
+2          | B            | IT         | 80000
+3          | C            | IT         | 60000
+4          | D            | HR         | 75000
+5          | E            | HR         | 65000
+6          | F            | HR         | 55000
+`,
+
+    output: `
+EmployeeName | Department | Salary | HighestDeptSalary
+A            | IT         | 70000  | 80000
+B            | IT         | 80000  | 80000
+C            | IT         | 60000  | 80000
+D            | HR         | 75000  | 75000
+E            | HR         | 65000  | 75000
+F            | HR         | 55000  | 75000
+`,
+
+    answer: `
+SELECT
+    EmployeeName,
+    Department,
+    Salary,
+    MAX(Salary) OVER (
+        PARTITION BY Department
+    ) AS HighestDeptSalary
+FROM Employee;
+
+
+Explanation:
+
+MAX(Salary) OVER (PARTITION BY Department) calculates the maximum salary separately for each department while retaining every employee row.
+
+PARTITION BY Department → Creates a separate logical group for each department.
+
+MAX(Salary) → Finds the highest salary within each department.
+
+Because this is a window function, the employee rows are not collapsed. The department's highest salary is displayed alongside every employee in that department.
+
+
+For IT:
+
+70000, 80000, 60000
+
+Highest salary = 80000
+
+Therefore, every IT employee displays 80000 as HighestDeptSalary.
+
+
+For HR:
+
+75000, 65000, 55000
+
+Highest salary = 75000
+
+Therefore, every HR employee displays 75000 as HighestDeptSalary.
+
+
+Comparison with GROUP BY:
+
+Using GROUP BY:
+
+SELECT
+    Department,
+    MAX(Salary) AS HighestDeptSalary
+FROM Employee
+GROUP BY Department;
+
+This returns one row per department.
+
+
+Using a Window Function:
+
+MAX(Salary) OVER (
+    PARTITION BY Department
+)
+
+This retains every employee row and displays the department maximum alongside it.
+
+
+Interview Explanation:
+
+I used MAX as a window function with PARTITION BY Department. This calculates the maximum salary separately for each department while retaining every employee row in the result.
+`
+},
+    {
+    title: "Running Total Using SUM() Window Function",
+
+    question: `
+Write a SQL query to calculate the running total of order amount for each customer, ordered by OrderDate.
+`,
+
+    dataset: `
+Orders
+CustomerID | OrderID | OrderDate   | Amount
+101        | O1      | 2026-01-01  | 500
+101        | O2      | 2026-01-05  | 700
+101        | O3      | 2026-01-10  | 300
+102        | O4      | 2026-01-02  | 900
+102        | O5      | 2026-01-08  | 400
+`,
+
+    output: `
+CustomerID | OrderID | OrderDate   | Amount | RunningTotal
+101        | O1      | 2026-01-01  | 500    | 500
+101        | O2      | 2026-01-05  | 700    | 1200
+101        | O3      | 2026-01-10  | 300    | 1500
+102        | O4      | 2026-01-02  | 900    | 900
+102        | O5      | 2026-01-08  | 400    | 1300
+`,
+
+    answer: `
+SELECT
+    CustomerID,
+    OrderID,
+    OrderDate,
+    Amount,
+    SUM(Amount) OVER (
+        PARTITION BY CustomerID
+        ORDER BY OrderDate
+    ) AS RunningTotal
+FROM Orders;
+
+
+Explanation:
+
+SUM(Amount) is used as a window function to calculate the running total.
+
+PARTITION BY CustomerID → Starts a separate running total for each customer.
+
+ORDER BY OrderDate → Determines the order in which the amounts are accumulated.
+
+SUM(Amount) → Adds the current amount to all previous amounts within the customer's partition.
+
+
+For Customer 101:
+
+O1 → 500
+
+O2 → 500 + 700 = 1200
+
+O3 → 500 + 700 + 300 = 1500
+
+
+For Customer 102:
+
+O4 → 900
+
+O5 → 900 + 400 = 1300
+
+
+Important Point:
+
+If multiple orders can have the same OrderDate, add OrderID as a second ordering column to make the sequence deterministic.
+
+Example:
+
+SUM(Amount) OVER (
+    PARTITION BY CustomerID
+    ORDER BY OrderDate, OrderID
+) AS RunningTotal
+
+
+Interview Explanation:
+
+I used SUM as a window function, partitioned by CustomerID and ordered by OrderDate. This calculates a cumulative running total separately for each customer while retaining every order row.
+
+
+Key Pattern:
+
+SUM(Column) OVER (
+    PARTITION BY GroupColumn
+    ORDER BY SequenceColumn
+)
+
+PARTITION BY → Which group?
+
+ORDER BY → What is the sequence?
+
+SUM() → Calculate the cumulative total.
+`
+}
+    ,
+
+    {
+    title: "SQL Interview Question 18 — LEAD() Function",
+
+    question: `
+Write a SQL query to display each employee's salary along with the salary of the next-highest-paid employee in the same department.`,
+
+    dataset: `
+Employee table:
+
+| EmployeeID | EmployeeName | Department | Salary |
+|------------|--------------|------------|--------|
+| 1          | A            | IT         | 70000  |
+| 2          | B            | IT         | 80000  |
+| 3          | C            | IT         | 60000  |
+| 4          | D            | HR         | 75000  |
+| 5          | E            | HR         | 65000  |
+| 6          | F            | HR         | 55000  |`,
+
+    output: `
+| EmployeeName | Department | Salary | NextSalary |
+|--------------|------------|--------|------------|
+| B            | IT         | 80000 | 70000      |
+| A            | IT         | 70000 | 60000      |
+| C            | IT         | 60000 | NULL       |
+| D            | HR         | 75000 | 65000      |
+| E            | HR         | 65000 | 55000      |
+| F            | HR         | 55000 | NULL       |`,
+
+    answer: `
+SELECT
+    EmployeeName,
+    Department,
+    Salary,
+    LEAD(Salary) OVER (
+        PARTITION BY Department
+        ORDER BY Salary DESC
+    ) AS NextSalary
+FROM Employee;
+
+Explanation:
+
+LEAD() is used to access the value from the next row within the window.
+
+PARTITION BY Department
+→ Separates employees department-wise.
+
+ORDER BY Salary DESC
+→ Arranges employees from highest salary to lowest salary within each department.
+
+LEAD(Salary)
+→ Gets the salary from the next row in that order.
+
+For example, in IT:
+
+B → 80000 → next salary is 70000
+A → 70000 → next salary is 60000
+C → 60000 → no next row, so NULL
+
+Interview point:
+
+LAG() looks at the previous row.
+LEAD() looks at the next row.
+
+Here we need the next row, so LEAD() is used.`
+}
+    ,
+    {
+    title: "SQL Interview Questions 19 and 20 — AVG() and MAX() Window Functions",
+
+    question: `
+Question 19:
+
+Write a SQL query to display each employee's salary along with the average salary of their department.
+
+Question 20:
+
+Write a SQL query to display each employee and calculate the difference between their salary and the highest salary in their department.`,
+
+    dataset: `
+Employee table:
+
+| EmployeeID | EmployeeName | Department | Salary |
+|------------|--------------|------------|--------|
+| 1          | A            | IT         | 70000  |
+| 2          | B            | IT         | 80000  |
+| 3          | C            | IT         | 60000  |
+| 4          | D            | HR         | 75000  |
+| 5          | E            | HR         | 65000  |
+| 6          | F            | HR         | 55000  |`,
+
+    output: `
+Question 19 Output:
+
+| EmployeeName | Department | Salary | AvgDeptSalary |
+|--------------|------------|--------|---------------|
+| A            | IT         | 70000  | 70000         |
+| B            | IT         | 80000  | 70000         |
+| C            | IT         | 60000  | 70000         |
+| D            | HR         | 75000  | 65000         |
+| E            | HR         | 65000  | 65000         |
+| F            | HR         | 55000  | 65000         |
+
+Question 20 Output:
+
+| EmployeeName | Department | Salary | SalaryDifference |
+|--------------|------------|--------|------------------|
+| A            | IT         | 70000  | 10000            |
+| B            | IT         | 80000  | 0                |
+| C            | IT         | 60000  | 20000            |
+| D            | HR         | 75000  | 0                |
+| E            | HR         | 65000  | 10000            |
+| F            | HR         | 55000  | 20000            |`,
+
+    answer: `
+Question 19 Answer:
+
+SELECT
+    EmployeeName,
+    Department,
+    Salary,
+    AVG(Salary) OVER (
+        PARTITION BY Department
+    ) AS AvgDeptSalary
+FROM Employee;
+
+Explanation:
+
+AVG(Salary) OVER (PARTITION BY Department)
+calculates the average salary separately for each department while keeping every employee row.
+
+For IT:
+
+70000 + 80000 + 60000 = 210000
+210000 / 3 = 70000
+
+So 70000 is displayed for every IT employee.
+
+For HR:
+
+75000 + 65000 + 55000 = 195000
+195000 / 3 = 65000
+
+So 65000 is displayed for every HR employee.
+
+
+Question 20 Answer:
+
+SELECT
+    EmployeeName,
+    Department,
+    Salary,
+    Salary - MaxSalary AS SalaryDifference
+FROM (
+    SELECT
+        EmployeeName,
+        Department,
+        Salary,
+        MAX(Salary) OVER (
+            PARTITION BY Department
+        ) AS MaxSalary
+    FROM Employee
+) a;
+
+Explanation:
+
+MAX(Salary) OVER (PARTITION BY Department)
+finds the highest salary within each department while keeping every employee row.
+
+Then:
+
+Salary - MaxSalary
+
+calculates the difference between the employee's salary and the highest salary in that department.
+
+For example, in IT:
+
+A → 70000 - 80000 = -10000
+B → 80000 - 80000 = 0
+C → 60000 - 80000 = -20000
+
+If the requirement is to show the positive gap from the highest salary, use:
+
+MaxSalary - Salary
+
+Interview point:
+
+AVG() OVER (PARTITION BY Department)
+→ Shows the department average alongside every employee.
+
+MAX() OVER (PARTITION BY Department)
+→ Shows the department maximum alongside every employee.
+
+Window functions are useful here because they calculate the aggregate value without collapsing the individual employee rows.`
+}
+    ,
+
+    {
+    title: "SQL Interview Questions 23 and 24 — EXISTS and NOT EXISTS",
+
+    question: `
+Question 23:
+
+Write a SQL query to find employees who have placed at least one order.
+
+Question 24:
+
+Write a SQL query to find employees who have never placed an order.`,
+
+    dataset: `
+Employee table:
+
+| EmployeeID | EmployeeName |
+|------------|--------------|
+| 1          | A            |
+| 2          | B            |
+| 3          | C            |
+| 4          | D            |
+
+Orders table:
+
+| OrderID | EmployeeID | Amount |
+|---------|------------|--------|
+| 101     | 1          | 500    |
+| 102     | 1          | 700    |
+| 103     | 3          | 900    |`,
+
+    output: `
+Question 23 Output:
+
+| EmployeeID | EmployeeName |
+|------------|--------------|
+| 1          | A            |
+| 3          | C            |
+
+Question 24 Output:
+
+| EmployeeID | EmployeeName |
+|------------|--------------|
+| 2          | B            |
+| 4          | D            |`,
+
+    answer: `
+Question 23 Answer:
+
+SELECT
+    e.EmployeeID,
+    e.EmployeeName
+FROM Employee e
+WHERE EXISTS (
+    SELECT 1
+    FROM Orders o
+    WHERE o.EmployeeID = e.EmployeeID
+);
+
+Explanation:
+
+EXISTS checks whether the subquery returns at least one matching row.
+
+For each employee, SQL checks whether an order exists for that employee.
+
+Employee 1 → Order exists → returned
+Employee 2 → No order → not returned
+Employee 3 → Order exists → returned
+Employee 4 → No order → not returned
+
+The SELECT 1 inside EXISTS does not mean that the value 1 is returned to the user. EXISTS only checks whether at least one row is found.
+
+
+Question 24 Answer:
+
+SELECT
+    e.EmployeeID,
+    e.EmployeeName
+FROM Employee e
+WHERE NOT EXISTS (
+    SELECT 1
+    FROM Orders o
+    WHERE o.EmployeeID = e.EmployeeID
+);
+
+Explanation:
+
+NOT EXISTS checks whether the subquery does not return any matching row.
+
+Employee 1 → Order exists → not returned
+Employee 2 → No order → returned
+Employee 3 → Order exists → not returned
+Employee 4 → No order → returned
+
+Interview point:
+
+EXISTS
+→ Returns rows when at least one matching row exists.
+
+NOT EXISTS
+→ Returns rows when no matching row exists.
+
+EXISTS is commonly used when we only need to check whether a related record exists, rather than retrieving data from that related table.`
+}
+    ,
+    {
+    title: "SQL Interview Question 38 — Find Missing Numbers",
+
+    question: `
+Given an Orders table containing OrderID values, write a SQL query to identify the missing OrderIDs between the minimum and maximum OrderID.
+
+For example, if the existing OrderIDs are 101, 102, 103, 105, 106, and 108, the missing OrderIDs should be 104 and 107.`,
+
+    dataset: `
+Orders table:
+
+| OrderID |
+|---------|
+| 101     |
+| 102     |
+| 103     |
+| 105     |
+| 106     |
+| 108     |`,
+
+    output: `
+| MissingOrderID |
+|----------------|
+| 104            |
+| 107            |`,
+
+    answer: `
+WITH OrderNumbers AS (
+    SELECT MIN(OrderID) AS OrderID
+    FROM Orders
+
+    UNION ALL
+
+    SELECT OrderID + 1
+    FROM OrderNumbers
+    WHERE OrderID < (
+        SELECT MAX(OrderID)
+        FROM Orders
+    )
+)
+SELECT
+    OrderID AS MissingOrderID
+FROM OrderNumbers
+WHERE NOT EXISTS (
+    SELECT 1
+    FROM Orders o
+    WHERE o.OrderID = OrderNumbers.OrderID
+)
+OPTION (MAXRECURSION 0);
+
+Explanation:
+
+The recursive CTE generates every number between the minimum and maximum OrderID.
+
+For this example, it generates:
+
+101
+102
+103
+104
+105
+106
+107
+108
+
+The NOT EXISTS condition then checks which generated numbers are not present in the Orders table.
+
+104 is not present, so it is returned.
+107 is not present, so it is returned.
+
+Interview point:
+
+This is a gaps-and-islands type of problem.
+
+The basic approach is:
+
+1. Generate the complete sequence.
+2. Compare it with the existing values.
+3. Return the values that are missing.
+
+The recursive CTE is used here to generate the sequence of numbers.`
+}
+    ,
+    {
+    question: `
+A company tracks sales transactions. The same Date dimension is used for three different business roles:
+- Order Date
+- Ship Date
+- Delivery Date
+
+Determine:
+- Order Year
+- Ship Month
+- Delivery Quarter
+- Sale ID
+
+Output columns: Order Year, Ship Month, Delivery Quarter, Sale ID.
+`,
+    dataset: [
+        {sale_id:"1", customer_id:"101", order_date:"2026-01-01", ship_date:"2026-01-15", delivery_date:"2026-02-10", amount:"1000"},
+        {sale_id:"2", customer_id:"102", order_date:"2026-02-10", ship_date:"2026-03-20", delivery_date:"2026-04-05", amount:"1500"},
+        {sale_id:"3", customer_id:"103", order_date:"2026-03-20", ship_date:"2026-04-05", delivery_date:"2026-05-12", amount:"2000"},
+        {sale_id:"4", customer_id:"104", order_date:"2026-05-12", ship_date:"2026-06-25", delivery_date:"2026-07-10", amount:"2500"},
+        {sale_id:"5", customer_id:"105", order_date:"2026-07-10", ship_date:"2026-08-18", delivery_date:"2026-09-30", amount:"3000"},
+        {sale_id:"6", customer_id:"106", order_date:"2026-08-18", ship_date:"2026-09-30", delivery_date:"2026-10-07", amount:"3500"}
+    ],
+    output: [
+        {order_year:"2026", ship_month:"January", delivery_quarter:"Q1", sale_id:"1"},
+        {order_year:"2026", ship_month:"March", delivery_quarter:"Q2", sale_id:"2"},
+        {order_year:"2026", ship_month:"April", delivery_quarter:"Q2", sale_id:"3"},
+        {order_year:"2026", ship_month:"June", delivery_quarter:"Q3", sale_id:"4"},
+        {order_year:"2026", ship_month:"August", delivery_quarter:"Q3", sale_id:"5"},
+        {order_year:"2026", ship_month:"September", delivery_quarter:"Q4", sale_id:"6"}
+    ],
+    answer: `
+SELECT 
+    o.year AS order_year,
+    s.month_name AS ship_month,
+    d.quarter AS delivery_quarter,
+    f.sale_id
+FROM FactSales f
+LEFT JOIN DimDate o
+    ON f.order_date = o.calendar_date
+LEFT JOIN DimDate s
+    ON f.ship_date = s.calendar_date
+LEFT JOIN DimDate d
+    ON f.delivery_date = d.calendar_date;
+`
+},
+    {
+    question: `
+A company tracks sales transactions using the same Date dimension.
+
+Determine:
+- Total sales amount by Order Year
+- Delivery Quarter
+- Include transactions where Delivery Date is NULL
+
+Output columns: Order Year, Delivery Quarter, Total Sales.
+`,
+    dataset: [
+        {sale_id:"1", customer_id:"101", order_date:"2026-01-01", ship_date:"2026-01-15", delivery_date:"2026-02-10", amount:"1000"},
+        {sale_id:"2", customer_id:"102", order_date:"2026-02-10", ship_date:"2026-03-20", delivery_date:"2026-04-05", amount:"1500"},
+        {sale_id:"3", customer_id:"103", order_date:"2026-03-20", ship_date:"2026-04-05", delivery_date:"2026-05-12", amount:"2000"},
+        {sale_id:"4", customer_id:"104", order_date:"2026-05-12", ship_date:"2026-06-25", delivery_date:"2026-07-10", amount:"2500"},
+        {sale_id:"5", customer_id:"105", order_date:"2026-07-10", ship_date:"2026-08-18", delivery_date:"2026-09-30", amount:"3000"},
+        {sale_id:"6", customer_id:"106", order_date:"2026-08-18", ship_date:"2026-09-30", delivery_date:"2026-10-07", amount:"3500"},
+        {sale_id:"7", customer_id:"107", order_date:"2026-10-07", ship_date:"2026-11-15", delivery_date:null, amount:"4000"}
+    ],
+    output: [
+        {order_year:"2026", delivery_quarter:"Q1", total_sales:"1000"},
+        {order_year:"2026", delivery_quarter:"Q2", total_sales:"3500"},
+        {order_year:"2026", delivery_quarter:"Q3", total_sales:"5500"},
+        {order_year:"2026", delivery_quarter:"Q4", total_sales:"3500"},
+        {order_year:"2026", delivery_quarter:null, total_sales:"4000"}
+    ],
+    answer: `
+SELECT 
+    d.year AS order_year,
+    q.quarter AS delivery_quarter,
+    SUM(f.amount) AS total_sales
+FROM FactSales f
+LEFT JOIN DimDate d
+    ON f.order_date = d.calendar_date
+LEFT JOIN DimDate q
+    ON f.delivery_date = q.calendar_date
+GROUP BY 
+    d.year,
+    q.quarter;
+`
+},
+    {
+    question: `
+A company tracks sales using three date roles:
+- Order Date
+- Ship Date
+- Delivery Date
+
+A customer placed an order on 2026-01-10, it was shipped on 2026-01-15, and delivered during February.
+
+Determine:
+- Order Month
+- Ship Month
+- Delivery Month
+- Total Sales
+
+Output columns: Order Month, Ship Month, Delivery Month, Total Sales.
+`,
+    dataset: [
+        {sale_id:"1", customer_id:"101", order_date:"2026-01-10", ship_date:"2026-01-15", delivery_date:"2026-02-10", amount:"1000"},
+        {sale_id:"2", customer_id:"102", order_date:"2026-02-10", ship_date:"2026-03-20", delivery_date:"2026-04-05", amount:"1500"},
+        {sale_id:"3", customer_id:"103", order_date:"2026-03-20", ship_date:"2026-04-05", delivery_date:"2026-05-12", amount:"2000"}
+    ],
+    output: [
+        {order_month:"January", ship_month:"January", delivery_month:"February", total_sales:"1000"}
+    ],
+    answer: `
+SELECT
+    o.month_name AS order_month,
+    s.month_name AS ship_month,
+    d.month_name AS delivery_month,
+    SUM(f.amount) AS total_sales
+FROM FactSales f
+LEFT JOIN DimDate o
+    ON f.order_date = o.calendar_date
+LEFT JOIN DimDate s
+    ON f.ship_date = s.calendar_date
+LEFT JOIN DimDate d
+    ON f.delivery_date = d.calendar_date
+WHERE f.order_date = '2026-01-10'
+  AND f.ship_date = '2026-01-15'
+  AND MONTH(f.delivery_date) = 2
+GROUP BY
+    o.month_name,
+    s.month_name,
+    d.month_name;
+`
+},
+    /* QUESTION 2 — Cumulative Sales Count by Days */
+{
+question: `
+A company tracks sales based on the number of days taken to complete each sale.
+
+Determine:
+
+* Total sales completed within 0 to 2 days
+* Total sales completed within 0 to 5 days
+* Total sales completed within 0 to 10 days
+
+Important:
+The ranges are cumulative.
+Sales counted in 0 to 2 days must also be included in 0 to 5 days and 0 to 10 days.
+Sales counted in 0 to 5 days must also be included in 0 to 10 days.
+
+Output columns: Sales Range, Sales Count.
+`,
+    dataset: [
+        {sale_id:"1", days_taken:"1"},
+        {sale_id:"2", days_taken:"2"},
+        {sale_id:"3", days_taken:"4"},
+        {sale_id:"4", days_taken:"5"},
+        {sale_id:"5", days_taken:"8"},
+        {sale_id:"6", days_taken:"10"},
+        {sale_id:"7", days_taken:"12"}
+    ],
+    output: [
+        {sales_range:"0-2 Days", sales_count:"2"},
+        {sales_range:"0-5 Days", sales_count:"4"},
+        {sales_range:"0-10 Days", sales_count:"6"}
+    ],
+    answer: `
+SELECT
+'0-2 Days' AS sales_range,
+COUNT(CASE
+WHEN days_taken BETWEEN 0 AND 2
+THEN 1
+END) AS sales_count
+FROM sales
+
+UNION ALL
+
+SELECT
+'0-5 Days',
+COUNT(CASE
+WHEN days_taken BETWEEN 0 AND 5
+THEN 1
+END)
+FROM sales
+
+UNION ALL
+
+SELECT
+'0-10 Days',
+COUNT(CASE
+WHEN days_taken BETWEEN 0 AND 10
+THEN 1
+END)
+FROM sales;
+`
+},
+    {
+    title: "Invoice Currency Conversion Using Effective Exchange Rates",
+
+    question: `
+A company maintains invoice transactions in different currencies and an exchange rate table containing currency conversion rates with effective dates.
+
+Write a SQL query to display:
+1. Invoice number
+2. Invoice date
+3. Invoice amount
+4. Currency
+5. Applicable INR conversion rate
+6. Converted invoice amount in INR
+
+For each invoice, select the latest exchange rate whose effective date is less than or equal to the invoice date.
+
+Provide two approaches:
+1. Using a window function.
+2. Using a correlated subquery.
+`,
+
+    dataset: [
+        {
+            inv_number: "ABC",
+            inv_date: "2022-01-24",
+            amount: 100,
+            currency: "USD"
+        },
+        {
+            inv_number: "XYZ",
+            inv_date: "2022-02-28",
+            amount: 88,
+            currency: "EUR"
+        }
+    ],
+
+    exchange_rate_dataset: [
+        { currency: "USD", inr_conv_value: 85, effective_from: "2021-12-25" },
+        { currency: "USD", inr_conv_value: 82, effective_from: "2022-01-21" },
+        { currency: "EUR", inr_conv_value: 100, effective_from: "2022-01-24" },
+        { currency: "USD", inr_conv_value: 88, effective_from: "2022-01-26" },
+        { currency: "EUR", inr_conv_value: 102, effective_from: "2022-02-28" }
+    ],
+
+    output: [
+        {
+            inv_number: "ABC",
+            inv_date: "2022-01-24",
+            amount: 100,
+            currency: "USD",
+            inr_conv_value: 82,
+            amount_in_inr: 8200
+        },
+        {
+            inv_number: "XYZ",
+            inv_date: "2022-02-28",
+            amount: 88,
+            currency: "EUR",
+            inr_conv_value: 102,
+            amount_in_inr: 8976
+        }
+    ],
+
+    answer: `
+/* SETUP SCRIPT */
+
+CREATE TABLE sales_Transaction (
+    [Inv number] VARCHAR(10),
+    [Inv Date] DATE,
+    Amount DECIMAL(10,2),
+    Currency VARCHAR(3)
+);
+
+INSERT INTO sales_Transaction
+VALUES
+('ABC', '2022-01-24', 100, 'USD'),
+('XYZ', '2022-02-28', 88, 'EUR');
+
+
+CREATE TABLE exchange_rate_tabel (
+    Currency VARCHAR(3),
+    [INR Conv Value] DECIMAL(10,2),
+    [Effective From] DATE
+);
+
+INSERT INTO exchange_rate_tabel
+VALUES
+('USD', 85, '2021-12-25'),
+('USD', 82, '2022-01-21'),
+('EUR', 100, '2022-01-24'),
+('USD', 88, '2022-01-26'),
+('EUR', 102, '2022-02-28');
+
+
+/* APPROACH 1 — USING A WINDOW FUNCTION */
+
+SELECT
+    s.[Inv number],
+    s.[Inv Date],
+    s.Amount,
+    s.Currency,
+    e.[INR Conv Value],
+    s.Amount * e.[INR Conv Value] AS [Amount in INR]
+FROM sales_Transaction s
+LEFT JOIN (
+    SELECT
+        Currency,
+        [INR Conv Value],
+        [Effective From],
+        COALESCE(
+            LAG([Effective From]) OVER (
+                PARTITION BY Currency
+                ORDER BY [Effective From] DESC
+            ),
+            CAST('9999-12-31' AS DATE)
+        ) AS end_date
+    FROM exchange_rate_tabel
+) e
+    ON s.Currency = e.Currency
+    AND s.[Inv Date] >= e.[Effective From]
+    AND s.[Inv Date] < e.end_date;
+
+
+/* APPROACH 2 — USING A CORRELATED SUBQUERY */
+
+SELECT
+    s.[Inv number],
+    s.[Inv Date],
+    s.Amount,
+    s.Currency,
+    e.[INR Conv Value],
+    s.Amount * e.[INR Conv Value] AS [Amount in INR]
+FROM sales_Transaction s
+LEFT JOIN exchange_rate_tabel e
+    ON s.Currency = e.Currency
+    AND e.[Effective From] = (
+        SELECT MAX(e2.[Effective From])
+        FROM exchange_rate_tabel e2
+        WHERE e2.Currency = s.Currency
+          AND e2.[Effective From] <= s.[Inv Date]
+    );
+`
+}
+,
+    
+{
+    title: "Find the Second Purchase Within 30 Days",
+
+    question: `
+An e-commerce company wants to identify customers who made their second purchase within 30 days of their first purchase.
+
+Requirements:
+1. Find the first and second distinct purchase dates for each customer.
+2. Multiple orders on the same date count as one purchase date.
+3. Include customers whose second purchase occurred within 30 days of their first purchase, inclusive.
+4. Exclude customers who have fewer than two distinct purchase dates.
+5. Return one row per qualifying customer.
+6. Display CustomerID, FirstPurchaseDate, SecondPurchaseDate, and DaysBetweenPurchases.
+`,
+
+    dataset: [
+        { order_id: 101, customer_id: "C001", order_date: "2022-01-01", amount: 100.00 },
+        { order_id: 102, customer_id: "C001", order_date: "2022-01-01", amount: 50.00 },
+        { order_id: 103, customer_id: "C001", order_date: "2022-01-10", amount: 200.00 },
+        { order_id: 104, customer_id: "C001", order_date: "2022-02-15", amount: 75.00 },
+        { order_id: 105, customer_id: "C002", order_date: "2022-01-05", amount: 300.00 },
+        { order_id: 106, customer_id: "C002", order_date: "2022-02-10", amount: 150.00 },
+        { order_id: 107, customer_id: "C003", order_date: "2022-01-01", amount: 120.00 },
+        { order_id: 108, customer_id: "C003", order_date: "2022-01-31", amount: 80.00 },
+        { order_id: 109, customer_id: "C004", order_date: "2022-01-10", amount: 60.00 },
+        { order_id: 110, customer_id: "C005", order_date: "2022-01-01", amount: 90.00 },
+        { order_id: 111, customer_id: "C005", order_date: "2022-01-15", amount: 40.00 },
+        { order_id: 112, customer_id: "C005", order_date: "2022-01-20", amount: 30.00 }
+    ],
+
+    output: [
+        {
+            customer_id: "C001",
+            first_purchase_date: "2022-01-01",
+            second_purchase_date: "2022-01-10",
+            days_between_purchases: 9
+        },
+        {
+            customer_id: "C003",
+            first_purchase_date: "2022-01-01",
+            second_purchase_date: "2022-01-31",
+            days_between_purchases: 30
+        },
+        {
+            customer_id: "C005",
+            first_purchase_date: "2022-01-01",
+            second_purchase_date: "2022-01-15",
+            days_between_purchases: 14
+        }
+    ],
+
+    answer: `
+/* SETUP SCRIPT */
+
+CREATE TABLE Orders (
+    OrderID INT,
+    CustomerID VARCHAR(10),
+    OrderDate DATE,
+    Amount DECIMAL(10, 2)
+);
+
+INSERT INTO Orders
+    (OrderID, CustomerID, OrderDate, Amount)
+VALUES
+    (101, 'C001', '2022-01-01', 100.00),
+    (102, 'C001', '2022-01-01', 50.00),
+    (103, 'C001', '2022-01-10', 200.00),
+    (104, 'C001', '2022-02-15', 75.00),
+    (105, 'C002', '2022-01-05', 300.00),
+    (106, 'C002', '2022-02-10', 150.00),
+    (107, 'C003', '2022-01-01', 120.00),
+    (108, 'C003', '2022-01-31', 80.00),
+    (109, 'C004', '2022-01-10', 60.00),
+    (110, 'C005', '2022-01-01', 90.00),
+    (111, 'C005', '2022-01-15', 40.00),
+    (112, 'C005', '2022-01-20', 30.00);
+
+
+/* APPROACH 1 — DISTINCT DATES AND LEAD() */
+
+WITH DistinctPurchaseDates AS (
+    SELECT DISTINCT
+        CustomerID,
+        OrderDate
+    FROM Orders
+),
+RankedPurchases AS (
+    SELECT
+        CustomerID,
+        OrderDate,
+        ROW_NUMBER() OVER (
+            PARTITION BY CustomerID
+            ORDER BY OrderDate
+        ) AS rn
+    FROM DistinctPurchaseDates
+),
+PurchaseComparison AS (
+    SELECT
+        CustomerID,
+        OrderDate AS FirstPurchaseDate,
+        LEAD(OrderDate) OVER (
+            PARTITION BY CustomerID
+            ORDER BY OrderDate
+        ) AS SecondPurchaseDate
+    FROM RankedPurchases
+    WHERE rn <= 2
+)
+SELECT
+    CustomerID,
+    FirstPurchaseDate,
+    SecondPurchaseDate,
+    DATEDIFF(
+        DAY,
+        FirstPurchaseDate,
+        SecondPurchaseDate
+    ) AS DaysBetweenPurchases
+FROM PurchaseComparison
+WHERE SecondPurchaseDate IS NOT NULL
+  AND DATEDIFF(
+        DAY,
+        FirstPurchaseDate,
+        SecondPurchaseDate
+      ) BETWEEN 0 AND 30
+ORDER BY CustomerID;
+
+
+/* APPROACH 2 — CORRELATED SUBQUERY */
+
+WITH DistinctPurchaseDates AS (
+    SELECT DISTINCT
+        CustomerID,
+        OrderDate
+    FROM Orders
+),
+FirstPurchase AS (
+    SELECT
+        CustomerID,
+        MIN(OrderDate) AS FirstPurchaseDate
+    FROM DistinctPurchaseDates
+    GROUP BY CustomerID
+)
+SELECT
+    f.CustomerID,
+    f.FirstPurchaseDate,
+    s.SecondPurchaseDate,
+    DATEDIFF(
+        DAY,
+        f.FirstPurchaseDate,
+        s.SecondPurchaseDate
+    ) AS DaysBetweenPurchases
+FROM FirstPurchase f
+CROSS APPLY (
+    SELECT MIN(d.OrderDate) AS SecondPurchaseDate
+    FROM DistinctPurchaseDates d
+    WHERE d.CustomerID = f.CustomerID
+      AND d.OrderDate > f.FirstPurchaseDate
+) s
+WHERE s.SecondPurchaseDate IS NOT NULL
+  AND DATEDIFF(
+        DAY,
+        f.FirstPurchaseDate,
+        s.SecondPurchaseDate
+      ) BETWEEN 0 AND 30
+ORDER BY f.CustomerID;
+`
+},
+    {
+question: `
+A company maintains sales order records for different regions, including North, South, and West.
+
+Write a SQL query to calculate:
+
+* Total sales amount for January
+* Total sales amount for February
+* Total sales amount for March
+* Overall sales amount for each region
+
+Output columns: Region, Jan, Feb, Mar, TotalSales.
+`,
+    dataset: [
+        {region:"North", order_date:"2022-01-05", amount:1000},
+        {region:"North", order_date:"2022-01-15", amount:2000},
+        {region:"North", order_date:"2022-02-10", amount:1500},
+        {region:"South", order_date:"2022-01-20", amount:3000},
+        {region:"South", order_date:"2022-03-05", amount:2500},
+        {region:"West", order_date:"2022-02-12", amount:4000},
+        {region:"West", order_date:"2022-03-18", amount:1000}
+    ],
+    output: [
+        {region:"North", jan:3000, feb:1500, mar:0, total_sales:4500},
+        {region:"South", jan:3000, feb:0, mar:2500, total_sales:5500},
+        {region:"West", jan:0, feb:4000, mar:1000, total_sales:5000}
+    ],
+    answer: `
+SELECT
+Region,
+SUM(CASE
+WHEN MONTH(Order_Date) = 1 THEN Amount
+ELSE 0
+END) AS Jan,
+SUM(CASE
+WHEN MONTH(Order_Date) = 2 THEN Amount
+ELSE 0
+END) AS Feb,
+SUM(CASE
+WHEN MONTH(Order_Date) = 3 THEN Amount
+ELSE 0
+END) AS Mar,
+SUM(Amount) AS TotalSales
+FROM Sales_Orders
+GROUP BY Region
+ORDER BY Region;
+`
+} 
+,
+   {
+question: `
+You are given a table named PracticeData with two columns: col1 and col2.
+The col2 column contains comma-separated values.
+
+Write a SQL query to count the number of values in col2 for each col1, without using STRING_SPLIT().
+
+Output columns: col1, total_count.
+`,
+    dataset: [
+        {col1:1, col2:"a,b,c"},
+        {col1:2, col2:"a,b"}
+    ],
+    output: [
+        {col1:1, total_count:3},
+        {col1:2, total_count:2}
+    ],
+    answer: `
+-- Create table
+CREATE TABLE PracticeData (
+col1 INT,
+col2 VARCHAR(100)
+);
+
+-- Insert sample data
+INSERT INTO PracticeData (col1, col2)
+VALUES
+(1, 'a,b,c'),
+(2, 'a,b');
+
+-- Solution without STRING_SPLIT()
+SELECT
+col1,
+LEN(col2) - LEN(REPLACE(col2, ',', '')) + 1 AS total_count
+FROM PracticeData;
+`
+} ,
+    {
+question: `
+You are given a table named transaction_table containing user transactions.
+Each transaction has a user_id, spend amount, and transaction_date.
+
+A user may have multiple transactions, while some users may have only one or two transactions.
+
+Write a SQL query to retrieve the third transaction for each user based on transaction_date.
+
+Output columns: user_id, spend, transaction_date.
+`,
+    dataset: [
+        {user_id:111, spend:100, transaction_date:"2022-01-01"},
+        {user_id:111, spend:200, transaction_date:"2022-01-05"},
+        {user_id:111, spend:300, transaction_date:"2022-01-10"},
+        {user_id:112, spend:150, transaction_date:"2022-01-03"},
+        {user_id:113, spend:250, transaction_date:"2022-01-07"}
+    ],
+    output: [
+        {user_id:111, spend:300, transaction_date:"2022-01-10"}
+    ],
+    answer: `
+SELECT
+user_id,
+spend,
+transaction_date
+FROM (
+SELECT
+user_id,
+spend,
+transaction_date,
+ROW_NUMBER() OVER (
+PARTITION BY user_id
+ORDER BY transaction_date
+) AS rn
+FROM transaction_table
+) AS a
+WHERE rn = 3;
+`
+} 
+,
+    {
+question: `
+You are given a table containing customer IDs and email addresses.
+
+Write a SQL query to extract the domain name from each email address using SUBSTRING() and CHARINDEX(), without using built-in email parsing functions.
+
+For example:
+
+* [sai@gmail.com](mailto:sai@gmail.com) → gmail.com
+* [user@yahoo.com](mailto:user@yahoo.com) → yahoo.com
+* [user@google.com](mailto:user@google.com) → google.com
+
+Output columns: cid, email, domain_name.
+`,
+    dataset: [
+        {cid:1, email:"sai@gmail.com"},
+        {cid:2, email:"user@yahoo.com"},
+        {cid:3, email:"user@google.com"},
+        {cid:4, email:"test@gmail.com"}
+    ],
+    output: [
+        {cid:1, email:"sai@gmail.com", domain_name:"gmail.com"},
+        {cid:2, email:"user@yahoo.com", domain_name:"yahoo.com"},
+        {cid:3, email:"user@google.com", domain_name:"google.com"},
+        {cid:4, email:"test@gmail.com", domain_name:"gmail.com"}
+    ],
+    answer: `
+SELECT
+cid,
+email,
+SUBSTRING(
+email,
+CHARINDEX('@', email) + 1,
+LEN(email)
+) AS domain_name
+FROM your_table;
+`
+}
+
+/* End of questions array */
+];
+
+/* ============================
+   UI & Rendering Helpers
+   ============================ */
+
+let currentQuestion = 0;
+
+
+function getQuestionTitle(q) {
+    if (q.title) return q.title.replace(/^SQL Interview Questions?\s*\d+(\s*and\s*\d+)?\s*[—-]?\s*/i, '').trim();
+    const s = String(q.question || '').replace(/\s+/g, ' ').trim();
+    const rules = [
+      [/employee visits|most visited floor/i, 'Employee Visit Tracking'],
+      [/match result dataset|matches played.*wins.*losses/i, 'Team Match Results'],
+      [/customers are NEW|NEW on each order date/i, 'New vs Repeat Customers'],
+      [/Revenue by new customers|New customer count per day/i, 'New vs Repeat Customer Revenue'],
+      [/Nth occurrence of Sunday/i, 'Nth Future Sunday'],
+      [/days_to_ship|business days.*excluding weekends/i, 'Order Shipping & Business Days'],
+      [/Pareto Principle|80\/20 Rule/i, 'Pareto 80/20 Product Sales'],
+      [/friends.*total score|PersonScores/i, 'Friend Count & Total Friend Score'],
+      [/orders in all months of 2024/i, 'Customers Ordering Every Month'],
+      [/Performance Optimization Techniques/i, 'SQL Performance Optimization'],
+      [/more than the average salary of all employees/i, 'Employees Above Overall Average Salary'],
+      [/LEFT JOIN unintentionally/i, 'LEFT JOIN Filtering Traps'],
+      [/unique hackers|maximum number of submissions/i, 'Daily Hacker Submissions'],
+      [/missing numbers.*minimum and maximum/i, 'Find Missing Numbers'],
+      [/consecutive dates with the same state/i, 'Consecutive Success/Fail Periods'],
+      [/MARKET ANALYSIS|second item.*favorite brand/i, 'Second Item vs Favorite Brand'],
+      [/TRIP CANCELLATION RATE|daily cancellation rate/i, 'Trip Cancellation Rate'],
+      [/winner in each group/i, 'Group Winner by Total Points'],
+      [/mobile only|desktop only|both mobile and desktop/i, 'Mobile/Desktop Spend Classification'],
+      [/Change Data Capture|CDC/i, 'Change Data Capture (CDC)'],
+      [/DepartmentName only when.*IT/i, 'LEFT JOIN with IT Department Filter'],
+      [/previous order amount/i, 'Previous Order Amount with LAG'],
+      [/second-highest distinct salary/i, 'Second Highest Salary per Department'],
+      [/commonly used SQL Window Functions/i, 'SQL Window Functions'],
+      [/normal window SUM.*running total/i, 'Window SUM vs Running Total'],
+      [/average salary of their respective department/i, 'Employees Above Department Average'],
+      [/difference between the current order amount and the previous/i, 'Current vs Previous Order Amount'],
+      [/highest-paid employee in each department/i, 'Highest-Paid Employee per Department'],
+      [/top 2 highest-paid employees/i, 'Top 2 Employees per Department'],
+      [/highest salary in each department and display it alongside/i, 'Department Maximum Salary'],
+      [/running total of order amount/i, 'Running Total per Customer'],
+      [/next-highest-paid employee/i, 'LEAD: Next Salary per Department'],
+      [/average salary of their department.*difference.*highest salary/is, 'AVG & MAX Window Functions'],
+      [/placed at least one order.*never placed/is, 'EXISTS & NOT EXISTS'],
+      [/missing OrderIDs/i, 'Find Missing Order IDs'],
+      [/Order Year.*Ship Month.*Delivery Quarter/is, 'Role-Playing Date Dimension'],
+      [/Total sales amount by Order Year.*Delivery Quarter/is, 'Sales by Order Year & Delivery Quarter'],
+      [/Order Month.*Ship Month.*Delivery Month/is, 'Order, Ship & Delivery Months'],
+      [/0 to 2 days.*0 to 5 days.*0 to 10 days/is, 'Cumulative Sales by Days Taken'],
+      [/exchange rate.*effective date/i, 'Effective-Dated Currency Conversion'],
+      [/second purchase within 30 days/i, 'Second Purchase Within 30 Days'],
+      [/Total sales amount for January.*February.*March/is, 'Monthly Sales by Region'],
+      [/comma-separated values.*without using STRING_SPLIT/i, 'Count Comma-Separated Values'],
+      [/third transaction for each user/i, 'Third Transaction per User'],
+      [/extract the domain name from each email/i, 'Extract Email Domain']
+    ];
+    for (const [rx, title] of rules) if (rx.test(s)) return title;
+    const first = s.split(/[.?!\n]/)[0].replace(/^(Write an SQL query to|Write a query to|A company wants to|A company tracks|A company has|You are given)\s*/i,'').trim();
+    return first.length > 58 ? first.slice(0,55).trim() + '...' : (first || 'SQL Question');
+}
+
+function createJumpButtons() {
+    const container = document.getElementById('jumpButtons');
+    container.innerHTML = '';
+    questions.forEach((q, idx) => {
+        const btn = document.createElement('button');
+        btn.textContent = 'Q' + (idx + 1) + ' - ' + getQuestionTitle(q);
+        btn.title = 'Go to Question ' + (idx + 1) + ': ' + getQuestionTitle(q);
+        btn.onclick = () => {
+            currentQuestion = idx;
+            renderQuestion(idx);
+        };
+        container.appendChild(btn);
+    });
+}
+
+function renderTableFromObjects(list) {
+    if (!list || list.length === 0) return '';
+    const cols = Object.keys(list[0]);
+    let html = '<table><thead><tr>';
+    cols.forEach(c => html += `<th>${c}</th>`);
+    html += '</tr></thead><tbody>';
+    list.forEach(r => {
+        html += '<tr>';
+        cols.forEach(c => html += `<td>${r[c]}</td>`);
+        html += '</tr>';
+    });
+    html += '</tbody></table>';
+    return html;
+}
+
+function renderQuestion(index) {
+    const q = questions[index];
+    // Question text
+    document.getElementById('questionBox').innerHTML = `<h3>Question ${index + 1} - ${getQuestionTitle(q)}</h3><p>${q.question.replace(/\n\s+/g,'\n')}</p>`;
+
+    // Dataset
+    const datasetHtml = q.dataset && q.dataset.length ? renderTableFromObjects(q.dataset) : '<p>No dataset for this question.</p>';
+    document.getElementById('datasetBox').innerHTML = datasetHtml;
+
+    // Dataset2
+    const datasetHtml2 = q.dataset2 && q.dataset2.length ? renderTableFromObjects(q.dataset2) : '<p>No dataset for this question.</p>';
+    document.getElementById('datasetBox2').innerHTML = datasetHtml2;
+
+    // Dataset3
+    const datasetHtml3 = q.dataset3 && q.dataset3.length ? renderTableFromObjects(q.dataset3) : '<p>No dataset for this question.</p>';
+    document.getElementById('datasetBox3').innerHTML = datasetHtml3;
+
+    
+    // Output
+    const outputHtml = q.output && q.output.length ? renderTableFromObjects(q.output) : '<p>No output for this question.</p>';
+    document.getElementById('outputBox').innerHTML = outputHtml;
+
+    // Answers: combine answer, answer_1, answer_2, explanation
+    let answerText = '';
+    if (q.answer) answerText += q.answer.trim() + '\n\n';
+    if (q.answer_1) answerText += '-- Solution 1:\n' + q.answer_1.trim() + '\n\n';
+    if (q.answer_2) answerText += '-- Solution 2:\n' + q.answer_2.trim() + '\n\n';
+    if (q.explanation) answerText += '-- Explanation:\n' + q.explanation.trim();
+
+    document.getElementById('answerBox').textContent = answerText || '-- No answer provided --';
+
+    // update counter
+    document.getElementById('questionCounter').textContent = `Question ${index+1} of ${questions.length}`;
+}
+
+/* Navigation buttons */
+document.getElementById('prevBtn').addEventListener('click', () => {
+    if (currentQuestion > 0) {
+        currentQuestion--;
+        renderQuestion(currentQuestion);
+    }
+});
+document.getElementById('nextBtn').addEventListener('click', () => {
+    if (currentQuestion < questions.length - 1) {
+        currentQuestion++;
+        renderQuestion(currentQuestion);
+    }
+});
+
+/* Initialize UI */
+createJumpButtons();
+renderQuestion(0);
+
+</script>
+</body>
+</html>
